@@ -137,7 +137,10 @@
             "電話訂購每日銷貨金額及預估比較表",
             "電話客服內容",
             "今年電商成長率",
-            "今年電商累積銷貨"});
+            "今年電商累積銷貨",
+            "本月客服統計",
+            "銷貨明細",
+            "銷貨毛利"});
             this.comboBox1.Location = new System.Drawing.Point(83, 90);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(234, 20);

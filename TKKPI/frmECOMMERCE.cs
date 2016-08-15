@@ -187,6 +187,18 @@ namespace TKKPI
 
                 talbename = "TEMPds5";
             }
+            else if (comboBox1.Text.ToString().Equals("本月客服統計"))
+            {
+                STR.Append(@" SELECT [CALLRECORD].[TypeID] AS TypeID,[BASETYPE].[TypeName] AS '名稱',COUNT([CALLRECORD].[TypeID]) AS '次數'");
+                STR.Append(@" FROM [TKCUSTOMERSERVICE].[dbo].[CALLRECORD]");
+                STR.Append(@" LEFT JOIN [TKCUSTOMERSERVICE].[dbo].[BASETYPE] ON[CALLRECORD].[TypeID]=[BASETYPE].[TypeID]");
+                STR.Append(@" WHERE SUBSTRING(CallDate,1,6)=CONVERT(varchar(6),GETDATE(),112)");
+                STR.Append(@" GROUP BY [CALLRECORD].[TypeID],[BASETYPE].[TypeName]");
+                STR.Append(@" ORDER BY COUNT([CALLRECORD].[TypeID]) DESC");
+                STR.Append(@" ");
+
+                talbename = "TEMPds6";
+            }
         
 
             return STR;
