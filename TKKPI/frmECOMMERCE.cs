@@ -117,7 +117,23 @@ namespace TKKPI
 
                 talbename = "TEMPds1";
             }
-         
+            else if(comboBox1.Text.ToString().Equals("電話訂購每日銷貨金額及預估比較表"))
+            {
+                Queryday = dateTimePicker1.Value.ToString("yyyyMM");
+                Queryday = Queryday + "01";
+
+                STR.Append(@" SELECT ID ");
+                STR.AppendFormat(@" ,CONVERT(varchar(6),'{0}',112)+ID AS '日期'", Queryday);
+                STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA  WITH (NOLOCK) WHERE TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND TH020='Y' AND   TH001='A230' AND SUBSTRING(TH002,1,8)=CONVERT(varchar(6),'{0}',112)+ID),0) AS INT) AS '日出貨量'", Queryday);
+                STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTH WITH (NOLOCK) WHERE   TH020='Y' AND TH001='A230' AND SUBSTRING(TH002,1,8)=CONVERT(varchar(6),'{0}',112)+ID),0)AS INT) AS '日出貨金額'", Queryday); ;
+                STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA  WITH (NOLOCK) WHERE TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND TH020='Y' AND TH001='A230' AND SUBSTRING(TH002,1,6)=CONVERT(varchar(6),'{0}',112) AND   SUBSTRING(TH002,1,8)<=CONVERT(varchar(6),'{0}',112)+ID),0) AS INT) AS '累積出貨量'", Queryday);
+                STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTH WITH (NOLOCK) WHERE TH020='Y' AND TH001='A230' AND SUBSTRING(TH002,1,6)=CONVERT(varchar(6),'{0}',112) AND   SUBSTRING(TH002,1,8)<=CONVERT(varchar(6),'{0}',112)+ID),0) AS INT)AS '累積出貨金額'", Queryday);
+                STR.Append(@" FROM [TKECOMMERCE].dbo.BASEDAY");
+                STR.AppendFormat(@" WHERE ID<=DAY(DATEADD(mm,  1, DATEADD(dd, -1, DATEADD(mm, DATEDIFF(mm,0,'{0}'), 0))))", Queryday);
+
+                talbename = "TEMPds2";
+            }
+
 
             return STR;
         }
