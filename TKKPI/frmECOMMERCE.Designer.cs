@@ -135,7 +135,9 @@
             this.comboBox1.Items.AddRange(new object[] {
             "電商每日銷貨金額及預估比較表",
             "電話訂購每日銷貨金額及預估比較表",
-            "電話客服內容"});
+            "電話客服內容",
+            "今年電商成長率",
+            "今年電商累積銷貨"});
             this.comboBox1.Location = new System.Drawing.Point(83, 90);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(234, 20);

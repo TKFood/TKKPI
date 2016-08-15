@@ -146,6 +146,49 @@ namespace TKKPI
 
                 talbename = "TEMPds3";
             }
+            else if (comboBox1.Text.ToString().Equals("今年電商成長率"))
+            {
+                STR.Append(@" SELECT 月份,今年,今年出貨量,今年退貨量,(今年出貨量-今年退貨量) AS '今年實出量',今年出貨金額,今年退貨金額,(今年出貨金額-今年退貨金額) AS '今年實出金額',去年,去年出貨量,去年退貨量,(去年出貨量-去年退貨量) AS '去年實出量',去年出貨金額,去年退貨金額,(去年出貨金額-去年退貨金額) AS '去年實出金額'");
+                STR.Append(@" FROM (");
+                STR.Append(@" SELECT ID AS '月份'");
+                STR.Append(@" ,CAST(YEAR(GETDATE()) AS NVARCHAR)+ID  AS  '今年'");
+                STR.Append(@" ,ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTH,[TK].dbo.INVLA WITH (NOLOCK) WHERE TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND SUBSTRING(TH002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TH001='A233')  ,0) AS '今年出貨量'");
+                STR.Append(@" ,ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTJ,[TK].dbo.INVLA WITH (NOLOCK) WHERE TJ001=LA006 AND TJ002=LA007 AND TJ003=LA008 AND SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TJ001='A246') ,0)  AS '今年退貨量'");
+                STR.Append(@" ,ISNULL((SELECT SUM(TH013) FROM  [TK].dbo.COPTH WITH (NOLOCK) WHERE SUBSTRING(TH002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID  AND TH001='A233'),0) AS '今年出貨金額'");
+                STR.Append(@" ,ISNULL((SELECT SUM(TJ012) FROM  [TK].dbo.COPTJ WITH (NOLOCK) WHERE  SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TJ001='A246'),0)  '今年退貨金額'");
+                STR.Append(@" ,CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID  AS '去年'");
+                STR.Append(@" ,ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTH,[TK].dbo.INVLA WITH (NOLOCK) WHERE TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND SUBSTRING(TH002,1,6)=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID  AND TH001='A233'),0) AS '去年出貨量'");
+                STR.Append(@" ,ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTJ,[TK].dbo.INVLA WITH (NOLOCK) WHERE TJ001=LA006 AND TJ002=LA007 AND TJ003=LA008 AND SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TJ001='A246'),0)  AS '去年退貨量'");
+                STR.Append(@" ,ISNULL((SELECT SUM(TH013) FROM  [TK].dbo.COPTH WITH (NOLOCK) WHERE SUBSTRING(TH002,1,6)=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID  AND TH001='A233'),0)  AS '去年出貨金額'");
+                STR.Append(@" ,ISNULL((SELECT SUM(TJ012) FROM  [TK].dbo.COPTJ WITH (NOLOCK) WHERE  SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TJ001='A246'),0) AS '去年退貨金額'");
+                STR.Append(@" FROM [TKECOMMERCE].dbo.BASEMONTH ) AS TEMP");
+                STR.Append(@" ");
+
+                talbename = "TEMPds4";
+            }
+            else if(comboBox1.Text.ToString().Equals("今年電商累積銷貨"))
+            {
+        
+                STR.Append(@" SELECT 月份,今年,今年累積出貨量,今年累積退貨量,(今年累積出貨量-今年累積退貨量) AS '今年實出貨量',(今年累積出貨金額-今年累積退貨金額) AS '今年實出金額',今年累積退貨金額,去年,去年累積出貨量,去年累積退貨量,(去年累積出貨量-去年累積退貨量) AS '去年實出貨量',去年累積出貨金額,去年累積退貨金額,(去年累積出貨金額-去年累積退貨金額) AS '去年實出金額'");
+                STR.Append(@" FROM (");
+                STR.Append(@" SELECT ID AS '月份'");
+                STR.Append(@" ,CAST(YEAR(GETDATE()) AS NVARCHAR)+ID  AS  '今年'");
+                STR.Append(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND SUBSTRING(TH002,1,6)<=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TH001='A233'),0) ELSE 0 END AS '今年累積出貨量'");
+                STR.Append(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTJ WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE TJ001=LA006 AND TJ002=LA007 AND TJ003=LA008 AND SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND   SUBSTRING(TJ002,1,6)<=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TJ001='A246'),0)  ELSE 0 END AS '今年累積退貨量'");
+                STR.Append(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(TH013) FROM  [TK].dbo.COPTH WITH (NOLOCK) WHERE SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND SUBSTRING(TH002,1,6)<=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID  AND TH001='A233'),0) ELSE 0 END AS '今年累積出貨金額'");
+                STR.Append(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(TJ012) FROM  [TK].dbo.COPTJ WITH (NOLOCK) WHERE  SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND SUBSTRING(TJ002,1,6)<=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TJ001='A246'),0)  ELSE 0 END AS '今年累積退貨金額'");
+                STR.Append(@" ,CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID  AS '去年'");
+                STR.Append(@" ,ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND SUBSTRING(TH002,1,6)<=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TH001='A233'),0) AS '去年累積出貨量'");
+                STR.Append(@" ,ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTJ WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE TJ001=LA006 AND TJ002=LA007 AND TJ003=LA008 AND SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND   SUBSTRING(TJ002,1,6)<=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TJ001='A246'),0)   AS '去年累積退貨量'");
+                STR.Append(@" ,ISNULL((SELECT SUM(TH013) FROM  [TK].dbo.COPTH WITH (NOLOCK) WHERE SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND SUBSTRING(TH002,1,6)<=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID  AND TH001='A233'),0)  AS '去年累積出貨金額'");
+                STR.Append(@" ,ISNULL((SELECT SUM(TJ012) FROM  [TK].dbo.COPTJ WITH (NOLOCK) WHERE  SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND SUBSTRING(TJ002,1,6)<=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TJ001='A246'),0)  AS '去年累積退貨金額'");
+                STR.Append(@" FROM [TKECOMMERCE].dbo.BASEMONTH ) AS TEMP");
+                STR.Append(@" ");
+
+                talbename = "TEMPds5";
+            }
+        
+
             return STR;
         }
         #endregion
