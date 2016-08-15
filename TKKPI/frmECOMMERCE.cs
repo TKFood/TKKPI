@@ -133,8 +133,19 @@ namespace TKKPI
 
                 talbename = "TEMPds2";
             }
+            else if (comboBox1.Text.ToString().Equals("電話客服內容"))
+            {
+                Queryday = dateTimePicker1.Value.ToString("yyyyMM");
+                
 
+                STR.Append(@" SELECT CallDate AS '日期',[BASETYPE].TypeID AS '類別',TypeName AS '類名',CallName AS '姓名',CallPhone AS '手機',CallText AS '來電內容',CallTextRe AS '回覆',OrderID AS '訂單',ShipID AS '出貨單',InvoiceNo AS '發票'");
+                STR.Append(@" FROM [TKCUSTOMERSERVICE].[dbo].[CALLRECORD]");
+                STR.Append(@" LEFT JOIN [TKCUSTOMERSERVICE].[dbo].[BASETYPE] ON[CALLRECORD].[TypeID]=[BASETYPE].[TypeID]");
+                STR.AppendFormat(@" WHERE SUBSTRING(CallDate,1,6)='{0}'", Queryday);
+                STR.Append(@" ORDER BY CallDate,[BASETYPE].TypeID");
 
+                talbename = "TEMPds3";
+            }
             return STR;
         }
         #endregion
