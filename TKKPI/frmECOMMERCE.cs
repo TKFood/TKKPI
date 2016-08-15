@@ -199,6 +199,23 @@ namespace TKKPI
 
                 talbename = "TEMPds6";
             }
+            else if(comboBox1.Text.ToString().Equals("本月銷貨毛利"))
+            {
+                STR.Append(@" SELECT   品號,MB002 AS '品名',SUM(銷售數量) AS 銷售數量,SUM(銷售金額) AS 銷售金額,ISNULL(SUM(成本),0) AS '成本',(SUM(銷售金額)-ISNULL(SUM(成本),0)) AS '毛利'");
+                STR.Append(@" FROM (");
+                STR.Append(@" SELECT SUBSTRING(TH002,1,6) AS 'YM',TH004 AS '品號',LA011  AS '銷售數量',TH013 AS '銷售金額',LA013 AS '成本'");
+                STR.Append(@" FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK)");
+                STR.Append(@" WHERE TH001=LA006 AND TH002=LA007 AND TH003=LA008");
+                STR.Append(@" AND SUBSTRING(TH002,1,6)=CONVERT(varchar(6),DATEADD(MONTH,-1, CONVERT(datetime, GETDATE())) , 112)");
+                STR.Append(@" AND TH001='A233'");
+                STR.Append(@" ) AS TEMP");
+                STR.Append(@" LEFT JOIN [TK].dbo.INVMB ON MB001=品號");
+                STR.Append(@" GROUP BY 品號,MB002");
+                STR.Append(@" ORDER BY (SUM(銷售金額)-ISNULL(SUM(成本),0))  DESC");
+                STR.Append(@" ");
+
+                talbename = "TEMPds7";
+            }
         
 
             return STR;
