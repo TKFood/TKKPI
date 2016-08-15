@@ -216,6 +216,22 @@ namespace TKKPI
 
                 talbename = "TEMPds7";
             }
+            else if (comboBox1.Text.ToString().Equals("銷貨明細"))
+            {
+                STR.Append(@" SELECT  品號,品名,SUM(銷售量) 銷售量,SUM(銷售金額) 銷售金額");
+                STR.Append(@" FROM (");
+                STR.Append(@" SELECT TH004  AS '品號',TH005  AS '品名',LA011 AS '銷售量',TH013 AS '銷售金額' ");
+                STR.Append(@" FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK)");
+                STR.Append(@" WHERE TH001=LA006 AND TH002=LA007 AND TH003=LA008");
+                STR.AppendFormat(@" AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'",dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
+                STR.Append(@" AND TH001='A233'");
+                STR.Append(@"  ) AS TEMP");
+                STR.Append(@" GROUP BY 品號,品名");
+                STR.Append(@" ORDER BY SUM(銷售金額) DESC");
+                STR.Append(@" ");
+
+                talbename = "TEMPds8";
+            }
         
 
             return STR;
