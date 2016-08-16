@@ -69,6 +69,12 @@
     <Compile Include="frmACTCompany.Designer.cs">
       <DependentUpon>frmACTCompany.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCOPPREDICT.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCOPPREDICT.Designer.cs">
+      <DependentUpon>frmCOPPREDICT.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmECOMMERCE.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmACTCompany.resx">
       <DependentUpon>frmACTCompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCOPPREDICT.resx">
+      <DependentUpon>frmCOPPREDICT.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmECOMMERCE.resx">
       <DependentUpon>frmECOMMERCE.cs</DependentUpon>
