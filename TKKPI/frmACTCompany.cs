@@ -37,15 +37,38 @@ namespace TKKPI
         DataTable dt = new DataTable();
         string tablename = null;
         int rownum = 0;
+        string Dep;
 
         public frmACTCompany()
         {
             InitializeComponent();
             DateTime dt = DateTime.Now.AddMonths(-1);
             dateTimePicker1.Value = dt;
+            comboboxload();
         }
 
         #region FUNCTION
+        public void comboboxload()
+        {
+
+            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+            String Sequel = "SELECT ME001,ME002 FROM [TK].dbo.CMSME WITH (NOLOCK) UNION ALL  SELECT '000000','全部' ORDER BY ME001";
+            adapter = new SqlDataAdapter(Sequel, sqlConn);
+            dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ME001", typeof(string));
+            dt.Columns.Add("ME002", typeof(string));
+            adapter.Fill(dt);
+            comboBox2.DataSource = dt.DefaultView;
+            comboBox2.ValueMember = "ME001";
+            comboBox2.DisplayMember = "ME002";
+            sqlConn.Close();
+
+
+        }
+
         public void Search()
         {
             try
@@ -183,16 +206,35 @@ namespace TKKPI
             }
             else if(comboBox1.Text.ToString().Equals("實際與預算比較費用報表"))
             {
-                STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',MK006   AS '預算'",dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS '實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0) AS '預算累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<'{1}'),0) AS '實際費用累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
-                STR.Append(@"  FROM [TK].dbo.ACTMA WITH (NOLOCK),[TK].dbo.ACTMK WITH (NOLOCK)");
-                STR.Append(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON MK004=ME001");
-                STR.AppendFormat(@"  WHERE MK003=MA001 AND MK002='{0}'  AND MK005='{1}'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
-                STR.Append(@"  AND (MA001 LIKE '5%' OR MA001 LIKE '6%' )");
-                STR.Append(@"  ORDER BY MA001,MK004");
-                STR.Append(@"  ");
+                Dep = comboBox2.SelectedValue.ToString();
+
+                if(Dep.Equals("000000"))
+                {
+                    STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',MK006   AS '預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS '實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0) AS '預算累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<'{1}'),0) AS '實際費用累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
+                    STR.Append(@"  FROM [TK].dbo.ACTMA WITH (NOLOCK),[TK].dbo.ACTMK WITH (NOLOCK)");
+                    STR.Append(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON MK004=ME001");
+                    STR.AppendFormat(@"  WHERE MK003=MA001 AND MK002='{0}'  AND MK005='{1}'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
+                    STR.Append(@"  AND (MA001 LIKE '5%' OR MA001 LIKE '6%' )");
+                    STR.Append(@"  ORDER BY MA001,MK004");
+                    STR.Append(@"  ");
+                }
+                else
+                {
+                    STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',MK006   AS '預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS '實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0) AS '預算累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<'{1}'),0) AS '實際費用累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
+                    STR.Append(@"  FROM [TK].dbo.ACTMA WITH (NOLOCK),[TK].dbo.ACTMK WITH (NOLOCK)");
+                    STR.Append(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON MK004=ME001");
+                    STR.AppendFormat(@"  WHERE MK003=MA001 AND MK002='{0}'  AND MK005='{1}' AND MK004='{2}' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"),Dep);
+                    STR.Append(@"  AND (MA001 LIKE '5%' OR MA001 LIKE '6%' )");
+                    STR.Append(@"  ORDER BY MA001,MK004");
+                    STR.Append(@"  ");
+                }
+               
 
                 tablename = "TEMPds2";
             }
