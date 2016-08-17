@@ -31,11 +31,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -119,20 +119,15 @@
             this.dataGridView1.Size = new System.Drawing.Size(874, 634);
             this.dataGridView1.TabIndex = 32;
             // 
-            // comboBox1
+            // dateTimePicker1
             // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox1.AutoCompleteCustomSource.AddRange(new string[] {
-            "電商每日銷貨金額及預估比較表"});
-            this.tableLayoutPanel1.SetColumnSpan(this.comboBox1, 3);
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "公司整體指標"});
-            this.comboBox1.Location = new System.Drawing.Point(83, 50);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(234, 20);
-            this.comboBox1.TabIndex = 38;
-            this.comboBox1.Text = "公司整體指標";
+            this.dateTimePicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dateTimePicker1.CustomFormat = "yyyy/MM";
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(83, 9);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(74, 22);
+            this.dateTimePicker1.TabIndex = 30;
             // 
             // label3
             // 
@@ -144,24 +139,23 @@
             this.label3.TabIndex = 37;
             this.label3.Text = "查詢";
             // 
-            // dateTimePicker1
+            // comboBox1
             // 
-            this.dateTimePicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.dateTimePicker1.CustomFormat = "yyyy/MM";
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(83, 9);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(74, 22);
-            this.dateTimePicker1.TabIndex = 30;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(403, 40);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(33, 12);
-            this.label1.TabIndex = 33;
-            this.label1.Text = "label1";
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.AutoCompleteCustomSource.AddRange(new string[] {
+            "電商每日銷貨金額及預估比較表"});
+            this.tableLayoutPanel1.SetColumnSpan(this.comboBox1, 3);
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "公司整體指標",
+            "實際與預算比較費用報表",
+            "營業部門-銷貨成本金額及毛利",
+            "每月所有負毛利產品"});
+            this.comboBox1.Location = new System.Drawing.Point(83, 50);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(234, 20);
+            this.comboBox1.TabIndex = 38;
+            this.comboBox1.Text = "公司整體指標";
             // 
             // button1
             // 
@@ -174,6 +168,15 @@
             this.button1.Text = "查詢";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(403, 40);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(33, 12);
+            this.label1.TabIndex = 33;
+            this.label1.Text = "label1";
             // 
             // button2
             // 

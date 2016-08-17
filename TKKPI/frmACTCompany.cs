@@ -35,7 +35,7 @@ namespace TKKPI
         SqlCommand cmd = new SqlCommand();
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
-        string talbename = null;
+        string tablename = null;
         int rownum = 0;
 
         public frmACTCompany()
@@ -65,20 +65,20 @@ namespace TKKPI
 
                     sqlConn.Open();
                     ds.Clear();
-                    adapter.Fill(ds, talbename);
+                    adapter.Fill(ds, tablename);
                     sqlConn.Close();
 
-                    label1.Text = "資料筆數:" + ds.Tables[talbename].Rows.Count.ToString();
+                    label1.Text = "資料筆數:" + ds.Tables[tablename].Rows.Count.ToString();
 
-                    if (ds.Tables[talbename].Rows.Count == 0)
+                    if (ds.Tables[tablename].Rows.Count == 0)
                     {
 
                     }
                     else
                     {
-                        dataGridView1.DataSource = ds.Tables[talbename];
+                        dataGridView1.DataSource = ds.Tables[tablename];
                         dataGridView1.AutoResizeColumns();
-                        rownum = ds.Tables[talbename].Rows.Count - 1;
+                        //rownum = ds.Tables[tablename].Rows.Count - 1;
                         dataGridView1.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
 
                         //dataGridView1.CurrentCell = dataGridView1[0, 2];
@@ -179,13 +179,71 @@ namespace TKKPI
                 STR.Append(@"  ");
 
 
-                talbename = "TEMPds1";
+                tablename = "TEMPds1";
             }
-          
-            
+            else if(comboBox1.Text.ToString().Equals("實際與預算比較費用報表"))
+            {
+                STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',MK006   AS '預算'",dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS '實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0) AS '預算累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<'{1}'),0) AS '實際費用累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
+                STR.Append(@"  FROM [TK].dbo.ACTMA WITH (NOLOCK),[TK].dbo.ACTMK WITH (NOLOCK)");
+                STR.Append(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON MK004=ME001");
+                STR.AppendFormat(@"  WHERE MK003=MA001 AND MK002='{0}'  AND MK005='{1}'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
+                STR.Append(@"  AND (MA001 LIKE '5%' OR MA001 LIKE '6%' )");
+                STR.Append(@"  ORDER BY MA001,MK004");
+                STR.Append(@"  ");
+
+                tablename = "TEMPds2";
+            }
+            else if (comboBox1.Text.ToString().Equals("營業部門-銷貨成本金額及毛利"))
+            {
+                STR.Append(@"  SELECT YM AS '年月',DEP  AS '部門',ME002 AS '部門名稱',SUM(NUM)  AS '數量',SUM(MM)  AS '銷售金額',SUM(COST)  AS '成本'");
+                STR.Append(@"  FROM (");
+                STR.Append(@"  SELECT SUBSTRING(TG002,1,6) AS 'YM',TG005  AS 'DEP',LA011  AS 'NUM',TH013  AS 'MM',LA013  AS 'COST'");
+                STR.Append(@"  FROM [TK].dbo.COPTG WITH (NOLOCK),[TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH(NOLOCK)");
+                STR.AppendFormat(@"  WHERE TG001=TH001 AND TG002=TH002 AND TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND SUBSTRING(TG002,1,6)='{0}'", dateTimePicker1.Value.ToString("yyyyMM"));
+                STR.Append(@"  UNION ALL");
+                STR.Append(@"  SELECT SUBSTRING(TP001,1,6),TP002,LA011,TP021,LA013  ");
+                STR.Append(@"  FROM [TK].dbo.POSTP WITH (NOLOCK) ,[TK].dbo.INVLA WITH (NOLOCK)");
+                STR.AppendFormat(@"  WHERE TP001=LA004 AND TP002=LA006 AND TP004=LA001 AND SUBSTRING(TP001,1,6)='{0}'", dateTimePicker1.Value.ToString("yyyyMM")); 
+                STR.Append(@"  UNION ALL");
+                STR.Append(@"  SELECT  SUBSTRING(TA002,1,6),TA004 ,LA011*-1,0,LA013 *-1");
+                STR.Append(@"  FROM [TK].dbo.INVTA WITH (NOLOCK),[TK].dbo.INVTB WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK)");
+                STR.AppendFormat(@"  WHERE  TA001=TB001 AND TA002=TB002 AND TB001=LA006 AND TB002=LA007 AND TB003=LA008 AND TA001='A114' AND SUBSTRING(TA002,1,6)='{0}'  AND TA004 IN (SELECT MA001 FROM [TK].dbo.WSCMA)", dateTimePicker1.Value.ToString("yyyyMM"));
+                STR.Append(@"  ) AS TEMP");
+                STR.Append(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON ME001=DEP");
+                STR.Append(@"  GROUP BY YM,DEP,ME002");
+                STR.Append(@"  ORDER BY YM,DEP,ME002");
+                STR.Append(@"  ");
+
+                tablename = "TEMPds3";
+            }
+            else if (comboBox1.Text.ToString().Equals("每月所有負毛利產品"))
+            {
+                STR.Append(@"  SELECT YM AS '年月',ID AS '品號',NAME AS '品名',COM AS '規格',SUM(NUM) AS '銷售數量',SUM(MM) AS '銷售金額',SUM(COST) AS '成本',SUM(MM)-SUM(COST) AS '毛利'");
+                STR.Append(@"  FROM (");
+                STR.Append(@"  SELECT SUBSTRING(TG002,1,6) AS 'YM',TH004 AS 'ID',TH005  AS 'NAME',TH006 AS 'COM',LA011  AS 'NUM',TH013  AS 'MM',LA013  AS 'COST'");
+                STR.Append(@"  FROM [TK].dbo.COPTG WITH (NOLOCK),[TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH(NOLOCK)");
+                STR.Append(@"  WHERE TG001=TH001 AND TG002=TH002 AND TH001=LA006 AND TH002=LA007 AND TH003=LA008");
+                STR.AppendFormat(@"  AND SUBSTRING(TG002,1,6)='{0}'", dateTimePicker1.Value.ToString("yyyyMM"));
+                STR.Append(@"  UNION ALL");
+                STR.Append(@"  SELECT SUBSTRING(TP001,1,6),TP004,MB002,MB003,LA011,TP021,LA013 ");
+                STR.Append(@"  FROM [TK].dbo.POSTP WITH (NOLOCK) ,[TK].dbo.INVLA WITH (NOLOCK),[TK].dbo.INVMB WITH (NOLOCK)");
+                STR.Append(@"  WHERE TP004=MB001 AND TP001=LA004 AND TP002=LA006 AND TP004=LA001 ");
+                STR.AppendFormat(@"  AND SUBSTRING(TP001,1,6)='{0}'", dateTimePicker1.Value.ToString("yyyyMM"));
+                STR.Append(@"  ) AS TEMP");
+                STR.Append(@"  WHERE  ID NOT LIKE'2%'AND ID NOT LIKE'3%' AND NAME NOT LIKE '%試吃%'");
+                STR.Append(@" GROUP BY YM,ID,NAME,COM ");
+                STR.Append(@"  HAVING  SUM(MM)>0 AND SUM(MM)-SUM(COST)<=0 ");
+                STR.Append(@"  ORDER BY YM,ID,NAME,COM");
+                STR.Append(@"  ");
+
+                tablename = "TEMPds4";
+            }
 
 
-            return STR;
+                return STR;
         }
 
         public void ExcelExport()
@@ -197,7 +255,7 @@ namespace TKKPI
             ISheet ws;
 
 
-            dt = ds.Tables[talbename];
+            dt = ds.Tables[tablename];
             if (dt.TableName != string.Empty)
             {
                 ws = wb.CreateSheet(dt.TableName);
@@ -215,35 +273,88 @@ namespace TKKPI
 
 
             int j = 0;
-            foreach (DataGridViewRow dr in this.dataGridView1.Rows)
+            if(tablename.Equals("TEMPds1"))
             {
-                ws.CreateRow(j + 1);
-                ws.GetRow(j + 1).CreateCell(0).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[0].ToString());
-                ws.GetRow(j + 1).CreateCell(1).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[1].ToString());
-                ws.GetRow(j + 1).CreateCell(2).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[2].ToString()));
-                ws.GetRow(j + 1).CreateCell(3).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[3].ToString()));
-                ws.GetRow(j + 1).CreateCell(4).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[4].ToString()));
-                ws.GetRow(j + 1).CreateCell(5).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[5].ToString()));
-                ws.GetRow(j + 1).CreateCell(6).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[6].ToString()));
-                ws.GetRow(j + 1).CreateCell(7).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[7].ToString()));
-                ws.GetRow(j + 1).CreateCell(8).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[8].ToString()));
-                ws.GetRow(j + 1).CreateCell(9).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[9].ToString()));
-                ws.GetRow(j + 1).CreateCell(10).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[10].ToString()));
-                ws.GetRow(j + 1).CreateCell(11).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[11].ToString()));
-                ws.GetRow(j + 1).CreateCell(12).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[12].ToString()));
-                ws.GetRow(j + 1).CreateCell(13).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[13].ToString()));
-                ws.GetRow(j + 1).CreateCell(14).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[14].ToString()));
-                ws.GetRow(j + 1).CreateCell(15).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[15].ToString()));
-                ws.GetRow(j + 1).CreateCell(16).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[16].ToString()));
-                ws.GetRow(j + 1).CreateCell(17).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[17].ToString()));
-                ws.GetRow(j + 1).CreateCell(18).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[18].ToString()));
-                ws.GetRow(j + 1).CreateCell(19).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[19].ToString()));
-                ws.GetRow(j + 1).CreateCell(20).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[20].ToString()));
-                ws.GetRow(j + 1).CreateCell(21).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[21].ToString()));
-                
+                foreach (DataGridViewRow dr in this.dataGridView1.Rows)
+                {
+                    ws.CreateRow(j + 1);
+                    ws.GetRow(j + 1).CreateCell(0).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[0].ToString());
+                    ws.GetRow(j + 1).CreateCell(1).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[1].ToString());
+                    ws.GetRow(j + 1).CreateCell(2).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[2].ToString()));
+                    ws.GetRow(j + 1).CreateCell(3).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[3].ToString()));
+                    ws.GetRow(j + 1).CreateCell(4).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[4].ToString()));
+                    ws.GetRow(j + 1).CreateCell(5).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[5].ToString()));
+                    ws.GetRow(j + 1).CreateCell(6).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[6].ToString()));
+                    ws.GetRow(j + 1).CreateCell(7).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[7].ToString()));
+                    ws.GetRow(j + 1).CreateCell(8).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[8].ToString()));
+                    ws.GetRow(j + 1).CreateCell(9).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[9].ToString()));
+                    ws.GetRow(j + 1).CreateCell(10).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[10].ToString()));
+                    ws.GetRow(j + 1).CreateCell(11).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[11].ToString()));
+                    ws.GetRow(j + 1).CreateCell(12).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[12].ToString()));
+                    ws.GetRow(j + 1).CreateCell(13).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[13].ToString()));
+                    ws.GetRow(j + 1).CreateCell(14).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[14].ToString()));
+                    ws.GetRow(j + 1).CreateCell(15).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[15].ToString()));
+                    ws.GetRow(j + 1).CreateCell(16).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[16].ToString()));
+                    ws.GetRow(j + 1).CreateCell(17).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[17].ToString()));
+                    ws.GetRow(j + 1).CreateCell(18).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[18].ToString()));
+                    ws.GetRow(j + 1).CreateCell(19).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[19].ToString()));
+                    ws.GetRow(j + 1).CreateCell(20).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[20].ToString()));
+                    ws.GetRow(j + 1).CreateCell(21).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[21].ToString()));
+                    
+                    j++;
+                }
 
+            }
+            else if (tablename.Equals("TEMPds2"))
+            {
+                foreach (DataGridViewRow dr in this.dataGridView1.Rows)
+                {
+                    ws.CreateRow(j + 1);
+                    ws.GetRow(j + 1).CreateCell(0).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[0].ToString());
+                    ws.GetRow(j + 1).CreateCell(1).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[1].ToString());
+                    ws.GetRow(j + 1).CreateCell(2).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[2].ToString());
+                    ws.GetRow(j + 1).CreateCell(3).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[3].ToString());
+                    ws.GetRow(j + 1).CreateCell(4).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[4].ToString());
+                    ws.GetRow(j + 1).CreateCell(5).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[5].ToString());
+                    ws.GetRow(j + 1).CreateCell(6).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[6].ToString()));
+                    ws.GetRow(j + 1).CreateCell(7).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[7].ToString()));
+                    ws.GetRow(j + 1).CreateCell(8).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[8].ToString()));
+                    ws.GetRow(j + 1).CreateCell(9).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[9].ToString()));
+                   
+                    j++;
+                }
 
-                j++;
+            }
+            else if (tablename.Equals("TEMPds3"))
+            {
+                foreach (DataGridViewRow dr in this.dataGridView1.Rows)
+                {
+                    ws.CreateRow(j + 1);
+                    ws.GetRow(j + 1).CreateCell(0).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[0].ToString());
+                    ws.GetRow(j + 1).CreateCell(1).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[1].ToString());
+                    ws.GetRow(j + 1).CreateCell(2).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[2].ToString());
+                    ws.GetRow(j + 1).CreateCell(3).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[3].ToString()));
+                    ws.GetRow(j + 1).CreateCell(4).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[4].ToString()));
+                    ws.GetRow(j + 1).CreateCell(5).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[5].ToString()));
+
+                    j++;
+                }
+            }
+            else if (tablename.Equals("TEMPds4"))
+            {
+                foreach (DataGridViewRow dr in this.dataGridView1.Rows)
+                {
+                    ws.CreateRow(j + 1);
+                    ws.GetRow(j + 1).CreateCell(0).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[0].ToString());
+                    ws.GetRow(j + 1).CreateCell(1).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[1].ToString());
+                    ws.GetRow(j + 1).CreateCell(2).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[2].ToString());
+                    ws.GetRow(j + 1).CreateCell(3).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[3].ToString());
+                    ws.GetRow(j + 1).CreateCell(4).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[4].ToString()));
+                    ws.GetRow(j + 1).CreateCell(5).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[5].ToString()));
+                    ws.GetRow(j + 1).CreateCell(6).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[6].ToString()));
+                    ws.GetRow(j + 1).CreateCell(7).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[7].ToString()));
+                    j++;
+                }
             }
 
             if (Directory.Exists(@"c:\temp\"))

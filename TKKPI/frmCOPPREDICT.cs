@@ -75,7 +75,7 @@ namespace TKKPI
                     {
                         dataGridView1.DataSource = ds.Tables[talbename];
                         dataGridView1.AutoResizeColumns();
-                        rownum = ds.Tables[talbename].Rows.Count - 1;
+                        //rownum = ds.Tables[talbename].Rows.Count - 1;
                         dataGridView1.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
 
                         //dataGridView1.CurrentCell = dataGridView1[0, 2];
