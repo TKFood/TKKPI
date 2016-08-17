@@ -147,6 +147,25 @@ namespace TKKPI
 
                 tablename = "TEMPds2";
             }
+            else if (comboBox1.Text.ToString().Equals("各月品號銷售表"))
+            {
+                STR.AppendFormat(@"  SELECT  DISTINCT '{0}' AS  '年月',TH004 AS  '品號',MB002 AS  '品名',MB003 AS  '規格'", dt.ToString("yyyyMM"));
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTH  TH WITH (NOLOCK),[TK].dbo.INVLA LA WITH (NOLOCK) WHERE TH.TH001=LA.LA006 AND TH.TH002=LA.LA007 AND TH.TH003=LA.LA008 AND TH.TH004=TEMP.TH004 AND  SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'),0)  AS '銷貨數量'", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(TH.TH037+TH.TH038) FROM [TK].dbo.COPTH  TH WITH (NOLOCK) WHERE  TH.TH004=TEMP.TH004 AND  SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'),0)  AS '銷貨金額'", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTJ  TJ WITH (NOLOCK),[TK].dbo.INVLA LA WITH (NOLOCK) WHERE TJ.TJ001=LA.LA006 AND TJ.TJ002=LA.LA007 AND TJ.TJ003=LA.LA008 AND TJ.TJ004=TEMP.TH004 AND  SUBSTRING(TJ002,1,8)>='{0}' AND SUBSTRING(TJ002,1,8)<='{1}'),0)  AS '銷退數量'", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(TJ.TJ033+TJ.TJ034) FROM [TK].dbo.COPTJ  TJ WITH (NOLOCK) WHERE  TJ.TJ004=TEMP.TH004 AND  SUBSTRING(TJ002,1,8)>='{0}' AND SUBSTRING(TJ002,1,8)<='{1}'),0)  AS '銷退金額'", LastMonthDay, ThisMonthDay); 
+                STR.Append(@"  FROM (");
+                STR.Append(@"  SELECT TH004 FROM [TK].dbo.COPTH WITH (NOLOCK)");
+                STR.AppendFormat(@"  WHERE SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'", LastMonthDay, ThisMonthDay); ;
+                STR.Append(@"  UNION ALL ");
+                STR.Append(@"  SELECT TJ004 FROM [TK].dbo.COPTJ WITH (NOLOCK)");
+                STR.AppendFormat(@"  WHERE SUBSTRING(TJ002,1,8)>='{0}' AND SUBSTRING(TJ002,1,8)<='{1}'", LastMonthDay, ThisMonthDay);
+                STR.Append(@"  ) AS TEMP");
+                STR.Append(@"  LEFT JOIN [TK].dbo.INVMB WITH (NOLOCK) ON MB001=TH004");
+                STR.Append(@"  ");
+
+                tablename = "TEMPds3";
+            }
 
             return STR;
         }
@@ -206,6 +225,24 @@ namespace TKKPI
                     ws.GetRow(j + 1).CreateCell(4).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[4].ToString()));
                     ws.GetRow(j + 1).CreateCell(5).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[5].ToString()));
                     ws.GetRow(j + 1).CreateCell(6).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[6].ToString()));
+
+                    j++;
+                }
+
+            }
+            else if (tablename.Equals("TEMPds3"))
+            {
+                foreach (DataGridViewRow dr in this.dataGridView1.Rows)
+                {
+                    ws.CreateRow(j + 1);
+                    ws.GetRow(j + 1).CreateCell(0).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[0].ToString());
+                    ws.GetRow(j + 1).CreateCell(1).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[1].ToString());
+                    ws.GetRow(j + 1).CreateCell(2).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[2].ToString());
+                    ws.GetRow(j + 1).CreateCell(3).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[3].ToString());
+                    ws.GetRow(j + 1).CreateCell(4).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[4].ToString()));
+                    ws.GetRow(j + 1).CreateCell(5).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[5].ToString()));
+                    ws.GetRow(j + 1).CreateCell(6).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[6].ToString()));
+                    ws.GetRow(j + 1).CreateCell(7).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[7].ToString()));
 
                     j++;
                 }
