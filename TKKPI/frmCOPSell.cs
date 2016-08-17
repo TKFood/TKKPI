@@ -127,7 +127,26 @@ namespace TKKPI
 
                 tablename = "TEMPds1";
             }
-           
+            else if (comboBox1.Text.ToString().Equals("各月客戶銷售表"))
+            {
+                STR.AppendFormat(@"  SELECT DISTINCT '{0}' AS '年月', TG004 AS '客戶代號',TG007  AS '客戶名稱' ", dt.ToString("yyyyMM"));
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTG TG WITH (NOLOCK),[TK].dbo.COPTH TH WITH (NOLOCK) ,[TK].dbo.INVLA LA WITH (NOLOCK)WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND LA.LA006=TH.TH001 AND LA.LA007=TH.TH002 AND LA.LA008=TH.TH003 AND TG.TG004=TEMP.TG004 AND TG.TG007=TEMP.TG007  AND TG.TG006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TG.TG002,1,8)>='{0}' AND SUBSTRING(TG.TG002,1,8)<='{1}'),0) AS '銷貨數量' ", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(TH.TH037+TH.TH038) FROM [TK].dbo.COPTG  TG WITH (NOLOCK),[TK].dbo.COPTH TH WITH (NOLOCK) WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002  AND TG.TG004=TEMP.TG004 AND TG.TG007=TEMP.TG007  AND TG.TG006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TG.TG002,1,8)>='{0}' AND SUBSTRING(TG.TG002,1,8)<='{1}'),0) AS '銷貨金額' ", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTI TI WITH (NOLOCK),[TK].dbo.COPTJ TJ WITH (NOLOCK),[TK].dbo.INVLA LA WITH (NOLOCK) WHERE TI.TI001=TJ.TJ001 AND TI.TI002=TJ.TJ002 AND LA.LA006=TJ.TJ001 AND LA.LA007=TJ.TJ002 AND LA.LA008=TJ.TJ003 AND TI.TI004=TEMP.TG004 AND TI.TI021=TEMP.TG007  AND TI.TI006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TI.TI002,1,8)>='{0}' AND SUBSTRING(TI.TI002,1,8)<='{1}'),0) AS '銷退數量' ", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(TJ.TJ033+TJ.TJ034) FROM [TK].dbo.COPTI TI WITH (NOLOCK),[TK].dbo.COPTJ TJ WITH (NOLOCK)  WHERE TI.TI001=TJ.TJ001 AND TI.TI002=TJ.TJ002  AND TI.TI004=TEMP.TG004 AND TI.TI021=TEMP.TG007  AND TI.TI006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TI.TI002,1,8)>='{0}' AND SUBSTRING(TI.TI002,1,8)<='{1}'),0) AS '銷退金額' ", LastMonthDay, ThisMonthDay); ;
+                STR.Append(@"  FROM (");
+                STR.Append(@"  SELECT TG004 ,TG007 FROM  [TK].dbo.COPTG  WITH (NOLOCK)");
+                STR.AppendFormat(@"  WHERE  SUBSTRING(TG002,1,8)>='{0}' AND SUBSTRING(TG002,1,8)<='{1}'", LastMonthDay, ThisMonthDay); ;
+                STR.Append(@"  AND TG006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN])");
+                STR.Append(@"  UNION ALL");
+                STR.Append(@"  SELECT TI004,TI021 FROM  [TK].dbo.COPTI WITH (NOLOCK)");
+                STR.AppendFormat(@"  WHERE  SUBSTRING(TI002,1,8)>='{0}' AND SUBSTRING(TI002,1,8)<='{1}'", LastMonthDay, ThisMonthDay);
+                STR.Append(@"  AND TI006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) ");
+                STR.Append(@"  ) AS TEMP ");
+                STR.Append(@"  ");
+
+                tablename = "TEMPds2";
+            }
 
             return STR;
         }
@@ -175,7 +194,23 @@ namespace TKKPI
                 }
 
             }
-            
+            else if (tablename.Equals("TEMPds2"))
+            {
+                foreach (DataGridViewRow dr in this.dataGridView1.Rows)
+                {
+                    ws.CreateRow(j + 1);
+                    ws.GetRow(j + 1).CreateCell(0).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[0].ToString());
+                    ws.GetRow(j + 1).CreateCell(1).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[1].ToString());
+                    ws.GetRow(j + 1).CreateCell(2).SetCellValue(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[2].ToString());
+                    ws.GetRow(j + 1).CreateCell(3).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[3].ToString()));
+                    ws.GetRow(j + 1).CreateCell(4).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[4].ToString()));
+                    ws.GetRow(j + 1).CreateCell(5).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[5].ToString()));
+                    ws.GetRow(j + 1).CreateCell(6).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[6].ToString()));
+
+                    j++;
+                }
+
+            }
 
             if (Directory.Exists(@"c:\temp\"))
             {
@@ -187,7 +222,7 @@ namespace TKKPI
                 Directory.CreateDirectory(@"c:\temp\");
             }
             StringBuilder filename = new StringBuilder();
-            filename.AppendFormat(@"c:\temp\業務指標'{0}'.xlsx", DateTime.Now.ToString("yyyyMMdd"));
+            filename.AppendFormat(@"c:\temp\業務指標{0}.xlsx", DateTime.Now.ToString("yyyyMMdd"));
 
             FileStream file = new FileStream(filename.ToString(), FileMode.Create);//產生檔案
             wb.Write(file);

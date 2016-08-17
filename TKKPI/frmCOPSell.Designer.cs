@@ -147,7 +147,9 @@
             this.tableLayoutPanel1.SetColumnSpan(this.comboBox1, 3);
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "業務業績表"});
+            "業務業績表",
+            "各月客戶銷售表",
+            "各月品號銷售表"});
             this.comboBox1.Location = new System.Drawing.Point(83, 50);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(234, 20);
