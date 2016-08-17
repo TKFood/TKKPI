@@ -148,8 +148,12 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "方城市銷售門市",
+            "方城市餐飲門市",
             "老楊五村",
-            "站前四店"});
+            "站前四店",
+            "中山一店",
+            "民國二店",
+            "北港三店"});
             this.comboBox1.Location = new System.Drawing.Point(83, 50);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(234, 20);
