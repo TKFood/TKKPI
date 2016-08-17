@@ -109,76 +109,20 @@ namespace TKKPI
         {
             StringBuilder STR = new StringBuilder();
             DateTime dt = dateTimePicker1.Value;
-            string ThisYear = null;
-            string ThisMonth = null;
-            string LastMonth = null;
-            string LastYear = null;
-            string LastYearMonth = null;
-
-            ThisYear = dateTimePicker1.Value.ToString("yyyy");
-            ThisMonth = dateTimePicker1.Value.ToString("MM");
-            LastMonth = dt.AddMonths(-1).ToString("MM");
-            LastYear = dt.AddYears(-1).ToString("yyyy");
-            LastYearMonth = dt.AddYears(-1).AddMonths(1).ToString("MM");
+            string ThisMonthDay = dt.ToString("yyyyMM") + "25";
+            string LastMonthDay= dt.AddMonths(-1).ToString("yyyyMM") + "26";
 
             if (comboBox1.Text.ToString().Equals("業務業績表"))
             {
-                STR.Append(@"  SELECT 年月,業務,銷貨數量,銷退數量,銷貨金額,銷退金額");
-                STR.Append(@"  FROM (");
-                STR.Append(@"  SELECT ID AS '月份'");
-                STR.AppendFormat(@"  ,'{0}' +ID  AS  '年月'",dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  ,'業務部' AS '業務'");
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('070005','090002','140020','140049','140078')),0) AS INT) AS '銷貨數量' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002  AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('070005','090002','140020','140049','140078')),0) AS INT) AS '銷貨金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.INVLA WHERE TI001=TJ001 AND TI002=TJ002 AND LA006=TJ001 AND LA007=TJ002 AND LA008=TJ003 AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006           IN ('070005','090002','140020','140049','140078')),0) AS INT) AS '銷退數量' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TJ012) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002  AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006           IN ('070005','090002','140020','140049','140078')),0) AS INT) AS '銷退金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  FROM[TKECOMMERCE].dbo.BASEMONTH");
-                STR.Append(@"  UNION ALL ");
-                STR.Append(@"  SELECT ID AS '月份'");
-                STR.AppendFormat(@"  ,'{0}'+ID  AS  '年月'", dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  ,'劉莉琴' AS '業務'");
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('140049')),0) AS INT) AS '銷貨數量' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002  AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('140049')),0) AS INT) AS '銷貨金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.INVLA WHERE TI001=TJ001 AND TI002=TJ002 AND LA006=TJ001 AND LA007=TJ002 AND LA008=TJ003 AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006           IN ('140049')),0) AS INT) AS '銷退數量' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TJ012) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002  AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006  IN ('140049')),0) AS INT) AS '銷退金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  FROM [TKECOMMERCE].dbo.BASEMONTH");
-                STR.Append(@"  UNION ALL");
-                STR.Append(@"  SELECT ID AS '月份'");
-                STR.AppendFormat(@"  ,'{0}'+ID  AS  '年月'", dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  ,'林智祥' AS '業務' ");
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('090002')),0) AS INT) AS '銷貨數量' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002  AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('090002')),0) AS INT) AS '銷貨金額' ", dateTimePicker1.Value.ToString("yyyy")); ;
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.INVLA WHERE TI001=TJ001 AND TI002=TJ002 AND LA006=TJ001 AND LA007=TJ002 AND LA008=TJ003 AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006           IN ('090002')),0) AS INT) AS '銷退數量' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TJ012) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002  AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006  IN ('090002')),0) AS INT) AS '銷退金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  FROM [TKECOMMERCE].dbo.BASEMONTH");
-                STR.Append(@"  UNION ALL ");
-                STR.Append(@"  SELECT ID AS '月份' ");
-                STR.AppendFormat(@"  ,'{0}'+ID  AS  '年月'", dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  ,'陳玟文' AS '業務'");
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('140020')),0) AS INT) AS '銷貨數量' ", dateTimePicker1.Value.ToString("yyyy")); ;
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002  AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('140020')),0) AS INT) AS '銷貨金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.INVLA WHERE TI001=TJ001 AND TI002=TJ002 AND LA006=TJ001 AND LA007=TJ002 AND LA008=TJ003 AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006           IN ('140020')),0) AS INT) AS '銷退數量' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TJ012) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002  AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006  IN ('140020')),0) AS INT) AS '銷退金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  FROM [TKECOMMERCE].dbo.BASEMONTH");
-                STR.Append(@"  UNION ALL ");
-                STR.Append(@"  SELECT ID AS '月份'");
-                STR.AppendFormat(@"  ,'{0}'+ID  AS  '年月'", dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  ,'蔡顏鴻' AS '業務'");
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('140078')),0) AS INT) AS '銷貨數量' ", dateTimePicker1.Value.ToString("yyyy")); ;
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002  AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('140078')),0) AS INT) AS '銷貨金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.INVLA WHERE TI001=TJ001 AND TI002=TJ002 AND LA006=TJ001 AND LA007=TJ002 AND LA008=TJ003 AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006 IN ('140078')),0) AS INT) AS '銷退數量' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TJ012) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002  AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006  IN ('140078')),0) AS INT) AS '銷退金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  FROM [TKECOMMERCE].dbo.BASEMONTH");
-                STR.Append(@"  UNION ALL ");
-                STR.Append(@"  SELECT ID AS '月份'");
-                STR.AppendFormat(@"  ,'{0}'+ID  AS  '年月'", dateTimePicker1.Value.ToString("yyyy")); ;
-                STR.Append(@"  ,'羅家鳳' AS '業務'");
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('070005')),0) AS INT) AS '銷貨數量' ", dateTimePicker1.Value.ToString("yyyy")); ;
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002  AND SUBSTRING(TH002,1,6)='{0}'+ID AND TG006 IN ('070005')),0) AS INT) AS '銷貨金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.INVLA WHERE TI001=TJ001 AND TI002=TJ002 AND LA006=TJ001 AND LA007=TJ002 AND LA008=TJ003 AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006           IN ('070005')),0) AS INT) AS '銷退數量' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TJ012) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002  AND SUBSTRING(TJ002,1,6)='{0}'+ID AND TI006  IN ('070005')),0) AS INT) AS '銷退金額' ", dateTimePicker1.Value.ToString("yyyy"));
-                STR.Append(@"  FROM [TKECOMMERCE].dbo.BASEMONTH");
-                STR.Append(@"  ) AS TEMP ");
+               
+                STR.AppendFormat(@"  SELECT '{0}'  AS  '年月',MV002 ", dt.ToString("yyyyMM"));
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' AND TG006=MV001),0) AS INT) AS '銷貨數量' ",LastMonthDay,ThisMonthDay);
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002  AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'  AND TG006=MV001),0) AS INT) AS '銷貨金額' ", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.INVLA WHERE TI001=TJ001 AND TI002=TJ002 AND LA006=TJ001 AND LA007=TJ002 AND LA008=TJ003 AND SUBSTRING(TJ002,1,8)>='{0}' AND SUBSTRING(TJ002,1,8)<='{1}'  AND TI006=MV001),0) AS INT) AS '銷退數量' ", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TJ012) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002  AND SUBSTRING(TJ002,1,8)>='{0}' AND SUBSTRING(TJ002,1,8)<='{1}' AND TI006=MV001),0) AS INT) AS '銷退金額' ", LastMonthDay, ThisMonthDay); ;
+                STR.Append(@"  FROM [TK].dbo.CMSMV     ");
+                STR.Append(@"  WHERE MV001 IN ('070005','090002','140020','140049','140078')");
+                STR.Append(@"  ORDER BY MV001");
                 STR.Append(@"  ");
 
                 tablename = "TEMPds1";
