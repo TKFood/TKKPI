@@ -56,16 +56,16 @@ namespace TKKPI
 
                 if (!string.IsNullOrEmpty(sbSql.ToString()))
                 {
+                    ds.Tables.Clear();
+
                     connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
                     sqlConn = new SqlConnection(connectionString);
-
-
 
                     adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
                     sqlCmdBuilder = new SqlCommandBuilder(adapter);
 
                     sqlConn.Open();
-                    ds.Clear();
+                   
                     adapter.Fill(ds, tablename);
                     sqlConn.Close();
 
@@ -77,6 +77,7 @@ namespace TKKPI
                     }
                     else
                     {
+                        dataGridView1.Columns.Clear();
                         dataGridView1.DataSource = ds.Tables[tablename];
                         dataGridView1.AutoResizeColumns();
                         //rownum = ds.Tables[tablename].Rows.Count - 1;
@@ -115,7 +116,7 @@ namespace TKKPI
             if (comboBox1.Text.ToString().Equals("業務業績表"))
             {
                
-                STR.AppendFormat(@"  SELECT '{0}'  AS  '年月',MV002 ", dt.ToString("yyyyMM"));
+                STR.AppendFormat(@"  SELECT '{0}'  AS  '年月',MV002  AS '名稱' ", dt.ToString("yyyyMM"));
                 STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' AND TG006=MV001),0) AS INT) AS '銷貨數量' ",LastMonthDay,ThisMonthDay);
                 STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002  AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'  AND TG006=MV001),0) AS INT) AS '銷貨金額' ", LastMonthDay, ThisMonthDay);
                 STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.INVLA WHERE TI001=TJ001 AND TI002=TJ002 AND LA006=TJ001 AND LA007=TJ002 AND LA008=TJ003 AND SUBSTRING(TJ002,1,8)>='{0}' AND SUBSTRING(TJ002,1,8)<='{1}'  AND TI006=MV001),0) AS INT) AS '銷退數量' ", LastMonthDay, ThisMonthDay);
@@ -130,10 +131,10 @@ namespace TKKPI
             else if (comboBox1.Text.ToString().Equals("各月客戶銷售表"))
             {
                 STR.AppendFormat(@"  SELECT DISTINCT '{0}' AS '年月', TG004 AS '客戶代號',TG007  AS '客戶名稱' ", dt.ToString("yyyyMM"));
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTG TG WITH (NOLOCK),[TK].dbo.COPTH TH WITH (NOLOCK) ,[TK].dbo.INVLA LA WITH (NOLOCK)WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND LA.LA006=TH.TH001 AND LA.LA007=TH.TH002 AND LA.LA008=TH.TH003 AND TG.TG004=TEMP.TG004 AND TG.TG007=TEMP.TG007  AND TG.TG006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TG.TG002,1,8)>='{0}' AND SUBSTRING(TG.TG002,1,8)<='{1}'),0) AS '銷貨數量' ", LastMonthDay, ThisMonthDay);
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(TH.TH037+TH.TH038) FROM [TK].dbo.COPTG  TG WITH (NOLOCK),[TK].dbo.COPTH TH WITH (NOLOCK) WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002  AND TG.TG004=TEMP.TG004 AND TG.TG007=TEMP.TG007  AND TG.TG006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TG.TG002,1,8)>='{0}' AND SUBSTRING(TG.TG002,1,8)<='{1}'),0) AS '銷貨金額' ", LastMonthDay, ThisMonthDay);
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTI TI WITH (NOLOCK),[TK].dbo.COPTJ TJ WITH (NOLOCK),[TK].dbo.INVLA LA WITH (NOLOCK) WHERE TI.TI001=TJ.TJ001 AND TI.TI002=TJ.TJ002 AND LA.LA006=TJ.TJ001 AND LA.LA007=TJ.TJ002 AND LA.LA008=TJ.TJ003 AND TI.TI004=TEMP.TG004 AND TI.TI021=TEMP.TG007  AND TI.TI006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TI.TI002,1,8)>='{0}' AND SUBSTRING(TI.TI002,1,8)<='{1}'),0) AS '銷退數量' ", LastMonthDay, ThisMonthDay);
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(TJ.TJ033+TJ.TJ034) FROM [TK].dbo.COPTI TI WITH (NOLOCK),[TK].dbo.COPTJ TJ WITH (NOLOCK)  WHERE TI.TI001=TJ.TJ001 AND TI.TI002=TJ.TJ002  AND TI.TI004=TEMP.TG004 AND TI.TI021=TEMP.TG007  AND TI.TI006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TI.TI002,1,8)>='{0}' AND SUBSTRING(TI.TI002,1,8)<='{1}'),0) AS '銷退金額' ", LastMonthDay, ThisMonthDay); ;
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTG TG WITH (NOLOCK),[TK].dbo.COPTH TH WITH (NOLOCK) ,[TK].dbo.INVLA LA WITH (NOLOCK)WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND LA.LA006=TH.TH001 AND LA.LA007=TH.TH002 AND LA.LA008=TH.TH003 AND TG.TG004=TEMP.TG004 AND TG.TG007=TEMP.TG007  AND TG.TG006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TG.TG002,1,8)>='{0}' AND SUBSTRING(TG.TG002,1,8)<='{1}'),0)  AS DECIMAL(18,2)) AS '銷貨數量' ", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TH.TH037+TH.TH038) FROM [TK].dbo.COPTG  TG WITH (NOLOCK),[TK].dbo.COPTH TH WITH (NOLOCK) WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002  AND TG.TG004=TEMP.TG004 AND TG.TG007=TEMP.TG007  AND TG.TG006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TG.TG002,1,8)>='{0}' AND SUBSTRING(TG.TG002,1,8)<='{1}'),0)  AS DECIMAL(18,2)) AS '銷貨金額' ", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTI TI WITH (NOLOCK),[TK].dbo.COPTJ TJ WITH (NOLOCK),[TK].dbo.INVLA LA WITH (NOLOCK) WHERE TI.TI001=TJ.TJ001 AND TI.TI002=TJ.TJ002 AND LA.LA006=TJ.TJ001 AND LA.LA007=TJ.TJ002 AND LA.LA008=TJ.TJ003 AND TI.TI004=TEMP.TG004 AND TI.TI021=TEMP.TG007  AND TI.TI006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TI.TI002,1,8)>='{0}' AND SUBSTRING(TI.TI002,1,8)<='{1}'),0)  AS DECIMAL(18,2)) AS '銷退數量' ", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TJ.TJ033+TJ.TJ034) FROM [TK].dbo.COPTI TI WITH (NOLOCK),[TK].dbo.COPTJ TJ WITH (NOLOCK)  WHERE TI.TI001=TJ.TJ001 AND TI.TI002=TJ.TJ002  AND TI.TI004=TEMP.TG004 AND TI.TI021=TEMP.TG007  AND TI.TI006 IN (SELECT ID FROM [TKKPI].dbo.[SALESMAN]) AND SUBSTRING(TI.TI002,1,8)>='{0}' AND SUBSTRING(TI.TI002,1,8)<='{1}'),0)   AS DECIMAL(18,2)) AS '銷退金額' ", LastMonthDay, ThisMonthDay); ;
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT TG004 ,TG007 FROM  [TK].dbo.COPTG  WITH (NOLOCK)");
                 STR.AppendFormat(@"  WHERE  SUBSTRING(TG002,1,8)>='{0}' AND SUBSTRING(TG002,1,8)<='{1}'", LastMonthDay, ThisMonthDay); ;
@@ -150,10 +151,10 @@ namespace TKKPI
             else if (comboBox1.Text.ToString().Equals("各月品號銷售表"))
             {
                 STR.AppendFormat(@"  SELECT  DISTINCT '{0}' AS  '年月',TH004 AS  '品號',MB002 AS  '品名',MB003 AS  '規格'", dt.ToString("yyyyMM"));
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTH  TH WITH (NOLOCK),[TK].dbo.INVLA LA WITH (NOLOCK) WHERE TH.TH001=LA.LA006 AND TH.TH002=LA.LA007 AND TH.TH003=LA.LA008 AND TH.TH004=TEMP.TH004 AND  SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'),0)  AS '銷貨數量'", LastMonthDay, ThisMonthDay);
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(TH.TH037+TH.TH038) FROM [TK].dbo.COPTH  TH WITH (NOLOCK) WHERE  TH.TH004=TEMP.TH004 AND  SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'),0)  AS '銷貨金額'", LastMonthDay, ThisMonthDay);
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTJ  TJ WITH (NOLOCK),[TK].dbo.INVLA LA WITH (NOLOCK) WHERE TJ.TJ001=LA.LA006 AND TJ.TJ002=LA.LA007 AND TJ.TJ003=LA.LA008 AND TJ.TJ004=TEMP.TH004 AND  SUBSTRING(TJ002,1,8)>='{0}' AND SUBSTRING(TJ002,1,8)<='{1}'),0)  AS '銷退數量'", LastMonthDay, ThisMonthDay);
-                STR.AppendFormat(@"  ,ISNULL((SELECT SUM(TJ.TJ033+TJ.TJ034) FROM [TK].dbo.COPTJ  TJ WITH (NOLOCK) WHERE  TJ.TJ004=TEMP.TH004 AND  SUBSTRING(TJ002,1,8)>='{0}' AND SUBSTRING(TJ002,1,8)<='{1}'),0)  AS '銷退金額'", LastMonthDay, ThisMonthDay); 
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTH  TH WITH (NOLOCK),[TK].dbo.INVLA LA WITH (NOLOCK) WHERE TH.TH001=LA.LA006 AND TH.TH002=LA.LA007 AND TH.TH003=LA.LA008 AND TH.TH004=TEMP.TH004 AND  SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'),0)  AS DECIMAL(18,2)) AS '銷貨數量'", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TH.TH037+TH.TH038) FROM [TK].dbo.COPTH  TH WITH (NOLOCK) WHERE  TH.TH004=TEMP.TH004 AND  SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'),0)  AS DECIMAL(18,2)) AS '銷貨金額'", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(LA.LA011) FROM [TK].dbo.COPTJ  TJ WITH (NOLOCK),[TK].dbo.INVLA LA WITH (NOLOCK) WHERE TJ.TJ001=LA.LA006 AND TJ.TJ002=LA.LA007 AND TJ.TJ003=LA.LA008 AND TJ.TJ004=TEMP.TH004 AND  SUBSTRING(TJ002,1,8)>='{0}' AND SUBSTRING(TJ002,1,8)<='{1}'),0)  AS DECIMAL(18,2)) AS '銷退數量'", LastMonthDay, ThisMonthDay);
+                STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(TJ.TJ033+TJ.TJ034) FROM [TK].dbo.COPTJ  TJ WITH (NOLOCK) WHERE  TJ.TJ004=TEMP.TH004 AND  SUBSTRING(TJ002,1,8)>='{0}' AND SUBSTRING(TJ002,1,8)<='{1}'),0) AS DECIMAL(18,2)) AS '銷退金額'", LastMonthDay, ThisMonthDay); 
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT TH004 FROM [TK].dbo.COPTH WITH (NOLOCK)");
                 STR.AppendFormat(@"  WHERE SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'", LastMonthDay, ThisMonthDay); ;
