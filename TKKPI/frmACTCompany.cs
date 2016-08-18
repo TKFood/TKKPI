@@ -145,26 +145,26 @@ namespace TKKPI
 
             if (comboBox1.Text.ToString().Equals("公司整體指標"))
             {
-                STR.Append(@"  SELECT 年,月,ROUND(總負債/總資產,2) AS '負債佔資產比率'");
-                STR.Append(@"  ,ROUND(流動資產/流動負債,2) AS '流動比率'");
-                STR.Append(@"  ,ROUND(速動資產/流動負債,2) AS '速動比率'");
-                STR.Append(@"  ,ROUND(本12個月營業收入/((本月期初應收帳款+本月期末應收帳款+本月期初應收票據+本月期末應收票據)/2),2) AS '應收帳款週轉率'");
-                STR.Append(@"  ,CAST (ROUND(365/ROUND(本12個月營業收入/((本月期初應收帳款+本月期末應收帳款+本月期初應收票據+本月期末應收票據)/2),2),2) AS decimal(18,2)) AS '平均收款日數'");
-                STR.Append(@"  ,ROUND(銷貨成本/((期初存貨+期末存貨)/2),2) AS '存貨週轉率'");
-                STR.Append(@"  ,ROUND(銷貨成本/((製成品期初存貨+製成品期末存貨)/2),2) AS '平均製成品週轉率'");
-                STR.Append(@"  ,(CAST (ROUND(365/ROUND(本12個月營業收入/((本月期初應收帳款+本月期末應收帳款+本月期初應收票據+本月期末應收票據)/2),2),2) AS decimal(18,2))+CAST (ROUND(365/ROUND(銷貨成本/((期初存貨+期末存貨)/2),2),2) AS decimal(18,2))) AS '平均銷貨日數'");
-                STR.Append(@"  ,ROUND(銷貨成本/應付帳款餘額,2) AS '應付款項週轉率'");
-                STR.Append(@"  ,CAST (ROUND(365/ROUND(銷貨成本/應付帳款餘額,2),2) AS decimal(18,2)) AS '應付款項週轉天數'");
-                STR.Append(@"  ,CAST (ROUND(365/ROUND(本12個月營業收入/((本月期初應收帳款+本月期末應收帳款+本月期初應收票據+本月期末應收票據)/2),2),2) AS decimal(18,2))-CAST (ROUND(365/ROUND(銷貨成本/應付帳款餘額,2),2) AS decimal(18,2)) AS '應收.付天數'");
-                STR.AppendFormat(@"  ,ROUND((營業收入類/固定資產淨額)/{0}*12,2) AS '固定資產週轉率'",Convert.ToInt16(ThisMonth));
-                STR.AppendFormat(@"  ,ROUND((營業收入類/總資產淨額)/{0}*12,2) AS '總資產週轉率'", Convert.ToInt16(ThisMonth));
-                STR.Append(@"  ,ROUND((當年度本期損利+年利息費用)/總資產淨額,2) AS '資產報酬率'");
-                STR.Append(@"  ,ROUND(當年度本期損利/股東權益,2) AS '權益報酬率(稅後)'");
-                STR.Append(@"  ,ROUND(損益表本期淨利/(股本/10),2) AS '每股盈餘(稅後)'");
-                STR.Append(@"  ,ROUND(當月營業收入類/140,2) AS '每人營業淨額'");
-                STR.Append(@"  ,ROUND((當月損益表本期淨利4+當月損益表本期淨利5+當月損益表本期淨利6)/140,2) AS '每人營業利益'");
-                STR.Append(@"  ,ROUND(總負債/股東權益,2) AS '負債/淨值'");
-                STR.Append(@"  ,ROUND((當月損益表本期淨利4+當月損益表本期淨利5+當月損益表本期淨利6+當月損益表本期淨利7+當期所得稅費用)/利息費用,2) AS '利息保障倍數(稅前)'");
+                STR.Append(@"  SELECT 年,月,CAST (ROUND(總負債/總資產,2) AS DECIMAL(18,2)) AS '負債佔資產比率'  ");
+                STR.Append(@"  ,CAST (ROUND(流動資產/流動負債,2) AS DECIMAL(18,2))  AS '流動比率' ");
+                STR.Append(@"  ,CAST (ROUND(速動資產/流動負債,2) AS DECIMAL(18,2))  AS '速動比率' ");
+                STR.Append(@"  ,CAST (ROUND(本12個月營業收入/((本月期初應收帳款+本月期末應收帳款+本月期初應收票據+本月期末應收票據)/2),2)  AS DECIMAL(18,2)) AS '應收帳款週轉率'  ");
+                STR.Append(@"  ,CAST (ROUND(365/ROUND(本12個月營業收入/((本月期初應收帳款+本月期末應收帳款+本月期初應收票據+本月期末應收票據)/2),2),2) AS decimal(18,2)) AS '平均收款日數'  ");
+                STR.Append(@"  ,CAST (ROUND(銷貨成本/((期初存貨+期末存貨)/2),2) AS DECIMAL(18,2))  AS '存貨週轉率' ");
+                STR.Append(@"  ,CAST (ROUND(銷貨成本/((製成品期初存貨+製成品期末存貨)/2),2) AS DECIMAL(18,2))  AS '平均製成品週轉率'  ");
+                STR.Append(@"  ,CAST (ROUND(365/ROUND(本12個月營業收入/((本月期初應收帳款+本月期末應收帳款+本月期初應收票據+本月期末應收票據)/2),2),2) AS decimal(18,2))+CAST (ROUND(365/ROUND(銷貨成本/((期初存貨+期末存貨)/2),2),2) AS decimal(18,2))   AS '平均銷貨日數' ");
+                STR.Append(@"  ,CAST (ROUND(銷貨成本/應付帳款餘額,2)  AS DECIMAL(18,2)) AS '應付款項週轉率' ");
+                STR.Append(@"  ,CAST (ROUND(365/ROUND(銷貨成本/應付帳款餘額,2),2)   AS DECIMAL(18,2))  AS '應付款項週轉天數' ");
+                STR.Append(@"  ,CAST (ROUND(365/ROUND(本12個月營業收入/((本月期初應收帳款+本月期末應收帳款+本月期初應收票據+本月期末應收票據)/2),2),2) AS decimal(18,2))-CAST (ROUND(365/ROUND(銷貨成本/應付帳款餘額,2),2) AS decimal(18,2)) AS '應收.付天數' ");
+                STR.AppendFormat(@"  ,CAST (ROUND((營業收入類/固定資產淨額)/7*12,2)  AS DECIMAL(18,2)) AS '固定資產週轉率' ",Convert.ToInt16(ThisMonth));
+                STR.AppendFormat(@"  ,CAST (ROUND((營業收入類/總資產淨額)/7*12,2) AS DECIMAL(18,2))  AS '總資產週轉率'", Convert.ToInt16(ThisMonth));
+                STR.Append(@"  ,CAST (ROUND((當年度本期損利+年利息費用)/總資產淨額,2) AS DECIMAL(18,2))  AS '資產報酬率' ");
+                STR.Append(@"  ,CAST (ROUND(當年度本期損利/股東權益,2) AS DECIMAL(18,2))  AS '權益報酬率(稅後)' ");
+                STR.Append(@"  ,CAST (ROUND(損益表本期淨利/(股本/10),2) AS DECIMAL(18,2))  AS '每股盈餘(稅後)' ");
+                STR.Append(@"  ,CAST (ROUND(當月營業收入類/140,2)  AS DECIMAL(18,2)) AS '每人營業淨額'  ");
+                STR.Append(@"  ,CAST (ROUND((當月損益表本期淨利4+當月損益表本期淨利5+當月損益表本期淨利6)/140,2) AS DECIMAL(18,2))  AS '每人營業利益'  ");
+                STR.Append(@"  ,CAST (ROUND(總負債/股東權益,2) AS DECIMAL(18,2))  AS '負債/淨值'  ");
+                STR.Append(@"  ,CAST (ROUND((當月損益表本期淨利4+當月損益表本期淨利5+當月損益表本期淨利6+當月損益表本期淨利7+當期所得稅費用)/利息費用,2)  AS DECIMAL(18,2)) AS '利息保障倍數(稅前)' ");
                 STR.Append(@"  FROM (");
                 STR.AppendFormat(@"  SELECT '{0}' AS '年','{1}' AS '月'",ThisYear,ThisMonth);
                 STR.AppendFormat(@"  ,(Select SUM(MB004)-SUM(MB005) From [TK].dbo.ACTMB Where MB001 LIKE '1%' and MB002='{0}' and MB003<='{1}'  AND MB001 IN (SELECT MA001 FROM [TK].dbo.ACTMA WHERE (MA008='2' OR MA008='3'))) AS '總資產'", ThisYear, ThisMonth);
@@ -210,10 +210,10 @@ namespace TKKPI
 
                 if(Dep.Equals("000000"))
                 {
-                    STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',MK006   AS '預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
-                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS '實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
-                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0) AS '預算累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
-                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<'{1}'),0) AS '實際費用累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
+                    STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',CAST( MK006 AS DECIMAL(18,2))   AS '預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST( ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS DECIMAL(18,2)) AS '實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST( ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0) AS DECIMAL(18,2)) AS '預算累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST( ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<'{1}'),0) AS DECIMAL(18,2)) AS '實際費用累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
                     STR.Append(@"  FROM [TK].dbo.ACTMA WITH (NOLOCK),[TK].dbo.ACTMK WITH (NOLOCK)");
                     STR.Append(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON MK004=ME001");
                     STR.AppendFormat(@"  WHERE MK003=MA001 AND MK002='{0}'  AND MK005='{1}'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
@@ -223,10 +223,10 @@ namespace TKKPI
                 }
                 else
                 {
-                    STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',MK006   AS '預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
-                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS '實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
-                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0) AS '預算累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
-                    STR.AppendFormat(@"  ,ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<'{1}'),0) AS '實際費用累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
+                    STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',CAST( MK006   AS DECIMAL(18,2)) AS '預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0)  AS DECIMAL(18,2)) AS '實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0)   AS DECIMAL(18,2)) AS '預算累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<'{1}'),0)   AS DECIMAL(18,2))AS '實際費用累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
                     STR.Append(@"  FROM [TK].dbo.ACTMA WITH (NOLOCK),[TK].dbo.ACTMK WITH (NOLOCK)");
                     STR.Append(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON MK004=ME001");
                     STR.AppendFormat(@"  WHERE MK003=MA001 AND MK002='{0}'  AND MK005='{1}' AND MK004='{2}' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"),Dep);
@@ -240,7 +240,7 @@ namespace TKKPI
             }
             else if (comboBox1.Text.ToString().Equals("營業部門-銷貨成本金額及毛利"))
             {
-                STR.Append(@"  SELECT YM AS '年月',DEP  AS '部門',ME002 AS '部門名稱',SUM(NUM)  AS '數量',SUM(MM)  AS '銷售金額',SUM(COST)  AS '成本'");
+                STR.Append(@"  SELECT YM AS '年月',DEP  AS '部門',ME002 AS '部門名稱',CAST(SUM(NUM) AS DECIMAL(18,2))  AS '數量',CAST(SUM(MM)  AS DECIMAL(18,2)) AS '銷售金額',CAST(SUM(COST)  AS DECIMAL(18,2)) AS '成本'");
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT SUBSTRING(TG002,1,6) AS 'YM',TG005  AS 'DEP',LA011  AS 'NUM',TH013  AS 'MM',LA013  AS 'COST'");
                 STR.Append(@"  FROM [TK].dbo.COPTG WITH (NOLOCK),[TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH(NOLOCK)");
@@ -263,7 +263,7 @@ namespace TKKPI
             }
             else if (comboBox1.Text.ToString().Equals("每月所有負毛利產品"))
             {
-                STR.Append(@"  SELECT YM AS '年月',ID AS '品號',NAME AS '品名',COM AS '規格',SUM(NUM) AS '銷售數量',SUM(MM) AS '銷售金額',SUM(COST) AS '成本',SUM(MM)-SUM(COST) AS '毛利'");
+                STR.Append(@"  SELECT YM AS '年月',ID AS '品號',NAME AS '品名',COM AS '規格',CAST(SUM(NUM)  AS DECIMAL(18,2)) AS '銷售數量',CAST(SUM(MM)   AS DECIMAL(18,2)) AS '銷售金額',CAST(SUM(COST)  AS DECIMAL(18,2)) AS '成本',CAST( SUM(MM)-SUM(COST)   AS DECIMAL(18,2)) AS '毛利'");
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT SUBSTRING(TG002,1,6) AS 'YM',TH004 AS 'ID',TH005  AS 'NAME',TH006 AS 'COM',LA011  AS 'NUM',TH013  AS 'MM',LA013  AS 'COST'");
                 STR.Append(@"  FROM [TK].dbo.COPTG WITH (NOLOCK),[TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH(NOLOCK)");
