@@ -111,7 +111,7 @@ namespace TKKPI
                 STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTH WITH (NOLOCK) WHERE TH020='Y' AND TH001='A233' AND SUBSTRING(TH002,1,6)=CONVERT(varchar(6),'{0}',112) AND   SUBSTRING(TH002,1,8)<=CONVERT(varchar(6),'{0}',112)+ID),0) AS INT)AS '累積出貨金額'", Queryday);
                 STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(PREOrderNum)  FROM [TKECOMMERCE].[dbo].[ZTKECOMMERCEFrmMPRECOPTC] WHERE YEARMONTH=CONVERT(varchar(6),'{0}',112))/Day(dateadd(dd,-1,DATEADD(mm, DATEDIFF(m,0,'{0}')+1, 0)))*ID,0) AS INT)AS '預計出貨量'", Queryday);
                 STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(PREOrderNum*MB047)  FROM [TKECOMMERCE].[dbo].[ZTKECOMMERCEFrmMPRECOPTC],[TK].dbo.[INVMB]  WHERE  INVMB.MB001=ZTKECOMMERCEFrmMPRECOPTC.MB001 AND  YEARMONTH=CONVERT(varchar(6),'{0}',112))/Day(dateadd(dd,-1,DATEADD(mm, DATEDIFF(m,0,'{0}')+1, 0)))*ID,0)AS INT) AS '預計出貨金額'", Queryday);
-                STR.AppendFormat(@" ,ROUND((ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTH WITH (NOLOCK) WHERE TH020='Y' AND TH001='A233' AND SUBSTRING(TH002,1,6)=CONVERT(varchar(6),'{0}',112) AND   SUBSTRING(TH002,1,8)<=CONVERT(varchar(6),'{0}',112)+ID),0))/(ISNULL((SELECT SUM(PREOrderNum*MB047)  FROM [TKECOMMERCE].[dbo].[ZTKECOMMERCEFrmMPRECOPTC],[TK].dbo.[INVMB]  WHERE  INVMB.MB001=ZTKECOMMERCEFrmMPRECOPTC.MB001 AND  YEARMONTH=CONVERT(varchar(6),'{0}',112))/Day(dateadd(dd,-1,DATEADD(mm, DATEDIFF(m,0,'{0}')+1, 0)))*ID,0))*100,2) AS '完成率'", Queryday);
+                STR.AppendFormat(@" ,CAST (ROUND((ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTH WITH (NOLOCK) WHERE TH020='Y' AND TH001='A233' AND SUBSTRING(TH002,1,6)=CONVERT(varchar(6),'{0}',112) AND   SUBSTRING(TH002,1,8)<=CONVERT(varchar(6),'{0}',112)+ID),0))/(ISNULL((SELECT SUM(PREOrderNum*MB047)  FROM [TKECOMMERCE].[dbo].[ZTKECOMMERCEFrmMPRECOPTC],[TK].dbo.[INVMB]  WHERE  INVMB.MB001=ZTKECOMMERCEFrmMPRECOPTC.MB001 AND  YEARMONTH=CONVERT(varchar(6),'{0}',112))/Day(dateadd(dd,-1,DATEADD(mm, DATEDIFF(m,0,'{0}')+1, 0)))*ID,0))*100,2)  AS DECIMAL(18,2)) AS '完成率'", Queryday);
                 STR.Append(@" FROM [TKECOMMERCE].dbo.BASEDAY");
                 STR.AppendFormat(@" WHERE ID<=DAY(DATEADD(mm,  1, DATEADD(dd, -1, DATEADD(mm, DATEDIFF(mm,0,'{0}'), 0))))", Queryday);
 
@@ -148,7 +148,7 @@ namespace TKKPI
             }
             else if (comboBox1.Text.ToString().Equals("今年電商成長率"))
             {
-                STR.Append(@" SELECT 月份,今年,今年出貨量,今年退貨量,(今年出貨量-今年退貨量) AS '今年實出量',今年出貨金額,今年退貨金額,(今年出貨金額-今年退貨金額) AS '今年實出金額',去年,去年出貨量,去年退貨量,(去年出貨量-去年退貨量) AS '去年實出量',去年出貨金額,去年退貨金額,(去年出貨金額-去年退貨金額) AS '去年實出金額'");
+                STR.Append(@" SELECT 月份,今年,CAST(今年出貨量 AS DECIMAL(18,2)) AS '今年出貨量'  ,CAST(今年退貨量 AS DECIMAL(18,2))  AS '今年退貨量',CAST((今年出貨量-今年退貨量) AS DECIMAL(18,2)) AS '今年實出量'  ,CAST(今年出貨金額 AS DECIMAL(18,2)) AS '今年出貨金額',CAST(今年退貨金額 AS DECIMAL(18,2)) AS '今年退貨金額',CAST((今年出貨金額-今年退貨金額) AS DECIMAL(18,2))AS '今年實出金額'  ,去年,CAST(去年出貨量 AS DECIMAL(18,2)) AS '去年出貨量',CAST(去年退貨量 AS DECIMAL(18,2)) AS '去年退貨量',CAST((去年出貨量-去年退貨量) AS DECIMAL(18,2)) AS '去年實出量'  ,CAST(去年出貨金額 AS DECIMAL(18,2))  AS '去年出貨金額',CAST(去年退貨金額 AS DECIMAL(18,2)) AS '去年退貨金額'  ,CAST((去年出貨金額-去年退貨金額) AS DECIMAL(18,2))  AS '去年實出金額' ");
                 STR.Append(@" FROM (");
                 STR.Append(@" SELECT ID AS '月份'");
                 STR.Append(@" ,CAST(YEAR(GETDATE()) AS NVARCHAR)+ID  AS  '今年'");
@@ -169,7 +169,7 @@ namespace TKKPI
             else if(comboBox1.Text.ToString().Equals("今年電商累積銷貨"))
             {
         
-                STR.Append(@" SELECT 月份,今年,今年累積出貨量,今年累積退貨量,(今年累積出貨量-今年累積退貨量) AS '今年實出貨量',(今年累積出貨金額-今年累積退貨金額) AS '今年實出金額',今年累積退貨金額,去年,去年累積出貨量,去年累積退貨量,(去年累積出貨量-去年累積退貨量) AS '去年實出貨量',去年累積出貨金額,去年累積退貨金額,(去年累積出貨金額-去年累積退貨金額) AS '去年實出金額'");
+                STR.Append(@" SELECT 月份,今年,CAST (今年累積出貨量 AS DECIMAL(18,2)) AS '今年累積出貨量',CAST (今年累積退貨量 AS DECIMAL(18,2)) AS '今年累積退貨量',CAST ((今年累積出貨量-今年累積退貨量) AS DECIMAL(18,2)) AS '今年實出貨量',CAST (今年累積出貨金額 AS DECIMAL(18,2))  AS '今年累積出貨金額',CAST (今年累積退貨金額 AS DECIMAL(18,2))  AS '今年累積退貨金額',CAST ((今年累積出貨金額-今年累積退貨金額) AS DECIMAL(18,2)) AS '今年實出金額',去年,CAST (去年累積出貨量 AS DECIMAL(18,2))  AS '去年累積出貨量',CAST (去年累積退貨量 AS DECIMAL(18,2)) AS '去年累積退貨量',CAST ((去年累積出貨量-去年累積退貨量) AS DECIMAL(18,2)) AS '去年實出貨量',去年,CAST(去年累積出貨金額 AS DECIMAL(18,2)) AS '去年累積出貨金額',CAST (去年累積退貨金額 AS DECIMAL(18,2)) AS '去年累積退貨金額',CAST ((去年累積出貨金額-去年累積退貨金額) AS DECIMAL(18,2)) AS '去年實出金額' ");
                 STR.Append(@" FROM (");
                 STR.Append(@" SELECT ID AS '月份'");
                 STR.Append(@" ,CAST(YEAR(GETDATE()) AS NVARCHAR)+ID  AS  '今年'");
@@ -192,7 +192,7 @@ namespace TKKPI
                 STR.Append(@" SELECT [CALLRECORD].[TypeID] AS TypeID,[BASETYPE].[TypeName] AS '名稱',COUNT([CALLRECORD].[TypeID]) AS '次數'");
                 STR.Append(@" FROM [TKCUSTOMERSERVICE].[dbo].[CALLRECORD]");
                 STR.Append(@" LEFT JOIN [TKCUSTOMERSERVICE].[dbo].[BASETYPE] ON[CALLRECORD].[TypeID]=[BASETYPE].[TypeID]");
-                STR.Append(@" WHERE SUBSTRING(CallDate,1,6)=CONVERT(varchar(6),GETDATE(),112)");
+                STR.AppendFormat(@" WHERE SUBSTRING(CallDate,1,6)='{0}'",dateTimePicker1.Value.ToString("yyyyMM"));
                 STR.Append(@" GROUP BY [CALLRECORD].[TypeID],[BASETYPE].[TypeName]");
                 STR.Append(@" ORDER BY COUNT([CALLRECORD].[TypeID]) DESC");
                 STR.Append(@" ");
@@ -201,7 +201,7 @@ namespace TKKPI
             }
             else if(comboBox1.Text.ToString().Equals("本月銷貨毛利"))
             {
-                STR.Append(@" SELECT   品號,MB002 AS '品名',SUM(銷售數量) AS 銷售數量,SUM(銷售金額) AS 銷售金額,ISNULL(SUM(成本),0) AS '成本',(SUM(銷售金額)-ISNULL(SUM(成本),0)) AS '毛利'");
+                STR.Append(@" SELECT   品號,MB002 AS '品名',CAST (SUM(銷售數量) AS DECIMAL(18,2)) AS 銷售數量,CAST (SUM(銷售金額) AS DECIMAL(18,2)) AS 銷售金額,CAST (ISNULL(SUM(成本),0) AS DECIMAL(18,2)) AS '成本',CAST ((SUM(銷售金額)-ISNULL(SUM(成本),0)) AS DECIMAL(18,2)) AS '毛利'");
                 STR.Append(@" FROM (");
                 STR.Append(@" SELECT SUBSTRING(TH002,1,6) AS 'YM',TH004 AS '品號',LA011  AS '銷售數量',TH013 AS '銷售金額',LA013 AS '成本'");
                 STR.Append(@" FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK)");
@@ -218,7 +218,7 @@ namespace TKKPI
             }
             else if (comboBox1.Text.ToString().Equals("銷貨明細"))
             {
-                STR.Append(@" SELECT  品號,品名,SUM(銷售量) 銷售量,SUM(銷售金額) 銷售金額");
+                STR.Append(@" SELECT  品號,品名,CAST(SUM(銷售量) AS DECIMAL(18,2)) AS 銷售量,CAST(SUM(銷售金額) AS DECIMAL(18,2)) AS 銷售金額");
                 STR.Append(@" FROM (");
                 STR.Append(@" SELECT TH004  AS '品號',TH005  AS '品名',LA011 AS '銷售量',TH013 AS '銷售金額' ");
                 STR.Append(@" FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK)");
