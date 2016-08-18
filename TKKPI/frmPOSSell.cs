@@ -123,7 +123,7 @@ namespace TKKPI
             {
 
                 STR.Append(@"  SELECT '方城市銷售門市' AS 門市,row_number() over(order by SUM(NUM) desc) AS '排名'");
-                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',SUM(TOTALCOST) AS '製造成本',SUM(EARNMONEY) AS '毛利'");
+                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',CAST(SUM(TOTALCOST) AS DECIMAL(18,2)) AS '製造成本',CAST(SUM(EARNMONEY) AS DECIMAL(18,2)) AS '毛利'");
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT SUBSTRING(TP001,1,6) AS '年月', TP004 TH004,MB002 TH005,MB003,MB004 ,TP008  NUM,TP021 MM,1 MD004,ISNULL((SELECT AVG(LB010) FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008  AS TOTALCOST,TP021-(ISNULL((SELECT LB010 FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008          )  AS EARNMONEY");
                 STR.Append(@"  FROM [TK].dbo.POSTP WITH (NOLOCK)");
@@ -141,7 +141,7 @@ namespace TKKPI
             {
 
                 STR.Append(@"  SELECT '方城市餐飲門市' AS 門市,row_number() over(order by SUM(NUM) desc) AS '排名'");
-                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',SUM(TOTALCOST) AS '製造成本',SUM(EARNMONEY) AS '毛利'");
+                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',CAST(SUM(TOTALCOST) AS DECIMAL(18,2)) AS '製造成本',CAST(SUM(EARNMONEY) AS DECIMAL(18,2)) AS '毛利'");
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT SUBSTRING(TP001,1,6) AS '年月', TP004 TH004,MB002 TH005,MB003,MB004 ,TP008  NUM,TP021 MM,1 MD004,ISNULL((SELECT AVG(LB010) FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008  AS TOTALCOST,TP021-(ISNULL((SELECT LB010 FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008          )  AS EARNMONEY");
                 STR.Append(@"  FROM [TK].dbo.POSTP WITH (NOLOCK)");
@@ -159,7 +159,7 @@ namespace TKKPI
             {
 
                 STR.Append(@"  SELECT '老楊五村' AS 門市,row_number() over(order by SUM(NUM) desc) AS '排名'");
-                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',SUM(TOTALCOST) AS '製造成本',SUM(EARNMONEY) AS '毛利'");
+                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',CAST(SUM(TOTALCOST)AS DECIMAL(18,2))  AS '製造成本',CAST(SUM(EARNMONEY) AS DECIMAL(18,2)) AS '毛利'");
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT SUBSTRING(TP001,1,6) AS '年月', TP004 TH004,MB002 TH005,MB003,MB004 ,TP008  NUM,TP021 MM,1 MD004,ISNULL((SELECT AVG(LB010) FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008  AS TOTALCOST,TP021-(ISNULL((SELECT LB010 FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008          )  AS EARNMONEY");
                 STR.Append(@"  FROM [TK].dbo.POSTP WITH (NOLOCK)");
@@ -177,7 +177,7 @@ namespace TKKPI
             {
 
                 STR.Append(@"  SELECT '站前四店' AS 門市,row_number() over(order by SUM(NUM) desc) AS '排名'");
-                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',SUM(TOTALCOST) AS '製造成本',SUM(EARNMONEY) AS '毛利'");
+                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',CAST(SUM(TOTALCOST) AS DECIMAL(18,2)) AS '製造成本',CAST(SUM(EARNMONEY) AS DECIMAL(18,2))  AS '毛利'");
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT SUBSTRING(TP001,1,6) AS '年月', TP004 TH004,MB002 TH005,MB003,MB004 ,TP008  NUM,TP021 MM,1 MD004,ISNULL((SELECT AVG(LB010) FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008  AS TOTALCOST,TP021-(ISNULL((SELECT LB010 FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008          )  AS EARNMONEY");
                 STR.Append(@"  FROM [TK].dbo.POSTP WITH (NOLOCK)");
@@ -195,7 +195,7 @@ namespace TKKPI
             {
 
                 STR.Append(@"  SELECT '中山一店' AS 門市,row_number() over(order by SUM(NUM) desc) AS '排名'");
-                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',SUM(TOTALCOST) AS '製造成本',SUM(EARNMONEY) AS '毛利'");
+                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',CAST(SUM(TOTALCOST) AS DECIMAL(18,2)) AS '製造成本',CAST(SUM(EARNMONEY) AS DECIMAL(18,2)) AS '毛利'");
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT SUBSTRING(TP001,1,6) AS '年月', TP004 TH004,MB002 TH005,MB003,MB004 ,TP008  NUM,TP021 MM,1 MD004,ISNULL((SELECT AVG(LB010) FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008  AS TOTALCOST,TP021-(ISNULL((SELECT LB010 FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008          )  AS EARNMONEY");
                 STR.Append(@"  FROM [TK].dbo.POSTP WITH (NOLOCK)");
@@ -213,7 +213,7 @@ namespace TKKPI
             {
 
                 STR.Append(@"  SELECT '民國二店' AS 門市,row_number() over(order by SUM(NUM) desc) AS '排名'");
-                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',SUM(TOTALCOST) AS '製造成本',SUM(EARNMONEY) AS '毛利'");
+                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',CAST(SUM(TOTALCOST) AS DECIMAL(18,2)) AS '製造成本',CAST(SUM(EARNMONEY) AS DECIMAL(18,2)) AS '毛利'");
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT SUBSTRING(TP001,1,6) AS '年月', TP004 TH004,MB002 TH005,MB003,MB004 ,TP008  NUM,TP021 MM,1 MD004,ISNULL((SELECT AVG(LB010) FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008  AS TOTALCOST,TP021-(ISNULL((SELECT LB010 FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008          )  AS EARNMONEY");
                 STR.Append(@"  FROM [TK].dbo.POSTP WITH (NOLOCK)");
@@ -231,7 +231,7 @@ namespace TKKPI
             {
 
                 STR.Append(@"  SELECT '北港三店' AS 門市,row_number() over(order by SUM(NUM) desc) AS '排名'");
-                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',SUM(TOTALCOST) AS '製造成本',SUM(EARNMONEY) AS '毛利'");
+                STR.Append(@"  , 年月,TH004  AS '品號',TH005 AS '品名',MB003 AS '規格',MB004 AS '單位',CAST(SUM(NUM) AS INT) AS '銷售數量',CAST(SUM(MM)AS INT)  AS '銷售金額(含稅)',CAST(SUM(TOTALCOST) AS DECIMAL(18,2)) AS '製造成本',CAST(SUM(EARNMONEY)  AS DECIMAL(18,2)) AS '毛利'");
                 STR.Append(@"  FROM (");
                 STR.Append(@"  SELECT SUBSTRING(TP001,1,6) AS '年月', TP004 TH004,MB002 TH005,MB003,MB004 ,TP008  NUM,TP021 MM,1 MD004,ISNULL((SELECT AVG(LB010) FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008  AS TOTALCOST,TP021-(ISNULL((SELECT LB010 FROM [TK].dbo.INVLB WITH (NOLOCK) WHERE LB001=TP004 AND LB002=SUBSTRING(TP001,1,6)),0)*TP008          )  AS EARNMONEY");
                 STR.Append(@"  FROM [TK].dbo.POSTP WITH (NOLOCK)");
