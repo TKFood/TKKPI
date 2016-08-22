@@ -147,7 +147,8 @@
             this.tableLayoutPanel1.SetColumnSpan(this.comboBox1, 3);
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "預估訂單"});
+            "預估訂單",
+            "正式訂單-國內及國外"});
             this.comboBox1.Location = new System.Drawing.Point(83, 50);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(234, 20);
