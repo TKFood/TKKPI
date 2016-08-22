@@ -121,7 +121,7 @@ namespace TKKPI
             {
                 STR.Append(@"  SELECT SUBSTRING(TD002,1,6) AS '年月',TD004 AS '品號',TD005 AS '品名',TD006 AS '規格',CAST(SUM(TD008) AS DECIMAL(18,2))  AS '數量',TD010  AS '單位'");
                 STR.Append(@"  FROM [TK].dbo.COPTD WITH (NOLOCK)");
-                STR.AppendFormat(@"  WHERE TD001='A223'  AND SUBSTRING(TD002,1,6)='{0}' ",dateTimePicker1.Value.ToString("yyyyMM"));
+                STR.AppendFormat(@"  WHERE (TD001='A221' OR TD001='A222' OR TD001='A223' ) AND SUBSTRING(TD002,1,6)='{0}' ", dateTimePicker1.Value.ToString("yyyyMM"));
                 STR.Append(@"  GROUP BY SUBSTRING(TD002,1,6),TD004,TD005,TD006 ,TD010  ");
                 STR.Append(@"  ORDER BY TD004");
                 STR.Append(@"  ");
