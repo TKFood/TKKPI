@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Threading;
 
 namespace TKKPI
 {
@@ -236,12 +237,30 @@ namespace TKKPI
 
             return STR;
         }
+        private void showwaitfrm()
+        {
+            try
+            {
+                PleaseWait objPleaseWait = new PleaseWait();
+                objPleaseWait.ShowDialog();
+            }
+           catch
+            {
+
+            }
+        }
         #endregion
 
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
+            Thread TD;
+
+            TD = new Thread(showwaitfrm);
+            TD.Start();
+            Thread.Sleep(2000);   //此行可以不需要，主要用於等待主窗體填充數據
             Search();
+            TD.Abort(); //主窗體加載完成數據後，線程結束，關閉等待窗體。
         }
 
         #endregion
