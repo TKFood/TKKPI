@@ -166,7 +166,7 @@ namespace TKKPI
             }
 
         }
-        public void Searchyear()
+        public void SearchNOWyear()
         {
             try
             {
@@ -245,6 +245,68 @@ namespace TKKPI
             }
 
         }
+        public void Searchyear()
+        {
+            try
+            {
+                talbename = "TEMP3";
+                DataSet ds = new DataSet();
+
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSql.AppendFormat(" SELECT ID,NN+NN1 AS '數量',MM+MM1 AS'金額'");
+                sbSql.AppendFormat(" FROM (");
+                sbSql.AppendFormat(" SELECT [BASEMONTH].ID");
+                sbSql.AppendFormat(" ,ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTH  WITH (NOLOCK) LEFT JOIN [TK].dbo.INVLA  WITH (NOLOCK) ON LA006=TH001 AND LA007=TH002 AND LA008=TH003 WHERE TH002 LIKE '{0}'+[BASEMONTH].ID+'%'AND TH004 IN ( SELECT [MB001] FROM [TKKPI].[dbo].[MARKETMONTHSET] WHERE [YEARMONTH]='{1}')  AND TH020='Y' ),0) AS NN",dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" ,ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTH  WITH (NOLOCK) LEFT JOIN [TK].dbo.INVLA  WITH (NOLOCK) ON LA006=TH001 AND LA007=TH002 AND LA008=TH003 WHERE TH002 LIKE '{0}'+[BASEMONTH].ID+'%'AND TH004 IN ( SELECT [MB001] FROM [TKKPI].[dbo].[MARKETMONTHSET] WHERE [YEARMONTH]='{1}')  AND TH020='Y' ),0) AS MM",dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" ,ISNULL((SELECT SUM(TB019) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB001 LIKE '{0}'+[BASEMONTH].ID+'%' AND TB010 IN ( SELECT [MB001] FROM [TKKPI].[dbo].[MARKETMONTHSET] WHERE [YEARMONTH]='{1}')),0 ) AS NN1 ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" ,ISNULL((SELECT SUM(TB033) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB001 LIKE '{0}'+[BASEMONTH].ID+'%' AND TB010 IN ( SELECT [MB001] FROM [TKKPI].[dbo].[MARKETMONTHSET] WHERE [YEARMONTH]='{1}')),0 ) AS MM1", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" FROM [TKKPI].dbo.[BASEMONTH] ");
+                sbSql.AppendFormat(" ) AS TEMP ");
+                sbSql.AppendFormat(" ");
+                //sbSql.AppendFormat(" ", dateTimePicker1.Value.ToString("yyyyMM"));
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, talbename);
+                sqlConn.Close();
+
+                label1.Text = "資料筆數:" + ds.Tables[talbename].Rows.Count.ToString();
+
+                if (ds.Tables[talbename].Rows.Count == 0)
+                {
+
+                }
+                else
+                {
+                    dataGridView4.DataSource = ds.Tables[talbename];
+                    dataGridView4.AutoResizeColumns();
+                    //rownum = ds.Tables[talbename].Rows.Count - 1;
+                    dataGridView4.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
+
+                    //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+                }
+
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
         private void showwaitfrm()
         {
             try
@@ -276,6 +338,7 @@ namespace TKKPI
             Thread.Sleep(2000);   //此行可以不需要，主要用於等待主窗體填充數據
             Search();
             SearchLastyear();
+            SearchNOWyear();
             Searchyear();
             TD.Abort(); //主窗體加載完成數據後，線程結束，關閉等待窗體。
         }

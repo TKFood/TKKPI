@@ -30,21 +30,24 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.label6 = new System.Windows.Forms.Label();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
+            this.dataGridView4 = new System.Windows.Forms.DataGridView();
+            this.label8 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -76,6 +79,8 @@
             this.tableLayoutPanel1.Controls.Add(this.label6, 0, 9);
             this.tableLayoutPanel1.Controls.Add(this.dataGridView3, 0, 10);
             this.tableLayoutPanel1.Controls.Add(this.button2, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.dataGridView4, 0, 14);
+            this.tableLayoutPanel1.Controls.Add(this.label8, 0, 13);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -101,6 +106,8 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(984, 794);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
@@ -114,46 +121,6 @@
             this.label5.TabIndex = 41;
             this.label5.Text = "查詢";
             // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 14);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 12);
-            this.label4.TabIndex = 39;
-            this.label4.Text = "月份";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 54);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 12);
-            this.label3.TabIndex = 37;
-            this.label3.Text = "當月活動";
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.dateTimePicker1.CustomFormat = "yyyy/MM";
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(83, 9);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(74, 22);
-            this.dateTimePicker1.TabIndex = 30;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(483, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 12);
-            this.label1.TabIndex = 33;
-            this.label1.Text = "label1";
-            // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -165,6 +132,46 @@
             this.button1.Text = "查詢";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(483, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 12);
+            this.label1.TabIndex = 33;
+            this.label1.Text = "label1";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 54);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(74, 12);
+            this.label3.TabIndex = 37;
+            this.label3.Text = "當月活動";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 14);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(74, 12);
+            this.label4.TabIndex = 39;
+            this.label4.Text = "月份";
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dateTimePicker1.CustomFormat = "yyyy/MM";
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(83, 9);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(74, 22);
+            this.dateTimePicker1.TabIndex = 30;
             // 
             // dataGridView1
             // 
@@ -211,7 +218,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(74, 12);
             this.label6.TabIndex = 45;
-            this.label6.Text = "今年銷售";
+            this.label6.Text = "本期銷售";
             // 
             // dataGridView3
             // 
@@ -239,6 +246,29 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // dataGridView4
+            // 
+            this.dataGridView4.AllowUserToAddRows = false;
+            this.dataGridView4.AllowUserToDeleteRows = false;
+            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tableLayoutPanel1.SetColumnSpan(this.dataGridView4, 11);
+            this.dataGridView4.Location = new System.Drawing.Point(3, 563);
+            this.dataGridView4.Name = "dataGridView4";
+            this.tableLayoutPanel1.SetRowSpan(this.dataGridView4, 3);
+            this.dataGridView4.RowTemplate.Height = 24;
+            this.dataGridView4.Size = new System.Drawing.Size(874, 114);
+            this.dataGridView4.TabIndex = 48;
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 534);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(74, 12);
+            this.label8.TabIndex = 50;
+            this.label8.Text = "全年銷售";
+            // 
             // frmMARKETMONTHSET
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -252,6 +282,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -271,5 +302,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DataGridView dataGridView3;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.DataGridView dataGridView4;
+        private System.Windows.Forms.Label label8;
     }
 }
