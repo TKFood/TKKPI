@@ -93,6 +93,18 @@
     <Compile Include="FrmLogin.Designer.cs">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmMARKETMONTHSET.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMARKETMONTHSET.Designer.cs">
+      <DependentUpon>frmMARKETMONTHSET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMARKETMONTHSETDETAIL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMARKETMONTHSETDETAIL.Designer.cs">
+      <DependentUpon>frmMARKETMONTHSETDETAIL.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmParent.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +139,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMARKETMONTHSET.resx">
+      <DependentUpon>frmMARKETMONTHSET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMARKETMONTHSETDETAIL.resx">
+      <DependentUpon>frmMARKETMONTHSETDETAIL.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmParent.resx">
       <DependentUpon>FrmParent.cs</DependentUpon>
