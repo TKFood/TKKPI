@@ -40,8 +40,9 @@ namespace TKKPI
             try
             {
                 talbename = "TEMP1";
+                DataSet ds = new DataSet();
 
-                 connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
                 sqlConn = new SqlConnection(connectionString);
 
                 sbSql.Clear();
@@ -86,7 +87,164 @@ namespace TKKPI
             }
 
         }
+        public void SearchLastyear()
+        {
+            try
+            {
+                talbename = "TEMP2";
+                DataSet ds = new DataSet();
 
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSql.AppendFormat(" SELECT KIND AS '市場',TB010 AS '品號',MB002 AS '品名',NN AS '數量',MM AS '金額'");
+                sbSql.AppendFormat(" FROM (");
+                sbSql.AppendFormat(" SELECT '門市' AS KIND,TB010,MB002,SUM(TB019) AS NN,SUM(TB033) AS MM ");
+                sbSql.AppendFormat(" FROM [TK].dbo.POSTB WITH (NOLOCK)");
+                sbSql.AppendFormat(" LEFT JOIN [TK].dbo.INVMB  WITH (NOLOCK) ON TB010=MB001");
+                sbSql.AppendFormat(" WHERE TB001 LIKE '{0}%'",dateTimePicker1.Value.AddYears(-1).ToString("yyyyMM"));
+                sbSql.AppendFormat(" AND TB010 IN ( SELECT [MB001] FROM [TKKPI].[dbo].[MARKETMONTHSET] WHERE [YEARMONTH]='{0}')", dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" GROUP BY TB010,MB002 ");
+                sbSql.AppendFormat(" UNION ALL ");
+                sbSql.AppendFormat(" SELECT '銷貨' AS KIND,TH004,TH005,SUM(LA011) AS NUM,SUM(TH037+TH038) AS MM ");
+                sbSql.AppendFormat(" FROM [TK].dbo.COPTH   WITH (NOLOCK)");
+                sbSql.AppendFormat(" LEFT JOIN [TK].dbo.INVLA  WITH (NOLOCK) ON LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+                sbSql.AppendFormat(" WHERE TH020='Y'");
+                sbSql.AppendFormat(" AND TH002 LIKE '{0}%'", dateTimePicker1.Value.AddYears(-1).ToString("yyyyMM"));
+                sbSql.AppendFormat(" AND TH004 IN ( SELECT [MB001] FROM [TKKPI].[dbo].[MARKETMONTHSET] WHERE [YEARMONTH]='{0}')", dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" AND TH001 NOT IN ('A233')");
+                sbSql.AppendFormat(" GROUP BY TH004,TH005");
+                sbSql.AppendFormat(" UNION ALL ");
+                sbSql.AppendFormat(" SELECT '電商' AS KIND,TH004,TH005,SUM(LA011) AS NUM,SUM(TH037+TH038) AS MM");
+                sbSql.AppendFormat(" FROM [TK].dbo.COPTH   WITH (NOLOCK)");
+                sbSql.AppendFormat(" LEFT JOIN [TK].dbo.INVLA  WITH (NOLOCK) ON LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+                sbSql.AppendFormat(" WHERE TH020='Y'");
+                sbSql.AppendFormat(" AND TH002 LIKE '{0}%'", dateTimePicker1.Value.AddYears(-1).ToString("yyyyMM"));
+                sbSql.AppendFormat(" AND TH004 IN ( SELECT [MB001] FROM [TKKPI].[dbo].[MARKETMONTHSET] WHERE [YEARMONTH]='{0}')", dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" AND TH001  IN ('A233')");
+                sbSql.AppendFormat(" GROUP BY TH004,TH005 ");
+                sbSql.AppendFormat(" ) AS TEMP");
+                //sbSql.AppendFormat(" ", dateTimePicker1.Value.ToString("yyyyMM"));
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, talbename);
+                sqlConn.Close();
+
+                //label1.Text = "資料筆數:" + ds.Tables[talbename].Rows.Count.ToString();
+
+                if (ds.Tables[talbename].Rows.Count == 0)
+                {
+
+                }
+                else
+                {
+                    dataGridView2.DataSource = ds.Tables[talbename];
+                    dataGridView2.AutoResizeColumns();
+                    //rownum = ds.Tables[talbename].Rows.Count - 1;
+                    dataGridView2.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
+
+                    //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+                }
+
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+        public void Searchyear()
+        {
+            try
+            {
+                talbename = "TEMP3";
+                DataSet ds = new DataSet();
+
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSql.AppendFormat(" SELECT KIND AS '市場',TB010 AS '品號',MB002 AS '品名',NN AS '數量',MM AS '金額'");
+                sbSql.AppendFormat(" FROM (");
+                sbSql.AppendFormat(" SELECT '門市' AS KIND,TB010,MB002,SUM(TB019) AS NN,SUM(TB033) AS MM ");
+                sbSql.AppendFormat(" FROM [TK].dbo.POSTB WITH (NOLOCK)");
+                sbSql.AppendFormat(" LEFT JOIN [TK].dbo.INVMB  WITH (NOLOCK) ON TB010=MB001");
+                sbSql.AppendFormat(" WHERE TB001 LIKE '{0}%'", dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" AND TB010 IN ( SELECT [MB001] FROM [TKKPI].[dbo].[MARKETMONTHSET] WHERE [YEARMONTH]='{0}')", dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" GROUP BY TB010,MB002 ");
+                sbSql.AppendFormat(" UNION ALL ");
+                sbSql.AppendFormat(" SELECT '銷貨' AS KIND,TH004,TH005,SUM(LA011) AS NUM,SUM(TH037+TH038) AS MM ");
+                sbSql.AppendFormat(" FROM [TK].dbo.COPTH   WITH (NOLOCK)");
+                sbSql.AppendFormat(" LEFT JOIN [TK].dbo.INVLA  WITH (NOLOCK) ON LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+                sbSql.AppendFormat(" WHERE TH020='Y'");
+                sbSql.AppendFormat(" AND TH002 LIKE '{0}%'", dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" AND TH004 IN ( SELECT [MB001] FROM [TKKPI].[dbo].[MARKETMONTHSET] WHERE [YEARMONTH]='{0}')", dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" AND TH001 NOT IN ('A233')");
+                sbSql.AppendFormat(" GROUP BY TH004,TH005");
+                sbSql.AppendFormat(" UNION ALL ");
+                sbSql.AppendFormat(" SELECT '電商' AS KIND,TH004,TH005,SUM(LA011) AS NUM,SUM(TH037+TH038) AS MM");
+                sbSql.AppendFormat(" FROM [TK].dbo.COPTH   WITH (NOLOCK)");
+                sbSql.AppendFormat(" LEFT JOIN [TK].dbo.INVLA  WITH (NOLOCK) ON LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+                sbSql.AppendFormat(" WHERE TH020='Y'");
+                sbSql.AppendFormat(" AND TH002 LIKE '{0}%'", dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" AND TH004 IN ( SELECT [MB001] FROM [TKKPI].[dbo].[MARKETMONTHSET] WHERE [YEARMONTH]='{0}')", dateTimePicker1.Value.ToString("yyyyMM"));
+                sbSql.AppendFormat(" AND TH001  IN ('A233')");
+                sbSql.AppendFormat(" GROUP BY TH004,TH005 ");
+                sbSql.AppendFormat(" ) AS TEMP");
+                //sbSql.AppendFormat(" ", dateTimePicker1.Value.ToString("yyyyMM"));
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, talbename);
+                sqlConn.Close();
+
+                label1.Text = "資料筆數:" + ds.Tables[talbename].Rows.Count.ToString();
+
+                if (ds.Tables[talbename].Rows.Count == 0)
+                {
+
+                }
+                else
+                {
+                    dataGridView3.DataSource = ds.Tables[talbename];
+                    dataGridView3.AutoResizeColumns();
+                    //rownum = ds.Tables[talbename].Rows.Count - 1;
+                    dataGridView3.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
+
+                    //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+                }
+
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
         private void showwaitfrm()
         {
             try
@@ -117,6 +275,8 @@ namespace TKKPI
             TD.Start();
             Thread.Sleep(2000);   //此行可以不需要，主要用於等待主窗體填充數據
             Search();
+            SearchLastyear();
+            Searchyear();
             TD.Abort(); //主窗體加載完成數據後，線程結束，關閉等待窗體。
         }
         private void button2_Click(object sender, EventArgs e)

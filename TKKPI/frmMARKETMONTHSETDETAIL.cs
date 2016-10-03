@@ -115,11 +115,113 @@ namespace TKKPI
                 textBox1.Text = dataGridView1.CurrentRow.Cells["品號"].Value.ToString();
                 textBox2.Text = dataGridView1.CurrentRow.Cells["品名"].Value.ToString();
                 textBox3.Text = dataGridView1.CurrentRow.Cells["活動內容"].Value.ToString();
-                textBox4.Text = dataGridView1.CurrentRow.Cells["ID"].Value.ToString();
+                textBoxID.Text = dataGridView1.CurrentRow.Cells["ID"].Value.ToString();
 
             }
 
         }
+        public void SETADDUPDATE()
+        {
+            textBox1.ReadOnly = false;
+            textBox2.ReadOnly = false;
+            textBox3.ReadOnly = false;
+        }
+        public void SETFINISH()
+        {
+            textBox1.ReadOnly = true;
+            textBox2.ReadOnly = true;
+            textBox3.ReadOnly = true;
+        }
+
+        public void UPDATE()
+        {
+            try
+            {
+                //add ZWAREWHOUSEPURTH
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+                sbSql.Append(" UPDATE [TKKPI].[dbo].[MARKETMONTHSET] ");
+                sbSql.AppendFormat(" SET [YEARMONTH]='{1}',[MB001]='{2}',[MB002]='{3}',[MONTHSET]='{4}' WHERE [ID]='{0}' ", textBoxID.Text.ToString(),dateTimePicker1.Value.ToString("yyyyMM"),textBox1.Text.ToString(), textBox2.Text.ToString(), textBox3.Text.ToString());
+                sbSql.Append("   ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                    this.Close();
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+        public void ADD()
+        {
+            try
+            {
+                //add ZWAREWHOUSEPURTH
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+                sbSql.Append(" INSERT INTO [TKKPI].[dbo].[MARKETMONTHSET] ");
+                sbSql.Append("  ([ID],[YEARMONTH],[MB001],[MB002],[MONTHSET] )  ");
+                sbSql.AppendFormat("  VALUES ('{0}','{1}','{2}','{3}','{4}') ", Guid.NewGuid(), dateTimePicker1.Value.ToString("yyyyMM"), textBox1.Text.ToString(), textBox2.Text.ToString(), textBox3.Text.ToString());
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                    this.Close();
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #region FUNCTION
 
         #endregion
@@ -127,16 +229,29 @@ namespace TKKPI
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
+            textBox1.Text = null;
+            textBox2.Text = null;
+            textBox3.Text = null;
+            textBoxID.Text = null;
+            SETADDUPDATE();
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            SETADDUPDATE();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(textBoxID.Text.ToString()))
+            {
+                UPDATE();
+            }
+            else
+            {
+                ADD();
+            }
 
         }
 

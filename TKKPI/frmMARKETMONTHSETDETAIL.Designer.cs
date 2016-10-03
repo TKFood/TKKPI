@@ -41,7 +41,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBoxID = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -71,7 +71,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 6);
             this.tableLayoutPanel1.Controls.Add(this.dateTimePicker1, 1, 6);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 11);
-            this.tableLayoutPanel1.Controls.Add(this.textBox4, 1, 11);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxID, 1, 11);
             this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.button1, 6, 1);
             this.tableLayoutPanel1.Controls.Add(this.button2, 7, 1);
@@ -183,6 +183,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.textBox1, 2);
             this.textBox1.Location = new System.Drawing.Point(83, 289);
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(154, 22);
             this.textBox1.TabIndex = 32;
             // 
@@ -192,6 +193,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.textBox2, 2);
             this.textBox2.Location = new System.Drawing.Point(83, 329);
             this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(154, 22);
             this.textBox2.TabIndex = 33;
             // 
@@ -202,6 +204,7 @@
             this.textBox3.Location = new System.Drawing.Point(83, 363);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
             this.tableLayoutPanel1.SetRowSpan(this.textBox3, 2);
             this.textBox3.Size = new System.Drawing.Size(394, 74);
             this.textBox3.TabIndex = 34;
@@ -216,14 +219,15 @@
             this.label5.TabIndex = 35;
             this.label5.Text = "ID";
             // 
-            // textBox4
+            // textBoxID
             // 
-            this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.SetColumnSpan(this.textBox4, 2);
-            this.textBox4.Location = new System.Drawing.Point(83, 449);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(154, 22);
-            this.textBox4.TabIndex = 36;
+            this.textBoxID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.textBoxID, 4);
+            this.textBoxID.Location = new System.Drawing.Point(83, 449);
+            this.textBoxID.Name = "textBoxID";
+            this.textBoxID.ReadOnly = true;
+            this.textBoxID.Size = new System.Drawing.Size(314, 22);
+            this.textBoxID.TabIndex = 36;
             // 
             // dataGridView1
             // 
@@ -269,7 +273,7 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBoxID;
         private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
