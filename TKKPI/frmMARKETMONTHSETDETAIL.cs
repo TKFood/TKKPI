@@ -147,7 +147,7 @@ namespace TKKPI
 
                 sbSql.Clear();
                 sbSql.Append(" UPDATE [TKKPI].[dbo].[MARKETMONTHSET] ");
-                sbSql.AppendFormat(" SET [YEARMONTH]='{1}',[MB001]='{2}',[MB002]='{3}',[MONTHSET]='{4}' WHERE [ID]='{0}' ", textBoxID.Text.ToString(),dateTimePicker1.Value.ToString("yyyyMM"),textBox1.Text.ToString(), textBox2.Text.ToString(), textBox3.Text.ToString());
+                sbSql.AppendFormat(" SET [YEARMONTH]='{1}',[MB001]='{2}',[MB002]='{3}',[MONTHSET]='{4}' WHERE [ID]='{0}' ", textBoxID.Text.ToString(),dateTimePicker1.Value.ToString("yyyyMM"),textBox1.Text.ToString().Trim(), textBox2.Text.ToString().Trim(), textBox3.Text.ToString());
                 sbSql.Append("   ");
 
                 cmd.Connection = sqlConn;
@@ -163,7 +163,7 @@ namespace TKKPI
                 else
                 {
                     tran.Commit();      //執行交易  
-                    this.Close();
+                    
 
                 }
             }
@@ -192,7 +192,7 @@ namespace TKKPI
                 sbSql.Clear();
                 sbSql.Append(" INSERT INTO [TKKPI].[dbo].[MARKETMONTHSET] ");
                 sbSql.Append("  ([ID],[YEARMONTH],[MB001],[MB002],[MONTHSET] )  ");
-                sbSql.AppendFormat("  VALUES ('{0}','{1}','{2}','{3}','{4}') ", Guid.NewGuid(), dateTimePicker1.Value.ToString("yyyyMM"), textBox1.Text.ToString(), textBox2.Text.ToString(), textBox3.Text.ToString());
+                sbSql.AppendFormat("  VALUES ('{0}','{1}','{2}','{3}','{4}') ", Guid.NewGuid(), dateTimePicker1.Value.ToString("yyyyMM"), textBox1.Text.ToString().Trim(), textBox2.Text.ToString().Trim(), textBox3.Text.ToString());
 
                 cmd.Connection = sqlConn;
                 cmd.CommandTimeout = 60;
@@ -207,7 +207,7 @@ namespace TKKPI
                 else
                 {
                     tran.Commit();      //執行交易  
-                    this.Close();
+                    
 
                 }
             }
@@ -255,8 +255,12 @@ namespace TKKPI
 
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
         #endregion
 
-        
+
     }
 }
