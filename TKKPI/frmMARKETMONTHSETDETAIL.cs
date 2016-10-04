@@ -111,7 +111,7 @@ namespace TKKPI
         {
             if (dataGridView1.Rows.Count >= 1)
             {
-                dateTimePicker1.Value =Convert.ToDateTime(YEARSMONTH.Substring(0,4).ToString()+"/"+ YEARSMONTH.Substring(4, 2).ToString() + "/01");
+                //dateTimePicker1.Value =Convert.ToDateTime(YEARSMONTH.Substring(0,4).ToString()+"/"+ YEARSMONTH.Substring(4, 2).ToString() + "/01");
                 textBox1.Text = dataGridView1.CurrentRow.Cells["品號"].Value.ToString();
                 textBox2.Text = dataGridView1.CurrentRow.Cells["品名"].Value.ToString();
                 textBox3.Text = dataGridView1.CurrentRow.Cells["活動內容"].Value.ToString();
@@ -252,12 +252,17 @@ namespace TKKPI
             {
                 ADD();
             }
+            Search(dateTimePicker1.Value.ToString("yyyyMM"));
 
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Search(dateTimePicker1.Value.ToString("yyyyMM"));
         }
         #endregion
 
