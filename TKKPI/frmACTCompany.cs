@@ -34,10 +34,12 @@ namespace TKKPI
         SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
         SqlCommand cmd = new SqlCommand();
         DataSet ds = new DataSet();
+        DataSet ds2 = new DataSet();
         DataTable dt = new DataTable();
         string tablename = null;
         int rownum = 0;
         string Dep;
+        DateTime YEARSMONTHS;
 
         public frmACTCompany()
         {
@@ -45,6 +47,7 @@ namespace TKKPI
             DateTime dt = DateTime.Now.AddMonths(-1);
             dateTimePicker1.Value = dt;
             comboboxload();
+            SearchACTYEARSMONTHSEMP();
         }
 
         #region FUNCTION
@@ -81,8 +84,6 @@ namespace TKKPI
                     connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
                     sqlConn = new SqlConnection(connectionString);
 
-
-
                     adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
                     sqlCmdBuilder = new SqlCommandBuilder(adapter);
 
@@ -90,6 +91,7 @@ namespace TKKPI
                     ds.Clear();
                     adapter.Fill(ds, tablename);
                     sqlConn.Close();
+                 
 
                     label1.Text = "資料筆數:" + ds.Tables[tablename].Rows.Count.ToString();
 
@@ -156,13 +158,13 @@ namespace TKKPI
                 STR.Append(@"  ,CAST (ROUND(銷貨成本/應付帳款餘額,2)  AS DECIMAL(18,2)) AS '應付款項週轉率' ");
                 STR.Append(@"  ,CAST (ROUND(365/ROUND(銷貨成本/應付帳款餘額,2),2)   AS DECIMAL(18,2))  AS '應付款項週轉天數' ");
                 STR.Append(@"  ,CAST (ROUND(365/ROUND(本12個月營業收入/((本月期初應收帳款+本月期末應收帳款+本月期初應收票據+本月期末應收票據)/2),2),2) AS decimal(18,2))-CAST (ROUND(365/ROUND(銷貨成本/應付帳款餘額,2),2) AS decimal(18,2)) AS '應收.付天數' ");
-                STR.AppendFormat(@"  ,CAST (ROUND((營業收入類/固定資產淨額)/7*12,2)  AS DECIMAL(18,2)) AS '固定資產週轉率' ",Convert.ToInt16(ThisMonth));
-                STR.AppendFormat(@"  ,CAST (ROUND((營業收入類/總資產淨額)/7*12,2) AS DECIMAL(18,2))  AS '總資產週轉率'", Convert.ToInt16(ThisMonth));
+                STR.AppendFormat(@"  ,CAST (ROUND((營業收入類/固定資產淨額)/{0}*12,2)  AS DECIMAL(18,2)) AS '固定資產週轉率' ",Convert.ToInt16(ThisMonth));
+                STR.AppendFormat(@"  ,CAST (ROUND((營業收入類/總資產淨額)/{0}*12,2) AS DECIMAL(18,2))  AS '總資產週轉率'", Convert.ToInt16(ThisMonth));
                 STR.Append(@"  ,CAST (ROUND((當年度本期損利+年利息費用)/總資產淨額,2) AS DECIMAL(18,2))  AS '資產報酬率' ");
                 STR.Append(@"  ,CAST (ROUND(當年度本期損利/股東權益,2) AS DECIMAL(18,2))  AS '權益報酬率(稅後)' ");
                 STR.Append(@"  ,CAST (ROUND(損益表本期淨利/(股本/10),2) AS DECIMAL(18,2))  AS '每股盈餘(稅後)' ");
-                STR.Append(@"  ,CAST (ROUND(當月營業收入類/140,2)  AS DECIMAL(18,2)) AS '每人營業淨額'  ");
-                STR.Append(@"  ,CAST (ROUND((當月損益表本期淨利4+當月損益表本期淨利5+當月損益表本期淨利6)/140,2) AS DECIMAL(18,2))  AS '每人營業利益'  ");
+                STR.AppendFormat(@"  ,CAST (ROUND(當月營業收入類/{0},2)  AS DECIMAL(18,2)) AS '每人營業淨額'  ",numericUpDown1.Value.ToString());
+                STR.AppendFormat(@"  ,CAST (ROUND((當月損益表本期淨利4+當月損益表本期淨利5+當月損益表本期淨利6)/{0},2) AS DECIMAL(18,2))  AS '每人營業利益'  ", numericUpDown1.Value.ToString());
                 STR.Append(@"  ,CAST (ROUND(總負債/股東權益,2) AS DECIMAL(18,2))  AS '負債/淨值'  ");
                 STR.Append(@"  ,CAST (ROUND((當月損益表本期淨利4+當月損益表本期淨利5+當月損益表本期淨利6+當月損益表本期淨利7+當期所得稅費用)/利息費用,2)  AS DECIMAL(18,2)) AS '利息保障倍數(稅前)' ");
                 STR.Append(@"  FROM (");
@@ -173,9 +175,9 @@ namespace TKKPI
                 STR.AppendFormat(@"  ,(Select SUM(MB005)-SUM(MB004) From [TK].dbo.ACTMB Where MB001 LIKE '2%' and MB002='{0}' and MB003<='{1}'  AND MB001 IN (SELECT MA001 FROM [TK].dbo.ACTMA WHERE (MA008='2' OR MA008='3')) AND MB001 IN (SELECT ID FROM [TKKPI].dbo.ACTCurrentRatio WHERE ID LIKE '2%')) AS '流動負債'", ThisYear, ThisMonth);
                 STR.AppendFormat(@"  ,(Select SUM(MB004)-SUM(MB005) From [TK].dbo.ACTMB Where MB001 LIKE '1%' and MB002='{0}' and MB003<='{1}'  AND MB001 IN (SELECT MA001 FROM [TK].dbo.ACTMA WHERE (MA008='2' OR MA008='3')) AND MB001 IN (SELECT ID FROM [TKKPI].dbo.ACTQuickRatio WHERE ID LIKE '1%')) AS '速動資產'", ThisYear, ThisMonth);
                 STR.AppendFormat(@"  ,(Select SUM(MB005)-SUM(MB004) FROM [TK].dbo.ACTMB WITH (NOLOCK) Where MB001 like'4%' AND MB001 IN (SELECT MA001 FROM [TK].dbo.ACTMA WHERE (MA008='2' OR MA008='3')) and MB002+MB003>='{0}'and MB002+MB003<='{1}') AS '本12個月營業收入'", LastYear+ LastYearMonth, ThisYear+ThisMonth);
-                STR.AppendFormat(@"  ,(Select SUM(MB004)-SUM(MB005) FROM [TK].dbo.ACTMB WITH (NOLOCK) Where MB001 like'115%' AND MB001 IN (SELECT MA001 FROM [TK].dbo.ACTMA WHERE (MA008='2' OR MA008='3')) and MB002='{0}' AND MB003<='{1}') AS '本月期初應收帳款'",ThisYear,LastMonth);
+                STR.AppendFormat(@"  ,(Select SUM(MB004)-SUM(MB005) FROM [TK].dbo.ACTMB WITH (NOLOCK) Where MB001 like'115%' AND MB001 IN (SELECT MA001 FROM [TK].dbo.ACTMA WHERE (MA008='2' OR MA008='3')) and MB002='{0}' AND MB003<='{1}') AS '本月期初應收帳款'", LastYear, ThisMonth);
                 STR.AppendFormat(@"  ,(Select SUM(MB004)-SUM(MB005) FROM [TK].dbo.ACTMB WITH (NOLOCK) Where MB001 like'115%' AND MB001 IN (SELECT MA001 FROM [TK].dbo.ACTMA WHERE (MA008='2' OR MA008='3')) and MB002='{0}' AND MB003<='{1}') AS '本月期末應收帳款'",ThisYear,ThisMonth);
-                STR.AppendFormat(@"  ,(Select SUM(MB004)-SUM(MB005) FROM [TK].dbo.ACTMB WITH (NOLOCK) Where MB001 like'117%' AND MB001 IN (SELECT MA001 FROM [TK].dbo.ACTMA WHERE (MA008='2' OR MA008='3')) and MB002='{0}' AND MB003<='{1}') AS '本月期初應收票據'", ThisYear, LastMonth);
+                STR.AppendFormat(@"  ,(Select SUM(MB004)-SUM(MB005) FROM [TK].dbo.ACTMB WITH (NOLOCK) Where MB001 like'117%' AND MB001 IN (SELECT MA001 FROM [TK].dbo.ACTMA WHERE (MA008='2' OR MA008='3')) and MB002='{0}' AND MB003<='{1}') AS '本月期初應收票據'", LastYear, ThisMonth);
                 STR.AppendFormat(@"  ,(Select SUM(MB004)-SUM(MB005) FROM [TK].dbo.ACTMB WITH (NOLOCK) Where MB001 like'117%' AND MB001 IN (SELECT MA001 FROM [TK].dbo.ACTMA WHERE (MA008='2' OR MA008='3')) and MB002='{0}' AND MB003<='{1}') AS '本月期末應收票據'", ThisYear, ThisMonth); 
                 STR.AppendFormat(@"  ,(SELECT SUM(MB004)-SUM(MB005) FROM [TK].dbo.ACTMB WITH (NOLOCK) WHERE  MB001='51111' AND  SUBSTRING(LTRIM(RTRIM(MB002))+LTRIM(RTRIM(MB003)),1,6)>='{0}' AND  SUBSTRING(LTRIM(RTRIM(MB002))+LTRIM(RTRIM(MB003)),1,6)<='{1}') AS '銷貨成本'", LastYear + LastYearMonth, ThisYear + ThisMonth);
                 STR.AppendFormat(@"  ,(Select SUM(MB004)-SUM(MB005) FROM [TK].dbo.ACTMB WITH (NOLOCK) Where MB001 like'13%' and MB002='{0}'and MB003<='{1}') AS '期初存貨'",LastYear,LastYearMonth);
@@ -428,8 +430,48 @@ namespace TKKPI
 
 
         }
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            YEARSMONTHS = dateTimePicker1.Value;
+            SearchACTYEARSMONTHSEMP();
+        }
+        public void SearchACTYEARSMONTHSEMP()
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
 
+                sbSql.Clear();
+                sbSql.AppendFormat(" SELECT [ID],[YEARSMONTH],[EMP] FROM [TKKPI].[dbo].[ACTYEARSMONTHSEMP] WHERE [YEARSMONTH]='{0}'", dateTimePicker1.Value.ToString("yyyyMM"));
 
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds2.Clear();
+                adapter.Fill(ds2, "TEMPds2");
+                sqlConn.Close();
+
+                if (ds2.Tables["TEMPds2"].Rows.Count == 0)
+                {
+                    numericUpDown1.Value = 1;
+                }
+                else
+                {
+                    numericUpDown1.Value = Convert.ToInt32(ds2.Tables["TEMPds2"].Rows[0]["EMP"].ToString());
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
         #endregion
 
         #region BUTTON
@@ -441,8 +483,15 @@ namespace TKKPI
         {
             ExcelExport();
         }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            frmACTYEARSMONTHSEMP objfrmACTYEARSMONTHSEMP = new frmACTYEARSMONTHSEMP(YEARSMONTHS);
+            objfrmACTYEARSMONTHSEMP.ShowDialog();
+            SearchACTYEARSMONTHSEMP();
+        }
+
         #endregion
 
-
+       
     }
 }
