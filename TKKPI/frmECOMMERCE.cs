@@ -114,7 +114,7 @@ namespace TKKPI
                 STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(PREOrderNum*MB047)  FROM [TKECOMMERCE].[dbo].[ZTKECOMMERCEFrmMPRECOPTC],[TK].dbo.[INVMB]  WHERE  INVMB.MB001=ZTKECOMMERCEFrmMPRECOPTC.MB001 AND  YEARMONTH=CONVERT(varchar(6),'{0}',112))/Day(dateadd(dd,-1,DATEADD(mm, DATEDIFF(m,0,'{0}')+1, 0)))*ID,0)AS INT) AS '預計出貨金額'", Queryday);
                 STR.AppendFormat(@" ,CAST (ROUND((ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTH WITH (NOLOCK) WHERE TH020='Y' AND TH001='A233' AND SUBSTRING(TH002,1,6)=CONVERT(varchar(6),'{0}',112) AND   SUBSTRING(TH002,1,8)<=CONVERT(varchar(6),'{0}',112)+ID),0))/(ISNULL((SELECT SUM(PREOrderNum*MB047)  FROM [TKECOMMERCE].[dbo].[ZTKECOMMERCEFrmMPRECOPTC],[TK].dbo.[INVMB]  WHERE  INVMB.MB001=ZTKECOMMERCEFrmMPRECOPTC.MB001 AND  YEARMONTH=CONVERT(varchar(6),'{0}',112))/Day(dateadd(dd,-1,DATEADD(mm, DATEDIFF(m,0,'{0}')+1, 0)))*ID,0))*100,2)  AS DECIMAL(18,2)) AS '完成率'", Queryday);
                 STR.Append(@" FROM [TKECOMMERCE].dbo.BASEDAY");
-                STR.AppendFormat(@" WHERE ID<=DAY(DATEADD(mm,  1, DATEADD(dd, -1, DATEADD(mm, DATEDIFF(mm,0,'{0}'), 0))))", Queryday);
+                STR.AppendFormat(@" WHERE ID<=DAY(DATEADD(day, -1, DATEADD(mm, DATEDIFF(mm, '', '{0}')+1, '')))", Queryday);
 
                 talbename = "TEMPds1";
             }
@@ -126,11 +126,9 @@ namespace TKKPI
                 STR.Append(@" SELECT ID ");
                 STR.AppendFormat(@" ,CONVERT(varchar(6),'{0}',112)+ID AS '日期'", Queryday);
                 STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA  WITH (NOLOCK) WHERE TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND TH020='Y' AND   TH001='A230' AND SUBSTRING(TH002,1,8)=CONVERT(varchar(6),'{0}',112)+ID),0) AS INT) AS '日出貨量'", Queryday);
-                STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.COPTG WITH (NOLOCK) WHERE TG001=TH001 AND TG002=TH002 AND TG005 IN ('106400','102300') AND TH020='Y' AND TH001='A230' AND SUBSTRING(TH002,1,8)=CONVERT(varchar(6),'{0}',112)+ID),0)AS INT) AS '日出貨金額'", Queryday); ;
-                STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(LA011) FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA  WITH (NOLOCK) WHERE TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND TH020='Y' AND TH001='A230' AND SUBSTRING(TH002,1,6)=CONVERT(varchar(6),'{0}',112) AND   SUBSTRING(TH002,1,8)<=CONVERT(varchar(6),'{0}',112)+ID),0) AS INT) AS '累積出貨量'", Queryday);
                 STR.AppendFormat(@" ,CAST(ISNULL((SELECT SUM(TH013) FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.COPTG WITH (NOLOCK) WHERE TG001=TH001 AND TG002=TH002 AND TG005 IN ('106400','102300') AND TH020='Y' AND TH001='A230' AND SUBSTRING(TH002,1,6)=CONVERT(varchar(6),'{0}',112) AND   SUBSTRING(TH002,1,8)<=CONVERT(varchar(6),'{0}',112)+ID),0) AS INT)AS '累積出貨金額'", Queryday);
                 STR.Append(@" FROM [TKECOMMERCE].dbo.BASEDAY");
-                STR.AppendFormat(@" WHERE ID<=DAY(DATEADD(mm,  1, DATEADD(dd, -1, DATEADD(mm, DATEDIFF(mm,0,'{0}'), 0))))", Queryday);
+                STR.AppendFormat(@" WHERE ID<=DAY(DATEADD(day, -1, DATEADD(mm, DATEDIFF(mm, '', '{0}')+1, '')))", Queryday);
 
                 talbename = "TEMPds2";
             }
@@ -284,6 +282,5 @@ namespace TKKPI
         }
 
         #endregion
-
     }
 }
