@@ -66,8 +66,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
-            this.splitContainer1.Size = new System.Drawing.Size(984, 794);
-            this.splitContainer1.SplitterDistance = 167;
+            this.splitContainer1.Size = new System.Drawing.Size(984, 733);
+            this.splitContainer1.SplitterDistance = 153;
             this.splitContainer1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -109,7 +109,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(980, 163);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(980, 149);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // label4
@@ -135,9 +135,11 @@
             "電話客服內容",
             "今年電商成長率",
             "今年電商累積銷貨",
+            "今年現銷累積銷貨",
             "本月客服統計",
             "本月銷貨毛利",
-            "銷貨明細"});
+            "銷貨明細",
+            "會計銷貨者業績"});
             this.comboBox1.Location = new System.Drawing.Point(83, 90);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(234, 20);
@@ -254,14 +256,14 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(980, 619);
+            this.dataGridView1.Size = new System.Drawing.Size(980, 572);
             this.dataGridView1.TabIndex = 33;
             // 
             // frmECOMMERCE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 794);
+            this.ClientSize = new System.Drawing.Size(984, 733);
             this.Controls.Add(this.splitContainer1);
             this.Name = "frmECOMMERCE";
             this.Text = "frmECOMMERCE";
