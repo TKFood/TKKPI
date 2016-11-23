@@ -272,7 +272,7 @@ namespace TKKPI
 
                 talbename = "TEMPds9";
             }
-            else if (comboBox1.Text.ToString().Equals("會計銷貨者業績"))
+            else if (comboBox1.Text.ToString().Equals("會計消貨者業績"))
             {
                 STR.Append(@" SELECT 今年,月份,(總消費者-橘點子) '總計',(WEB-PCHOME-神坊-樂天-自游邦) AS '官網',(總消費者-橘點子-WEB-PCHOME-神坊-樂天-自游邦) AS '消費者',PCHOME,神坊,樂天,自游邦");
                 STR.Append(@" FROM (");
