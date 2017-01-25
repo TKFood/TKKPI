@@ -102,6 +102,8 @@ namespace TKKPI
                     else
                     {
                         dataGridView1.DataSource = ds.Tables[tablename];
+                       
+                        //string s_sum = ds.Tables[tablename].Compute("SUM(當月預算)", "").ToString();
                         dataGridView1.AutoResizeColumns();
                         //rownum = ds.Tables[tablename].Rows.Count - 1;
                         dataGridView1.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
@@ -212,6 +214,8 @@ namespace TKKPI
 
                 if(Dep.Equals("000000"))
                 {
+                    STR.AppendFormat(@"  SELECT 年度,月份,科目,科目名稱,部門代號,部門,當月預算,當月實際費用,當月費用達成率,預算累積,實際費用累積,年度累積達成率,年度預算總額,年度預算累積達成率");
+                    STR.AppendFormat(@"  FROM (");
                     STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',CAST( MK006 AS DECIMAL(18,2))   AS '當月預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
                     STR.AppendFormat(@"  ,CAST( ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS DECIMAL(18,2)) AS '當月實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
                     STR.AppendFormat(@" ,CONVERT(DECIMAL(18,2),ISNULL(CAST( ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS DECIMAL(18,2))/NULLIF(CAST( MK006 AS DECIMAL(18,2)),0)*100,0)) AS '當月費用達成率' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
@@ -224,11 +228,30 @@ namespace TKKPI
                     STR.AppendFormat(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON MK004=ME001");
                     STR.AppendFormat(@"  WHERE MK003=MA001 AND MK002='{0}'  AND MK005='{1}'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
                     STR.AppendFormat(@"  AND (MA001 LIKE '5%' OR MA001 LIKE '6%' )");
-                    STR.AppendFormat(@"  ORDER BY MA001,MK004");
+                    STR.AppendFormat(@"  ) AS TEMP");
+                    STR.AppendFormat(@"  UNION ALL ");
+                    STR.AppendFormat(@"  SELECT 'TOTAL','','','','','',SUM(當月預算),SUM(當月實際費用),0,SUM(預算累積),SUM(實際費用累積),0,0,0");
+                    STR.AppendFormat(@"  FROM ( ");
+                    STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',CAST( MK006 AS DECIMAL(18,2))   AS '當月預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST( ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS DECIMAL(18,2)) AS '當月實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@" ,CONVERT(DECIMAL(18,2),ISNULL(CAST( ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS DECIMAL(18,2))/NULLIF(CAST( MK006 AS DECIMAL(18,2)),0)*100,0)) AS '當月費用達成率' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST( ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0) AS DECIMAL(18,2)) AS '預算累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST( ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<='{1}'),0) AS DECIMAL(18,2)) AS '實際費用累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
+                    STR.AppendFormat(@" ,CONVERT(DECIMAL(18,2),ISNULL((CAST( NULLIF((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<='{1}'),0) AS DECIMAL(18,2))/CAST( NULLIF((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0) AS DECIMAL(18,2))*100 ),0)) AS '年度累積達成率' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@" ,CAST( ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 ),0) AS DECIMAL(18,2)) AS '年度預算總額' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CONVERT(DECIMAL(18,2),ISNULL((CAST( NULLIF((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<='{1}'),0) AS DECIMAL(18,2))/CAST( NULLIF((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 ),0) AS DECIMAL(18,2))*100 ),0)) AS '年度預算累積達成率'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  FROM [TK].dbo.ACTMA WITH (NOLOCK),[TK].dbo.ACTMK WITH (NOLOCK)");
+                    STR.AppendFormat(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON MK004=ME001");
+                    STR.AppendFormat(@"  WHERE MK003=MA001 AND MK002='{0}'  AND MK005='{1}'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
+                    STR.AppendFormat(@"  AND (MA001 LIKE '5%' OR MA001 LIKE '6%' )");
+                    STR.AppendFormat(@"  ) AS TEMP2");
+                    STR.AppendFormat(@"  ORDER BY 年度,科目,部門");
                     STR.AppendFormat(@"  ");
                 }
                 else
                 {
+                    STR.AppendFormat(@"  SELECT 年度,月份,科目,科目名稱,部門代號,部門,當月預算,當月實際費用,當月費用達成率,預算累積,實際費用累積,年度累積達成率,年度預算總額,年度預算累積達成率");
+                    STR.AppendFormat(@"  FROM (");
                     STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',CAST( MK006   AS DECIMAL(18,2)) AS '當月預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
                     STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0)  AS DECIMAL(18,2)) AS '當月實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
                     STR.AppendFormat(@" ,CONVERT(DECIMAL(18,2),ISNULL(CAST( ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS DECIMAL(18,2))/NULLIF(CAST( MK006 AS DECIMAL(18,2)),0)*100,0)) AS '當月費用達成率' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
@@ -240,8 +263,25 @@ namespace TKKPI
                     STR.AppendFormat(@"  FROM [TK].dbo.ACTMA WITH (NOLOCK),[TK].dbo.ACTMK WITH (NOLOCK)");
                     STR.AppendFormat(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON MK004=ME001");
                     STR.AppendFormat(@"  WHERE MK003=MA001 AND MK002='{0}'  AND MK005='{1}' AND MK004='{2}' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"),Dep);
+                    STR.AppendFormat(@"  AND (MA001 LIKE '5%' OR MA001 LIKE '6%' )");             
+                    STR.AppendFormat(@"  ) AS TEMP");
+                    STR.AppendFormat(@"  UNION ALL ");
+                    STR.AppendFormat(@"  SELECT 'TOTAL','','','','','',SUM(當月預算),SUM(當月實際費用),0,SUM(預算累積),SUM(實際費用累積),0,0,0");
+                    STR.AppendFormat(@"  FROM ( ");
+                    STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',CAST( MK006   AS DECIMAL(18,2)) AS '當月預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0)  AS DECIMAL(18,2)) AS '當月實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@" ,CONVERT(DECIMAL(18,2),ISNULL(CAST( ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS DECIMAL(18,2))/NULLIF(CAST( MK006 AS DECIMAL(18,2)),0)*100,0)) AS '當月費用達成率' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0)   AS DECIMAL(18,2)) AS '預算累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<='{1}'),0)   AS DECIMAL(18,2))AS '實際費用累積'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM")); ;
+                    STR.AppendFormat(@" ,CONVERT(DECIMAL(18,2),ISNULL((CAST( NULLIF((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<='{1}'),0) AS DECIMAL(18,2))/CAST( NULLIF((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 AND MK.MK005<='{1}'),0) AS DECIMAL(18,2))*100 ),0)) AS '年度累積達成率' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@" ,CAST( ISNULL((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 ),0) AS DECIMAL(18,2)) AS '年度預算總額' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  ,CONVERT(DECIMAL(18,2),ISNULL((CAST( NULLIF((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004<='{1}'),0) AS DECIMAL(18,2))/CAST( NULLIF((SELECT SUM(MK006) FROM [TK].dbo.ACTMK MK WITH (NOLOCK) WHERE MK.MK003=MA001 AND MK.MK002='{0}' AND MK.MK004=ME001 ),0) AS DECIMAL(18,2))*100 ),0)) AS '年度預算累積達成率'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
+                    STR.AppendFormat(@"  FROM [TK].dbo.ACTMA WITH (NOLOCK),[TK].dbo.ACTMK WITH (NOLOCK)");
+                    STR.AppendFormat(@"  LEFT JOIN [TK].dbo.CMSME WITH (NOLOCK) ON MK004=ME001");
+                    STR.AppendFormat(@"  WHERE MK003=MA001 AND MK002='{0}'  AND MK005='{1}' AND MK004='{2}' ", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"), Dep);
                     STR.AppendFormat(@"  AND (MA001 LIKE '5%' OR MA001 LIKE '6%' )");
-                    STR.AppendFormat(@"  ORDER BY MA001,MK004");
+                    STR.AppendFormat(@"  ) AS TEMP2");
+                    STR.AppendFormat(@"  ORDER BY 年度,科目,部門");
                     STR.AppendFormat(@"  ");
                 }
                
