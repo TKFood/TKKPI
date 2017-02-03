@@ -139,7 +139,8 @@
             "本月客服統計",
             "本月銷貨毛利",
             "銷貨明細",
-            "會計消貨者業績"});
+            "會計消貨者業績",
+            "該月平均每筆銷售未稅金額"});
             this.comboBox1.Location = new System.Drawing.Point(83, 90);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(234, 20);

@@ -99,7 +99,7 @@ namespace TKKPI
             string Queryday = null;
 
 
-            if(comboBox1.Text.ToString().Equals("電商每日銷貨金額及預估比較表"))
+            if (comboBox1.Text.ToString().Equals("電商每日銷貨金額及預估比較表"))
             {
                 Queryday = dateTimePicker1.Value.ToString("yyyyMM");
                 Queryday = Queryday + "01";
@@ -118,7 +118,7 @@ namespace TKKPI
 
                 talbename = "TEMPds1";
             }
-            else if(comboBox1.Text.ToString().Equals("電話訂購每日銷貨金額及預估比較表"))
+            else if (comboBox1.Text.ToString().Equals("電話訂購每日銷貨金額及預估比較表"))
             {
                 Queryday = dateTimePicker1.Value.ToString("yyyyMM");
                 Queryday = Queryday + "01";
@@ -135,7 +135,7 @@ namespace TKKPI
             else if (comboBox1.Text.ToString().Equals("電話客服內容"))
             {
                 Queryday = dateTimePicker1.Value.ToString("yyyyMM");
-                
+
 
                 STR.Append(@" SELECT CallDate AS '日期',[BASETYPE].TypeID AS '類別',TypeName AS '類名',CallName AS '姓名',CallPhone AS '手機',CallText AS '來電內容',CallTextRe AS '回覆',OrderID AS '訂單',ShipID AS '出貨單',InvoiceNo AS '發票'");
                 STR.Append(@" FROM [TKCUSTOMERSERVICE].[dbo].[CALLRECORD]");
@@ -165,9 +165,9 @@ namespace TKKPI
 
                 talbename = "TEMPds4";
             }
-            else if(comboBox1.Text.ToString().Equals("今年電商累積銷貨"))
+            else if (comboBox1.Text.ToString().Equals("今年電商累積銷貨"))
             {
-        
+
                 STR.Append(@" SELECT 月份,今年,CAST (今年累積出貨量 AS DECIMAL(18,2)) AS '今年累積出貨量',CAST (今年累積退貨量 AS DECIMAL(18,2)) AS '今年累積退貨量',CAST ((今年累積出貨量-今年累積退貨量) AS DECIMAL(18,2)) AS '今年實出貨量',CAST (今年累積出貨金額 AS DECIMAL(18,2))  AS '今年累積出貨金額',CAST (今年累積退貨金額 AS DECIMAL(18,2))  AS '今年累積退貨金額',CAST ((今年累積出貨金額-今年累積退貨金額) AS DECIMAL(18,2)) AS '今年實出金額',去年,CAST (去年累積出貨量 AS DECIMAL(18,2))  AS '去年累積出貨量',CAST (去年累積退貨量 AS DECIMAL(18,2)) AS '去年累積退貨量',CAST ((去年累積出貨量-去年累積退貨量) AS DECIMAL(18,2)) AS '去年實出貨量',去年,CAST(去年累積出貨金額 AS DECIMAL(18,2)) AS '去年累積出貨金額',CAST (去年累積退貨金額 AS DECIMAL(18,2)) AS '去年累積退貨金額',CAST ((去年累積出貨金額-去年累積退貨金額) AS DECIMAL(18,2)) AS '去年實出金額' ");
                 STR.Append(@" FROM (");
                 STR.Append(@" SELECT ID AS '月份'");
@@ -191,14 +191,14 @@ namespace TKKPI
                 STR.Append(@" SELECT [CALLRECORD].[TypeID] AS TypeID,[BASETYPE].[TypeName] AS '名稱',COUNT([CALLRECORD].[TypeID]) AS '次數'");
                 STR.Append(@" FROM [TKCUSTOMERSERVICE].[dbo].[CALLRECORD]");
                 STR.Append(@" LEFT JOIN [TKCUSTOMERSERVICE].[dbo].[BASETYPE] ON[CALLRECORD].[TypeID]=[BASETYPE].[TypeID]");
-                STR.AppendFormat(@" WHERE SUBSTRING(CallDate,1,6)='{0}'",dateTimePicker1.Value.ToString("yyyyMM"));
+                STR.AppendFormat(@" WHERE SUBSTRING(CallDate,1,6)='{0}'", dateTimePicker1.Value.ToString("yyyyMM"));
                 STR.Append(@" GROUP BY [CALLRECORD].[TypeID],[BASETYPE].[TypeName]");
                 STR.Append(@" ORDER BY COUNT([CALLRECORD].[TypeID]) DESC");
                 STR.Append(@" ");
 
                 talbename = "TEMPds6";
             }
-            else if(comboBox1.Text.ToString().Equals("本月銷貨毛利"))
+            else if (comboBox1.Text.ToString().Equals("本月銷貨毛利"))
             {
                 STR.Append(@" SELECT   品號,MB002 AS '品名',CAST (SUM(銷售數量) AS DECIMAL(18,2)) AS 銷售數量,CAST (SUM(銷售金額) AS DECIMAL(18,2)) AS 銷售金額,CAST (ISNULL(SUM(成本),0) AS DECIMAL(18,2)) AS '成本',CAST ((SUM(銷售金額)-ISNULL(SUM(成本),0)) AS DECIMAL(18,2)) AS '毛利'");
                 STR.Append(@" FROM (");
@@ -217,7 +217,7 @@ namespace TKKPI
             }
             else if (comboBox1.Text.ToString().Equals("銷貨明細"))
             {
-                if(!string.IsNullOrEmpty(textBox1.Text.ToString()))
+                if (!string.IsNullOrEmpty(textBox1.Text.ToString()))
                 {
                     STR.Append(@" SELECT  品號,品名,CAST(SUM(銷售量) AS DECIMAL(18,2)) AS 銷售量,CAST(SUM(銷售金額) AS DECIMAL(18,2)) AS 銷售金額");
                     STR.Append(@" FROM (");
@@ -226,7 +226,7 @@ namespace TKKPI
                     STR.Append(@" WHERE TH020='Y' AND  TH001=LA006 AND TH002=LA007 AND TH003=LA008");
                     STR.AppendFormat(@" AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
                     STR.Append(@" AND TH001='A233'");
-                    STR.AppendFormat(@" AND (TH004 LIKE '%{0}%' OR TH005 LIKE '%{0}%')",textBox1.Text.ToString());
+                    STR.AppendFormat(@" AND (TH004 LIKE '%{0}%' OR TH005 LIKE '%{0}%')", textBox1.Text.ToString());
                     STR.Append(@"  ) AS TEMP");
                     STR.Append(@" GROUP BY 品號,品名");
                     STR.Append(@" ORDER BY SUM(銷售金額) DESC");
@@ -247,7 +247,7 @@ namespace TKKPI
                     STR.Append(@" ORDER BY SUM(銷售金額) DESC");
                     STR.Append(@" ");
                 }
-                
+
 
                 talbename = "TEMPds8";
             }
@@ -290,6 +290,15 @@ namespace TKKPI
                 STR.Append(@" ");
 
                 talbename = "TEMPds10";
+            }
+            else if (comboBox1.Text.ToString().Equals("該月平均每筆銷售未稅金額"))
+            {
+                STR.AppendFormat(@" SELECT ROUND(AVG(TG045),2) AS '未稅金額' FROM [TK].dbo.COPTG WITH (NOLOCK)");
+                STR.AppendFormat(@" WHERE TG001='A233'");
+                STR.AppendFormat(@" AND TG002 LIKE '{0}%'", dateTimePicker1.Value.ToString("yyyyMM"));
+                STR.AppendFormat(@" ");
+
+                talbename = "TEMPds11";
             }
 
                 return STR;
