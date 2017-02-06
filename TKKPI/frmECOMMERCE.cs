@@ -300,8 +300,48 @@ namespace TKKPI
 
                 talbename = "TEMPds11";
             }
+            else if(comboBox1.Text.ToString().Equals("每月電商銷貨"))
+            {
 
-                return STR;
+                STR.AppendFormat(@" SELECT 月份,今年");
+                STR.AppendFormat(@" ,CAST ((本月出貨金額-本月退貨金額) AS DECIMAL(18,2)) AS '本月實出金額'");
+                STR.AppendFormat(@" ,CAST ((本月出貨量-本月退貨量) AS DECIMAL(18,2)) AS '本月實出貨量'");
+                STR.AppendFormat(@" ,CAST (本月出貨量 AS DECIMAL(18,2)) AS '本月出貨量'");
+                STR.AppendFormat(@" ,CAST (本月退貨量 AS DECIMAL(18,2)) AS '本月退貨量'");
+                STR.AppendFormat(@" ,CAST (本月出貨金額 AS DECIMAL(18,2))  AS '本月出貨金額'");
+                STR.AppendFormat(@" ,CAST (本月退貨金額 AS DECIMAL(18,2))  AS '本月退貨金額'");
+                STR.AppendFormat(@" ,去年");
+                STR.AppendFormat(@" ,CAST ((去年本月出貨金額-去年本月退貨金額) AS DECIMAL(18,2)) AS '去年本月實出金額'");
+                STR.AppendFormat(@" ,CAST ((去年本月出貨量-去年本月退貨量) AS DECIMAL(18,2)) AS '去年本月實出貨量'");
+                STR.AppendFormat(@" ,CAST (去年本月出貨量 AS DECIMAL(18,2))  AS '去年本月出貨量'");
+                STR.AppendFormat(@" ,CAST (去年本月退貨量 AS DECIMAL(18,2)) AS '去年本月退貨量'");
+                STR.AppendFormat(@" ,CAST(去年本月出貨金額 AS DECIMAL(18,2)) AS '去年本月出貨金額'");
+                STR.AppendFormat(@" ,CAST (去年本月退貨金額 AS DECIMAL(18,2)) AS '去年本月退貨金額'");
+                STR.AppendFormat(@" FROM (");
+                STR.AppendFormat(@" SELECT ID AS '月份' ,CAST(YEAR(GETDATE()) AS NVARCHAR)+ID  AS  '今年' ");
+                STR.AppendFormat(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE  TH020='Y' AND TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND SUBSTRING(TH002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TH001='A233'),0) ELSE 0 END AS '本月出貨量' ");
+                STR.AppendFormat(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTJ WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE TJ021='Y' AND TJ001=LA006 AND TJ002=LA007 AND TJ003=LA008 AND SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND   SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TJ001='A246'),0)  ELSE 0 END AS '本月退貨量' ");
+                STR.AppendFormat(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(TH013) FROM  [TK].dbo.COPTH WITH (NOLOCK) WHERE  TH020='Y' AND SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND SUBSTRING(TH002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID  AND TH001='A233'),0) ELSE 0 END AS '本月出貨金額' ");
+                STR.AppendFormat(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(TJ012) FROM  [TK].dbo.COPTJ WITH (NOLOCK) WHERE  TJ021='Y' AND SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TJ001='A246'),0)  ELSE 0 END AS '本月退貨金額' ");
+                STR.AppendFormat(@" ,CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID  AS '去年' ");
+                STR.AppendFormat(@" ,ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE  TH020='Y' AND TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND SUBSTRING(TH002,1,6)<=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TH001='A233'),0) AS '去年本月出貨量' ");
+                STR.AppendFormat(@" ,ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTJ WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE  TJ021='Y' AND TJ001=LA006 AND TJ002=LA007 AND TJ003=LA008 AND SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND   SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TJ001='A246'),0)   AS '去年本月退貨量' ");
+                STR.AppendFormat(@" ,ISNULL((SELECT SUM(TH013) FROM  [TK].dbo.COPTH WITH (NOLOCK) WHERE  TH020='Y' AND SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND SUBSTRING(TH002,1,6)=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID  AND TH001='A233'),0)  AS '去年本月出貨金額' ");
+                STR.AppendFormat(@" ,ISNULL((SELECT SUM(TJ012) FROM  [TK].dbo.COPTJ WITH (NOLOCK) WHERE  TJ021='Y' AND SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TJ001='A246'),0)  AS '去年本月退貨金額' ");
+                STR.AppendFormat(@"  FROM [TKECOMMERCE].dbo.BASEMONTH ");
+                STR.AppendFormat(@"  ) AS TEMP ");
+                STR.AppendFormat(@" ");
+                STR.AppendFormat(@" ");
+                STR.AppendFormat(@" ");
+
+                talbename = "TEMPds12";
+            }
+            else if (comboBox1.Text.ToString().Equals("每月現銷銷貨"))
+            {
+
+            }
+
+            return STR;
         }
         private void showwaitfrm()
         {
