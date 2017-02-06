@@ -230,7 +230,7 @@ namespace TKKPI
                     STR.AppendFormat(@"  AND (MA001 LIKE '5%' OR MA001 LIKE '6%' )");
                     STR.AppendFormat(@"  ) AS TEMP");
                     STR.AppendFormat(@"  UNION ALL ");
-                    STR.AppendFormat(@"  SELECT 'TOTAL','','','','','',SUM(當月預算),SUM(當月實際費用),0,SUM(預算累積),SUM(實際費用累積),0,0,0");
+                    STR.AppendFormat(@"  SELECT 'TOTAL','','','','','',SUM(當月預算),SUM(當月實際費用),ROUND(SUM(當月實際費用)/SUM(當月預算)*100,2),SUM(預算累積),SUM(實際費用累積),ROUND(SUM(實際費用累積)/SUM(預算累積)*100,2),SUM(年度預算總額),ROUND(SUM(實際費用累積)/SUM(年度預算總額)*100,2)");
                     STR.AppendFormat(@"  FROM ( ");
                     STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',CAST( MK006 AS DECIMAL(18,2))   AS '當月預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
                     STR.AppendFormat(@"  ,CAST( ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0) AS DECIMAL(18,2)) AS '當月實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
@@ -266,7 +266,7 @@ namespace TKKPI
                     STR.AppendFormat(@"  AND (MA001 LIKE '5%' OR MA001 LIKE '6%' )");             
                     STR.AppendFormat(@"  ) AS TEMP");
                     STR.AppendFormat(@"  UNION ALL ");
-                    STR.AppendFormat(@"  SELECT 'TOTAL','','','','','',SUM(當月預算),SUM(當月實際費用),0,SUM(預算累積),SUM(實際費用累積),0,0,0");
+                    STR.AppendFormat(@"  SELECT 'TOTAL','','','','','',SUM(當月預算),SUM(當月實際費用),ROUND(SUM(當月實際費用)/SUM(當月預算)*100,2),SUM(預算累積),SUM(實際費用累積),ROUND(SUM(實際費用累積)/SUM(預算累積)*100,2),SUM(年度預算總額),ROUND(SUM(實際費用累積)/SUM(年度預算總額)*100,2)");
                     STR.AppendFormat(@"  FROM ( ");
                     STR.AppendFormat(@"  SELECT '{0}' AS '年度','{1}' AS '月份',MA001 AS '科目',MA003 AS '科目名稱',MK004 AS '部門代號',CASE WHEN ISNULL(ME002,'')='' THEN '全公司' ELSE ME002 END AS '部門',CAST( MK006   AS DECIMAL(18,2)) AS '當月預算'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
                     STR.AppendFormat(@"  ,CAST(ISNULL((SELECT SUM(MD005) FROM  [TK].dbo.ACTMD WITH (NOLOCK) WHERE MD001=MA001 AND MD002=MK004 AND MD003='{0}' AND MD004='{1}'),0)  AS DECIMAL(18,2)) AS '當月實際費用'", dateTimePicker1.Value.ToString("yyyy"), dateTimePicker1.Value.ToString("MM"));
