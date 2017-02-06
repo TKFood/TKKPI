@@ -341,6 +341,7 @@ namespace TKKPI
         public void ExcelExport()
         {
             Search();
+            string TABLENAME = "會計指標";
 
             //建立Excel 2003檔案
             IWorkbook wb = new XSSFWorkbook();
@@ -367,6 +368,7 @@ namespace TKKPI
             int j = 0;
             if(tablename.Equals("TEMPds1"))
             {
+                TABLENAME = "公司整體指標";
                 foreach (DataGridViewRow dr in this.dataGridView1.Rows)
                 {
                     ws.CreateRow(j + 1);
@@ -399,6 +401,7 @@ namespace TKKPI
             }
             else if (tablename.Equals("TEMPds2"))
             {
+                TABLENAME = "實際與預算比較費用報表";
                 foreach (DataGridViewRow dr in this.dataGridView1.Rows)
                 {
                     ws.CreateRow(j + 1);
@@ -412,13 +415,19 @@ namespace TKKPI
                     ws.GetRow(j + 1).CreateCell(7).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[7].ToString()));
                     ws.GetRow(j + 1).CreateCell(8).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[8].ToString()));
                     ws.GetRow(j + 1).CreateCell(9).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[9].ToString()));
-                   
+                    ws.GetRow(j + 1).CreateCell(10).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[10].ToString()));
+                    ws.GetRow(j + 1).CreateCell(11).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[11].ToString()));
+                    ws.GetRow(j + 1).CreateCell(12).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[12].ToString()));
+                    ws.GetRow(j + 1).CreateCell(13).SetCellValue(Convert.ToDouble(((System.Data.DataRowView)(dr.DataBoundItem)).Row.ItemArray[13].ToString()));
+                    
+
                     j++;
                 }
 
             }
             else if (tablename.Equals("TEMPds3"))
             {
+                TABLENAME = "營業部門銷貨成本金額及毛利";
                 foreach (DataGridViewRow dr in this.dataGridView1.Rows)
                 {
                     ws.CreateRow(j + 1);
@@ -434,6 +443,7 @@ namespace TKKPI
             }
             else if (tablename.Equals("TEMPds4"))
             {
+                TABLENAME = "每月所有負毛利產品";
                 foreach (DataGridViewRow dr in this.dataGridView1.Rows)
                 {
                     ws.CreateRow(j + 1);
@@ -459,7 +469,7 @@ namespace TKKPI
                 Directory.CreateDirectory(@"c:\temp\");
             }
             StringBuilder filename = new StringBuilder();
-            filename.AppendFormat(@"c:\temp\公司整體指標{0}.xlsx", DateTime.Now.ToString("yyyyMMdd"));
+            filename.AppendFormat(@"c:\temp\{0}-{1}.xlsx", TABLENAME, DateTime.Now.ToString("yyyyMMdd"));
 
             FileStream file = new FileStream(filename.ToString(), FileMode.Create);//產生檔案
             wb.Write(file);

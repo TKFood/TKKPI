@@ -66,8 +66,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
-            this.splitContainer1.Size = new System.Drawing.Size(984, 733);
-            this.splitContainer1.SplitterDistance = 302;
+            this.splitContainer1.Size = new System.Drawing.Size(984, 707);
+            this.splitContainer1.SplitterDistance = 291;
             this.splitContainer1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -110,7 +110,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(984, 302);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(984, 291);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // label4
@@ -275,14 +275,14 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(984, 427);
+            this.dataGridView1.Size = new System.Drawing.Size(984, 412);
             this.dataGridView1.TabIndex = 33;
             // 
             // frmACTCompany
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 733);
+            this.ClientSize = new System.Drawing.Size(984, 707);
             this.Controls.Add(this.splitContainer1);
             this.Name = "frmACTCompany";
             this.Text = "frmACTCompany";
