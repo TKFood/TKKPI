@@ -215,7 +215,7 @@ namespace TKKPI
 
                 talbename = "TEMPds7";
             }
-            else if (comboBox1.Text.ToString().Equals("銷貨明細"))
+            else if (comboBox1.Text.ToString().Equals("官網銷貨明細"))
             {
                 if (!string.IsNullOrEmpty(textBox1.Text.ToString()))
                 {
@@ -372,7 +372,45 @@ namespace TKKPI
 
                 talbename = "TEMPds13";
             }
+            else if (comboBox1.Text.ToString().Equals("現銷銷貨明細"))
+            {
+                if (!string.IsNullOrEmpty(textBox1.Text.ToString()))
+                {
+                    STR.Append(@" SELECT  品號,品名,CAST(SUM(銷售量) AS DECIMAL(18,2)) AS 銷售量,CAST(SUM(銷售金額) AS DECIMAL(18,2)) AS 銷售金額");
+                    STR.Append(@" FROM (");
+                    STR.Append(@" SELECT TH004  AS '品號',TH005  AS '品名',LA011 AS '銷售量',TH013 AS '銷售金額' ");
+                    STR.Append(@" FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK),[TK].dbo.COPTG WITH (NOLOCK)");
+                    STR.Append(@" WHERE TH020='Y' AND  TH001=LA006 AND TH002=LA007 AND TH003=LA008");
+                    STR.AppendFormat(@" AND TG001=TH001 AND TG002=TH002");
+                    STR.AppendFormat(@" AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
+                    STR.Append(@" AND TH001='A230'  AND TG005='102300'");
+                    STR.AppendFormat(@" AND (TH004 LIKE '%{0}%' OR TH005 LIKE '%{0}%')", textBox1.Text.ToString());
+                    STR.Append(@"  ) AS TEMP");
+                    STR.Append(@" GROUP BY 品號,品名");
+                    STR.Append(@" ORDER BY SUM(銷售金額) DESC");
+                    STR.AppendFormat(@" ");
 
+
+                }
+                else
+                {
+                    STR.Append(@" SELECT  品號,品名,CAST(SUM(銷售量) AS DECIMAL(18,2)) AS 銷售量,CAST(SUM(銷售金額) AS DECIMAL(18,2)) AS 銷售金額");
+                    STR.Append(@" FROM (");
+                    STR.Append(@" SELECT TH004  AS '品號',TH005  AS '品名',LA011 AS '銷售量',TH013 AS '銷售金額' ");
+                    STR.Append(@" FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK),[TK].dbo.COPTG WITH (NOLOCK)");
+                    STR.Append(@" WHERE TH020='Y' AND  TH001=LA006 AND TH002=LA007 AND TH003=LA008");
+                    STR.AppendFormat(@" AND TG001=TH001 AND TG002=TH002");
+                    STR.AppendFormat(@" AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
+                    STR.Append(@" AND TH001='A230'  AND TG005='102300'");
+                    STR.Append(@"  ) AS TEMP");
+                    STR.Append(@" GROUP BY 品號,品名");
+                    STR.Append(@" ORDER BY SUM(銷售金額) DESC");
+                    STR.AppendFormat(@" ");
+                }
+
+
+                talbename = "TEMPds8";
+            }
             return STR;
         }
         private void showwaitfrm()
