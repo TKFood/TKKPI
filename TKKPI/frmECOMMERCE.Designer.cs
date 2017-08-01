@@ -130,25 +130,27 @@
             this.tableLayoutPanel1.SetColumnSpan(this.comboBox1, 3);
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
+            "會計消貨者業績",
+            "每月官網銷貨",
+            "每月現銷銷貨",
+            "每月電商銷貨",
+            "各電商銷貨金額及數量",
+            "官網銷貨明細",
+            "現銷銷貨明細",
+            "電商銷貨明細",
+            "==========",
             "電商每日銷貨金額及預估比較表",
             "電話訂購每日銷貨金額及預估比較表",
-            "電話客服內容",
             "今年電商成長率",
             "今年電商累積銷貨",
             "今年現銷累積銷貨",
-            "本月客服統計",
             "本月銷貨毛利",
-            "會計消貨者業績",
-            "每月電商銷貨",
-            "每月現銷銷貨",
-            "該月平均每筆銷售未稅金額",
-            "官網銷貨明細",
-            "現銷銷貨明細"});
+            "該月平均每筆銷售未稅金額"});
             this.comboBox1.Location = new System.Drawing.Point(83, 90);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(234, 20);
             this.comboBox1.TabIndex = 38;
-            this.comboBox1.Text = "電商每日銷貨金額及預估比較表";
+            this.comboBox1.Text = "會計消貨者業績";
             // 
             // label3
             // 

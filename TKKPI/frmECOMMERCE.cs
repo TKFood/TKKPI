@@ -300,7 +300,7 @@ namespace TKKPI
 
                 talbename = "TEMPds11";
             }
-            else if(comboBox1.Text.ToString().Equals("每月電商銷貨"))
+            else if(comboBox1.Text.ToString().Equals("每月官網銷貨"))
             {
 
                 STR.AppendFormat(@" SELECT 月份,今年");
@@ -411,6 +411,99 @@ namespace TKKPI
 
                 talbename = "TEMPds8";
             }
+
+            else if (comboBox1.Text.ToString().Equals("每月電商銷貨"))
+            {
+
+                STR.AppendFormat(@" SELECT 月份,今年");
+                STR.AppendFormat(@" ,CAST ((本月出貨金額-本月退貨金額) AS DECIMAL(18,2)) AS '本月實出金額'");
+                STR.AppendFormat(@" ,CAST ((本月出貨量-本月退貨量) AS DECIMAL(18,2)) AS '本月實出貨量'");
+                STR.AppendFormat(@" ,CAST (本月出貨量 AS DECIMAL(18,2)) AS '本月出貨量'");
+                STR.AppendFormat(@" ,CAST (本月退貨量 AS DECIMAL(18,2)) AS '本月退貨量'");
+                STR.AppendFormat(@" ,CAST (本月出貨金額 AS DECIMAL(18,2))  AS '本月出貨金額'");
+                STR.AppendFormat(@" ,CAST (本月退貨金額 AS DECIMAL(18,2))  AS '本月退貨金額'");
+                STR.AppendFormat(@" ,去年");
+                STR.AppendFormat(@" ,CAST ((去年本月出貨金額-去年本月退貨金額) AS DECIMAL(18,2)) AS '去年本月實出金額'");
+                STR.AppendFormat(@" ,CAST ((去年本月出貨量-去年本月退貨量) AS DECIMAL(18,2)) AS '去年本月實出貨量'");
+                STR.AppendFormat(@" ,CAST (去年本月出貨量 AS DECIMAL(18,2))  AS '去年本月出貨量'");
+                STR.AppendFormat(@" ,CAST (去年本月退貨量 AS DECIMAL(18,2)) AS '去年本月退貨量'");
+                STR.AppendFormat(@" ,CAST(去年本月出貨金額 AS DECIMAL(18,2)) AS '去年本月出貨金額'");
+                STR.AppendFormat(@" ,CAST (去年本月退貨金額 AS DECIMAL(18,2)) AS '去年本月退貨金額'");
+                STR.AppendFormat(@" FROM (");
+                STR.AppendFormat(@" SELECT ID AS '月份' ,CAST(YEAR(GETDATE()) AS NVARCHAR)+ID  AS  '今年' ");
+                STR.AppendFormat(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE  TH020='Y' AND TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND SUBSTRING(TH002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TH001='A234'),0) ELSE 0 END AS '本月出貨量' ");
+                STR.AppendFormat(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTJ WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE TJ021='Y' AND TJ001=LA006 AND TJ002=LA007 AND TJ003=LA008 AND SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND   SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TJ001=''),0)  ELSE 0 END AS '本月退貨量' ");
+                STR.AppendFormat(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(TH013) FROM  [TK].dbo.COPTH WITH (NOLOCK) WHERE  TH020='Y' AND SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND SUBSTRING(TH002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID  AND TH001='A234'),0) ELSE 0 END AS '本月出貨金額' ");
+                STR.AppendFormat(@" ,CASE WHEN ID<=MONTH(GETDATE()) THEN ISNULL((SELECT SUM(TJ012) FROM  [TK].dbo.COPTJ WITH (NOLOCK) WHERE  TJ021='Y' AND SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE()) AS NVARCHAR) AND SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE()) AS NVARCHAR)+ID AND TJ001=''),0)  ELSE 0 END AS '本月退貨金額' ");
+                STR.AppendFormat(@" ,CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID  AS '去年' ");
+                STR.AppendFormat(@" ,ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE  TH020='Y' AND TH001=LA006 AND TH002=LA007 AND TH003=LA008 AND SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND SUBSTRING(TH002,1,6)<=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TH001='A234'),0) AS '去年本月出貨量' ");
+                STR.AppendFormat(@" ,ISNULL((SELECT SUM(LA011) FROM  [TK].dbo.COPTJ WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK) WHERE  TJ021='Y' AND TJ001=LA006 AND TJ002=LA007 AND TJ003=LA008 AND SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND   SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TJ001=''),0)   AS '去年本月退貨量' ");
+                STR.AppendFormat(@" ,ISNULL((SELECT SUM(TH013) FROM  [TK].dbo.COPTH WITH (NOLOCK) WHERE  TH020='Y' AND SUBSTRING(TH002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND SUBSTRING(TH002,1,6)=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID  AND TH001='A234'),0)  AS '去年本月出貨金額' ");
+                STR.AppendFormat(@" ,ISNULL((SELECT SUM(TJ012) FROM  [TK].dbo.COPTJ WITH (NOLOCK) WHERE  TJ021='Y' AND SUBSTRING(TJ002,1,4)=CAST(YEAR(GETDATE())-1 AS NVARCHAR) AND SUBSTRING(TJ002,1,6)=CAST(YEAR(GETDATE())-1 AS NVARCHAR)+ID AND TJ001=''),0)  AS '去年本月退貨金額' ");
+                STR.AppendFormat(@"  FROM [TKECOMMERCE].dbo.BASEMONTH ");
+                STR.AppendFormat(@"  ) AS TEMP ");
+                STR.AppendFormat(@" ");
+                STR.AppendFormat(@" ");
+                STR.AppendFormat(@" ");
+
+                talbename = "TEMPds14";
+            }
+
+            else if (comboBox1.Text.ToString().Equals("各電商銷貨金額及數量"))
+            {
+                STR.AppendFormat(@" SELECT TG007 AS '平台商',SUM(TH013) AS '銷貨金額',SUM(LA011) AS '銷貨數量'");
+                STR.AppendFormat(@" FROM [TK].dbo.COPTH,[TK].dbo.COPTG,[TK].dbo.INVLA");
+                STR.AppendFormat(@" WHERE TG001=TH001 AND TG002=TH002");
+                STR.AppendFormat(@" AND TH001=LA006 AND TH002=LA007 AND TH003=LA008");
+                STR.AppendFormat(@" AND TH001='A234'");
+                STR.AppendFormat(@" AND TH020='Y'");
+                STR.AppendFormat(@" AND SUBSTRING(TH002,1,6)='{0}'", dateTimePicker1.Value.ToString("yyyyMM"));
+                STR.AppendFormat(@" GROUP BY TG007");
+                STR.AppendFormat(@" ORDER BY TG007");
+                STR.AppendFormat(@" ");
+
+                talbename = "TEMPds15";
+            }
+            else if (comboBox1.Text.ToString().Equals("電商銷貨明細"))
+            {
+                if (!string.IsNullOrEmpty(textBox1.Text.ToString()))
+                {
+                    STR.Append(@" SELECT 平台商, 品號,品名,CAST(SUM(銷售量) AS DECIMAL(18,2)) AS 銷售量,CAST(SUM(銷售金額) AS DECIMAL(18,2)) AS 銷售金額");
+                    STR.Append(@" FROM (");
+                    STR.Append(@" SELECT TG007 AS '平台商',TH004  AS '品號',TH005  AS '品名',LA011 AS '銷售量',TH013 AS '銷售金額' ");
+                    STR.Append(@" FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK),[TK].dbo.COPTG WITH (NOLOCK)");
+                    STR.Append(@" WHERE TH020='Y' AND  TH001=LA006 AND TH002=LA007 AND TH003=LA008");
+                    STR.AppendFormat(@" AND TG001=TH001 AND TG002=TH002");
+                    STR.AppendFormat(@" AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
+                    STR.Append(@" AND TH001='A234'  AND TG005 IN ('102300','114000')  ");
+                    STR.AppendFormat(@" AND (TH004 LIKE '%{0}%' OR TH005 LIKE '%{0}%')", textBox1.Text.ToString());
+                    STR.Append(@"  ) AS TEMP");
+                    STR.Append(@" GROUP BY 平台商,品號,品名");
+                    STR.Append(@" ORDER BY 平台商,SUM(銷售金額) DESC");
+                    STR.AppendFormat(@" ");
+
+
+                }
+                else
+                {
+                    STR.Append(@" SELECT  平台商,品號,品名,CAST(SUM(銷售量) AS DECIMAL(18,2)) AS 銷售量,CAST(SUM(銷售金額) AS DECIMAL(18,2)) AS 銷售金額");
+                    STR.Append(@" FROM (");
+                    STR.Append(@" SELECT TG007 AS '平台商',TH004  AS '品號',TH005  AS '品名',LA011 AS '銷售量',TH013 AS '銷售金額' ");
+                    STR.Append(@" FROM [TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.INVLA WITH (NOLOCK),[TK].dbo.COPTG WITH (NOLOCK)");
+                    STR.Append(@" WHERE TH020='Y' AND  TH001=LA006 AND TH002=LA007 AND TH003=LA008");
+                    STR.AppendFormat(@" AND TG001=TH001 AND TG002=TH002");
+                    STR.AppendFormat(@" AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}'", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
+                    STR.Append(@" AND TH001='A234'  AND TG005 IN ('102300','114000')  ");
+                    STR.Append(@"  ) AS TEMP");
+                    STR.Append(@" GROUP BY 平台商,品號,品名");
+                    STR.Append(@" ORDER BY 平台商,SUM(銷售金額) DESC");
+                    STR.AppendFormat(@" ");
+                }
+
+
+                talbename = "TEMPds16";
+            }
+
             return STR;
         }
         private void showwaitfrm()
@@ -430,13 +523,15 @@ namespace TKKPI
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            Thread TD;
-
-            TD = new Thread(showwaitfrm);
-            TD.Start();
-            Thread.Sleep(2000);   //此行可以不需要，主要用於等待主窗體填充數據
             Search();
-            TD.Abort(); //主窗體加載完成數據後，線程結束，關閉等待窗體。
+
+            //Thread TD;
+
+            //TD = new Thread(showwaitfrm);
+            //TD.Start();
+            //Thread.Sleep(2000);   //此行可以不需要，主要用於等待主窗體填充數據
+            
+            //TD.Abort(); //主窗體加載完成數據後，線程結束，關閉等待窗體。
         }
 
         #endregion
