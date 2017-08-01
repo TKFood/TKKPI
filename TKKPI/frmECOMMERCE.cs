@@ -7,9 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NPOI;
+using NPOI.HPSF;
+using NPOI.HSSF;
+using NPOI.HSSF.UserModel;
+using NPOI.POIFS;
+using NPOI.Util;
+using NPOI.HSSF.Util;
+using NPOI.HSSF.Extractor;
+using System.IO;
 using System.Data.SqlClient;
+using NPOI.SS.UserModel;
 using System.Configuration;
-using System.Threading;
+using NPOI.XSSF.UserModel;
 
 namespace TKKPI
 {
@@ -504,6 +514,23 @@ namespace TKKPI
                 talbename = "TEMPds16";
             }
 
+            else if (comboBox1.Text.ToString().Equals("品號彙總"))
+            {
+
+                STR.AppendFormat(@" SELECT TG001,TH004 AS '品號',TH005 AS '品名',CONVERT(real, SUM(TH008)) AS '數量'");
+                STR.AppendFormat(@" ,CONVERT(real, SUM(TH024)) AS '贈品',TH009 AS '單位',CONVERT(real, SUM(TH013)) AS '金額' ");
+                STR.AppendFormat(@" FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002  ");
+                STR.AppendFormat(@" AND     (TG001='A233'  OR (TG001='A230'  AND TG006  IN ('160092','170007') ) OR TG001='A234') ");
+                STR.AppendFormat(@" AND   TG003>='{0}' AND TG003<='{1}' ", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
+                STR.AppendFormat(@" GROUP BY TG001,TH004,TH005,TH009");
+                STR.AppendFormat(@" ORDER BY TG001,SUM(TH008) DESC");
+                STR.AppendFormat(@" ");
+                STR.AppendFormat(@" ");
+                STR.AppendFormat(@" ");
+
+                talbename = "TEMPds17";
+            }
+
             return STR;
         }
         private void showwaitfrm()
@@ -518,6 +545,78 @@ namespace TKKPI
 
             }
         }
+
+        public void ExcelExport()
+        {
+            Search();
+            string TABLENAME = "報表";
+
+            //建立Excel 2003檔案
+            IWorkbook wb = new XSSFWorkbook();
+            ISheet ws;
+
+
+            dt = ds.Tables[talbename];
+            if (dt.TableName != string.Empty)
+            {
+                ws = wb.CreateSheet(dt.TableName);
+            }
+            else
+            {
+                ws = wb.CreateSheet("Sheet1");
+            }
+
+            ws.CreateRow(0);//第一行為欄位名稱
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                ws.GetRow(0).CreateCell(i).SetCellValue(dt.Columns[i].ColumnName);
+            }
+
+
+            int j = 0;
+            if (!string.IsNullOrEmpty(talbename))
+            {
+                TABLENAME = talbename+"報表";
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    ws.CreateRow(i + 1);
+                    for (int rows = 0; rows < dt.Columns.Count; rows++)
+                    {
+                        ws.GetRow(i + 1).CreateCell(rows).SetCellValue(ds.Tables[talbename].Rows[i][rows].ToString());
+                    }
+                }
+            }
+            
+
+            if (Directory.Exists(@"c:\temp\"))
+            {
+                //資料夾存在
+            }
+            else
+            {
+                //新增資料夾
+                Directory.CreateDirectory(@"c:\temp\");
+            }
+            StringBuilder filename = new StringBuilder();
+            filename.AppendFormat(@"c:\temp\{0}-{1}.xlsx", TABLENAME, DateTime.Now.ToString("yyyyMMdd"));
+
+            FileStream file = new FileStream(filename.ToString(), FileMode.Create);//產生檔案
+            wb.Write(file);
+            file.Close();
+
+            MessageBox.Show("匯出完成-EXCEL放在-" + filename.ToString());
+            FileInfo fi = new FileInfo(filename.ToString());
+            if (fi.Exists)
+            {
+                System.Diagnostics.Process.Start(filename.ToString());
+            }
+            else
+            {
+                //file doesn't exist
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -534,6 +633,13 @@ namespace TKKPI
             //TD.Abort(); //主窗體加載完成數據後，線程結束，關閉等待窗體。
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ExcelExport();
+        }
+
         #endregion
+
+
     }
 }

@@ -43,6 +43,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -99,6 +100,7 @@
             this.tableLayoutPanel1.Controls.Add(this.button1, 6, 2);
             this.tableLayoutPanel1.Controls.Add(this.label7, 4, 2);
             this.tableLayoutPanel1.Controls.Add(this.textBox1, 5, 2);
+            this.tableLayoutPanel1.Controls.Add(this.button2, 8, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -138,6 +140,7 @@
             "官網銷貨明細",
             "現銷銷貨明細",
             "電商銷貨明細",
+            "品號彙總",
             "==========",
             "電商每日銷貨金額及預估比較表",
             "電話訂購每日銷貨金額及預估比較表",
@@ -265,6 +268,18 @@
             this.dataGridView1.Size = new System.Drawing.Size(980, 546);
             this.dataGridView1.TabIndex = 33;
             // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button2.ForeColor = System.Drawing.Color.Blue;
+            this.button2.Location = new System.Drawing.Point(643, 83);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(73, 34);
+            this.button2.TabIndex = 45;
+            this.button2.Text = "匯出";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // frmECOMMERCE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -301,5 +316,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button button2;
     }
 }
