@@ -42,8 +42,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -133,9 +133,9 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "會計消貨者業績",
+            "每月電商銷貨",
             "每月官網銷貨",
             "每月現銷銷貨",
-            "每月電商銷貨",
             "各電商銷貨金額及數量",
             "官網銷貨明細",
             "現銷銷貨明細",
@@ -254,6 +254,18 @@
             this.textBox1.Size = new System.Drawing.Size(74, 22);
             this.textBox1.TabIndex = 44;
             // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button2.ForeColor = System.Drawing.Color.Blue;
+            this.button2.Location = new System.Drawing.Point(643, 83);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(73, 34);
+            this.button2.TabIndex = 45;
+            this.button2.Text = "匯出";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
@@ -267,18 +279,6 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(980, 546);
             this.dataGridView1.TabIndex = 33;
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button2.ForeColor = System.Drawing.Color.Blue;
-            this.button2.Location = new System.Drawing.Point(643, 83);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(73, 34);
-            this.button2.TabIndex = 45;
-            this.button2.Text = "匯出";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // frmECOMMERCE
             // 
