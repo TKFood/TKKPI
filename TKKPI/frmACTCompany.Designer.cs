@@ -55,7 +55,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.comboBox6 = new System.Windows.Forms.ComboBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.button4 = new System.Windows.Forms.Button();
@@ -395,11 +394,10 @@
             this.tableLayoutPanel2.Controls.Add(this.label9, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.comboBox4, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.label10, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.label11, 2, 3);
-            this.tableLayoutPanel2.Controls.Add(this.comboBox6, 3, 3);
             this.tableLayoutPanel2.Controls.Add(this.comboBox5, 1, 3);
             this.tableLayoutPanel2.Controls.Add(this.button4, 4, 3);
             this.tableLayoutPanel2.Controls.Add(this.label8, 5, 3);
+            this.tableLayoutPanel2.Controls.Add(this.comboBox6, 2, 3);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
@@ -500,23 +498,11 @@
             this.label10.Text = "科目";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label11
-            // 
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(244, 177);
-            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(112, 16);
-            this.label11.TabIndex = 46;
-            this.label11.Text = "~";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // comboBox6
             // 
             this.comboBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Location = new System.Drawing.Point(364, 175);
+            this.comboBox6.Location = new System.Drawing.Point(244, 175);
             this.comboBox6.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox6.Name = "comboBox6";
             this.comboBox6.Size = new System.Drawing.Size(112, 24);
@@ -631,7 +617,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox comboBox6;
         private System.Windows.Forms.ComboBox comboBox5;
         private FastReport.Preview.PreviewControl previewControl1;

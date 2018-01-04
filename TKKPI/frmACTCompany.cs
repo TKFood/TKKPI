@@ -51,6 +51,11 @@ namespace TKKPI
             dateTimePicker1.Value = dt;
             comboboxload();
             SearchACTYEARSMONTHSEMP();
+
+            combobox4load();
+            combobox5load();
+            combobox6load();
+
         }
         private void frmACTCompany_Load(object sender, EventArgs e)
         {
@@ -73,6 +78,69 @@ namespace TKKPI
             comboBox2.DataSource = dt.DefaultView;
             comboBox2.ValueMember = "ME001";
             comboBox2.DisplayMember = "ME002";
+            sqlConn.Close();
+
+
+        }
+
+        public void combobox4load()
+        {
+
+            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+            String Sequel = "SELECT ME001,ME001+'-'+ME002 AS ME002 FROM [TK].dbo.CMSME WHERE ME002 NOT LIKE '%停%'  UNION ALL  SELECT '000000','全部' ORDER BY ME001";
+            adapter = new SqlDataAdapter(Sequel, sqlConn);
+            dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ME001", typeof(string));
+            dt.Columns.Add("ME002", typeof(string));
+            adapter.Fill(dt);
+            comboBox4.DataSource = dt.DefaultView;
+            comboBox4.ValueMember = "ME001";
+            comboBox4.DisplayMember = "ME002";
+            sqlConn.Close();
+
+
+        }
+
+        public void combobox5load()
+        {
+
+            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+            String Sequel = "SELECT MA001,MA003 FROM [TK].dbo.ACTMA    WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' ))";
+            adapter = new SqlDataAdapter(Sequel, sqlConn);
+            dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("MA001", typeof(string));
+            dt.Columns.Add("MA003", typeof(string));
+            adapter.Fill(dt);
+            comboBox5.DataSource = dt.DefaultView;
+            comboBox5.ValueMember = "MA001";
+            comboBox5.DisplayMember = "MA001";
+            sqlConn.Close();
+
+
+        }
+
+        public void combobox6load()
+        {
+
+            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+            String Sequel = "SELECT MA001,MA003 FROM [TK].dbo.ACTMA    WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' ))";
+            adapter = new SqlDataAdapter(Sequel, sqlConn);
+            dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("MA001", typeof(string));
+            dt.Columns.Add("MA003", typeof(string));
+            adapter.Fill(dt);
+            comboBox6.DataSource = dt.DefaultView;
+            comboBox6.ValueMember = "MA001";
+            comboBox6.DisplayMember = "MA001";
             sqlConn.Close();
 
 
