@@ -20,6 +20,8 @@ using System.Data.SqlClient;
 using NPOI.SS.UserModel;
 using System.Configuration;
 using NPOI.XSSF.UserModel;
+using FastReport;
+using System.Data.OleDb;
 
 namespace TKKPI
 {
@@ -40,6 +42,7 @@ namespace TKKPI
         int rownum = 0;
         string Dep;
         DateTime YEARSMONTHS;
+        private Report report1;
 
         public frmACTCompany()
         {
@@ -49,7 +52,10 @@ namespace TKKPI
             comboboxload();
             SearchACTYEARSMONTHSEMP();
         }
-
+        private void frmACTCompany_Load(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 1;
+        }
         #region FUNCTION
         public void comboboxload()
         {
@@ -565,6 +571,29 @@ namespace TKKPI
             }
 
         }
+
+        public void SETFASTREPORT()
+        {
+            report1 = new Report();
+            report1.Load(@"REPORT\預算及實際-全公司.frx");
+
+            report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+
+            report1.SetParameterValue("P1", dateTimePicker2.Value.ToString("yyyy"));
+            report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("MM"));
+            report1.SetParameterValue("P3", dateTimePicker2.Value.ToString("yyyyMM"));
+            report1.SetParameterValue("P4", dateTimePicker2.Value.ToString("yyyyMM"));
+            string STARTYM = dateTimePicker2.Value.ToString("yyyy") + "01";
+            report1.SetParameterValue("P5", STARTYM);
+            report1.SetParameterValue("P6", dateTimePicker2.Value.ToString("yyyyMM"));
+            report1.SetParameterValue("P11", "6000");
+            report1.SetParameterValue("P12", "6999");
+
+            report1.Preview = previewControl1;
+            report1.Show();
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -582,6 +611,11 @@ namespace TKKPI
             objfrmACTYEARSMONTHSEMP.ShowDialog();
             SearchACTYEARSMONTHSEMP();
         }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT();
+        }
+
 
         #endregion
 

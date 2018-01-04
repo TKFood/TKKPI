@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2018 10:12:30" ReportInfo.Modified="01/04/2018 11:38:50" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9INsnIubVkm7T+CJzqAXXmv" CommandTimeout="60">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT MA001,MA003,全年預算,當月預算,當月借方,當月貸方,累積預算,累積借方,累積貸方,(當月借方-當月貸方) AS '當月實際',(累積借方-累積貸方) AS '累積實際', (當月借方-當月貸方)/ISNULL(NULLIF(當月預算,0),1) AS '當月達成率',(累積借方-累積貸方)/ISNULL(NULLIF(累積預算,0),1) AS '累積達成率',(累積借方-累積貸方)/ISNULL(NULLIF(全年預算,0),1) AS '全年達成率'&#13;&#10;FROM (  &#13;&#10;SELECT MA001,MA003&#13;&#10;,(SELECT ISNULL(SUM(MK006),0) FROM [TK].dbo.ACTMK WHERE MK003 LIKE LTRIM(RTRIM(MA001))+'%' AND MK004&lt;&gt;'******' AND MK002=@P1 AND MK005=@P2) AS '當月預算' &#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P3 AND SUBSTRING(TA003,1,6)&lt;=@P4 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='1'  ) AS '當月借方'&#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P3 AND SUBSTRING(TA003,1,6)&lt;=@P4 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='-1'  )  AS '當月貸方'&#13;&#10;,(SELECT ISNULL(SUM(MK006),0) FROM [TK].dbo.ACTMK WHERE MK003 LIKE LTRIM(RTRIM(MA001))+'%' AND MK004&lt;&gt;'******' AND MK002=@P1 AND MK005&lt;=@P2) AS '累積預算' &#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P5 AND SUBSTRING(TA003,1,6)&lt;=@P6 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='1'  ) AS '累積借方'&#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P5 AND SUBSTRING(TA003,1,6)&lt;=@P6 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='-1'  )  AS '累積貸方'&#13;&#10;&#13;&#10;,(SELECT ISNULL(SUM(MK006),0) FROM [TK].dbo.ACTMK WHERE MK003 LIKE LTRIM(RTRIM(MA001))+'%' AND MK004&lt;&gt;'******' AND MK002='2017') AS '全年預算' &#13;&#10;FROM [TK].dbo.ACTMA    &#13;&#10;WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' ))&#13;&#10;AND MA001&gt;=@P11 AND MA001&lt;=@P12)&#13;&#10;AS TEMP&#13;&#10;ORDER BY MA001">
+        <Column Name="MA001" DataType="System.String"/>
+        <Column Name="MA003" DataType="System.String"/>
+        <Column Name="累積預算" DataType="System.Decimal"/>
+        <Column Name="累積借方" DataType="System.Decimal"/>
+        <Column Name="累積貸方" DataType="System.Decimal"/>
+        <Column Name="全年預算" DataType="System.Decimal"/>
+        <Column Name="當月預算" DataType="System.Decimal"/>
+        <Column Name="當月借方" DataType="System.Decimal"/>
+        <Column Name="當月貸方" DataType="System.Decimal"/>
+        <Column Name="當月實際" DataType="System.Decimal"/>
+        <Column Name="累積實際" DataType="System.Decimal"/>
+        <Column Name="當月達成率" DataType="System.Decimal"/>
+        <Column Name="累積達成率" DataType="System.Decimal"/>
+        <Column Name="全年達成率" DataType="System.Decimal"/>
+        <CommandParameter Name="P1" DataType="12" Expression="[P1]" DefaultValue="2017"/>
+        <CommandParameter Name="P2" DataType="12" Expression="[P2]" DefaultValue="12"/>
+        <CommandParameter Name="P3" DataType="12" Expression="[P3]" DefaultValue="201712"/>
+        <CommandParameter Name="P4" DataType="12" Expression="[P4]" DefaultValue="201712"/>
+        <CommandParameter Name="P5" DataType="12" Expression="[P5]" DefaultValue="201701"/>
+        <CommandParameter Name="P6" DataType="12" Expression="[P6]" DefaultValue="201712"/>
+        <CommandParameter Name="P11" DataType="12" Expression="[P11]" DefaultValue="6000"/>
+        <CommandParameter Name="P12" DataType="12" Expression="[P12]" DefaultValue="6999"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="P1" DataType="System.String"/>
+    <Parameter Name="P2" DataType="System.String"/>
+    <Parameter Name="P3" DataType="System.String"/>
+    <Parameter Name="P4" DataType="System.String"/>
+    <Parameter Name="P5" DataType="System.String"/>
+    <Parameter Name="P6" DataType="System.String"/>
+    <Parameter Name="P11" DataType="System.String"/>
+    <Parameter Name="P12" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text19" Width="1039.5" Height="18.9" Text="預算與實際比較報表-全公司" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="22.75" Width="1047.06" Height="18.9">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="科目" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="名稱" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="567" Width="94.5" Height="18.9" Border.Lines="All" Text="累積預算" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="累積實際金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="661.5" Width="94.5" Height="18.9" Border.Lines="All" Text="累積達成率" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="756" Width="94.5" Height="18.9" Border.Lines="All" Text="全年預算" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="當月實際金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="當月預算" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="當月達成率" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" Text="全年達成率" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="45.49" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MA001]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MA003]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="567" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.累積預算]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.累積實際]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="661.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.累積達成率]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter">
+        <Formats>
+          <PercentFormat/>
+          <GeneralFormat/>
+          <GeneralFormat/>
+        </Formats>
+      </TextObject>
+      <TextObject Name="Text17" Left="756" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.全年預算]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.當月實際]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.當月預算]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Left="378" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.當月達成率]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text23" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.全年達成率]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter">
+        <Formats>
+          <PercentFormat/>
+          <GeneralFormat/>
+          <GeneralFormat/>
+        </Formats>
+      </TextObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="68.24" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>
