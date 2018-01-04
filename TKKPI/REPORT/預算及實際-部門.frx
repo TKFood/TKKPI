@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2018 10:12:30" ReportInfo.Modified="01/04/2018 13:09:33" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2018 10:12:30" ReportInfo.Modified="01/04/2018 14:21:38" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9LVxm1+DZ0XjqZigTxGTOOD" CommandTimeout="60">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT MA001,MA003,全年預算,當月預算,當月借方,當月貸方,累積預算,累積借方,累積貸方,(當月借方-當月貸方) AS '當月實際',(累積借方-累積貸方) AS '累積實際', (當月借方-當月貸方)/ISNULL(NULLIF(當月預算,0),1) AS '當月達成率',(累積借方-累積貸方)/ISNULL(NULLIF(累積預算,0),1) AS '累積達成率',(累積借方-累積貸方)/ISNULL(NULLIF(全年預算,0),1) AS '全年達成率'&#13;&#10;FROM (  &#13;&#10;SELECT MA001,MA003&#13;&#10;,(SELECT ISNULL(SUM(MK006),0) FROM [TK].dbo.ACTMK WHERE MK003 LIKE LTRIM(RTRIM(MA001))+'%' AND MK004&lt;&gt;'******' AND MK002=@P1 AND MK005=@P2) AS '當月預算' &#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P3 AND SUBSTRING(TA003,1,6)&lt;=@P4 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='1'  ) AS '當月借方'&#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P3 AND SUBSTRING(TA003,1,6)&lt;=@P4 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='-1'  )  AS '當月貸方'&#13;&#10;,(SELECT ISNULL(SUM(MK006),0) FROM [TK].dbo.ACTMK WHERE MK003 LIKE LTRIM(RTRIM(MA001))+'%' AND MK004&lt;&gt;'******' AND MK002=@P1 AND MK005&lt;=@P2) AS '累積預算' &#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P5 AND SUBSTRING(TA003,1,6)&lt;=@P6 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='1'  ) AS '累積借方'&#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P5 AND SUBSTRING(TA003,1,6)&lt;=@P6 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='-1'  )  AS '累積貸方'&#13;&#10;&#13;&#10;,(SELECT ISNULL(SUM(MK006),0) FROM [TK].dbo.ACTMK WHERE MK003 LIKE LTRIM(RTRIM(MA001))+'%' AND MK004&lt;&gt;'******' AND MK002='2017') AS '全年預算' &#13;&#10;FROM [TK].dbo.ACTMA    &#13;&#10;WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' ))&#13;&#10;AND MA001&gt;=@P11 AND MA001&lt;=@P12)&#13;&#10;AS TEMP&#13;&#10;ORDER BY MA001">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9JdmZpP75HHFoHTuW6G/1e/" CommandTimeout="60">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT MA001,MA003,全年預算,當月預算,當月借方,當月貸方,累積預算,累積借方,累積貸方,(當月借方-當月貸方) AS '當月實際',(累積借方-累積貸方) AS '累積實際', (當月借方-當月貸方)/ISNULL(NULLIF(當月預算,0),1) AS '當月達成率',(累積借方-累積貸方)/ISNULL(NULLIF(累積預算,0),1) AS '累積達成率',(累積借方-累積貸方)/ISNULL(NULLIF(全年預算,0),1) AS '全年達成率'&#13;&#10;FROM (  &#13;&#10;SELECT MA001,MA003&#13;&#10;,(SELECT ISNULL(SUM(MK006),0) FROM [TK].dbo.ACTMK WHERE MK003 LIKE LTRIM(RTRIM(MA001))+'%' AND MK004=@P13  AND MK002=@P1 AND MK005=@P2) AS '當月預算' &#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P3 AND SUBSTRING(TA003,1,6)&lt;=@P4 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='1'AND   TB006=@P13 ) AS '當月借方'&#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P3 AND SUBSTRING(TA003,1,6)&lt;=@P4 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='-1' AND  TB006=@P13 )  AS '當月貸方'&#13;&#10;,(SELECT ISNULL(SUM(MK006),0) FROM [TK].dbo.ACTMK WHERE MK003 LIKE LTRIM(RTRIM(MA001))+'%' AND MK004=@P13  AND MK002=@P1 AND MK005&lt;=@P2) AS '累積預算' &#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P5 AND SUBSTRING(TA003,1,6)&lt;=@P6 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='1'AND   TB006=@P13 ) AS '累積借方'&#13;&#10;,(SELECT ISNULL(SUM(TB007),0) FROM [TK].dbo.ACTTA,[TK].dbo.ACTTB WHERE TA001=TB001 AND TA002=TB002 AND SUBSTRING(TA003,1,6)&gt;=@P5 AND SUBSTRING(TA003,1,6)&lt;=@P6 AND TB005 LIKE LTRIM(RTRIM(MA001))+'%' AND TB004='-1' AND  TB006=@P13 )  AS '累積貸方'&#13;&#10;&#13;&#10;,(SELECT ISNULL(SUM(MK006),0) FROM [TK].dbo.ACTMK WHERE MK003 LIKE LTRIM(RTRIM(MA001))+'%' AND  MK004=@P13  AND MK002='2017') AS '全年預算' &#13;&#10;FROM [TK].dbo.ACTMA    &#13;&#10;WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' ))&#13;&#10;AND MA001&gt;=@P11 AND MA001&lt;=@P12)&#13;&#10;AS TEMP&#13;&#10;ORDER BY MA001">
         <Column Name="MA001" DataType="System.String"/>
         <Column Name="MA003" DataType="System.String"/>
         <Column Name="累積預算" DataType="System.Decimal"/>
@@ -25,6 +25,7 @@
         <CommandParameter Name="P6" DataType="12" Expression="[P6]" DefaultValue="201712"/>
         <CommandParameter Name="P11" DataType="12" Expression="[P11]" DefaultValue="6000"/>
         <CommandParameter Name="P12" DataType="12" Expression="[P12]" DefaultValue="6999"/>
+        <CommandParameter Name="P13" DataType="12" Expression="[P13]" DefaultValue="114000"/>
       </TableDataSource>
     </MsSqlDataConnection>
     <Parameter Name="P1" DataType="System.String"/>
@@ -35,10 +36,12 @@
     <Parameter Name="P6" DataType="System.String"/>
     <Parameter Name="P11" DataType="System.String"/>
     <Parameter Name="P12" DataType="System.String"/>
+    <Parameter Name="P13" DataType="System.String"/>
+    <Parameter Name="P14" DataType="System.String"/>
   </Dictionary>
   <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
     <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
-      <TextObject Name="Text19" Width="1039.5" Height="18.9" Text="預算與實際比較報表-全公司" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Width="1039.5" Height="18.9" Text="預算與實際比較報表-[P14]" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
     <PageHeaderBand Name="PageHeader1" Top="22.75" Width="1047.06" Height="18.9">
       <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="科目" HorzAlign="Center" VertAlign="Center"/>
