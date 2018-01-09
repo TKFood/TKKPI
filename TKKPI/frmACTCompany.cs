@@ -109,7 +109,7 @@ namespace TKKPI
 
             connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
             sqlConn = new SqlConnection(connectionString);
-            String Sequel = "SELECT MA001,MA003 FROM [TK].dbo.ACTMA    WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' ))";
+            String Sequel = "SELECT MA001,MA003 FROM [TK].dbo.ACTMA    WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' )) AND (MA008='2' OR MA008='3'         )";
             adapter = new SqlDataAdapter(Sequel, sqlConn);
             dt = new DataTable();
             sqlConn.Open();
@@ -130,7 +130,7 @@ namespace TKKPI
 
             connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
             sqlConn = new SqlConnection(connectionString);
-            String Sequel = "SELECT MA001,MA003 FROM [TK].dbo.ACTMA    WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' ))";
+            String Sequel = "SELECT MA001,MA003 FROM [TK].dbo.ACTMA    WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' )) AND (MA008='2' OR MA008='3'         )";
             adapter = new SqlDataAdapter(Sequel, sqlConn);
             dt = new DataTable();
             sqlConn.Open();
@@ -642,30 +642,56 @@ namespace TKKPI
 
         public void SETFASTREPORT()
         {
-            if(comboBox4.Text.ToString().Equals("全部"))
+            if(checkBox1.Checked==false)
             {
-                report1 = new Report();
-                report1.Load(@"REPORT\預算及實際-全公司.frx");
+                if (comboBox4.Text.ToString().Equals("全部"))
+                {
+                    report1 = new Report();
+                    report1.Load(@"REPORT\預算及實際-全公司.frx");
 
-                report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                    report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
 
-                report1.SetParameterValue("P1", dateTimePicker2.Value.ToString("yyyy"));
-                report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("MM"));
-                report1.SetParameterValue("P3", dateTimePicker2.Value.ToString("yyyyMM"));
-                report1.SetParameterValue("P4", dateTimePicker2.Value.ToString("yyyyMM"));
-                string STARTYM = dateTimePicker2.Value.ToString("yyyy") + "01";
-                report1.SetParameterValue("P5", STARTYM);
-                report1.SetParameterValue("P6", dateTimePicker2.Value.ToString("yyyyMM"));
-                report1.SetParameterValue("P11", comboBox5.Text.ToString());
-                report1.SetParameterValue("P12", comboBox6.Text.ToString());
+                    report1.SetParameterValue("P1", dateTimePicker2.Value.ToString("yyyy"));
+                    report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("MM"));
+                    report1.SetParameterValue("P3", dateTimePicker2.Value.ToString("yyyyMM"));
+                    report1.SetParameterValue("P4", dateTimePicker2.Value.ToString("yyyyMM"));
+                    string STARTYM = dateTimePicker2.Value.ToString("yyyy") + "01";
+                    report1.SetParameterValue("P5", STARTYM);
+                    report1.SetParameterValue("P6", dateTimePicker2.Value.ToString("yyyyMM"));
+                    report1.SetParameterValue("P11", comboBox5.Text.ToString());
+                    report1.SetParameterValue("P12", comboBox6.Text.ToString());
 
-                report1.Preview = previewControl1;
-                report1.Show();
+                    report1.Preview = previewControl1;
+                    report1.Show();
+                }
+                else
+                {
+                    report1 = new Report();
+                    report1.Load(@"REPORT\預算及實際-部門.frx");
+
+                    report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+
+                    report1.SetParameterValue("P1", dateTimePicker2.Value.ToString("yyyy"));
+                    report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("MM"));
+                    report1.SetParameterValue("P3", dateTimePicker2.Value.ToString("yyyyMM"));
+                    report1.SetParameterValue("P4", dateTimePicker2.Value.ToString("yyyyMM"));
+                    string STARTYM = dateTimePicker2.Value.ToString("yyyy") + "01";
+                    report1.SetParameterValue("P5", STARTYM);
+                    report1.SetParameterValue("P6", dateTimePicker2.Value.ToString("yyyyMM"));
+                    report1.SetParameterValue("P11", comboBox5.Text.ToString());
+                    report1.SetParameterValue("P12", comboBox6.Text.ToString());
+                    report1.SetParameterValue("P13", comboBox4.SelectedValue.ToString());
+                    report1.SetParameterValue("P14", comboBox4.Text.ToString());
+
+                    report1.Preview = previewControl1;
+                    report1.Show();
+                }
+
             }
-            else
+            else if(checkBox1.Checked == true)
             {
                 report1 = new Report();
-                report1.Load(@"REPORT\預算及實際-部門.frx");
+                report1.Load(@"REPORT\預算及實際-部門含課.frx");
 
                 report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
 
@@ -684,6 +710,7 @@ namespace TKKPI
                 report1.Preview = previewControl1;
                 report1.Show();
             }
+            
            
         }
 
