@@ -41,9 +41,17 @@ namespace TKKPI
         public frmEB()
         {
             InitializeComponent();
+            SETDATETIME();
         }
 
         #region FUNCTION
+        public void SETDATETIME()
+        {
+            DateTime dt = DateTime.Now;
+            DateTime startMonth = dt.AddDays(1 - dt.Day);
+
+            dateTimePicker2.Value = startMonth;
+        }
         public void Search()
         {
             try
