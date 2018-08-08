@@ -198,7 +198,7 @@ namespace TKKPI
                 sbSql.AppendFormat(@"  LEFT JOIN [TK].dbo.COPTH ON TH001=TJ015 AND TH002=TJ016 AND TH003=TJ017 AND TH004=TJ004");
                 sbSql.AppendFormat(@"  WHERE  TI001=TJ001 AND TI002=TJ002");
                 sbSql.AppendFormat(@"  AND COPTJ.MODIFIER='160115'");
-                sbSql.AppendFormat(@"  AND COPTJ.TJ002 LIKE '20180807%'");
+                sbSql.AppendFormat(@"  AND COPTJ.TJ002 LIKE '{0}%'",dateTimePicker3.Value.ToString("yyyyMMdd"));
                 sbSql.AppendFormat(@"  AND TJ011<>ISNULL(TH012,0) ");
                 sbSql.AppendFormat(@"  ");
                 sbSql.AppendFormat(@"  ");
