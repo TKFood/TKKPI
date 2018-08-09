@@ -263,8 +263,9 @@ namespace TKKPI
                 talbename = "TEMPds4";
                 sbSql.Clear();
 
-                sbSql.AppendFormat(@"  SELECT MA002,TD010,TD011,(TD011-TD008*TD010) AS DIFF,TC025,TD001,TD002,TD003,TD004,TD005,TD006,TD008,TD009 " );
-                sbSql.AppendFormat(@"  FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.PURMA");
+                sbSql.AppendFormat(@"  SELECT MA002,TB009,TD010,TD011,(TD011-TD008*TD010) AS DIFF,TC025,TD001,TD002,TD003,TD004,TD005,TD006,TD008,TD009 ,TD013,TD021,TD023  ");
+                sbSql.AppendFormat(@"  FROM [TK].dbo.PURMA ,[TK].dbo.PURTC,[TK].dbo.PURTD ");
+                sbSql.AppendFormat(@"  LEFT JOIN [TK].dbo.PURTB ON TB004=TD004 AND TD013=TB001 AND TD021=TB002 AND TD023=TB003");
                 sbSql.AppendFormat(@"  WHERE TC001=TD001 AND TC002=TD002");
                 sbSql.AppendFormat(@"  AND MA001=TC004");
                 sbSql.AppendFormat(@"  AND PURTD.MODIFIER='160115'");
