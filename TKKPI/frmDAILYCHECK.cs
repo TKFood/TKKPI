@@ -53,13 +53,13 @@ namespace TKKPI
                 talbename = "TEMPds1";
                 sbSql.Clear();
 
-                sbSql.AppendFormat(@"  SELECT TD011,ISNULL(TB009,0) TB009,TC053,TD001,TD002,TD003,TD004,TD005,TD005,TD008,TD009,TD010,TD011,TD012,TD013,TD017,TD018,TD019,'',TB004,TB005,TB006,TB007,TB008,TB009,TB010");
+                sbSql.AppendFormat(@"  SELECT TD011,ISNULL(TB009,0) TB009,(TD008*TD011*TD026-TD012) AS DIFF,TC053,TD001,TD002,TD003,TD004,TD005,TD005,TD008,TD009,TD010,TD011,TD012,TD013,TD017,TD018,TD019,'',TB004,TB005,TB006,TB007,TB008,TB009,TB010");
                 sbSql.AppendFormat(@"  FROM [TK].dbo.COPTC,[TK].dbo.COPTD");
                 sbSql.AppendFormat(@"  LEFT JOIN [TK].dbo.COPTB ON TB001=TD017 AND TB002=TD018 AND TB003=TD019 AND TB004=TD004 ");
                 sbSql.AppendFormat(@"  WHERE TC001=TD001 AND TC002=TD002");
                 sbSql.AppendFormat(@"  AND COPTD.MODIFIER='160115'");
                 sbSql.AppendFormat(@"  AND TD002 LIKE '{0}%'",dateTimePicker1.Value.ToString("yyyyMMdd"));
-                sbSql.AppendFormat(@"  AND TD011<>ISNULL(TB009,0) ");
+                sbSql.AppendFormat(@"  AND (TD011<>ISNULL(TB009,0) OR  (TD008*TD011*TD026-TD012)<>0)  ");
                 sbSql.AppendFormat(@"  ");
 
                 textBox1.Text = null;
@@ -123,13 +123,13 @@ namespace TKKPI
                 sbSql.Clear();
 
                 
-                sbSql.AppendFormat(@"  SELECT COPTH.MODI_DATE,TH012,ISNULL(TD011,0) TD011,TG007,TH001,TH002,TH003,TH004,TH005,TH006,TH007,TH008,TH009,TH012,TH013,TH014,TH015,TH016,TD004,TD011");
+                sbSql.AppendFormat(@"  SELECT COPTH.MODI_DATE,TH012,ISNULL(TD011,0) TD011,TG007,(TH008*TH012*TH025-TH013) AS DIFF,TH001,TH002,TH003,TH004,TH005,TH006,TH007,TH008,TH009,TH012,TH013,TH014,TH015,TH016,TH025,'',TD004,TD011");
                 sbSql.AppendFormat(@"  FROM [TK].dbo.COPTG,[TK].dbo.COPTH");
                 sbSql.AppendFormat(@"  LEFT JOIN [TK].dbo.COPTD ON TD001=TH014 AND TD002=TH015 AND TD003=TH016 AND TD004=TH004");
                 sbSql.AppendFormat(@"  WHERE  TG001=TH001 AND TG002=TH002");
                 sbSql.AppendFormat(@"  AND COPTH.MODIFIER='160115'");
                 sbSql.AppendFormat(@"  AND COPTH.TH002 LIKE '{0}%'", dateTimePicker2.Value.ToString("yyyyMMdd"));
-                sbSql.AppendFormat(@"  AND TH012<>ISNULL(TD011,0) ");
+                sbSql.AppendFormat(@"  AND (TH012<>ISNULL(TD011,0) OR (TH008*TH012*TH025-TH013)<>0)    ");
                 sbSql.AppendFormat(@"  AND TH001 IN ('A231','A232')");
                 sbSql.AppendFormat(@"  ");
 
@@ -193,13 +193,13 @@ namespace TKKPI
                 talbename = "TEMPds3";
                 sbSql.Clear();
 
-                sbSql.AppendFormat(@"  SELECT TJ011,ISNULL(TH012,0) TH012,TI021,TJ001,TJ002,TJ003,TJ004,TJ005,TJ006,TJ007,TJ008,TJ011,TJ012,TJ015,TJ016,TJ017,TH004,TH012");
+                sbSql.AppendFormat(@"  SELECT TJ011,ISNULL(TH012,0) TH012,   (TJ007*TJ011*TH025-TJ012) AS DIFF,TI021,TJ001,TJ002,TJ003,TJ004,TJ005,TJ006,TJ007,TJ008,TJ011,TJ012,TJ015,TJ016,TJ017,TH004,TH012");
                 sbSql.AppendFormat(@"  FROM [TK].dbo.COPTI,[TK].dbo.COPTJ");
                 sbSql.AppendFormat(@"  LEFT JOIN [TK].dbo.COPTH ON TH001=TJ015 AND TH002=TJ016 AND TH003=TJ017 AND TH004=TJ004");
                 sbSql.AppendFormat(@"  WHERE  TI001=TJ001 AND TI002=TJ002");
                 sbSql.AppendFormat(@"  AND COPTJ.MODIFIER='160115'");
                 sbSql.AppendFormat(@"  AND COPTJ.TJ002 LIKE '{0}%'",dateTimePicker3.Value.ToString("yyyyMMdd"));
-                sbSql.AppendFormat(@"  AND TJ011<>ISNULL(TH012,0) ");
+                sbSql.AppendFormat(@"  AND (TJ011<>ISNULL(TH012,0) OR   (TJ007*TJ011*TH025-TJ012)<>0)   ");
                 sbSql.AppendFormat(@"  ");
                 sbSql.AppendFormat(@"  ");
 
