@@ -325,6 +325,146 @@ namespace TKKPI
 
         }
 
+        public void Search5()
+        {
+            try
+            {
+                talbename = "TEMPds5";
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  SELECT TG021,(TH016*TH018-TH019) AS DIFF,TD010,TH018,TH001,TH002,TH003,TH004,TH005,TH006,TH007,TH008,TH011,TH012,TH013,TH014,TH015,TH016,TH017,TH018,TH019,(TH016*TH018-TH019) AS DIFF,TD010");
+                sbSql.AppendFormat(@"  FROM [TK].dbo.PURTG,[TK].dbo.PURTH");
+                sbSql.AppendFormat(@"  LEFT JOIN [TK].dbo.PURTD ON TD004=TH004 AND TH011=TD001 AND TH012=TD002 AND TH013=TD003");
+                sbSql.AppendFormat(@"  WHERE TG001=TH001 AND TG002=TH002");
+                sbSql.AppendFormat(@"  AND PURTH.MODIFIER='160115'");
+                sbSql.AppendFormat(@"  AND PURTH.TH002 LIKE '{0}%'",dateTimePicker5.Value.ToString("yyyyMMdd"));
+                sbSql.AppendFormat(@"  AND (TH018<>TD010 OR (TH016*TH018-TH019) <>0)");
+                sbSql.AppendFormat(@"  ORDER BY TG021");
+                sbSql.AppendFormat(@"  ");
+
+                textBox5.Text = null;
+                textBox5.Text = sbSql.ToString();
+
+                if (!string.IsNullOrEmpty(sbSql.ToString()))
+                {
+                    connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                    sqlConn = new SqlConnection(connectionString);
+
+
+
+                    adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                    sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                    sqlConn.Open();
+                    ds.Clear();
+                    adapter.Fill(ds, talbename);
+                    sqlConn.Close();
+
+
+                    if (ds.Tables[talbename].Rows.Count == 0)
+                    {
+
+                    }
+                    else
+                    {
+                        dataGridView5.DataSource = ds.Tables[talbename];
+                        dataGridView5.AutoResizeColumns();
+                        //rownum = ds.Tables[talbename].Rows.Count - 1;
+                        dataGridView5.CurrentCell = dataGridView5.Rows[rownum].Cells[0];
+
+                        //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+                    }
+                }
+                else
+                {
+
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+        public void Search6()
+        {
+            try
+            {
+                talbename = "TEMPds6";
+                sbSql.Clear();
+
+             
+                sbSql.AppendFormat(@"  SELECT TI016,TJ009,ISNULL(TH018,0) AS TH018,(TJ008*TJ009-TJ010) AS DIFF,TJ001,TJ002,TJ003,TJ004,TJ005,TJ006,TJ007,TJ008,TJ009,TJ010,TJ013,TJ014,TJ015");
+                sbSql.AppendFormat(@"  FROM  [TK].dbo.PURTI,[TK].dbo.PURTJ");
+                sbSql.AppendFormat(@"  LEFT JOIN [TK].dbo.PURTH ON TH004=TJ004 AND TJ013=TH001 AND TJ014=TH002 AND TJ015=TH003");
+                sbSql.AppendFormat(@"  WHERE TI001=TJ001 AND TI002=TJ002");
+                sbSql.AppendFormat(@"  AND PURTJ.TJ002 LIKE '{0}%'",dateTimePicker6.Value.ToString("yyyyMMdd"));
+                sbSql.AppendFormat(@"  AND PURTH.MODIFIER='160115'");
+                sbSql.AppendFormat(@"  AND (TJ009<>ISNULL(TH018,0) OR (TJ008*TJ009-TJ010)<>0)");
+                sbSql.AppendFormat(@"  ORDER BY TI016");
+                sbSql.AppendFormat(@"  ");
+                sbSql.AppendFormat(@"  ");
+
+                textBox6.Text = null;
+                textBox6.Text = sbSql.ToString();
+
+                if (!string.IsNullOrEmpty(sbSql.ToString()))
+                {
+                    connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                    sqlConn = new SqlConnection(connectionString);
+
+
+
+                    adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                    sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                    sqlConn.Open();
+                    ds.Clear();
+                    adapter.Fill(ds, talbename);
+                    sqlConn.Close();
+
+
+                    if (ds.Tables[talbename].Rows.Count == 0)
+                    {
+
+                    }
+                    else
+                    {
+                        dataGridView6.DataSource = ds.Tables[talbename];
+                        dataGridView6.AutoResizeColumns();
+                        //rownum = ds.Tables[talbename].Rows.Count - 1;
+                        dataGridView6.CurrentCell = dataGridView6.Rows[rownum].Cells[0];
+
+                        //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+                    }
+                }
+                else
+                {
+
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
 
         #endregion
 
@@ -347,6 +487,16 @@ namespace TKKPI
         private void button4_Click(object sender, EventArgs e)
         {
             Search4();
+            MessageBox.Show("QUERY");
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Search5();
+            MessageBox.Show("QUERY");
+        }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Search6();
             MessageBox.Show("QUERY");
         }
 

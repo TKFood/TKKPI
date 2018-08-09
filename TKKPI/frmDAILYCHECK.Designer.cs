@@ -724,8 +724,9 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(234, 34);
             this.button5.TabIndex = 2;
-            this.button5.Text = "核對採購單價";
+            this.button5.Text = "核對採購單價+總價";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // tableLayoutPanel6
             // 
@@ -791,8 +792,9 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(234, 34);
             this.button6.TabIndex = 2;
-            this.button6.Text = "核對進貨單價";
+            this.button6.Text = "核對進貨單價+總價";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // frmDAILYCHECK
             // 
