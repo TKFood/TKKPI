@@ -255,6 +255,77 @@ namespace TKKPI
             }
 
         }
+
+        public void Search4()
+        {
+            try
+            {
+                talbename = "TEMPds4";
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  SELECT MA002,TD010,TD011,(TD011-TD008*TD010) AS DIFF,TC025,TD001,TD002,TD003,TD004,TD005,TD006,TD008,TD009 " );
+                sbSql.AppendFormat(@"  FROM [TK].dbo.PURTC,[TK].dbo.PURTD,[TK].dbo.PURMA");
+                sbSql.AppendFormat(@"  WHERE TC001=TD001 AND TC002=TD002");
+                sbSql.AppendFormat(@"  AND MA001=TC004");
+                sbSql.AppendFormat(@"  AND PURTD.MODIFIER='160115'");
+                sbSql.AppendFormat(@"  AND PURTD.TD002 LIKE '{0}%'",dateTimePicker4.Value.ToString("yyyyMMdd"));
+                sbSql.AppendFormat(@"  ORDER BY MA002");
+                sbSql.AppendFormat(@"  ");
+
+                textBox4.Text = null;
+                textBox4.Text = sbSql.ToString();
+
+                if (!string.IsNullOrEmpty(sbSql.ToString()))
+                {
+                    connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                    sqlConn = new SqlConnection(connectionString);
+
+
+
+                    adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                    sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                    sqlConn.Open();
+                    ds.Clear();
+                    adapter.Fill(ds, talbename);
+                    sqlConn.Close();
+
+
+                    if (ds.Tables[talbename].Rows.Count == 0)
+                    {
+
+                    }
+                    else
+                    {
+                        dataGridView4.DataSource = ds.Tables[talbename];
+                        dataGridView4.AutoResizeColumns();
+                        //rownum = ds.Tables[talbename].Rows.Count - 1;
+                        dataGridView4.CurrentCell = dataGridView4.Rows[rownum].Cells[0];
+
+                        //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+                    }
+                }
+                else
+                {
+
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -271,6 +342,11 @@ namespace TKKPI
         private void button3_Click(object sender, EventArgs e)
         {
             Search3();
+            MessageBox.Show("QUERY");
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Search4();
             MessageBox.Show("QUERY");
         }
 
