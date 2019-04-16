@@ -52,9 +52,17 @@ namespace TKKPI
 
         public void SETDT()
         {
+            //本月最後1天
             DateTime LastDay = new DateTime(DateTime.Now.AddMonths(1).Year, DateTime.Now.AddMonths(1).Month, 1).AddDays(-1);
             dateTimePicker2.Value = LastDay;
 
+            //下月第一天
+            DateTime NEXTMONTH = new DateTime(DateTime.Now.Year, DateTime.Now.AddMonths(1).Month, 1);
+            dateTimePicker3.Value = NEXTMONTH;
+
+            //本年年末
+            DateTime endYear = new DateTime(DateTime.Now.Year, 12, 31);
+            dateTimePicker4.Value = endYear;
 
         }
         public void SETFASTREPORT()
