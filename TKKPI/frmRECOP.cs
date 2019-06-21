@@ -79,7 +79,7 @@ namespace TKKPI
             SB.AppendFormat(" AND MV001=TG006");
             SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" AND TG005='{0}'",comboBox1.Text.ToString().Substring(0,6));
-            SB.AppendFormat(" AND TG006='{0}'",comboBox2.Text.ToString().Substring(0, 6));
+            SB.AppendFormat(" AND TG006='{0}'",comboBox2.Text.ToString().Substring(0,6));
             SB.AppendFormat(" GROUP BY MV002,TH005,MB004");
             SB.AppendFormat(" ORDER BY SUM(TH013) DESC");
             SB.AppendFormat(" ");
