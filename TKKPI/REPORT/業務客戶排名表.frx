@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="05/03/2019 09:29:38" ReportInfo.Modified="06/21/2019 11:07:31" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/03/2019 09:29:38" ReportInfo.Modified="06/21/2019 13:55:07" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9K7MnQCENlDTJwe4Gp24i6C">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9KQJ2DOaB8Z+pqInQ1qm+6w">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT MV002 AS '業務',TG007 AS '客戶',SUM(TH013) AS '金額',SUM(TH013)/SUM(SUM(TH013)) OVER ()  AS '金額百分比'&#13;&#10;FROM [TK].dbo.COPTG, [TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB,[TK].dbo.CMSMV&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND LA006=TH001 AND LA007=TH002 AND LA008=TH003&#13;&#10;AND MB001=TH004&#13;&#10;AND MV001=TG006&#13;&#10;AND TG003&gt;='20190601' AND TG003&lt;='20190621'&#13;&#10;AND TG005='106000'&#13;&#10;AND TG006='140049'&#13;&#10;GROUP BY MV002,TG007&#13;&#10;ORDER BY SUM(TH013) DESC">
         <Column Name="金額" DataType="System.Decimal"/>
         <Column Name="業務" DataType="System.String"/>
@@ -13,23 +13,23 @@
   </Dictionary>
   <ReportPage Name="Page1">
     <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
-      <TextObject Name="Text1" Left="-9.45" Width="472.5" Height="18.9" Text="業務客戶排名表" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text1" Left="-9.45" Width="538.65" Height="18.9" Text="業務客戶排名表" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text2" Top="18.9" Width="141.75" Height="18.9" Text="業務人員:[Table.業務]"/>
     </ReportTitleBand>
     <ColumnHeaderBand Name="ColumnHeader1" Top="41.65" Width="718.2" Height="18.9">
       <TextObject Name="Text14" Width="66.15" Height="18.9" Border.Lines="All" Text="排名" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text4" Left="66.15" Width="207.9" Height="18.9" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text6" Left="274.05" Width="94.5" Height="18.9" Border.Lines="All" Text="金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text8" Left="368.55" Width="94.5" Height="18.9" Border.Lines="All" Text="金額百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="66.15" Width="274.05" Height="18.9" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" Text="金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="434.7" Width="94.5" Height="18.9" Border.Lines="All" Text="金額百分比" HorzAlign="Center" VertAlign="Center"/>
     </ColumnHeaderBand>
     <DataBand Name="Data1" Top="64.39" Width="718.2" Height="18.9" CanGrow="true" DataSource="Table">
       <TextObject Name="Text13" Width="66.15" Height="18.9" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text3" Left="66.15" Width="207.9" Height="18.9" Border.Lines="All" Text="[Table.客戶]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text5" Left="274.05" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text7" Left="368.55" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.金額百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text3" Left="66.15" Width="274.05" Height="18.9" Border.Lines="All" Text="[Table.客戶]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Left="434.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.金額百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
     <ReportSummaryBand Name="ReportSummary1" Top="87.14" Width="718.2" Height="18.9">
-      <TextObject Name="Text9" Left="274.05" Width="189" Height="18.9" Border.Lines="All" Text="當期交易的總金額: [TotalMONEY]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="340.2" Width="189" Height="18.9" Border.Lines="All" Text="當期交易的總金額: [TotalMONEY]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
     </ReportSummaryBand>
   </ReportPage>
 </Report>
