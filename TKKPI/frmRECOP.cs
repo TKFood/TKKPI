@@ -135,6 +135,45 @@ namespace TKKPI
 
         }
 
+        public void SETFASTREPORT3()
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL3();
+            Report report3 = new Report();
+            report3.Load(@"REPORT\門市商品排名表.frx");
+
+            report3.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            TableDataSource table = report3.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            //report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
+            report3.Preview = previewControl3;
+            report3.Show();
+        }
+
+        public StringBuilder SETSQL3()
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat("  SELECT MA002 AS '門市',MB002 AS '品名',SUM(TB031)  AS '銷售金額',SUM(TB019)  AS '銷售數量',MB004 AS '單位',SUM(TB031)/SUM(SUM(TB031)) OVER (partition by MA002)  AS '金額百分比'");
+            SB.AppendFormat(" FROM [TK].dbo.POSTB,[TK].dbo.INVMB,[TK].dbo.WSCMA");
+            SB.AppendFormat(" WHERE TB010=MB001");
+            SB.AppendFormat(" AND TB002=MA001");
+            SB.AppendFormat(" AND TB001>='{0}' AND TB002<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND ( TB010 LIKE '4%' OR TB010 LIKE '5%' )");
+            SB.AppendFormat(" AND TB002 IN ('106701','106502','106503','106504','106513','106514')");
+            SB.AppendFormat(" GROUP BY MA002,MB002,MB004 ");
+            SB.AppendFormat(" HAVING SUM(TB031)>0");
+            SB.AppendFormat(" ORDER BY MA002,SUM(TB031) DESC");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+
+            return SB;
+
+        }
         #endregion
 
         #region BUTTON
@@ -147,6 +186,11 @@ namespace TKKPI
         private void button1_Click(object sender, EventArgs e)
         {
             SETFASTREPORT2();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT3();
         }
         #endregion
 
