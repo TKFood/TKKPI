@@ -146,8 +146,8 @@ namespace TKKPI
            
             SB.AppendFormat(" DECLARE @DAY1 NVARCHAR(8)");
             SB.AppendFormat(" DECLARE @DAY2 NVARCHAR(8)");
-            SB.AppendFormat(" SET @DAY1 = '20190701'");
-            SB.AppendFormat(" SET @DAY2 = '20191231'");
+            SB.AppendFormat(" SET @DAY1 = '{0}'",dateTimePicker3.Value.ToString("yyyyMM")+"01");
+            SB.AppendFormat(" SET @DAY2 = '{0}'",dateTimePicker4.Value.ToString("yyyyMM") + "31");
             SB.AppendFormat("  ");
             SB.AppendFormat(" SELECT ");
             SB.AppendFormat(" 類別,年月,國別,業務員,SUM(Tmoney) AS 'Tmoney'   FROM");
