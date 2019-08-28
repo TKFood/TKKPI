@@ -171,7 +171,7 @@ namespace TKKPI
             SB.AppendFormat(" AND TG006='{0}'",comboBox2.SelectedValue.ToString());
             SB.AppendFormat(" GROUP BY MV002,TH005,MB004");
             SB.AppendFormat(" ORDER BY SUM(TH037) DESC");
-            SB.AppendFormat("  ");
+            SB.AppendFormat("   ");
             SB.AppendFormat(" ");
             SB.AppendFormat(" ");
             SB.AppendFormat(" ");
