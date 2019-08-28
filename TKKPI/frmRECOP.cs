@@ -167,11 +167,11 @@ namespace TKKPI
             SB.AppendFormat(" AND MB001=TH004");
             SB.AppendFormat(" AND MV001=TG006");
             SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" AND TG005='{0}'",comboBox1.Text.ToString().Substring(0,6));
-            SB.AppendFormat(" AND TG006='{0}'",comboBox2.Text.ToString().Substring(0,6));
+            SB.AppendFormat(" AND TG005='{0}'",comboBox1.SelectedValue.ToString());
+            SB.AppendFormat(" AND TG006='{0}'",comboBox2.SelectedValue.ToString());
             SB.AppendFormat(" GROUP BY MV002,TH005,MB004");
             SB.AppendFormat(" ORDER BY SUM(TH037) DESC");
-            SB.AppendFormat(" ");
+            SB.AppendFormat("  ");
             SB.AppendFormat(" ");
             SB.AppendFormat(" ");
             SB.AppendFormat(" ");
@@ -210,8 +210,8 @@ namespace TKKPI
             SB.AppendFormat(" AND MB001=TH004");
             SB.AppendFormat(" AND MV001=TG006");
             SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker3.Value.ToString("yyyyMMdd"), dateTimePicker4.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" AND TG005='{0}'", comboBox3.Text.ToString().Substring(0, 6));
-            SB.AppendFormat(" AND TG006='{0}'", comboBox4.Text.ToString().Substring(0, 6));
+            SB.AppendFormat(" AND TG005='{0}'", comboBox3.SelectedValue.ToString());
+            SB.AppendFormat(" AND TG006='{0}'", comboBox4.SelectedValue.ToString());
             SB.AppendFormat(" GROUP BY MV002,TG007");
             SB.AppendFormat(" ORDER BY SUM(TH037) DESC");
             SB.AppendFormat("  ");
