@@ -45,9 +45,98 @@ namespace TKKPI
         public frmRECOP()
         {
             InitializeComponent();
+
+            comboBox1load();
+            comboBox2load();
+            comboBox3load();
+            comboBox4load();
         }
 
         #region FUNCTION
+
+        public void comboBox1load()
+        {
+            connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT [ID],[ID]+[NAME] AS NAME FROM [TKKPI].[dbo].[COPDEP] ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("NAME", typeof(string));
+            da.Fill(dt);
+            comboBox1.DataSource = dt.DefaultView;
+            comboBox1.ValueMember = "ID";
+            comboBox1.DisplayMember = "NAME";
+            sqlConn.Close();
+
+
+        }
+
+        public void comboBox2load()
+        {
+            connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT  [ID],[ID]+[NAME]  AS NAME FROM [TKKPI].[dbo].[COPSALES] ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("NAME", typeof(string));
+            da.Fill(dt);
+            comboBox2.DataSource = dt.DefaultView;
+            comboBox2.ValueMember = "ID";
+            comboBox2.DisplayMember = "NAME";
+            sqlConn.Close();
+
+
+        }
+
+        public void comboBox3load()
+        {
+            connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT [ID],[ID]+[NAME] AS NAME FROM [TKKPI].[dbo].[COPDEP] ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("NAME", typeof(string));
+            da.Fill(dt);
+            comboBox3.DataSource = dt.DefaultView;
+            comboBox3.ValueMember = "ID";
+            comboBox3.DisplayMember = "NAME";
+            sqlConn.Close();
+
+
+        }
+
+        public void comboBox4load()
+        {
+            connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT  [ID],[ID]+[NAME]  AS NAME FROM [TKKPI].[dbo].[COPSALES] ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("NAME", typeof(string));
+            da.Fill(dt);
+            comboBox4.DataSource = dt.DefaultView;
+            comboBox4.ValueMember = "ID";
+            comboBox4.DisplayMember = "NAME";
+            sqlConn.Close();
+
+
+        }
 
         public void SETFASTREPORT()
         {
