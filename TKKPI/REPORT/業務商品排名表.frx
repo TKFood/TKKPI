@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="05/03/2019 09:29:38" ReportInfo.Modified="08/28/2019 15:43:00" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/03/2019 09:29:38" ReportInfo.Modified="08/28/2019 15:47:49" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9I1re35B0W1ASFE92GYGJ5Q">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT MV002 AS '業務',TH005 AS '品名',SUM(TH013) AS '金額',SUM(LA011) AS '數量',MB004 AS '單位',SUM(TH013)/SUM(SUM(TH013)) OVER ()  AS '金額百分比'&#13;&#10;FROM [TK].dbo.COPTG, [TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB,[TK].dbo.CMSMV&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND LA006=TH001 AND LA007=TH002 AND LA008=TH003&#13;&#10;AND MB001=TH004&#13;&#10;AND MV001=TG006&#13;&#10;AND TG003&gt;='20190601' AND TG003&lt;='20190621'&#13;&#10;AND TG005='106000'&#13;&#10;AND TG006='140049'&#13;&#10;GROUP BY MV002,TH005,MB004&#13;&#10;ORDER BY SUM(TH013) DESC&#13;&#10;">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9L+gnZ8AUsg6Dpsp3E8FyHW">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand=" SELECT MV002 AS '業務',TH005 AS '品名',SUM(TH037) AS '金額',SUM(LA011) AS '數量',MB004 AS '單位',SUM(TH037)/SUM(SUM(TH037)) OVER ()  AS '金額百分比' FROM [TK].dbo.COPTG, [TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB,[TK].dbo.CMSMV WHERE TG001=TH001 AND TG002=TH002 AND LA006=TH001 AND LA007=TH002 AND LA008=TH003 AND MB001=TH004 AND MV001=TG006 AND TG003&gt;='20190821' AND TG003&lt;='20190828' AND TG005='106200' AND TG006='140078' GROUP BY MV002,TH005,MB004 ORDER BY SUM(TH037) DESC      &#13;&#10;">
         <Column Name="品名" DataType="System.String"/>
         <Column Name="金額" DataType="System.Decimal"/>
         <Column Name="數量" DataType="System.Decimal"/>
