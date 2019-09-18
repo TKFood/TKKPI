@@ -1,46 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="05/03/2019 09:29:38" ReportInfo.Modified="06/21/2019 14:27:02" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/03/2019 09:29:38" ReportInfo.Modified="09/18/2019 11:23:39" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9I7zSoBrWbovKS6Vckp6DZU">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT MA002 AS '門市',MB002 AS '品名',SUM(TB031)  AS '銷售金額',SUM(TB019)  AS '銷售數量',MB004 AS '單位',SUM(TB031)/SUM(SUM(TB031)) OVER (partition by MA002)  AS '金額百分比'&#13;&#10;FROM [TK].dbo.POSTB,[TK].dbo.INVMB,[TK].dbo.WSCMA&#13;&#10;WHERE TB010=MB001&#13;&#10;AND TB002=MA001&#13;&#10;AND TB001&gt;='20190601' AND TB002&lt;='20190621'&#13;&#10;AND ( TB010 LIKE '4%' OR TB010 LIKE '5%' )&#13;&#10;AND TB002 IN ('106701','106502','106503','106504','106513','106514')&#13;&#10;GROUP BY MA002,MB002,MB004 &#13;&#10;HAVING SUM(TB031)&gt;0&#13;&#10;ORDER BY MA002,SUM(TB031) DESC">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9I7hD8AppvMgwiGw0yrS1x5">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT MA002 AS '門市',MB002 AS '品名',SUM(TB031)  AS '銷售金額',SUM(TB019)  AS '銷售數量',MB004 AS '單位',SUM(TB031)/SUM(SUM(TB031)) OVER (partition by MA002)  AS '金額百分比'&#13;&#10;,((SELECT SUM(TB031) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE TB.TB002=POSTB.TB002 AND TB.TB010=POSTB.TB010 AND TB.TB001&gt;='20190901' AND TB.TB002&lt;='20190915' )/(SELECT SUM(TB031) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE TB.TB002=POSTB.TB002  AND TB.TB001&gt;='20190901' AND TB.TB002&lt;='20190915' )) AS '月百分比'&#13;&#10;&#13;&#10;FROM [TK].dbo.POSTB WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.WSCMA WITH(NOLOCK)&#13;&#10;WHERE TB010=MB001&#13;&#10;AND TB002=MA001&#13;&#10;AND TB001&gt;='20190909' AND TB002&lt;='20190915'&#13;&#10;AND ( TB010 LIKE '4%' OR TB010 LIKE '5%' )&#13;&#10;AND TB002 IN ('106701','106502','106503','106504','106513','106514')&#13;&#10;GROUP BY TB002,TB010,MA002,MB002,MB004 &#13;&#10;HAVING SUM(TB031)&gt;0&#13;&#10;ORDER BY MA002,SUM(TB031) DESC,TB002,TB010">
         <Column Name="金額百分比" DataType="System.Decimal"/>
         <Column Name="門市" DataType="System.String"/>
         <Column Name="品名" DataType="System.String"/>
         <Column Name="銷售金額" DataType="System.Decimal"/>
         <Column Name="銷售數量" DataType="System.Decimal"/>
         <Column Name="單位" DataType="System.String"/>
+        <Column Name="月百分比" DataType="System.Decimal"/>
       </TableDataSource>
     </MsSqlDataConnection>
     <Total Name="TotalMONEY" Expression="[Table.銷售金額]" Evaluator="Data1" PrintOn="GroupFooter1"/>
   </Dictionary>
-  <ReportPage Name="Page1">
-    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
-      <TextObject Name="Text1" Left="-9.45" Width="718.2" Height="18.9" Text="門市商品排名表" HorzAlign="Center" VertAlign="Center"/>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="37.8">
+      <TextObject Name="Text1" Left="-9.45" Width="680.4" Height="18.9" Text="門市商品排名表" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <ColumnHeaderBand Name="ColumnHeader1" Top="41.65" Width="718.2" Height="18.9"/>
-    <GroupHeaderBand Name="GroupHeader1" Top="64.39" Width="718.2" Height="37.8" StartNewPage="true" Condition="[Table.門市]">
-      <TextObject Name="Text8" Left="425.25" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="銷售數量" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text14" Top="18.9" Width="66.15" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="排名" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text4" Left="66.15" Top="18.9" Width="264.6" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="品名" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text6" Left="330.75" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="銷售金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text11" Left="519.75" Top="18.9" Width="56.7" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="單位" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text15" Left="576.45" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="金額百分比" HorzAlign="Center" VertAlign="Center"/>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="41.65" Width="1047.06" Height="18.9"/>
+    <GroupHeaderBand Name="GroupHeader1" Top="64.39" Width="1047.06" Height="37.8" StartNewPage="true" Condition="[Table.門市]">
+      <TextObject Name="Text8" Left="387.45" Top="18.9" Width="75.6" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="銷售數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Top="18.9" Width="47.25" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="排名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="47.25" Top="18.9" Width="264.6" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="311.85" Top="18.9" Width="75.6" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="銷售金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="463.05" Top="18.9" Width="56.7" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="519.75" Top="18.9" Width="75.6" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="金額百分比" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text2" Width="670.95" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="門市:[Table.門市]" VertAlign="Center"/>
-      <DataBand Name="Data1" Top="106.04" Width="718.2" Height="18.9" CanGrow="true" DataSource="Table">
-        <TextObject Name="Text13" Width="66.15" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Row#]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text3" Left="66.15" Width="264.6" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.品名]" VertAlign="Center"/>
-        <TextObject Name="Text5" Left="330.75" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.銷售金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-        <TextObject Name="Text7" Left="425.25" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.銷售數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-        <TextObject Name="Text10" Left="519.75" Width="56.7" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.單位]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text12" Left="576.45" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.金額百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text16" Left="595.35" Top="18.9" Width="75.6" Height="18.9" Border.Lines="All" Fill.Color="SandyBrown" Text="月百分比" HorzAlign="Center" VertAlign="Center"/>
+      <DataBand Name="Data1" Top="106.04" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+        <TextObject Name="Text13" Width="47.25" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Row#]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text3" Left="47.25" Width="264.6" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.品名]" VertAlign="Center"/>
+        <TextObject Name="Text5" Left="311.85" Width="75.6" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.銷售金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text7" Left="387.45" Width="75.6" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.銷售數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text10" Left="463.05" Width="56.7" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.單位]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text12" Left="519.75" Width="75.6" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.金額百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text17" Left="595.35" Width="75.6" Height="18.9" Border.Lines="All" Fill.Color="Bisque" Text="[Table.月百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
         <Sort>
           <Sort Expression="[Table.銷售金額]" Descending="true"/>
         </Sort>
       </DataBand>
-      <GroupFooterBand Name="GroupFooter1" Top="128.78" Width="718.2" Height="28.35">
-        <TextObject Name="Text9" Left="330.75" Width="245.7" Height="18.9" Border.Lines="All" Text="當期交易的總金額: [TotalMONEY]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <GroupFooterBand Name="GroupFooter1" Top="128.78" Width="1047.06" Height="18.9">
+        <TextObject Name="Text9" Left="311.85" Width="359.1" Height="18.9" Border.Lines="All" Text="當期交易的總金額: [TotalMONEY]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
       </GroupFooterBand>
     </GroupHeaderBand>
-    <ReportSummaryBand Name="ReportSummary1" Top="160.98" Width="718.2" Height="18.9"/>
+    <ReportSummaryBand Name="ReportSummary1" Top="151.53" Width="1047.06" Height="18.9"/>
   </ReportPage>
 </Report>

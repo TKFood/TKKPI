@@ -247,15 +247,16 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat("  SELECT MA002 AS '門市',MB002 AS '品名',SUM(TB031)  AS '銷售金額',SUM(TB019)  AS '銷售數量',MB004 AS '單位',SUM(TB031)/SUM(SUM(TB031)) OVER (partition by MA002)  AS '金額百分比'");
+            SB.AppendFormat(" ,((SELECT SUM(TB031) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE TB.TB002=POSTB.TB002 AND TB.TB010=POSTB.TB010 AND TB.TB001>='{0}' AND TB.TB002<='{1}' )/(SELECT SUM(TB031) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE TB.TB002=POSTB.TB002  AND TB.TB001>='{2}' AND TB.TB002<='{3}' )) AS '月百分比'", dateTimePicker5.Value.ToString("yyyyMM")+"01", dateTimePicker6.Value.ToString("yyyyMMdd"), dateTimePicker5.Value.ToString("yyyyMM") + "01", dateTimePicker6.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" FROM [TK].dbo.POSTB,[TK].dbo.INVMB,[TK].dbo.WSCMA");
             SB.AppendFormat(" WHERE TB010=MB001");
             SB.AppendFormat(" AND TB002=MA001");
             SB.AppendFormat(" AND TB001>='{0}' AND TB002<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" AND ( TB010 LIKE '4%' OR TB010 LIKE '5%' )");
             SB.AppendFormat(" AND TB002 IN ('106701','106502','106503','106504','106513','106514')");
-            SB.AppendFormat(" GROUP BY MA002,MB002,MB004 ");
+            SB.AppendFormat(" GROUP BY MA002,MB002,MB004,TB002,TB010  ");
             SB.AppendFormat(" HAVING SUM(TB031)>0");
-            SB.AppendFormat(" ORDER BY MA002,SUM(TB031) DESC");
+            SB.AppendFormat(" ORDER BY MA002,SUM(TB031) DESC,TB002,TB010");
             SB.AppendFormat(" ");
             SB.AppendFormat(" ");
             SB.AppendFormat(" ");
