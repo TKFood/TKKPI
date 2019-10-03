@@ -154,6 +154,12 @@
     <Compile Include="frmPOSSell.Designer.cs">
       <DependentUpon>frmPOSSell.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREANALYTICS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREANALYTICS.Designer.cs">
+      <DependentUpon>frmREANALYTICS.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmRECOP.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -212,6 +218,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmPOSSell.resx">
       <DependentUpon>frmPOSSell.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREANALYTICS.resx">
+      <DependentUpon>frmREANALYTICS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmRECOP.resx">
       <DependentUpon>frmRECOP.cs</DependentUpon>

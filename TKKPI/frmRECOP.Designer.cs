@@ -223,7 +223,7 @@
             "106200-國內",
             "106300-國外",
             "106800-大陸"});
-            this.comboBox1.Location = new System.Drawing.Point(303, 48);
+            this.comboBox1.Location = new System.Drawing.Point(303, 50);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(144, 24);
             this.comboBox1.TabIndex = 29;
@@ -236,7 +236,7 @@
             "140049-莉琴",
             "140078-顏鴻",
             "160155-JUDY"});
-            this.comboBox2.Location = new System.Drawing.Point(303, 90);
+            this.comboBox2.Location = new System.Drawing.Point(303, 88);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(144, 24);
             this.comboBox2.TabIndex = 30;
@@ -403,7 +403,7 @@
             "106200-國內",
             "106300-國外",
             "106800-大陸"});
-            this.comboBox3.Location = new System.Drawing.Point(303, 50);
+            this.comboBox3.Location = new System.Drawing.Point(303, 48);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(144, 24);
             this.comboBox3.TabIndex = 29;
@@ -416,7 +416,7 @@
             "140049-莉琴",
             "140078-顏鴻",
             "160155-JUDY"});
-            this.comboBox4.Location = new System.Drawing.Point(303, 88);
+            this.comboBox4.Location = new System.Drawing.Point(303, 90);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(144, 24);
             this.comboBox4.TabIndex = 30;

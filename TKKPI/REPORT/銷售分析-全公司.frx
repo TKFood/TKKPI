@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/03/2019 14:34:54" ReportInfo.Modified="10/03/2019 14:50:52" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9IXgcjljiHq9H7U7OStFezh">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT 部門,銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比,去年同期銷售未稅金額&#13;&#10;FROM (&#13;&#10;SELECT '業務' AS '部門',SUM(TH037)  AS '銷售未稅金額'&#13;&#10;,(SELECT SUM(TH037)&#13;&#10;FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVMA WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK)&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND MB001=TH004&#13;&#10;AND MB007=MA002 AND MA001='3'&#13;&#10;AND LA006=TH001 AND LA007=TH002 AND LA008=TH003&#13;&#10;AND (TH004 LIKE '4%' OR TH004 LIKE '5%')&#13;&#10;AND TH020='Y'&#13;&#10;AND TG003&gt;='20180101' AND TG003&lt;='20180930'&#13;&#10;) AS '去年同期銷售未稅金額'&#13;&#10;FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVMA WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK)&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND MB001=TH004&#13;&#10;AND MB007=MA002 AND MA001='3'&#13;&#10;AND LA006=TH001 AND LA007=TH002 AND LA008=TH003&#13;&#10;AND (TH004 LIKE '4%' OR TH004 LIKE '5%')&#13;&#10;AND TH020='Y'&#13;&#10;AND TG003&gt;='20190101' AND TG003&lt;='20190930'&#13;&#10;UNION ALL &#13;&#10;SELECT '營銷' AS '部門', SUM(TB031)  AS '銷售未稅金額'&#13;&#10;,(&#13;&#10;SELECT SUM(TB031)&#13;&#10;FROM [TK].dbo.POSTB WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVMA WITH(NOLOCK)&#13;&#10;WHERE TB010=MB001&#13;&#10;AND MB007=MA002 AND MA001='3'&#13;&#10;AND (TB010 LIKE '4%' OR TB010 LIKE '5%')&#13;&#10;AND TB001&gt;='20180101' AND TB001&lt;='20180930'&#13;&#10;)&#13;&#10;FROM [TK].dbo.POSTB WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVMA WITH(NOLOCK)&#13;&#10;WHERE TB010=MB001&#13;&#10;AND MB007=MA002 AND MA001='3'&#13;&#10;AND (TB010 LIKE '4%' OR TB010 LIKE '5%')&#13;&#10;AND TB001&gt;='20190101' AND TB001&lt;='20190930'&#13;&#10;) AS TEMP ">
+        <Column Name="部門" DataType="System.String"/>
+        <Column Name="銷售未稅金額" DataType="System.Decimal"/>
+        <Column Name="百分比" DataType="System.Decimal"/>
+        <Column Name="去年同期銷售未稅金額" DataType="System.Decimal"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" DataType="System.Int32" Enabled="true" SelectCommand="SELECT 業務,銷售未稅金額,去年同期銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比&#13;&#10;FROM (&#13;&#10;SELECT MV002 AS '業務',SUM(TH037)  AS '銷售未稅金額'&#13;&#10;,(SELECT ISNULL(SUM(TH037),0)&#13;&#10;FROM [TK].dbo.COPTH TH WITH(NOLOCK),[TK].dbo.COPTG TG WITH(NOLOCK),[TK].dbo.INVMB MB WITH(NOLOCK),[TK].dbo.INVLA LA WITH(NOLOCK),[TK].dbo.COPMA CMA WITH(NOLOCK),[TK].dbo.CMSMR  MR WITH(NOLOCK),[TK].dbo.CMSMV MV WITH(NOLOCK)&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND MB001=TH004&#13;&#10;AND LA006=TH001 AND LA007=TH002 AND LA008=TH003&#13;&#10;AND (TH004 LIKE '4%' OR TH004 LIKE '5%')&#13;&#10;AND TH020='Y'&#13;&#10;AND MR001='4' AND MR002=CMA.MA019&#13;&#10;AND TG004=CMA.MA001&#13;&#10;AND MV001=TG006&#13;&#10;AND TG003&gt;='20180101' AND TG003&lt;='20180930'&#13;&#10;AND MV.MV002=CMSMV.MV002&#13;&#10;) AS  '去年同期銷售未稅金額'&#13;&#10;FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK),[TK].dbo.COPMA WITH(NOLOCK),[TK].dbo.CMSMR WITH(NOLOCK),[TK].dbo.CMSMV WITH(NOLOCK)&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND MB001=TH004&#13;&#10;AND LA006=TH001 AND LA007=TH002 AND LA008=TH003&#13;&#10;AND (TH004 LIKE '4%' OR TH004 LIKE '5%')&#13;&#10;AND TH020='Y'&#13;&#10;AND MR001='4' AND MR002=COPMA.MA019&#13;&#10;AND TG004=COPMA.MA001&#13;&#10;AND MV001=TG006&#13;&#10;AND TG003&gt;='20190101' AND TG003&lt;='20190930'&#13;&#10;GROUP BY MV002&#13;&#10;HAVING  SUM(TH037) &gt;0&#13;&#10;) AS TEMP&#13;&#10;ORDER BY 銷售未稅金額 DESC">
+        <Column Name="業務" DataType="System.String"/>
+        <Column Name="銷售未稅金額" DataType="System.Decimal"/>
+        <Column Name="去年同期銷售未稅金額" DataType="System.Decimal"/>
+        <Column Name="百分比" DataType="System.Decimal"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" DataType="System.Int32" Enabled="true" SelectCommand="SELECT 門市,銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比,去年同期銷售未稅金額&#13;&#10;FROM (&#13;&#10;SELECT MA002 AS '門市', SUM(TB031)  AS '銷售未稅金額'&#13;&#10;,(&#13;&#10;SELECT SUM(TB031)&#13;&#10;FROM [TK].dbo.POSTB  TB WITH(NOLOCK),[TK].dbo.INVMB MB WITH(NOLOCK),[TK].dbo.WSCMA  WA WITH(NOLOCK)&#13;&#10;WHERE TB.TB010=MB.MB001&#13;&#10;AND WA.MA001=TB.TB002&#13;&#10;AND (TB.TB010 LIKE '4%' OR TB.TB010 LIKE '5%')&#13;&#10;AND TB.TB001&gt;='20180101' AND TB.TB001&lt;='20180930'&#13;&#10;AND WA.MA002=WSCMA.MA002&#13;&#10;)AS  '去年同期銷售未稅金額'&#13;&#10;FROM [TK].dbo.POSTB WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.WSCMA WITH(NOLOCK)&#13;&#10;WHERE TB010=MB001&#13;&#10;AND MA001=TB002&#13;&#10;AND (TB010 LIKE '4%' OR TB010 LIKE '5%')&#13;&#10;AND TB001&gt;='20190101' AND TB001&lt;='20190930'&#13;&#10;GROUP BY MA002&#13;&#10;HAVING SUM(TB031)&gt;0&#13;&#10;) AS TEMP &#13;&#10;ORDER BY 銷售未稅金額 DESC&#13;&#10;">
+        <Column Name="門市" DataType="System.String"/>
+        <Column Name="銷售未稅金額" DataType="System.Decimal"/>
+        <Column Name="百分比" DataType="System.Decimal"/>
+        <Column Name="去年同期銷售未稅金額" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="18.9">
+      <TextObject Name="Text1" Width="472.5" Height="18.9" Border.Lines="All" Text="業務/營銷的佔比" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="22.75" Width="718.2" Height="37.8">
+      <TextObject Name="Text3" Width="94.5" Height="37.8" Border.Lines="All" Text="部門" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="189" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="283.5" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="378" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="64.39" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.部門]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.去年同期銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[[Table.銷售未稅金額]-[Table.去年同期銷售未稅金額]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="87.14" Width="718.2" Height="18.9"/>
+  </ReportPage>
+  <ReportPage Name="Page2">
+    <ReportTitleBand Name="ReportTitle2" Width="718.2" Height="18.9">
+      <TextObject Name="Text12" Width="472.5" Height="18.9" Border.Lines="All" Text="各業務的佔比" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader2" Top="22.75" Width="718.2" Height="37.8">
+      <TextObject Name="Text14" Width="94.5" Height="37.8" Border.Lines="All" Text="業務" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="94.5" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="189" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="283.5" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="378" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data2" Top="64.39" Width="718.2" Height="18.9" DataSource="Table1">
+      <TextObject Name="Text13" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.業務]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text17" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.去年同期銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text22" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[[Table1.銷售未稅金額]-[Table1.去年同期銷售未稅金額]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter2" Top="87.14" Width="718.2" Height="18.9"/>
+  </ReportPage>
+  <ReportPage Name="Page3">
+    <ReportTitleBand Name="ReportTitle3" Width="718.2" Height="18.9">
+      <TextObject Name="Text23" Width="491.4" Height="18.9" Border.Lines="All" Text="各門市的佔比" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader3" Top="22.75" Width="718.2" Height="37.8">
+      <TextObject Name="Text25" Width="113.4" Height="37.8" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="113.4" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="207.9" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text31" Left="302.4" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text32" Left="396.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data3" Top="64.39" Width="718.2" Height="18.9" DataSource="Table2">
+      <TextObject Name="Text24" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table2.門市]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="113.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text28" Left="207.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text30" Left="302.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.去年同期銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text33" Left="396.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[[Table2.銷售未稅金額]-[Table2.去年同期銷售未稅金額]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter3" Top="87.14" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>
