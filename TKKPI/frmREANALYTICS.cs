@@ -57,9 +57,9 @@ namespace TKKPI
         #region FUNCTION
         public void SETDATETIME()
         {
-            DateTime dt =Convert.ToDateTime(DateTime.Now.Year.ToString() + "/1/1");
+            //DateTime dt =Convert.ToDateTime(DateTime.Now.Year.ToString() + "/1/1");
 
-            dateTimePicker1.Value = dt;
+            //dateTimePicker1.Value = dt;
         }
 
         public void SETFASTREPORT()
@@ -150,6 +150,12 @@ namespace TKKPI
 
         public StringBuilder SETSQL2()
         {
+            LASTYEARSTART = dateTimePicker1.Value;
+            LASTYEARSTART = LASTYEARSTART.AddYears(-1);
+
+            LASTYEAREND = dateTimePicker2.Value;
+            LASTYEAREND = LASTYEAREND.AddYears(-1);
+
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(" SELECT 業務,銷售未稅金額,去年同期銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比");
@@ -191,6 +197,13 @@ namespace TKKPI
 
         public StringBuilder SETSQL3()
         {
+            LASTYEARSTART = dateTimePicker1.Value;
+            LASTYEARSTART = LASTYEARSTART.AddYears(-1);
+
+            LASTYEAREND = dateTimePicker2.Value;
+            LASTYEAREND = LASTYEAREND.AddYears(-1);
+
+
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(" SELECT 門市,銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比,去年同期銷售未稅金額");
@@ -228,6 +241,377 @@ namespace TKKPI
 
         }
 
+
+        public void SETFASTREPORT2()
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            StringBuilder SQL2 = new StringBuilder();
+            StringBuilder SQL3 = new StringBuilder();
+            StringBuilder SQL4 = new StringBuilder();
+            StringBuilder SQL5 = new StringBuilder();
+            StringBuilder SQL6 = new StringBuilder();
+            StringBuilder SQL7 = new StringBuilder();
+
+            SQL1 = SETSQL21();
+            SQL2 = SETSQL22();
+            SQL3 = SETSQL23();
+            SQL4 = SETSQL24();
+            SQL5 = SETSQL25();
+            SQL6 = SETSQL26();
+            SQL7 = SETSQL27();
+
+            Report report1 = new Report();
+            report1.Load(@"REPORT\銷售分析-銷貨單-年度.frx");
+
+            report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+            TableDataSource table1 = report1.GetDataSource("Table1") as TableDataSource;
+            table1.SelectCommand = SQL2.ToString();
+            TableDataSource table2 = report1.GetDataSource("Table2") as TableDataSource;
+            table2.SelectCommand = SQL3.ToString();
+            TableDataSource table3 = report1.GetDataSource("Table3") as TableDataSource;
+            table3.SelectCommand = SQL4.ToString();
+            TableDataSource table4 = report1.GetDataSource("Table4") as TableDataSource;
+            table4.SelectCommand = SQL5.ToString();
+            TableDataSource table5 = report1.GetDataSource("Table5") as TableDataSource;
+            table5.SelectCommand = SQL6.ToString();
+            TableDataSource table6 = report1.GetDataSource("Table6") as TableDataSource;
+            table6.SelectCommand = SQL7.ToString();
+
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            //report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
+            report1.Preview = previewControl2;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL21()
+        {
+            LASTYEARSTART = dateTimePicker3.Value;
+            LASTYEARSTART = LASTYEARSTART.AddYears(-1);
+
+            LASTYEAREND = dateTimePicker4.Value;
+            LASTYEAREND = LASTYEAREND.AddYears(-1);
+
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(" SELECT 代號,類別,銷售未稅金額,去年同期銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比");
+            SB.AppendFormat(" FROM (");
+            SB.AppendFormat(" SELECT  MB007 AS '代號',MA003 AS '類別',SUM(TH037)  AS '銷售未稅金額'");
+            SB.AppendFormat(" ,(");
+            SB.AppendFormat(" SELECT ISNULL(SUM (TH037),0)");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH TH WITH(NOLOCK),[TK].dbo.COPTG TG WITH(NOLOCK),[TK].dbo.INVMB MB WITH(NOLOCK),[TK].dbo.INVMA MA WITH(NOLOCK),[TK].dbo.INVLA LA WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG.TG001=TH.TH001 AND  TG.TG002=TH.TH002");
+            SB.AppendFormat(" AND MB.MB001=TH.TH004");
+            SB.AppendFormat(" AND MB.MB007= MA.MA002 AND MA.MA001='3'");
+            SB.AppendFormat(" AND LA.LA006=TH.TH001 AND LA.LA007=TH.TH002 AND LA.LA008=TH.TH003");
+            SB.AppendFormat(" AND (TH.TH004 LIKE '4%' OR TH.TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH.TH020='Y'");
+            SB.AppendFormat(" AND TG.TG003>='{0}' AND TG.TG003<='{1}'", LASTYEARSTART.ToString("yyyyMMdd"), LASTYEAREND.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND MB.MB007=INVMB.MB007 ");
+            SB.AppendFormat(" AND MA.MA003=INVMA.MA003 ");
+            SB.AppendFormat(" ) AS '去年同期銷售未稅金額'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVMA WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
+            SB.AppendFormat(" AND MB001=TH004");
+            SB.AppendFormat(" AND MB007=MA002 AND MA001='3'");
+            SB.AppendFormat(" AND LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+            SB.AppendFormat(" AND (TH004 LIKE '4%' OR TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH020='Y'");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" GROUP BY INVMB.MB007, MA003");
+            SB.AppendFormat(" HAVING  SUM(TH037) >0");
+            SB.AppendFormat(" ) AS TEMP ");
+            SB.AppendFormat(" ORDER BY 銷售未稅金額 DESC");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+
+            return SB;
+
+        }
+        public StringBuilder SETSQL22()
+        {
+            LASTYEARSTART = dateTimePicker3.Value;
+            LASTYEARSTART = LASTYEARSTART.AddYears(-1);
+
+            LASTYEAREND = dateTimePicker4.Value;
+            LASTYEAREND = LASTYEAREND.AddYears(-1);
+
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(" SELECT 口味,銷售未稅金額,去年同期銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比");
+            SB.AppendFormat(" FROM (");
+            SB.AppendFormat(" SELECT MA003 AS '口味',SUM(TH037)  AS '銷售未稅金額'    ");
+            SB.AppendFormat(" ,(");
+            SB.AppendFormat(" SELECT ISNULL(SUM (TH037),0)");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH TH WITH(NOLOCK),[TK].dbo.COPTG TG WITH(NOLOCK),[TK].dbo.INVMB MB WITH(NOLOCK),[TK].dbo.INVMA MA WITH(NOLOCK),[TK].dbo.INVLA LA WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG.TG001=TH.TH001 AND  TG.TG002=TH.TH002");
+            SB.AppendFormat(" AND MB.MB001=TH.TH004");
+            SB.AppendFormat(" AND MB115=MA002 AND MA001='9'");
+            SB.AppendFormat(" AND LA.LA006=TH.TH001 AND LA.LA007=TH.TH002 AND LA.LA008=TH.TH003");
+            SB.AppendFormat(" AND (TH.TH004 LIKE '4%' OR TH.TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH.TH020='Y'");
+            SB.AppendFormat(" AND TG.TG003>='{0}' AND TG.TG003<='{1}'", LASTYEARSTART.ToString("yyyyMMdd"), LASTYEAREND.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND MA.MA003=INVMA.MA003 ");
+            SB.AppendFormat(" ) AS '去年同期銷售未稅金額'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVMA WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
+            SB.AppendFormat(" AND MB001=TH004");
+            SB.AppendFormat(" AND MB115=MA002 AND MA001='9'");
+            SB.AppendFormat(" AND LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+            SB.AppendFormat(" AND TH004 LIKE '401%'");
+            SB.AppendFormat(" AND TH020='Y'");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" GROUP BY MA003");
+            SB.AppendFormat(" HAVING  SUM(TH037) >0");
+            SB.AppendFormat(" ) AS TEMP ");
+            SB.AppendFormat(" ORDER BY 銷售未稅金額 DESC");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+
+            return SB;
+
+        }
+        public StringBuilder SETSQL23()
+        {
+            LASTYEARSTART = dateTimePicker3.Value;
+            LASTYEARSTART = LASTYEARSTART.AddYears(-1);
+
+            LASTYEAREND = dateTimePicker4.Value;
+            LASTYEAREND = LASTYEAREND.AddYears(-1);
+
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(" SELECT 口味,銷售未稅金額,去年同期銷售未稅金額,(銷售未稅金額-去年同期銷售未稅金額) AS '差異金額',銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比");
+            SB.AppendFormat(" FROM (");
+            SB.AppendFormat(" SELECT MA003 AS '口味',SUM(TH037)  AS '銷售未稅金額'   ");
+            SB.AppendFormat(" ,(");
+            SB.AppendFormat(" SELECT ISNULL(SUM (TH037),0)");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH TH WITH(NOLOCK),[TK].dbo.COPTG TG WITH(NOLOCK),[TK].dbo.INVMB MB WITH(NOLOCK),[TK].dbo.INVMA MA WITH(NOLOCK),[TK].dbo.INVLA LA WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG.TG001=TH.TH001 AND  TG.TG002=TH.TH002");
+            SB.AppendFormat(" AND MB.MB001=TH.TH004");
+            SB.AppendFormat(" AND MB115=MA002 AND MA001='9'");
+            SB.AppendFormat(" AND LA.LA006=TH.TH001 AND LA.LA007=TH.TH002 AND LA.LA008=TH.TH003");
+            SB.AppendFormat(" AND (TH.TH004 LIKE '4%' OR TH.TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH.TH020='Y'");
+            SB.AppendFormat(" AND TG.TG003>='{0}' AND TG.TG003<='{1}'", LASTYEARSTART.ToString("yyyyMMdd"), LASTYEAREND.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND MA.MA003=INVMA.MA003 ");
+            SB.AppendFormat(" ) AS '去年同期銷售未稅金額'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVMA WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
+            SB.AppendFormat(" AND MB001=TH004");
+            SB.AppendFormat(" AND MB115=MA002 AND MA001='9'");
+            SB.AppendFormat(" AND LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+            SB.AppendFormat(" AND TH004 LIKE '401%'");
+            SB.AppendFormat(" AND TH020='Y'");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" GROUP BY MA003");
+            SB.AppendFormat(" HAVING  SUM(TH037) >0");
+            SB.AppendFormat(" ) AS TEMP");
+            SB.AppendFormat(" ORDER BY (銷售未稅金額-去年同期銷售未稅金額) DESC");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+
+            return SB;
+
+        }
+        public StringBuilder SETSQL24()
+        {
+            LASTYEARSTART = dateTimePicker3.Value;
+            LASTYEARSTART = LASTYEARSTART.AddYears(-1);
+
+            LASTYEAREND = dateTimePicker4.Value;
+            LASTYEAREND = LASTYEAREND.AddYears(-1);
+
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(" SELECT 國家,銷售未稅金額,去年同期銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比");
+            SB.AppendFormat(" FROM (");
+            SB.AppendFormat(" SELECT MR003 AS '國家',SUM(TH037)  AS '銷售未稅金額'");
+            SB.AppendFormat(" ,(SELECT ISNULL(SUM(TH037) ,0)");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH TH WITH(NOLOCK),[TK].dbo.COPTG TG WITH(NOLOCK),[TK].dbo.INVMB MB WITH(NOLOCK),[TK].dbo.INVLA LA WITH(NOLOCK),[TK].dbo.COPMA CMA WITH(NOLOCK),[TK].dbo.CMSMR  MR WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
+            SB.AppendFormat(" AND MB001=TH004");
+            SB.AppendFormat(" AND LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+            SB.AppendFormat(" AND (TH004 LIKE '4%' OR TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH020='Y'");
+            SB.AppendFormat(" AND MR001='4' AND MR002=CMA.MA019");
+            SB.AppendFormat(" AND TG004=CMA.MA001");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", LASTYEARSTART.ToString("yyyyMMdd"), LASTYEAREND.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND MR.MR003=CMSMR.MR003 ");
+            SB.AppendFormat("  ) AS '去年同期銷售未稅金額'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK),[TK].dbo.COPMA WITH(NOLOCK),[TK].dbo.CMSMR WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
+            SB.AppendFormat(" AND MB001=TH004");
+            SB.AppendFormat(" AND LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+            SB.AppendFormat(" AND (TH004 LIKE '4%' OR TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH020='Y'");
+            SB.AppendFormat(" AND MR001='4' AND MR002=COPMA.MA019");
+            SB.AppendFormat(" AND TG004=COPMA.MA001");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" GROUP BY MR003");
+            SB.AppendFormat(" HAVING  SUM(TH037) >0");
+            SB.AppendFormat(" ) AS TEMP");
+            SB.AppendFormat(" ORDER BY 銷售未稅金額 DESC");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+
+            return SB;
+
+        }
+        public StringBuilder SETSQL25()
+        {
+            LASTYEARSTART = dateTimePicker3.Value;
+            LASTYEARSTART = LASTYEARSTART.AddYears(-1);
+
+            LASTYEAREND = dateTimePicker4.Value;
+            LASTYEAREND = LASTYEAREND.AddYears(-1);
+
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(" SELECT 業務,銷售未稅金額,去年同期銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比");
+            SB.AppendFormat(" FROM (");
+            SB.AppendFormat(" SELECT MV002 AS '業務',SUM(TH037)  AS '銷售未稅金額'");
+            SB.AppendFormat(" ,(SELECT ISNULL(SUM(TH037),0)");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH TH WITH(NOLOCK),[TK].dbo.COPTG TG WITH(NOLOCK),[TK].dbo.INVMB MB WITH(NOLOCK),[TK].dbo.INVLA LA WITH(NOLOCK),[TK].dbo.COPMA CMA WITH(NOLOCK),[TK].dbo.CMSMR  MR WITH(NOLOCK),[TK].dbo.CMSMV MV WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002");
+            SB.AppendFormat(" AND MB.MB001=TH.TH004");
+            SB.AppendFormat(" AND LA.LA006=TH.TH001 AND LA.LA007=TH.TH002 AND LA.LA008=TH.TH003");
+            SB.AppendFormat(" AND (TH.TH004 LIKE '4%' OR TH.TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH.TH020='Y'");
+            SB.AppendFormat(" AND MR.MR001='4' AND MR.MR002=CMA.MA019");
+            SB.AppendFormat(" AND TG.TG004=CMA.MA001");
+            SB.AppendFormat(" AND MV.MV001=TG006");
+            SB.AppendFormat(" AND TG.TG003>='{0}' AND TG.TG003<='{1}'", LASTYEARSTART.ToString("yyyyMMdd"), LASTYEAREND.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND MV.MV002=CMSMV.MV002");
+            SB.AppendFormat(" ) AS  '去年同期銷售未稅金額'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK),[TK].dbo.COPMA WITH(NOLOCK),[TK].dbo.CMSMR WITH(NOLOCK),[TK].dbo.CMSMV WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
+            SB.AppendFormat(" AND MB001=TH004");
+            SB.AppendFormat(" AND LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+            SB.AppendFormat(" AND (TH004 LIKE '4%' OR TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH020='Y'");
+            SB.AppendFormat(" AND MR001='4' AND MR002=COPMA.MA019");
+            SB.AppendFormat(" AND TG004=COPMA.MA001");
+            SB.AppendFormat(" AND MV001=TG006");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" GROUP BY MV002");
+            SB.AppendFormat(" HAVING  SUM(TH037) >0");
+            SB.AppendFormat(" ) AS TEMP");
+            SB.AppendFormat(" ORDER BY 銷售未稅金額 DESC");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            
+
+            return SB;
+
+        }
+        public StringBuilder SETSQL26()
+        {
+            LASTYEARSTART = dateTimePicker3.Value;
+            LASTYEARSTART = LASTYEARSTART.AddYears(-1);
+
+            LASTYEAREND = dateTimePicker4.Value;
+            LASTYEAREND = LASTYEAREND.AddYears(-1);
+
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(" SELECT  客戶,銷售未稅金額,去年同期銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比");
+            SB.AppendFormat(" FROM (");
+            SB.AppendFormat(" SELECT TG007 AS '客戶',SUM(TH037)  AS '銷售未稅金額'");
+            SB.AppendFormat(" ,(SELECT ISNULL(SUM(TH037),0)");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH TH WITH(NOLOCK),[TK].dbo.COPTG TG WITH(NOLOCK),[TK].dbo.INVMB MB WITH(NOLOCK),[TK].dbo.INVLA LA WITH(NOLOCK),[TK].dbo.COPMA CMA WITH(NOLOCK),[TK].dbo.CMSMR  MR WITH(NOLOCK),[TK].dbo.CMSMV MV WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
+            SB.AppendFormat(" AND MB001=TH004");
+            SB.AppendFormat(" AND LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+            SB.AppendFormat(" AND (TH004 LIKE '4%' OR TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH020='Y'");
+            SB.AppendFormat(" AND MR001='4' AND MR002=CMA.MA019");
+            SB.AppendFormat(" AND TG004=CMA.MA001");
+            SB.AppendFormat(" AND MV001=TG006");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", LASTYEARSTART.ToString("yyyyMMdd"), LASTYEAREND.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TG.TG007=COPTG.TG007");
+            SB.AppendFormat(" ) AS  '去年同期銷售未稅金額'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK),[TK].dbo.COPMA WITH(NOLOCK),[TK].dbo.CMSMR WITH(NOLOCK),[TK].dbo.CMSMV WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
+            SB.AppendFormat(" AND MB001=TH004");
+            SB.AppendFormat(" AND LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+            SB.AppendFormat(" AND (TH004 LIKE '4%' OR TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH020='Y'");
+            SB.AppendFormat(" AND MR001='4' AND MR002=COPMA.MA019");
+            SB.AppendFormat(" AND TG004=COPMA.MA001");
+            SB.AppendFormat(" AND MV001=TG006");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" GROUP BY TG007");
+            SB.AppendFormat(" HAVING  SUM(TH037) >0");
+            SB.AppendFormat(" ) AS TEMP");
+            SB.AppendFormat(" ORDER BY 銷售未稅金額 DESC");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+
+            return SB;
+
+        }
+        public StringBuilder SETSQL27()
+        {
+            LASTYEARSTART = dateTimePicker3.Value;
+            LASTYEARSTART = LASTYEARSTART.AddYears(-1);
+
+            LASTYEAREND = dateTimePicker4.Value;
+            LASTYEAREND = LASTYEAREND.AddYears(-1);
+
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(" SELECT  業務,客戶,銷售未稅金額,去年同期銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比");
+            SB.AppendFormat(" FROM (");
+            SB.AppendFormat(" SELECT MV002 AS '業務',TG007 AS '客戶',SUM(TH037)  AS '銷售未稅金額'");
+            SB.AppendFormat(" ,(SELECT ISNULL(SUM(TH037),0)");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH TH WITH(NOLOCK),[TK].dbo.COPTG TG WITH(NOLOCK),[TK].dbo.INVMB MB WITH(NOLOCK),[TK].dbo.INVLA LA WITH(NOLOCK),[TK].dbo.COPMA CMA WITH(NOLOCK),[TK].dbo.CMSMR  MR WITH(NOLOCK),[TK].dbo.CMSMV MV WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
+            SB.AppendFormat(" AND MB001=TH004");
+            SB.AppendFormat(" AND LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+            SB.AppendFormat(" AND (TH004 LIKE '4%' OR TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH020='Y'");
+            SB.AppendFormat(" AND MR001='4' AND MR002=CMA.MA019");
+            SB.AppendFormat(" AND TG004=CMA.MA001");
+            SB.AppendFormat(" AND MV001=TG006");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", LASTYEARSTART.ToString("yyyyMMdd"), LASTYEAREND.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TG.TG007=COPTG.TG007");
+            SB.AppendFormat(" ) AS  '去年同期銷售未稅金額'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK),[TK].dbo.COPMA WITH(NOLOCK),[TK].dbo.CMSMR WITH(NOLOCK),[TK].dbo.CMSMV WITH(NOLOCK)");
+            SB.AppendFormat(" WHERE TG001=TH001 AND TG002=TH002");
+            SB.AppendFormat(" AND MB001=TH004");
+            SB.AppendFormat(" AND LA006=TH001 AND LA007=TH002 AND LA008=TH003");
+            SB.AppendFormat(" AND (TH004 LIKE '4%' OR TH004 LIKE '5%')");
+            SB.AppendFormat(" AND TH020='Y'");
+            SB.AppendFormat(" AND MR001='4' AND MR002=COPMA.MA019");
+            SB.AppendFormat(" AND TG004=COPMA.MA001");
+            SB.AppendFormat(" AND MV001=TG006");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" GROUP BY MV002,TG007");
+            SB.AppendFormat(" HAVING  SUM(TH037) >0");
+            SB.AppendFormat(" ) AS TEMP");
+            SB.AppendFormat(" ORDER BY 銷售未稅金額 DESC");
+            SB.AppendFormat(" ");
+           
+
+            return SB;
+
+        }
+      
         #endregion
 
         #region BUTTON
@@ -236,7 +620,12 @@ namespace TKKPI
         {
             SETFASTREPORT();
         }
-
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT2();
+        }
         #endregion
+
+
     }
 }
