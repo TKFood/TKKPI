@@ -678,7 +678,7 @@ namespace TKKPI
             SB.AppendFormat(" HAVING  SUM(TB031) >0");
             SB.AppendFormat(" ) AS TEMP ");
             SB.AppendFormat(" ORDER BY 銷售未稅金額 DESC");          
-            SB.AppendFormat(" ");
+            SB.AppendFormat("   ");
             SB.AppendFormat(" ");
             SB.AppendFormat(" ");
 

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/03/2019 09:01:58" ReportInfo.Modified="10/03/2019 13:51:39" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/03/2019 09:01:58" ReportInfo.Modified="10/04/2019 09:48:10" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9LzcXcOtSxbqdbatFHpUQT5">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9JM6VMD54FBRaK1hOvIu5nY">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT 代號,類別,銷售未稅金額,去年同期銷售未稅金額,銷售未稅金額/SUM(銷售未稅金額) OVER () AS 百分比&#13;&#10;FROM (&#13;&#10;SELECT  MB007 AS '代號',MA003 AS '類別',SUM(TH037)  AS '銷售未稅金額'&#13;&#10;,(&#13;&#10;SELECT ISNULL(SUM (TH037),0)&#13;&#10;FROM [TK].dbo.COPTH TH WITH(NOLOCK),[TK].dbo.COPTG TG WITH(NOLOCK),[TK].dbo.INVMB MB WITH(NOLOCK),[TK].dbo.INVMA MA WITH(NOLOCK),[TK].dbo.INVLA LA WITH(NOLOCK)&#13;&#10;WHERE TG.TG001=TH.TH001 AND  TG.TG002=TH.TH002&#13;&#10;AND MB.MB001=TH.TH004&#13;&#10;AND MB.MB007= MA.MA002 AND MA.MA001='3'&#13;&#10;AND LA.LA006=TH.TH001 AND LA.LA007=TH.TH002 AND LA.LA008=TH.TH003&#13;&#10;AND (TH.TH004 LIKE '4%' OR TH.TH004 LIKE '5%')&#13;&#10;AND TH.TH020='Y'&#13;&#10;AND TG.TG003&gt;='20180101' AND TG.TG003&lt;='20180930'&#13;&#10;AND MB.MB007=INVMB.MB007 &#13;&#10;AND MA.MA003=INVMA.MA003 &#13;&#10;) AS '去年同期銷售未稅金額'&#13;&#10;FROM [TK].dbo.COPTH WITH(NOLOCK),[TK].dbo.COPTG WITH(NOLOCK),[TK].dbo.INVMB WITH(NOLOCK),[TK].dbo.INVMA WITH(NOLOCK),[TK].dbo.INVLA WITH(NOLOCK)&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND MB001=TH004&#13;&#10;AND MB007=MA002 AND MA001='3'&#13;&#10;AND LA006=TH001 AND LA007=TH002 AND LA008=TH003&#13;&#10;AND (TH004 LIKE '4%' OR TH004 LIKE '5%')&#13;&#10;AND TH020='Y'&#13;&#10;AND TG003&gt;='20190101' AND TG003&lt;='20190930'&#13;&#10;GROUP BY INVMB.MB007, MA003&#13;&#10;HAVING  SUM(TH037) &gt;0&#13;&#10;) AS TEMP &#13;&#10;ORDER BY 銷售未稅金額 DESC">
         <Column Name="類別" DataType="System.String"/>
         <Column Name="銷售未稅金額" DataType="System.Decimal"/>
@@ -51,18 +51,16 @@
     <Total Name="Total1" Expression="[Table.銷售未稅金額]" Evaluator="Data1"/>
   </Dictionary>
   <ReportPage Name="Page1">
-    <ReportTitleBand Name="ReportTitle5" Width="718.2" Height="18.9">
+    <ReportTitleBand Name="ReportTitle5" Width="718.2" Height="56.7">
       <TextObject Name="Text19" Width="680.4" Height="18.9" Border.Lines="All" Text="分類-年度表" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text69" Left="585.9" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text2" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Top="18.9" Width="207.9" Height="37.8" Border.Lines="All" Text="類別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="302.4" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="396.9" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="491.4" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader1" Top="22.75" Width="718.2" Height="37.8">
-      <TextObject Name="Text2" Width="94.5" Height="37.8" Border.Lines="All" Text="代號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text4" Left="94.5" Width="207.9" Height="37.8" Border.Lines="All" Text="類別" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text6" Left="302.4" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text8" Left="396.9" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text10" Left="491.4" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text69" Left="585.9" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
-    </PageHeaderBand>
-    <DataBand Name="Data1" Top="64.39" Width="718.2" Height="18.9" DataSource="Table">
+    <DataBand Name="Data1" Top="60.55" Width="718.2" Height="18.9" DataSource="Table">
       <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.代號]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text3" Left="94.5" Width="207.9" Height="18.9" Border.Lines="All" Text="[Table.類別]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text5" Left="302.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
@@ -70,121 +68,109 @@
       <TextObject Name="Text11" Left="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[[Table.銷售未稅金額]-[Table.去年同期銷售未稅金額]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text68" Left="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="87.14" Width="718.2" Height="18.9"/>
+    <PageFooterBand Name="PageFooter1" Top="83.29" Width="718.2" Height="18.9"/>
   </ReportPage>
   <ReportPage Name="Page2">
-    <ReportTitleBand Name="ReportTitle4" Width="718.2" Height="18.9">
+    <ReportTitleBand Name="ReportTitle4" Width="718.2" Height="56.7">
       <TextObject Name="Text20" Width="585.9" Height="18.9" Border.Lines="All" Text="口味-年度表" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text70" Left="491.4" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Top="18.9" Width="207.9" Height="37.8" Border.Lines="All" Text="口味" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="207.9" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="302.4" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="396.9" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader2" Top="22.75" Width="718.2" Height="37.8">
-      <TextObject Name="Text12" Width="207.9" Height="37.8" Border.Lines="All" Text="口味" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text14" Left="207.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text16" Left="302.4" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text17" Left="396.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text70" Left="491.4" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
-    </PageHeaderBand>
-    <DataBand Name="Data2" Top="64.39" Width="718.2" Height="18.9" DataSource="Table1">
+    <DataBand Name="Data2" Top="60.55" Width="718.2" Height="18.9" DataSource="Table1">
       <TextObject Name="Text9" Width="207.9" Height="18.9" Border.Lines="All" Text="[Table1.口味]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text13" Left="207.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text15" Left="302.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.去年同期銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text18" Left="396.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[[Table1.銷售未稅金額]-[Table1.去年同期銷售未稅金額]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text71" Left="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter2" Top="87.14" Width="718.2" Height="18.9"/>
+    <PageFooterBand Name="PageFooter2" Top="83.29" Width="718.2" Height="18.9"/>
   </ReportPage>
   <ReportPage Name="Page3">
-    <ReportTitleBand Name="ReportTitle3" Width="718.2" Height="18.9">
+    <ReportTitleBand Name="ReportTitle3" Width="718.2" Height="56.7">
       <TextObject Name="Text29" Width="585.9" Height="18.9" Border.Lines="All" Text="口味-年度表-差異值" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text73" Left="491.4" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text22" Top="18.9" Width="207.9" Height="37.8" Border.Lines="All" Text="口味" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="207.9" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="302.4" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="396.9" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader3" Top="22.75" Width="718.2" Height="37.8">
-      <TextObject Name="Text22" Width="207.9" Height="37.8" Border.Lines="All" Text="口味" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text24" Left="207.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text26" Left="302.4" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text28" Left="396.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text73" Left="491.4" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
-    </PageHeaderBand>
-    <DataBand Name="Data3" Top="64.39" Width="718.2" Height="18.9" DataSource="Table2">
+    <DataBand Name="Data3" Top="60.55" Width="718.2" Height="18.9" DataSource="Table2">
       <TextObject Name="Text21" Width="207.9" Height="18.9" Border.Lines="All" Text="[Table2.口味]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text23" Left="207.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text25" Left="302.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.去年同期銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text27" Left="396.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.差異金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text72" Left="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter3" Top="87.14" Width="718.2" Height="18.9"/>
+    <PageFooterBand Name="PageFooter3" Top="83.29" Width="718.2" Height="18.9"/>
   </ReportPage>
   <ReportPage Name="Page4">
-    <ReportTitleBand Name="ReportTitle2" Width="718.2" Height="18.9">
+    <ReportTitleBand Name="ReportTitle2" Width="718.2" Height="56.7">
       <TextObject Name="Text30" Width="585.9" Height="18.9" Border.Lines="All" Text="國家-年度表" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text75" Left="491.4" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text33" Left="207.9" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text34" Top="18.9" Width="207.9" Height="37.8" Border.Lines="All" Text="國家" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text36" Left="302.4" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text37" Left="396.9" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader4" Top="22.75" Width="718.2" Height="37.8">
-      <TextObject Name="Text33" Left="207.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text34" Width="207.9" Height="37.8" Border.Lines="All" Text="國家" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text36" Left="302.4" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text37" Left="396.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text75" Left="491.4" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
-    </PageHeaderBand>
-    <DataBand Name="Data4" Top="64.39" Width="718.2" Height="18.9" DataSource="Table3">
+    <DataBand Name="Data4" Top="60.55" Width="718.2" Height="18.9" DataSource="Table3">
       <TextObject Name="Text32" Left="207.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text31" Width="207.9" Height="18.9" Border.Lines="All" Text="[Table3.國家]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text35" Left="302.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.去年同期銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text38" Left="396.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[[Table3.銷售未稅金額]-[Table3.去年同期銷售未稅金額]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text74" Left="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter4" Top="87.14" Width="718.2" Height="18.9"/>
+    <PageFooterBand Name="PageFooter4" Top="83.29" Width="718.2" Height="18.9"/>
   </ReportPage>
   <ReportPage Name="Page5">
-    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="18.9">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="56.7">
       <TextObject Name="Text45" Width="585.9" Height="18.9" Border.Lines="All" Text="業務-年度表" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text77" Left="491.4" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text40" Top="18.9" Width="207.9" Height="37.8" Border.Lines="All" Text="業務" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text42" Left="207.9" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text44" Left="302.4" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text46" Left="396.9" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader5" Top="22.75" Width="718.2" Height="37.8">
-      <TextObject Name="Text40" Width="207.9" Height="37.8" Border.Lines="All" Text="業務" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text42" Left="207.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text44" Left="302.4" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text46" Left="396.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text77" Left="491.4" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
-    </PageHeaderBand>
-    <DataBand Name="Data5" Top="64.39" Width="718.2" Height="18.9" DataSource="Table4">
+    <DataBand Name="Data5" Top="60.55" Width="718.2" Height="18.9" DataSource="Table4">
       <TextObject Name="Text39" Width="207.9" Height="18.9" Border.Lines="All" Text="[Table4.業務]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text41" Left="207.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table4.銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text43" Left="302.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table4.去年同期銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text47" Left="396.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[[Table4.銷售未稅金額]-[Table4.去年同期銷售未稅金額]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text76" Left="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table4.百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter5" Top="87.14" Width="718.2" Height="18.9"/>
+    <PageFooterBand Name="PageFooter5" Top="83.29" Width="718.2" Height="18.9"/>
   </ReportPage>
   <ReportPage Name="Page6">
-    <ReportTitleBand Name="ReportTitle6" Width="718.2" Height="18.9">
+    <ReportTitleBand Name="ReportTitle6" Width="718.2" Height="56.7">
       <TextObject Name="Text48" Width="689.85" Height="18.9" Border.Lines="All" Text="客戶-年度表" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text79" Left="595.35" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text50" Top="18.9" Width="311.85" Height="37.8" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text52" Left="311.85" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text54" Left="406.35" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text55" Left="500.85" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader6" Top="22.75" Width="718.2" Height="37.8">
-      <TextObject Name="Text50" Width="311.85" Height="37.8" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text52" Left="311.85" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text54" Left="406.35" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text55" Left="500.85" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text79" Left="595.35" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
-    </PageHeaderBand>
-    <DataBand Name="Data6" Top="64.39" Width="718.2" Height="18.9" DataSource="Table5">
+    <DataBand Name="Data6" Top="60.55" Width="718.2" Height="18.9" DataSource="Table5">
       <TextObject Name="Text49" Width="311.85" Height="18.9" Border.Lines="All" Text="[Table5.客戶]" VertAlign="Center"/>
       <TextObject Name="Text51" Left="311.85" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table5.銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text53" Left="406.35" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table5.去年同期銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text56" Left="500.85" Width="94.5" Height="18.9" Border.Lines="All" Text="[[Table5.銷售未稅金額]-[Table5.去年同期銷售未稅金額]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text78" Left="595.35" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table5.百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter6" Top="87.14" Width="718.2" Height="18.9"/>
+    <PageFooterBand Name="PageFooter6" Top="83.29" Width="718.2" Height="18.9"/>
   </ReportPage>
   <ReportPage Name="Page7" PaperWidth="280">
-    <ReportTitleBand Name="ReportTitle7" Width="982.8" Height="18.9">
+    <ReportTitleBand Name="ReportTitle7" Width="982.8" Height="56.7">
       <TextObject Name="Text57" Width="784.35" Height="18.9" Border.Lines="All" Text="業務-客戶-年度表" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text81" Left="689.85" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text61" Left="595.35" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text58" Left="94.5" Top="18.9" Width="311.85" Height="37.8" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text59" Left="406.35" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text60" Left="500.85" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text63" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="業務" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader7" Top="22.75" Width="982.8" Height="37.8">
-      <TextObject Name="Text61" Left="595.35" Width="94.5" Height="37.8" Border.Lines="All" Text="差異金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text58" Left="94.5" Width="311.85" Height="37.8" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text59" Left="406.35" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text60" Left="500.85" Width="94.5" Height="37.8" Border.Lines="All" Text="去年同期銷售未稅金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text63" Width="94.5" Height="37.8" Border.Lines="All" Text="業務" VertAlign="Center"/>
-      <TextObject Name="Text81" Left="689.85" Width="94.5" Height="37.8" Border.Lines="All" Text="百分比" HorzAlign="Center" VertAlign="Center"/>
-    </PageHeaderBand>
-    <DataBand Name="Data7" Top="64.39" Width="982.8" Height="18.9" DataSource="Table6">
+    <DataBand Name="Data7" Top="60.55" Width="982.8" Height="18.9" DataSource="Table6">
       <TextObject Name="Text62" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table6.業務]" VertAlign="Center"/>
       <TextObject Name="Text64" Left="94.5" Width="311.85" Height="18.9" Border.Lines="All" Text="[Table6.客戶]" VertAlign="Center"/>
       <TextObject Name="Text65" Left="406.35" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table6.銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
@@ -192,6 +178,6 @@
       <TextObject Name="Text67" Left="595.35" Width="94.5" Height="18.9" Border.Lines="All" Text="[[Table6.銷售未稅金額]-[Table6.去年同期銷售未稅金額]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text80" Left="689.85" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table6.百分比]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter7" Top="87.14" Width="982.8" Height="18.9"/>
+    <PageFooterBand Name="PageFooter7" Top="83.29" Width="982.8" Height="18.9"/>
   </ReportPage>
 </Report>
