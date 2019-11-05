@@ -253,7 +253,7 @@ namespace TKKPI
             SB.AppendFormat(" AND TB002=MA001");
             SB.AppendFormat(" AND TB001>='{0}' AND TB002<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" AND ( TB010 LIKE '4%' OR TB010 LIKE '5%' )");
-            SB.AppendFormat(" AND TB002 IN ('106701','106502','106503','106504','106513','106514')");
+            SB.AppendFormat(" AND TB002 IN ('106701','106502','106503','106504','106513','106514','106501')");
             SB.AppendFormat(" GROUP BY MA002,MB002,MB004,TB002,TB010  ");
             SB.AppendFormat(" HAVING SUM(TB031)>0");
             SB.AppendFormat(" ORDER BY MA002,SUM(TB031) DESC,TB002,TB010");
