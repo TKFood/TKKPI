@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/05/2019 10:54:59" ReportInfo.Modified="12/05/2019 15:53:10" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9IZytNtFOuZKEC+rG1Fq9ys">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TG006 AS '代號',MV002 AS '名稱',SUM(TG045)  AS '未稅金額'&#13;&#10;FROM [TK].dbo.COPTG,[TK].dbo.CMSMV&#13;&#10;WHERE TG006=MV001&#13;&#10;AND TG003&gt;='20191201' AND TG003&lt;='20191205'&#13;&#10;GROUP BY TG006,MV002&#13;&#10;HAVING SUM(TG045)&gt;0&#13;&#10;ORDER BY TG006,MV002">
+        <Column Name="名稱" DataType="System.String"/>
+        <Column Name="未稅金額" DataType="System.Decimal"/>
+        <Column Name="代號" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ColumnHeaderBand Name="ColumnHeader1" Width="718.2" Height="18.9">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="189" Height="18.9" Border.Lines="All" Text="名稱" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="未稅金額" HorzAlign="Center" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="22.75" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.代號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="94.5" Width="189" Height="18.9" Border.Lines="All" Text="[Table.名稱]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+</Report>

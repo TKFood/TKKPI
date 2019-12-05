@@ -264,6 +264,109 @@ namespace TKKPI
             return SB;
 
         }
+
+        public void SETFASTREPORT4()
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL4();
+            Report report4 = new Report();
+            report4.Load(@"REPORT\業績報表-營銷.frx");
+
+            report4.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            TableDataSource table = report4.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            //report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
+            report4.Preview = previewControl4;
+            report4.Show();
+        }
+
+        public StringBuilder SETSQL4()
+        {
+            StringBuilder SB = new StringBuilder();
+
+            
+            SB.AppendFormat(" SELECT TA002 AS '代號',MA002 AS '名稱',SUM(TA017)  AS '未稅金額'");
+            SB.AppendFormat(" FROM [TK].dbo.POSTA,[TK].dbo.WSCMA");
+            SB.AppendFormat(" WHERE TA002=MA001");
+            SB.AppendFormat(" AND TA001>='{0}' AND TA001<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TA002 NOT LIKE '1067%'");
+            SB.AppendFormat(" GROUP BY TA002,MA002");
+            SB.AppendFormat(" HAVING SUM(TA017)>0");
+            SB.AppendFormat(" UNION ALL");
+            SB.AppendFormat(" SELECT TA002 AS '代號',MA002 AS '名稱',SUM(TA017)  AS '未稅金額'");
+            SB.AppendFormat(" FROM [TK].dbo.POSTA,[TK].dbo.WSCMA");
+            SB.AppendFormat(" WHERE TA002=MA001");
+            SB.AppendFormat(" AND TA001>='{0}' AND TA001<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TA002 LIKE '1067%'");
+            SB.AppendFormat(" GROUP BY TA002,MA002");
+            SB.AppendFormat(" HAVING SUM(TA017)>0");
+            SB.AppendFormat(" UNION ALL");
+            SB.AppendFormat(" SELECT TG005,'官網',SUM(TG045)");
+            SB.AppendFormat(" FROM [TK].dbo.COPTG,[TK].dbo.CMSME");
+            SB.AppendFormat(" WHERE TG005=ME001");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TG005 IN ('116300')");
+            SB.AppendFormat(" AND TG001 NOT IN ('A230')");
+            SB.AppendFormat(" GROUP BY TG005,ME002");
+            SB.AppendFormat(" HAVING SUM(TG045)>0");
+            SB.AppendFormat(" UNION ALL");
+            SB.AppendFormat(" SELECT TG005,'現銷',SUM(TG045)");
+            SB.AppendFormat(" FROM [TK].dbo.COPTG,[TK].dbo.CMSME");
+            SB.AppendFormat(" WHERE TG005=ME001");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TG005 IN ('116300')");
+            SB.AppendFormat(" AND TG001 IN ('A230')");
+            SB.AppendFormat(" GROUP BY TG005,ME002");
+            SB.AppendFormat(" HAVING SUM(TG045)>0");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+
+
+            return SB;
+
+        }
+
+        public void SETFASTREPORT5()
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL5();
+            Report report5 = new Report();
+            report5.Load(@"REPORT\業績報表-事拓.frx");
+
+            report5.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            TableDataSource table = report5.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            //report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
+            report5.Preview = previewControl5;
+            report5.Show();
+        }
+
+        public StringBuilder SETSQL5()
+        {
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(" SELECT TG006 AS '代號',MV002 AS '名稱',SUM(TG045)  AS '未稅金額'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTG,[TK].dbo.CMSMV");
+            SB.AppendFormat(" WHERE TG006=MV001");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'",dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" GROUP BY TG006,MV002");
+            SB.AppendFormat(" HAVING SUM(TG045)>0");
+            SB.AppendFormat(" ORDER BY TG006,MV002");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+
+            return SB;
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -282,6 +385,12 @@ namespace TKKPI
         {
             SETFASTREPORT3();
         }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT4();
+            SETFASTREPORT5();
+        }
+
         #endregion
 
 

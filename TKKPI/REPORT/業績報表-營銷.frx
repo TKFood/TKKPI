@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/05/2019 10:54:59" ReportInfo.Modified="12/05/2019 15:52:12" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9IB7sgF5hkA43VsvNq99E01">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TA002 AS '代號',MA002 AS '名稱',SUM(TA017)  AS '未稅金額'&#13;&#10;FROM [TK].dbo.POSTA,[TK].dbo.WSCMA&#13;&#10;WHERE TA002=MA001&#13;&#10;AND TA001&gt;='20191201' AND TA001&lt;='20191205'&#13;&#10;AND TA002 NOT LIKE '1067%'&#13;&#10;GROUP BY TA002,MA002&#13;&#10;HAVING SUM(TA017)&gt;0&#13;&#10;UNION ALL&#13;&#10;SELECT TA002 AS '代號',MA002 AS '名稱',SUM(TA017)  AS '未稅金額'&#13;&#10;FROM [TK].dbo.POSTA,[TK].dbo.WSCMA&#13;&#10;WHERE TA002=MA001&#13;&#10;AND TA001&gt;='20191201' AND TA001&lt;='20191205'&#13;&#10;AND TA002 LIKE '1067%'&#13;&#10;GROUP BY TA002,MA002&#13;&#10;HAVING SUM(TA017)&gt;0&#13;&#10;UNION ALL&#13;&#10;SELECT TG005,'官網',SUM(TG045)&#13;&#10;FROM [TK].dbo.COPTG,[TK].dbo.CMSME&#13;&#10;WHERE TG005=ME001&#13;&#10;AND TG003&gt;='20191201' AND TG003&lt;='20191205'&#13;&#10;AND TG005 IN ('116300')&#13;&#10;AND TG001 NOT IN ('A230')&#13;&#10;GROUP BY TG005,ME002&#13;&#10;HAVING SUM(TG045)&gt;0&#13;&#10;UNION ALL&#13;&#10;SELECT TG005,'現銷',SUM(TG045)&#13;&#10;FROM [TK].dbo.COPTG,[TK].dbo.CMSME&#13;&#10;WHERE TG005=ME001&#13;&#10;AND TG003&gt;='20191201' AND TG003&lt;='20191205'&#13;&#10;AND TG005 IN ('116300')&#13;&#10;AND TG001 IN ('A230')&#13;&#10;GROUP BY TG005,ME002&#13;&#10;HAVING SUM(TG045)&gt;0">
+        <Column Name="名稱" DataType="System.String"/>
+        <Column Name="未稅金額" DataType="System.Decimal"/>
+        <Column Name="代號" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ColumnHeaderBand Name="ColumnHeader1" Width="718.2" Height="18.9">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="189" Height="18.9" Border.Lines="All" Text="名稱" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="未稅金額" HorzAlign="Center" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="22.75" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.代號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="94.5" Width="189" Height="18.9" Border.Lines="All" Text="[Table.名稱]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+</Report>
