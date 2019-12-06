@@ -351,17 +351,27 @@ namespace TKKPI
         public StringBuilder SETSQL5()
         {
             StringBuilder SB = new StringBuilder();
-
-
-            SB.AppendFormat(" SELECT TG006 AS '代號',MV002 AS '名稱',SUM(TG045)  AS '未稅金額'");
+                       
+            SB.AppendFormat(" SELECT TG006 AS '代號',MV002 AS '名稱',(SUM(TG045)-(SELECT ISNULL(SUM(TI010),0) FROM [TK].dbo.COPTI WHERE TI006=TG006 AND TI001 IN ('A241','A242') AND TI003>='{0}' AND TI003<='{1}')) AS '未稅金額'", dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" FROM [TK].dbo.COPTG,[TK].dbo.CMSMV");
             SB.AppendFormat(" WHERE TG006=MV001");
-            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'",dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TG001 IN ('A231','A232')");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" GROUP BY TG006,MV002");
             SB.AppendFormat(" HAVING SUM(TG045)>0");
-            SB.AppendFormat(" ORDER BY TG006,MV002");
+            SB.AppendFormat(" UNION ALL");
+            SB.AppendFormat(" SELECT TG006 AS '代號','全聯' AS '名稱',(SUM(TG045)-(SELECT ISNULL(SUM(TI010),0) FROM [TK].dbo.COPTI WHERE TI006=TG006 AND TI001 IN ('A244') AND TI003>='{0}' AND TI003<='{1}')) AS '未稅金額'", dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" FROM [TK].dbo.COPTG,[TK].dbo.CMSMV");
+            SB.AppendFormat(" WHERE TG006=MV001");
+            SB.AppendFormat(" AND TG001 IN ('A237')");
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" GROUP BY TG006,MV002");
+            SB.AppendFormat(" HAVING SUM(TG045)>0");
             SB.AppendFormat(" ");
             SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+
+
 
             return SB;
 
