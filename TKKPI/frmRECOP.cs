@@ -288,26 +288,26 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             
-            SB.AppendFormat(" SELECT TA002 AS '代號',MA002 AS '名稱',SUM(TA017)  AS '未稅金額'");
+            SB.AppendFormat(" SELECT TA002 AS '代號',MA002 AS '名稱',SUM(TA026)  AS '未稅金額'");
             SB.AppendFormat(" FROM [TK].dbo.POSTA,[TK].dbo.WSCMA");
             SB.AppendFormat(" WHERE TA002=MA001");
-            SB.AppendFormat(" AND TA001>='{0}' AND TA001<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TA001>='{0}' AND TA001<='{1}'", dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" AND TA002 NOT LIKE '1067%'");
             SB.AppendFormat(" GROUP BY TA002,MA002");
-            SB.AppendFormat(" HAVING SUM(TA017)>0");
+            SB.AppendFormat(" HAVING SUM(TA026)>0");
             SB.AppendFormat(" UNION ALL");
-            SB.AppendFormat(" SELECT TA002 AS '代號',MA002 AS '名稱',SUM(TA017)  AS '未稅金額'");
+            SB.AppendFormat(" SELECT TA002 AS '代號',MA002 AS '名稱',SUM(TA026)  AS '未稅金額'");
             SB.AppendFormat(" FROM [TK].dbo.POSTA,[TK].dbo.WSCMA");
             SB.AppendFormat(" WHERE TA002=MA001");
-            SB.AppendFormat(" AND TA001>='{0}' AND TA001<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TA001>='{0}' AND TA001<='{1}'", dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" AND TA002 LIKE '1067%'");
             SB.AppendFormat(" GROUP BY TA002,MA002");
-            SB.AppendFormat(" HAVING SUM(TA017)>0");
+            SB.AppendFormat(" HAVING SUM(TA026)>0");
             SB.AppendFormat(" UNION ALL");
             SB.AppendFormat(" SELECT TG005,'官網',SUM(TG045)");
             SB.AppendFormat(" FROM [TK].dbo.COPTG,[TK].dbo.CMSME");
             SB.AppendFormat(" WHERE TG005=ME001");
-            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" AND TG005 IN ('116300')");
             SB.AppendFormat(" AND TG001 NOT IN ('A230')");
             SB.AppendFormat(" GROUP BY TG005,ME002");
@@ -316,7 +316,7 @@ namespace TKKPI
             SB.AppendFormat(" SELECT TG005,'現銷',SUM(TG045)");
             SB.AppendFormat(" FROM [TK].dbo.COPTG,[TK].dbo.CMSME");
             SB.AppendFormat(" WHERE TG005=ME001");
-            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker6.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TG003>='{0}' AND TG003<='{1}'", dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" AND TG005 IN ('116300')");
             SB.AppendFormat(" AND TG001 IN ('A230')");
             SB.AppendFormat(" GROUP BY TG005,ME002");
