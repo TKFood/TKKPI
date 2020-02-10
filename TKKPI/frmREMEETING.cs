@@ -155,9 +155,9 @@ namespace TKKPI
             SB.AppendFormat(" DECLARE @DAY2 NVARCHAR(8)");
             SB.AppendFormat(" SET @DAY1 = '{0}'",dateTimePicker3.Value.ToString("yyyyMM")+"01");
             SB.AppendFormat(" SET @DAY2 = '{0}'",dateTimePicker4.Value.ToString("yyyyMM") + "31");
-            SB.AppendFormat("  ");
+            SB.AppendFormat("    ");
             SB.AppendFormat(" SELECT ");
-            SB.AppendFormat(" 類別,年月,國別,業務員,SUM(Tmoney) AS 'Tmoney'   FROM");
+            SB.AppendFormat(" 類別,年月,國別,業務員,ISNULL(SUM(Tmoney),0) AS 'Tmoney'   FROM");
             SB.AppendFormat(" ( ");
             SB.AppendFormat(" SELECT '實際訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國內' AS '國別','劉莉琴' AS '業務員',TC008 AS '交易幣別',  ");
             SB.AppendFormat(" SUM(TD012) AS '金額'   ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney' ");
@@ -228,7 +228,7 @@ namespace TKKPI
             SB.AppendFormat(" ) AS TEMP");
             SB.AppendFormat(" GROUP BY 年月,國別,業務員,類別");
             SB.AppendFormat(" ORDER BY 年月,國別,業務員,類別");
-            SB.AppendFormat("  ");
+            SB.AppendFormat("    ");
             SB.AppendFormat(" ");
             SB.AppendFormat(" ");
 
