@@ -70,7 +70,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(984, 665);
+            this.tabControl1.Size = new System.Drawing.Size(984, 625);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -79,7 +79,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(976, 635);
+            this.tabPage1.Size = new System.Drawing.Size(976, 595);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "未出訂單的明細表";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -99,8 +99,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.previewControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(970, 629);
-            this.splitContainer1.SplitterDistance = 106;
+            this.splitContainer1.Size = new System.Drawing.Size(970, 589);
+            this.splitContainer1.SplitterDistance = 99;
             this.splitContainer1.TabIndex = 0;
             // 
             // tableLayoutPanel4
@@ -134,7 +134,7 @@
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(966, 102);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(966, 95);
             this.tableLayoutPanel4.TabIndex = 12;
             // 
             // label7
@@ -205,7 +205,7 @@
             this.previewControl1.Name = "previewControl1";
             this.previewControl1.PageOffset = new System.Drawing.Point(10, 10);
             this.previewControl1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl1.Size = new System.Drawing.Size(966, 515);
+            this.previewControl1.Size = new System.Drawing.Size(966, 482);
             this.previewControl1.TabIndex = 5;
             // 
             // tabPage2
@@ -214,7 +214,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(976, 635);
+            this.tabPage2.Size = new System.Drawing.Size(976, 595);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "未出訂單的月表";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -234,8 +234,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.previewControl2);
-            this.splitContainer2.Size = new System.Drawing.Size(970, 629);
-            this.splitContainer2.SplitterDistance = 131;
+            this.splitContainer2.Size = new System.Drawing.Size(970, 589);
+            this.splitContainer2.SplitterDistance = 122;
             this.splitContainer2.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -269,7 +269,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(966, 127);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(966, 118);
             this.tableLayoutPanel1.TabIndex = 13;
             // 
             // label1
@@ -340,14 +340,14 @@
             this.previewControl2.Name = "previewControl2";
             this.previewControl2.PageOffset = new System.Drawing.Point(10, 10);
             this.previewControl2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl2.Size = new System.Drawing.Size(966, 490);
+            this.previewControl2.Size = new System.Drawing.Size(966, 459);
             this.previewControl2.TabIndex = 6;
             // 
             // frmREMEETING
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 665);
+            this.ClientSize = new System.Drawing.Size(984, 625);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(4);
