@@ -274,6 +274,48 @@ namespace TKKPI
             return SB;
 
         }
+        public void SETFASTREPORT3()
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL3();
+            Report report3 = new Report();
+            report3.Load(@"REPORT\工作交辨.frx");
+
+            report3.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbUOF"].ConnectionString;
+            TableDataSource table = report3.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            report3.Preview = previewControl3;
+            report3.Show();
+        }
+
+        public StringBuilder SETSQL3()
+        {
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(" SELECT USERA.NAME AS '交辨人',USERB.NAME AS '被交辨人',CONVERT(nvarchar,TEMP.CREATE_TIME,112) AS '交辨時間',TEMP.DESCRIPTION AS '交辨內容',CONVERT(nvarchar,TEMP.END_TIME,112) AS '希望交辨完成時間',CASE WHEN TEMP.WORK_STATE='Completed' THEN '完成' WHEN TEMP.WORK_STATE='Audit' THEN '完成但未確認' WHEN TEMP.WORK_STATE='NotYetBegin' THEN '未回覆' ELSE TEMP.WORK_STATE END AS '交辨狀況',CONVERT(nvarchar,TEMP.COMPLETE_TIME,112) AS '交辨完成時間',TEMP.COMPLETE_DESC AS '交辨回覆'");
+            SB.AppendFormat(" FROM (");
+            SB.AppendFormat(" SELECT [TB_EIP_SCH_DEVOLVE].[CREATE_TIME],[TB_EIP_SCH_DEVOLVE].[CREATE_USER],[TB_EIP_SCH_DEVOLVE].[DESCRIPTION],[TB_EIP_SCH_DEVOLVE].[END_TIME]");
+            SB.AppendFormat(" ,[TB_EIP_SCH_WORK].[EXECUTE_USER],[TB_EIP_SCH_WORK].[COMPLETE_TIME],[TB_EIP_SCH_WORK].[DEVOLVE_GUID],[TB_EIP_SCH_WORK].[WORK_STATE],[TB_EIP_SCH_WORK].[COMPLETE_DESC]");
+            SB.AppendFormat(" FROM [UOF].dbo.TB_EIP_SCH_DEVOLVE, [UOF].dbo.TB_EIP_SCH_WORK");
+            SB.AppendFormat(" WHERE TB_EIP_SCH_DEVOLVE.DEVOLVE_GUID=TB_EIP_SCH_WORK.DEVOLVE_GUID");
+            SB.AppendFormat(" AND TB_EIP_SCH_DEVOLVE.[CREATE_USER]<>TB_EIP_SCH_WORK.[EXECUTE_USER]");
+            SB.AppendFormat(" ) AS TEMP");
+            SB.AppendFormat(" LEFT JOIN [UOF].dbo.TB_EB_USER USERA ON USERA.[USER_GUID]=TEMP.[CREATE_USER]");
+            SB.AppendFormat(" LEFT JOIN [UOF].dbo.TB_EB_USER USERB ON USERB.[USER_GUID]=TEMP.[EXECUTE_USER]");
+            SB.AppendFormat(" WHERE TEMP.WORK_STATE NOT IN ('Completed')");
+            SB.AppendFormat(" ORDER BY [CREATE_TIME]");
+            SB.AppendFormat(" ");
+            SB.AppendFormat(" ");
+
+
+            return SB;
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -284,6 +326,10 @@ namespace TKKPI
         private void button1_Click(object sender, EventArgs e)
         {
             SETFASTREPORT2();
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT3();
         }
         #endregion
 

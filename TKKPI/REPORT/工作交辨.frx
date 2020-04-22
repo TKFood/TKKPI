@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/22/2020 11:57:56" ReportInfo.Modified="04/22/2020 14:07:58" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8UCRz3pFThovAyioQZrmSGyLpZuMiVUEbjT9s5BjO1weTRB0lSkmrANKsmPIiGxxqCe98y1MRhb4s7i4p794bbbXTln8ZELqSNTC5TIGXx5grZI8pem6fQVi/PW28P5w36y21WsUki3ePXeXKuDagVFRIH17+vb2YrDgyALoJjn8X4KxyMD+IsUiU7ahgbflCQ==">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT USERA.NAME AS '交辨人',USERB.NAME AS '被交辨人',CONVERT(nvarchar,TEMP.CREATE_TIME,112) AS '交辨時間',TEMP.DESCRIPTION AS '交辨內容',CONVERT(nvarchar,TEMP.END_TIME,112) AS '希望交辨完成時間',CASE WHEN TEMP.WORK_STATE='Completed' THEN '完成' WHEN TEMP.WORK_STATE='Audit' THEN '完成但未確認' WHEN TEMP.WORK_STATE='NotYetBegin' THEN '未回覆' ELSE TEMP.WORK_STATE END AS '交辨狀況',CONVERT(nvarchar,TEMP.COMPLETE_TIME,112) AS '交辨完成時間',TEMP.COMPLETE_DESC AS '交辨回覆'&#13;&#10;FROM (&#13;&#10;SELECT [TB_EIP_SCH_DEVOLVE].[CREATE_TIME],[TB_EIP_SCH_DEVOLVE].[CREATE_USER],[TB_EIP_SCH_DEVOLVE].[DESCRIPTION],[TB_EIP_SCH_DEVOLVE].[END_TIME]&#13;&#10;,[TB_EIP_SCH_WORK].[EXECUTE_USER],[TB_EIP_SCH_WORK].[COMPLETE_TIME],[TB_EIP_SCH_WORK].[DEVOLVE_GUID],[TB_EIP_SCH_WORK].[WORK_STATE],[TB_EIP_SCH_WORK].[COMPLETE_DESC]&#13;&#10;FROM [UOF].dbo.TB_EIP_SCH_DEVOLVE, [UOF].dbo.TB_EIP_SCH_WORK&#13;&#10;WHERE TB_EIP_SCH_DEVOLVE.DEVOLVE_GUID=TB_EIP_SCH_WORK.DEVOLVE_GUID&#13;&#10;AND TB_EIP_SCH_DEVOLVE.[CREATE_USER]&lt;&gt;TB_EIP_SCH_WORK.[EXECUTE_USER]&#13;&#10;) AS TEMP&#13;&#10;LEFT JOIN [UOF].dbo.TB_EB_USER USERA ON USERA.[USER_GUID]=TEMP.[CREATE_USER]&#13;&#10;LEFT JOIN [UOF].dbo.TB_EB_USER USERB ON USERB.[USER_GUID]=TEMP.[EXECUTE_USER]&#13;&#10;WHERE TEMP.WORK_STATE NOT IN ('Completed')&#13;&#10;ORDER BY [CREATE_TIME]">
+        <Column Name="交辨人" DataType="System.String"/>
+        <Column Name="被交辨人" DataType="System.String"/>
+        <Column Name="交辨時間" DataType="System.String"/>
+        <Column Name="交辨內容" DataType="System.String"/>
+        <Column Name="希望交辨完成時間" DataType="System.String"/>
+        <Column Name="交辨狀況" DataType="System.String"/>
+        <Column Name="交辨完成時間" DataType="System.String"/>
+        <Column Name="交辨回覆" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text1" Width="1039.5" Height="18.9" Text="工作交辨" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="22.75" Width="1047.06" Height="28.35">
+      <TextObject Name="Text3" Width="94.5" Height="28.35" Border.Lines="All" Text="交辨人" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="75.6" Height="28.35" Border.Lines="All" Text="被交辨人" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="170.1" Width="75.6" Height="28.35" Border.Lines="All" Text="交辨時間" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="245.7" Width="425.25" Height="28.35" Border.Lines="All" Text="交辨內容" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="670.95" Width="66.15" Height="28.35" Border.Lines="All" Text="希望交辨完成時間" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="737.1" Width="94.5" Height="28.35" Border.Lines="All" Text="交辨狀況" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="831.6" Width="66.15" Height="28.35" Border.Lines="All" Text="交辨完成時間" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="897.75" Width="141.75" Height="28.35" Border.Lines="All" Text="交辨回覆" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="54.94" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交辨人]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.被交辨人]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="170.1" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交辨時間]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="245.7" Width="425.25" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交辨內容]" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="670.95" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.希望交辨完成時間]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="737.1" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交辨狀況]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="831.6" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交辨完成時間]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="897.75" Width="141.75" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交辨回覆]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="77.69" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>
