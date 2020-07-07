@@ -134,7 +134,14 @@ namespace TKKPI
             SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002");
             SB.AppendFormat(" AND TD013>='{0}' AND TD013<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
             SB.AppendFormat(" AND TC001 NOT IN ('A223') AND TD016='N' AND TC006='160155' AND TC005='106300'");
-            SB.AppendFormat("GROUP BY TC008 ");
+            SB.AppendFormat(" GROUP BY TC008 ");
+            SB.AppendFormat(" UNION ALL");
+            SB.AppendFormat(" SELECT '國外' AS '國別','王琇平' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD");
+            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002");
+            SB.AppendFormat(" AND TD013>='{0}' AND TD013<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SB.AppendFormat(" AND TC001 NOT IN ('A223') AND TD016='N' AND TC006='190024' AND TC005='106300'");
+            SB.AppendFormat(" GROUP BY TC008 ");
             SB.AppendFormat(" ");
             SB.AppendFormat(" ");
 
@@ -255,6 +262,18 @@ namespace TKKPI
             SB.AppendFormat(" SUM(TD012) AS '金額'  ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney'");
             SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD ");
             SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002 AND  TD013>=@DAY1 AND TD013<=@DAY2 AND TC001 IN ('A223') AND TD016='N' AND TC006='160155' AND TC005='106300' ");
+            SB.AppendFormat(" GROUP BY SUBSTRING(TD013,1,6),TC008  ");
+            SB.AppendFormat(" UNION ALL ");
+            SB.AppendFormat(" SELECT '實際訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國外' AS '國別','王琇平' AS '業務員',TC008 AS '交易幣別',  ");
+            SB.AppendFormat(" SUM(TD012) AS '金額'  ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD ");
+            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002 AND  TD013>=@DAY1 AND TD013<=@DAY2 AND TC001 NOT IN ('A223') AND TD016='N' AND TC006='190024' AND TC005='106300' ");
+            SB.AppendFormat(" GROUP BY SUBSTRING(TD013,1,6),TC008  ");
+            SB.AppendFormat(" UNION ALL ");
+            SB.AppendFormat(" SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國外' AS '國別','王琇平' AS '業務員',TC008 AS '交易幣別',  ");
+            SB.AppendFormat(" SUM(TD012) AS '金額'  ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney'");
+            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD ");
+            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002 AND  TD013>=@DAY1 AND TD013<=@DAY2 AND TC001  IN ('A223') AND TD016='N' AND TC006='190024' AND TC005='106300' ");
             SB.AppendFormat(" GROUP BY SUBSTRING(TD013,1,6),TC008  ");
             SB.AppendFormat(" UNION ALL ");
             SB.AppendFormat(" SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國內' AS '國別','營銷部' AS '業務員',TC008 AS '交易幣別',  ");
