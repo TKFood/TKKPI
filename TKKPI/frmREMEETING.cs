@@ -87,63 +87,73 @@ namespace TKKPI
         {
             StringBuilder SB = new StringBuilder();
 
-            SB.AppendFormat(" SELECT '國內' AS '國別','劉莉琴' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額' ");
-            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD");
-            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002");
-            SB.AppendFormat(" AND TD013>='{0}' AND TD013<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" AND TC001 NOT IN ('A223','A228') AND TD016='N' AND TC006='140049' AND TC005='106000'");
-            SB.AppendFormat(" GROUP BY TC008");
-            SB.AppendFormat(" UNION ALL");
-            SB.AppendFormat(" SELECT '國內' AS '國別','蔡顏鴻' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額' ");
-            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD");
-            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002");
-            SB.AppendFormat(" AND TD013>='{0}' AND TD013<='{1}' ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" AND TC001 NOT IN ('A223','A228') AND TD016='N' AND TC006='140078' AND TC005='106200'");
-            SB.AppendFormat(" GROUP BY TC008");
-            SB.AppendFormat(" UNION ALL");
-            SB.AppendFormat(" SELECT '國內' AS '國別','陳帟靜' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額' ");
-            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD");
-            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002");
-            SB.AppendFormat(" AND TD013>='{0}' AND TD013<='{1}' ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" AND TC001 NOT IN ('A223','A228') AND TD016='N' AND TC006='160123' AND TC005='106200'");
-            SB.AppendFormat(" GROUP BY TC008");
-            SB.AppendFormat(" UNION ALL");
-            SB.AppendFormat(" SELECT '國內' AS '國別','黃鈺涵' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額' ");
-            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD");
-            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002");
-            SB.AppendFormat(" AND TD013>='{0}' AND TD013<='{1}' ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" AND TC001 NOT IN ('A223','A228') AND TD016='N' AND TC006='190003' AND TC005='106200'");
-            SB.AppendFormat(" GROUP BY TC008");
-            SB.AppendFormat(" UNION ALL");
-            SB.AppendFormat(" SELECT '國內' AS '國別','何姍怡' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額' ");
-            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD");
-            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002");
-            SB.AppendFormat(" AND TD013>='{0}' AND TD013<='{1}' ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" AND TC001 NOT IN ('A223','A228') AND TD016='N' AND TC006='100005' AND TC005='116200'");
-            SB.AppendFormat(" GROUP BY TC008");
-            SB.AppendFormat(" UNION ALL");
-            SB.AppendFormat(" SELECT '大陸' AS '國別','洪櫻芬' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額'");
-            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD");
-            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002");
-            SB.AppendFormat(" AND TD013>='{0}' AND TD013<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" AND TC001 NOT IN ('A223','A228') AND TD016='N' AND TC006='160155' AND TC005='106800'");
-            SB.AppendFormat(" GROUP BY TC008");
-            SB.AppendFormat(" UNION ALL");
-            SB.AppendFormat(" SELECT '國外' AS '國別','洪櫻芬' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額'");
-            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD");
-            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002");
-            SB.AppendFormat(" AND TD013>='{0}' AND TD013<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" AND TC001 NOT IN ('A223','A228') AND TD016='N' AND TC006='160155' AND TC005='106300'");
-            SB.AppendFormat(" GROUP BY TC008 ");
-            SB.AppendFormat(" UNION ALL");
-            SB.AppendFormat(" SELECT '國外' AS '國別','王琇平' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額'");
-            SB.AppendFormat(" FROM [TK].dbo.COPTC,[TK].dbo.COPTD");
-            SB.AppendFormat(" WHERE TC001=TD001 AND TC002=TD002");
-            SB.AppendFormat(" AND TD013>='{0}' AND TD013<='{1}'", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
-            SB.AppendFormat(" AND TC001 NOT IN ('A223','A228') AND TD016='N' AND TC006='190024' AND TC005='106300'");
-            SB.AppendFormat(" GROUP BY TC008 ");
-            SB.AppendFormat(" ");
-            SB.AppendFormat(" ");
+            SB.AppendFormat(@" SELECT '國內' AS '國別','劉莉琴' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額' 
+                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD
+                            WHERE TC001 = TD001 AND TC002 = TD002
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '140049'
+                            GROUP BY TC008
+                            UNION ALL
+                            SELECT '國內' AS '國別', '蔡顏鴻' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額'
+                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD
+                            WHERE TC001 = TD001 AND TC002 = TD002
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '140078'
+                            GROUP BY TC008
+                            UNION ALL
+                            SELECT '國內' AS '國別', '陳帟靜' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額'
+                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD
+                            WHERE TC001 = TD001 AND TC002 = TD002
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '160123'
+                            GROUP BY TC008
+                            UNION ALL
+                            SELECT '國內' AS '國別', '黃鈺涵' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額'
+                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD
+                            WHERE TC001 = TD001 AND TC002 = TD002
+                             AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '190003'
+                            GROUP BY TC008
+                            UNION ALL
+                            SELECT '國內' AS '國別', '何姍怡' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額'
+                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD
+                            WHERE TC001 = TD001 AND TC002 = TD002
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '100005'
+                            GROUP BY TC008
+                            UNION ALL
+                            SELECT '大陸' AS '國別', '洪櫻芬' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額'
+                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD
+                            WHERE TC001 = TD001 AND TC002 = TD002
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '160155'
+                            AND TC004 IN(SELECT MA001 FROM[TK].dbo.COPMA WHERE MA019 IN('010'))
+                            GROUP BY TC008
+                            UNION ALL
+                            SELECT '國外' AS '國別', '洪櫻芬' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額'
+                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD
+                            WHERE TC001 = TD001 AND TC002 = TD002
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '160155'
+                            AND TC004  NOT IN(SELECT MA001 FROM[TK].dbo.COPMA WHERE MA019 IN('010'))
+                            GROUP BY TC008
+                            UNION ALL
+                            SELECT '國外' AS '國別', '王琇平' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額'
+                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD
+                            WHERE TC001 = TD001 AND TC002 = TD002
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '190024'
+                            AND TC004 NOT IN(SELECT MA001 FROM[TK].dbo.COPMA WHERE MA019 IN('001'))
+                            GROUP BY TC008
+                            UNION ALL
+                            SELECT '國內' AS '國別', '王琇平' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額'
+                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD
+                            WHERE TC001 = TD001 AND TC002 = TD002
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '190024'
+                            AND TC004 IN(SELECT MA001 FROM[TK].dbo.COPMA WHERE MA019 IN('001'))
+                            GROUP BY TC008
+                            ",dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
 
             return SB;
 
