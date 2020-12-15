@@ -87,72 +87,77 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
-                            SELECT '國內' AS '國別','劉莉琴' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額' ,SUM((TD008-TD009)*TD011) AS '未出金額'
+                            SELECT 國別,業務員,交易幣別,SUM(金額) 金額,SUM(未出金額) 未出金額
+                            FROM (
+                            SELECT '國內' AS '國別','劉莉琴' AS '業務員',TC008 AS '交易幣別',  SUM(TD012) AS '金額' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN SUM((TD008-TD009)*TD011*TD026)/1.05 ELSE SUM((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD
                             WHERE TC001 = TD001 AND TC002 = TD002
-                             AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '140049'
-                            GROUP BY TC008
+                            GROUP BY TC016,TC008
                             UNION ALL
-                            SELECT '國內' AS '國別', '蔡顏鴻' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',SUM((TD008-TD009)*TD011) AS '未出金額'
+                            SELECT '國內' AS '國別', '蔡顏鴻' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN SUM((TD008-TD009)*TD011*TD026)/1.05 ELSE SUM((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD
                             WHERE TC001 = TD001 AND TC002 = TD002
                             AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '140078'
-                            GROUP BY TC008
+                            GROUP BY TC016,TC008
                             UNION ALL
-                            SELECT '國內' AS '國別', '陳帟靜' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',SUM((TD008-TD009)*TD011) AS '未出金額'
+                            SELECT '國內' AS '國別', '陳帟靜' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN SUM((TD008-TD009)*TD011*TD026)/1.05 ELSE SUM((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD
                             WHERE TC001 = TD001 AND TC002 = TD002
-                             AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '160123'
-                            GROUP BY TC008
+                            GROUP BY TC016,TC008
                             UNION ALL
-                            SELECT '國內' AS '國別', '黃鈺涵' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',SUM((TD008-TD009)*TD011) AS '未出金額'
+                            SELECT '國內' AS '國別', '黃鈺涵' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN SUM((TD008-TD009)*TD011*TD026)/1.05 ELSE SUM((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD
                             WHERE TC001 = TD001 AND TC002 = TD002
-                             AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '190003'
-                            GROUP BY TC008
+                            GROUP BY TC016,TC008
                             UNION ALL
-                            SELECT '國內' AS '國別', '何姍怡' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',SUM((TD008-TD009)*TD011) AS '未出金額'
+                            SELECT '國內' AS '國別', '何姍怡' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN SUM((TD008-TD009)*TD011*TD026)/1.05 ELSE SUM((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD
                             WHERE TC001 = TD001 AND TC002 = TD002
-                             AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '100005'
-                            GROUP BY TC008
+                            GROUP BY TC016,TC008
                             UNION ALL
-                            SELECT '大陸' AS '國別', '洪櫻芬' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',SUM((TD008-TD009)*TD011) AS '未出金額'
+                            SELECT '大陸' AS '國別', '洪櫻芬' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN SUM((TD008-TD009)*TD011*TD026)/1.05 ELSE SUM((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD
                             WHERE TC001 = TD001 AND TC002 = TD002
-                             AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '160155'
                             AND TC004 IN(SELECT MA001 FROM[TK].dbo.COPMA WHERE MA019 IN('010'))
-                            GROUP BY TC008
+                            GROUP BY TC016,TC008
                             UNION ALL
-                            SELECT '國外' AS '國別', '洪櫻芬' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',SUM((TD008-TD009)*TD011)
+                            SELECT '國外' AS '國別', '洪櫻芬' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN SUM((TD008-TD009)*TD011*TD026)/1.05 ELSE SUM((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD
                             WHERE TC001 = TD001 AND TC002 = TD002
                             AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '160155'
                             AND TC004  NOT IN(SELECT MA001 FROM[TK].dbo.COPMA WHERE MA019 IN('010'))
-                            GROUP BY TC008
+                            GROUP BY TC016,TC008
                             UNION ALL
-                            SELECT '國外' AS '國別', '王琇平' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',SUM((TD008-TD009)*TD011)
+                            SELECT '國外' AS '國別', '王琇平' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN SUM((TD008-TD009)*TD011*TD026)/1.05 ELSE SUM((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD
                             WHERE TC001 = TD001 AND TC002 = TD002
-                             AND TD013 >= '{0}' AND TD013 <= '{1}'
+                            AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '190024'
                             AND TC004 NOT IN(SELECT MA001 FROM[TK].dbo.COPMA WHERE MA019 IN('001'))
-                            GROUP BY TC008
+                            GROUP BY TC016,TC008
                             UNION ALL
-                            SELECT '國內' AS '國別', '王琇平' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',SUM((TD008-TD009)*TD011)
+                            SELECT '國內' AS '國別', '王琇平' AS '業務員', TC008 AS '交易幣別', SUM(TD012) AS '金額',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN SUM((TD008-TD009)*TD011*TD026)/1.05 ELSE SUM((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD
                             WHERE TC001 = TD001 AND TC002 = TD002
                             AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N' AND TC006 = '190024'
                             AND TC004 IN(SELECT MA001 FROM[TK].dbo.COPMA WHERE MA019 IN('001'))
-                            GROUP BY TC008
+                            GROUP BY TC016,TC008
+                            )AS TEMP
+                            GROUP BY 國別,業務員,交易幣別
+                            ORDER BY 業務員
                             ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
 
             return SB;
