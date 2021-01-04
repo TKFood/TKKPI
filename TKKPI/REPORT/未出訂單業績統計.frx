@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="04/16/2019 09:33:46" ReportInfo.Modified="02/10/2020 11:57:35" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/16/2019 09:33:46" ReportInfo.Modified="01/04/2021 14:45:49" ReportInfo.CreatorVersion="2016.4.4.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,52 +37,52 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9LFAOf65Nx2wkf5gGmHAt3P">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20190625 查業務實際+預計訂單&#13;&#10;DECLARE @DAY1 NVARCHAR(8)&#13;&#10;DECLARE @DAY2 NVARCHAR(8)&#13;&#10;SET @DAY1 = '20190701'&#13;&#10;SET @DAY2 = '20191231'&#13;&#10;&#13;&#10;SELECT &#13;&#10;類別,年月,國別,業務員,SUM(Tmoney) AS 'Tmoney'   FROM  &#13;&#10;( &#13;&#10;SELECT '實際訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國內' AS '國別','劉莉琴' AS '業務員',TC008 AS '交易幣別',  &#13;&#10;SUM(TD012) AS '金額'   ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney' &#13;&#10;FROM [TK].dbo.COPTC,[TK].dbo.COPTD  &#13;&#10;WHERE TC001=TD001 AND TC002=TD002 AND TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001 NOT IN ('A223') AND TD016='N' AND TC006='140049' AND TC005='106000'  &#13;&#10;GROUP BY SUBSTRING(TD013,1,6),TC008   &#13;&#10;UNION ALL&#13;&#10;SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國內' AS '國別','劉莉琴' AS '業務員',TC008 AS '交易幣別',  &#13;&#10;SUM(TD012) AS '金額'   ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney' &#13;&#10;FROM [TK].dbo.COPTC,[TK].dbo.COPTD  &#13;&#10;WHERE TC001=TD001 AND TC002=TD002 AND TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001  IN ('A223') AND TD016='N' AND TC006='140049' AND TC005='106000'  &#13;&#10;GROUP BY SUBSTRING(TD013,1,6),TC008 &#13;&#10;UNION ALL  &#13;&#10;SELECT  '實際訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國內' AS '國別','蔡顏鴻' AS '業務員',TC008 AS '交易幣別',&#13;&#10;SUM(TD012) AS '金額'   ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney' &#13;&#10;FROM [TK].dbo.COPTC,[TK].dbo.COPTD  &#13;&#10;WHERE TC001=TD001 AND TC002=TD002 AND  TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001 NOT IN ('A223') AND TD016='N' AND TC006='140078' AND TC005='106200'  &#13;&#10;GROUP BY SUBSTRING(TD013,1,6),TC008  &#13;&#10;UNION ALL  &#13;&#10;SELECT  '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國內' AS '國別','蔡顏鴻' AS '業務員',TC008 AS '交易幣別',&#13;&#10;SUM(TD012) AS '金額'   ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney' &#13;&#10;FROM [TK].dbo.COPTC,[TK].dbo.COPTD  &#13;&#10;WHERE TC001=TD001 AND TC002=TD002 AND  TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001  IN ('A223') AND TD016='N' AND TC006='140078' AND TC005='106200'  &#13;&#10;GROUP BY SUBSTRING(TD013,1,6),TC008  &#13;&#10;UNION ALL    &#13;&#10;SELECT '實際訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','大陸' AS '國別','洪櫻芬' AS '業務員',TC008 AS '交易幣別',  &#13;&#10;SUM(TD012) AS '金額'  ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney' &#13;&#10;FROM [TK].dbo.COPTC,[TK].dbo.COPTD  &#13;&#10;WHERE TC001=TD001 AND TC002=TD002 AND  TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001 NOT IN ('A223') AND TD016='N' AND TC006='160155' AND TC005='106800'  &#13;&#10;GROUP BY SUBSTRING(TD013,1,6),TC008    &#13;&#10;UNION ALL    &#13;&#10;SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','大陸' AS '國別','洪櫻芬' AS '業務員',TC008 AS '交易幣別',  &#13;&#10;SUM(TD012) AS '金額'  ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney' &#13;&#10;FROM [TK].dbo.COPTC,[TK].dbo.COPTD  &#13;&#10;WHERE TC001=TD001 AND TC002=TD002 AND  TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001 IN ('A223') AND TD016='N' AND TC006='160155' AND TC005='106800'  &#13;&#10;GROUP BY SUBSTRING(TD013,1,6),TC008    &#13;&#10;UNION ALL &#13;&#10;SELECT '實際訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國外' AS '國別','洪櫻芬' AS '業務員',TC008 AS '交易幣別',  &#13;&#10;SUM(TD012) AS '金額'  ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney'&#13;&#10;FROM [TK].dbo.COPTC,[TK].dbo.COPTD &#13;&#10;WHERE TC001=TD001 AND TC002=TD002 AND  TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001 NOT IN ('A223') AND TD016='N' AND TC006='160155' AND TC005='106300' &#13;&#10;GROUP BY SUBSTRING(TD013,1,6),TC008  &#13;&#10;UNION ALL &#13;&#10;SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國外' AS '國別','洪櫻芬' AS '業務員',TC008 AS '交易幣別',  &#13;&#10;SUM(TD012) AS '金額'  ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney'&#13;&#10;FROM [TK].dbo.COPTC,[TK].dbo.COPTD &#13;&#10;WHERE TC001=TD001 AND TC002=TD002 AND  TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001 IN ('A223') AND TD016='N' AND TC006='160155' AND TC005='106300' &#13;&#10;GROUP BY SUBSTRING(TD013,1,6),TC008 &#13;&#10;UNION ALL &#13;&#10;SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月','國內' AS '國別','營銷部' AS '業務員',TC008 AS '交易幣別',  &#13;&#10;SUM(TD012) AS '金額'   ,CASE WHEN TC008='NTD'  THEN SUM(TD012)*1 ELSE CASE WHEN TC008='RMB'  THEN SUM(TD012)*4 ELSE CASE WHEN TC008='USD'  THEN SUM(TD012)*30  END END END AS 'Tmoney' &#13;&#10;FROM [TK].dbo.COPTC,[TK].dbo.COPTD  &#13;&#10;WHERE TC001=TD001 AND TC002=TD002 AND TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001  IN ('A228') AND TD016='N'   &#13;&#10;GROUP BY SUBSTRING(TD013,1,6),TC008    &#13;&#10;) AS TEMP&#13;&#10;GROUP BY 年月,國別,業務員,類別&#13;&#10;ORDER BY 年月,國別,業務員,類別">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9JPkUxpGodGWW4WX9nVX83Z">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="DECLARE @DAY1 NVARCHAR(8)&#13;&#10;DECLARE @DAY2 NVARCHAR(8)&#13;&#10;SET @DAY1 = '20210201'&#13;&#10;SET @DAY2 = '20210531'&#13;&#10;    &#13;&#10;SELECT &#13;&#10;類別,年月,部門,業務員,ISNULL(SUM(未出金額),0) AS '未出金額'   &#13;&#10;,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額)) ELSE (CASE WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  ELSE ( CASE WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30 END ) END ) END AS '本幣金額'&#13;&#10;FROM&#13;&#10;( &#13;&#10;SELECT '實際訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月',MV004 AS '部門',MV002 AS '業務員', (TD012) AS '金額',TC008 AS '交易幣別' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'&#13;&#10;FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV&#13;&#10;WHERE TC001 = TD001 AND TC002 = TD002&#13;&#10;AND TC006=MV001&#13;&#10;AND TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001  IN ('A221', 'A222', 'A225', 'A226') AND TD016='N' &#13;&#10;UNION ALL&#13;&#10;SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月',MV004 AS '部門',MV002 AS '業務員', (TD012) AS '金額' ,TC008 AS '交易幣別',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'&#13;&#10;FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV&#13;&#10;WHERE TC001 = TD001 AND TC002 = TD002&#13;&#10;AND TC006=MV001&#13;&#10;AND TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001 NOT IN ('A221', 'A222', 'A225', 'A226') AND TD016='N' &#13;&#10; &#13;&#10;) AS TEMP&#13;&#10;GROUP BY  年月,部門,業務員,類別,交易幣別&#13;&#10;ORDER BY   年月,部門,業務員,類別">
         <Column Name="年月" DataType="System.String"/>
-        <Column Name="國別" DataType="System.String"/>
-        <Column Name="Tmoney" DataType="System.Decimal"/>
         <Column Name="類別" DataType="System.String"/>
         <Column Name="業務員" DataType="System.String"/>
+        <Column Name="部門" DataType="System.String"/>
+        <Column Name="未出金額" DataType="System.Decimal"/>
+        <Column Name="本幣金額" DataType="System.Int32"/>
       </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
   <ReportPage Name="Page1">
-    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="18.9"/>
-    <DataBand Name="Data1" Top="22.75" Width="718.2" Height="52.88">
-      <MatrixObject Name="Matrix1" Left="18.9" Width="249.01" Height="52.88" Border.Lines="All" FixedRows="1" FixedColumns="3" DataSource="Table">
+    <DataBand Name="Data1" Width="718.2" Height="52.88">
+      <MatrixObject Name="Matrix1" Left="18.9" Width="255.07" Height="54.57" Border.Lines="All" FixedRows="1" FixedColumns="3" DataSource="Table">
         <MatrixColumns>
           <Header Expression="[Table.年月]"/>
         </MatrixColumns>
         <MatrixRows>
-          <Header Expression="[Table.國別]"/>
+          <Header Expression="[Table.部門]"/>
           <Header Expression="[Table.業務員]" Totals="false"/>
           <Header Expression="[Table.類別]" Totals="false"/>
         </MatrixRows>
         <MatrixCells>
-          <Cell Expression="[Table.Tmoney]"/>
+          <Cell Expression="[Table.本幣金額]"/>
         </MatrixCells>
         <TableColumn Name="Column1" Width="46.07" AutoSize="true"/>
         <TableColumn Name="Column2" Width="58.43" AutoSize="true"/>
         <TableColumn Name="Column3" Width="46.07" AutoSize="true"/>
-        <TableColumn Name="Column4" Width="58.5" AutoSize="true"/>
-        <TableColumn Name="Column5" Width="39.94" AutoSize="true"/>
+        <TableColumn Name="Column4" Width="70.79" AutoSize="true"/>
+        <TableColumn Name="Column5" Width="33.71" AutoSize="true"/>
         <TableRow Name="Row1" Height="18.19" AutoSize="true">
-          <TableCell Name="Cell1" Border.Lines="All" Text="國別" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell1" Border.Lines="All" Text="部門" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell2" Border.Lines="All" Text="業務員" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell5" Border.Lines="All" Text="類別" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell10" Border.Lines="All" Text="[年月]" HorzAlign="Center" VertAlign="Center"/>
-          <TableCell Name="Cell17" Border.Lines="All" Text="Total" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell17" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
         </TableRow>
         <TableRow Name="Row2" Height="18.19" AutoSize="true">
-          <TableCell Name="Cell3" Border.Lines="All" Text="[國別]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell3" Border.Lines="All" Text="[部門]" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell4" Border.Lines="All" Text="[業務員]" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell6" Border.Lines="All" Text="[類別]" HorzAlign="Center" VertAlign="Center"/>
-          <TableCell Name="Cell11" Border.Lines="All" BeforePrintEvent="Cell11_BeforePrint" AfterPrintEvent="Cell11_AfterPrint" Text="[Tmoney]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell11" Border.Lines="All" BeforePrintEvent="Cell11_BeforePrint" AfterPrintEvent="Cell11_AfterPrint" Text="[本幣金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
           <TableCell Name="Cell18" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
         </TableRow>
-        <TableRow Name="Row3" Height="16.5" AutoSize="true">
-          <TableCell Name="Cell7" Border.Lines="All" Text="Total" HorzAlign="Center" VertAlign="Center" ColSpan="3"/>
+        <TableRow Name="Row3" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell7" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center" ColSpan="3"/>
           <TableCell Name="Cell8"/>
           <TableCell Name="Cell9"/>
           <TableCell Name="Cell12" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
