@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/11/2021 10:05:48" ReportInfo.Modified="01/11/2021 10:07:59" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9In/nvgEZb79+RN+J6KhSb0">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT *&#13;&#10;FROM (&#13;&#10;SELECT '1' AS 'SEQ','官網' AS 'KIND' ,ISNULL(CAST(SUM(TH037) AS INT),0) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A233') AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)&gt;='20210101' AND SUBSTRING(TH002,1,8)&lt;='2021011' &#13;&#10;UNION ALL&#13;&#10;SELECT '2' AS 'SEQ','現銷' AS 'KIND' ,ISNULL(CAST(SUM(TH037) AS INT),0) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A230') AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)&gt;='20210101' AND SUBSTRING(TH002,1,8)&lt;='2021011' &#13;&#10;UNION ALL&#13;&#10;SELECT '3' AS 'SEQ','預購' AS 'KIND' ,ISNULL(CAST(SUM(TH037) AS INT),0) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A23E','A23F') AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)&gt;='20210101' AND SUBSTRING(TH002,1,8)&lt;='2021011' &#13;&#10;UNION ALL&#13;&#10;SELECT '99' AS 'SEQ',MA002 AS 'KIND' ,ISNULL(CAST(SUM(TH037) AS INT),0) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.COPMA WHERE MA001=TG004 AND  TG001=TH001 AND TG002=TH002 AND  TH001='A234' AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)&gt;='20210101' AND SUBSTRING(TH002,1,8)&lt;='2021011' GROUP BY MA002  &#13;&#10;) AS TEMP  ORDER BY SEQ &#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;">
+        <Column Name="SEQ" DataType="System.String"/>
+        <Column Name="KIND" DataType="System.String"/>
+        <Column Name="MONEY" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="18.9">
+      <TextObject Name="Text1" Width="708.75" Height="18.9" Text="電商部門" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="23.39" Width="718.2" Height="18.9">
+      <TextObject Name="Text3" Width="94.5" Height="18.9" Border.Lines="All" Text="順序" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="分類" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="金額" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="46.79" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.SEQ]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.KIND]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.MONEY]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="70.18" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>

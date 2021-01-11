@@ -20,6 +20,8 @@ using System.Data.SqlClient;
 using NPOI.SS.UserModel;
 using System.Configuration;
 using NPOI.XSSF.UserModel;
+using FastReport;
+using FastReport.Data;
 
 namespace TKKPI
 {
@@ -54,59 +56,59 @@ namespace TKKPI
         }
         public void Search()
         {
-            try
-            {
-                sbSql.Clear();
-                sbSql = SETsbSql();
+            //try
+            //{
+            //    sbSql.Clear();
+            //    sbSql = SETsbSql();
 
-                if (!string.IsNullOrEmpty(sbSql.ToString()))
-                {
-                    connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-                    sqlConn = new SqlConnection(connectionString);
-
-
-
-                    adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
-                    sqlCmdBuilder = new SqlCommandBuilder(adapter);
-
-                    sqlConn.Open();
-                    ds.Clear();
-                    adapter.Fill(ds, talbename);
-                    sqlConn.Close();
-
-                    label1.Text = "資料筆數:" + ds.Tables[talbename].Rows.Count.ToString();
-
-                    if (ds.Tables[talbename].Rows.Count == 0)
-                    {
-
-                    }
-                    else
-                    {
-                        dataGridView1.DataSource = ds.Tables[talbename];
-                        dataGridView1.AutoResizeColumns();
-                        //rownum = ds.Tables[talbename].Rows.Count - 1;
-                        dataGridView1.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
-
-                        //dataGridView1.CurrentCell = dataGridView1[0, 2];
-
-                    }
-                }
-                else
-                {
-
-                }
+            //    if (!string.IsNullOrEmpty(sbSql.ToString()))
+            //    {
+            //        connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            //        sqlConn = new SqlConnection(connectionString);
 
 
 
-            }
-            catch
-            {
+            //        adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+            //        sqlCmdBuilder = new SqlCommandBuilder(adapter);
 
-            }
-            finally
-            {
+            //        sqlConn.Open();
+            //        ds.Clear();
+            //        adapter.Fill(ds, talbename);
+            //        sqlConn.Close();
 
-            }
+            //        label1.Text = "資料筆數:" + ds.Tables[talbename].Rows.Count.ToString();
+
+            //        if (ds.Tables[talbename].Rows.Count == 0)
+            //        {
+
+            //        }
+            //        else
+            //        {
+            //            dataGridView1.DataSource = ds.Tables[talbename];
+            //            dataGridView1.AutoResizeColumns();
+            //            //rownum = ds.Tables[talbename].Rows.Count - 1;
+            //            dataGridView1.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
+
+            //            //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+            //        }
+            //    }
+            //    else
+            //    {
+
+            //    }
+
+
+
+            //}
+            //catch
+            //{
+
+            //}
+            //finally
+            //{
+
+            //}
 
         }
 
@@ -116,19 +118,20 @@ namespace TKKPI
             string Queryday = null;
 
             if (comboBox1.Text.ToString().Equals("業績"))
-            {
-               
-                STR.AppendFormat(@" SELECT *");
-                STR.AppendFormat(@" FROM (");
-                STR.AppendFormat(@" SELECT '1' AS 'SEQ','官網' AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A233') AND TH020='Y' AND TG005 IN ('102300','114000','116300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' ", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
-                STR.AppendFormat(@" UNION ALL");
-                STR.AppendFormat(@" SELECT '2' AS 'SEQ','現銷' AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A230') AND TH020='Y' AND TG005 IN ('102300','114000','116300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' ", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
-                STR.AppendFormat(@" UNION ALL");
-                STR.AppendFormat(@" SELECT '3' AS 'SEQ','預購' AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A23E','A23F') AND TH020='Y' AND TG005 IN ('102300','114000','116300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' ", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
-                STR.AppendFormat(@" UNION ALL");
-                STR.AppendFormat(@" SELECT '99' AS 'SEQ',MA002 AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.COPMA WHERE MA001=TG004 AND  TG001=TH001 AND TG002=TH002 AND  TH001='A234' AND TH020='Y' AND TG005 IN ('102300','114000','116300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' GROUP BY MA002  ", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
-                STR.AppendFormat(@" ) AS TEMP  ORDER BY SEQ ");
-                STR.AppendFormat(@" ");
+            {              
+
+                STR.AppendFormat(@" 
+                                SELECT *
+                                FROM (
+                                SELECT '1' AS 'SEQ','官網' AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A233') AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' 
+                                UNION ALL
+                                SELECT '2' AS 'SEQ','現銷' AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A230') AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' 
+                                UNION ALL
+                                SELECT '3' AS 'SEQ','預購' AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A23E','A23F') AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' 
+                                UNION ALL
+                                SELECT '99' AS 'SEQ',MA002 AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.COPMA WHERE MA001=TG004 AND  TG001=TH001 AND TG002=TH002 AND  TH001='A234' AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' GROUP BY MA002  
+                                ) AS TEMP  ORDER BY SEQ 
+                                ", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
 
                 talbename = "TEMPds1";
             }
@@ -143,12 +146,68 @@ namespace TKKPI
 
             return STR;
         }
+
+        public void SETFASTREPORT()
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL();
+            Report report4 = new Report();
+            report4.Load(@"REPORT\業績-電商部.frx");
+
+            report4.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            TableDataSource table = report4.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            //report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
+            report4.Preview = previewControl1;
+            report4.Show();
+        }
+
+        public StringBuilder SETSQL()
+        {
+            StringBuilder SB = new StringBuilder();
+
+
+            if (comboBox1.Text.ToString().Equals("業績"))
+            {
+
+                SB.AppendFormat(@" 
+                                SELECT *
+                                FROM (
+                                SELECT '1' AS 'SEQ','官網' AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A233') AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' 
+                                UNION ALL
+                                SELECT '2' AS 'SEQ','現銷' AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A230') AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' 
+                                UNION ALL
+                                SELECT '3' AS 'SEQ','預購' AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK) WHERE  TG001=TH001 AND TG002=TH002 AND  TH001 IN ('A23E','A23F') AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' 
+                                UNION ALL
+                                SELECT '99' AS 'SEQ',MA002 AS 'KIND' ,CAST(SUM(TH037) AS INT) AS 'MONEY' FROM  [TK].dbo.COPTG,[TK].dbo.COPTH WITH (NOLOCK),[TK].dbo.COPMA WHERE MA001=TG004 AND  TG001=TH001 AND TG002=TH002 AND  TH001='A234' AND TH020='Y' AND TG005 IN ('102300','114000','116300','117300') AND SUBSTRING(TH002,1,8)>='{0}' AND SUBSTRING(TH002,1,8)<='{1}' GROUP BY MA002  
+                                ) AS TEMP  ORDER BY SEQ 
+                                ", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
+
+                talbename = "TEMPds1";
+            }
+            else if (comboBox1.Text.ToString().Equals(""))
+            {
+                SB.AppendFormat(@" ");
+
+                talbename = "TEMPds2";
+            }
+
+
+
+            return SB;
+
+        }
+
         #endregion
 
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            Search();
+            //Search();
+            SETFASTREPORT();
         }
 
         #endregion
