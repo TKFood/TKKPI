@@ -76,7 +76,7 @@ namespace TKKPI
                             AND MA001=TE007
                             AND MV001=TE009
                             AND TE004>='{0}' AND TE004<='{1}'
-                            ORDER BY MA002,MV002,TE001,TE002,TE003
+                            ORDER BY MA002,MV002,TE001,TE002,TE003 
                             ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
 
             talbename = "TEMPds1";

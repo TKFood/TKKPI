@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/26/2021 09:51:38" ReportInfo.Modified="01/26/2021 10:18:10" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/26/2021 09:51:38" ReportInfo.Modified="01/26/2021 10:42:06" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9JpUz8tV2PqOJvUV0ogH8rJ">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9IF7AAkmEtrYo/XLTUWKyEJ">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TE001,TE002,TE003,TE004,TE006,TE007,TE009,MA002,MV002&#13;&#10;FROM [TK].dbo.COPTE,[TK].dbo.COPMA,[TK].dbo.CMSMV&#13;&#10;WHERE TE029='Y'&#13;&#10;AND MA001=TE007&#13;&#10;AND MV001=TE009&#13;&#10;AND TE004&gt;='20210101' AND TE004&lt;='20210131'&#13;&#10;ORDER BY MA002,MV002,TE001,TE002,TE003&#13;&#10;">
         <Column Name="TE001" DataType="System.String"/>
         <Column Name="TE002" DataType="System.String"/>
@@ -98,7 +98,7 @@
       <TextObject Name="Text12" Left="756" Top="19.02" Width="94.5" Height="18.9" Border.Lines="All" Text="單號" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text14" Left="850.5" Top="19.02" Width="66.15" Height="18.9" Border.Lines="All" Text="版次" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text16" Left="916.65" Top="19.02" Width="94.5" Height="18.9" Border.Lines="All" Text="變更日" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text17" Top="19.02" Width="481.95" Height="18.9" Text="日期:[P1]~[P2]" VertAlign="Center"/>
+      <TextObject Name="Text17" Top="0.12" Width="481.95" Height="18.9" Text="日期:[P1]~[P2]" VertAlign="Center"/>
     </ColumnHeaderBand>
     <DataBand Name="Data3" Top="42.41" Width="1020.6" Height="19.02" CanGrow="true" DataSource="Table">
       <TextObject Name="Text3" Top="0.12" Width="198.45" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MA002]" VertAlign="Center"/>
