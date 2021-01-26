@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/26/2021 09:51:38" ReportInfo.Modified="01/26/2021 10:18:10" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9JpUz8tV2PqOJvUV0ogH8rJ">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TE001,TE002,TE003,TE004,TE006,TE007,TE009,MA002,MV002&#13;&#10;FROM [TK].dbo.COPTE,[TK].dbo.COPMA,[TK].dbo.CMSMV&#13;&#10;WHERE TE029='Y'&#13;&#10;AND MA001=TE007&#13;&#10;AND MV001=TE009&#13;&#10;AND TE004&gt;='20210101' AND TE004&lt;='20210131'&#13;&#10;ORDER BY MA002,MV002,TE001,TE002,TE003&#13;&#10;">
+        <Column Name="TE001" DataType="System.String"/>
+        <Column Name="TE002" DataType="System.String"/>
+        <Column Name="TE003" DataType="System.String"/>
+        <Column Name="TE004" DataType="System.String"/>
+        <Column Name="TE006" DataType="System.String"/>
+        <Column Name="TE007" DataType="System.String"/>
+        <Column Name="TE009" DataType="System.String"/>
+        <Column Name="MA002" DataType="System.String"/>
+        <Column Name="MV002" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="P1" DataType="System.String"/>
+    <Parameter Name="P2" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ColumnHeaderBand Name="ColumnHeader1" Width="718.2" Height="18.9">
+      <TextObject Name="Text1" Width="481.95" Height="18.9" Text="日期:[P1]~[P2]" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="23.39" Width="718.2" Height="62.33">
+      <MatrixObject Name="Matrix1" Width="138.33" Height="52.88" FixedRows="1" FixedColumns="1" DataSource="Table">
+        <MatrixColumns>
+          <Header Expression="[Table.MV002]"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[Table.MA002]"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[Table.TE001]" Function="Count"/>
+        </MatrixCells>
+        <TableColumn Name="Column1" Width="52.31" AutoSize="true"/>
+        <TableColumn Name="Column2" Width="52.31" AutoSize="true"/>
+        <TableColumn Name="Column3" Width="33.71" AutoSize="true"/>
+        <TableRow Name="Row1" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell1" Border.Lines="All" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell2" Border.Lines="All" Text="[MV002]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell7" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="16.5" AutoSize="true">
+          <TableCell Name="Cell3" Border.Lines="All" Text="[MA002]" VertAlign="Center"/>
+          <TableCell Name="Cell4" Border.Lines="All" Text="[TE001]" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell8" Border.Lines="All" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell5" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell6" Border.Lines="All" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell9" Border.Lines="All" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page2">
+    <ColumnHeaderBand Name="ColumnHeader2" Width="718.2" Height="18.9">
+      <TextObject Name="Text2" Width="481.95" Height="18.9" Text="日期:[P1]~[P2]" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data2" Top="23.39" Width="718.2" Height="52.88">
+      <MatrixObject Name="Matrix2" Width="138.33" Height="52.88" Border.Lines="All" FixedRows="1" FixedColumns="1" DataSource="Table">
+        <MatrixColumns>
+          <Header Expression="[Table.MV002]"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[Table.TE006]"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[Table.TE001]" Function="Count"/>
+        </MatrixCells>
+        <TableColumn Name="Column4" Width="52.31" AutoSize="true"/>
+        <TableColumn Name="Column5" Width="52.31" AutoSize="true"/>
+        <TableColumn Name="Column6" Width="33.71" AutoSize="true"/>
+        <TableRow Name="Row4" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell10" Border.Lines="All" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell11" Border.Lines="All" Text="[MV002]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell14" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row5" Height="16.5" AutoSize="true">
+          <TableCell Name="Cell12" Border.Lines="All" Text="[TE006]" VertAlign="Center"/>
+          <TableCell Name="Cell13" Border.Lines="All" Text="[TE001]" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell15" Border.Lines="All" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row6" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell16" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell17" Border.Lines="All" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell18" Border.Lines="All" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+  </ReportPage>
+  <ReportPage Name="Page3" Landscape="true" PaperWidth="290" PaperHeight="210">
+    <ColumnHeaderBand Name="ColumnHeader3" Width="1020.6" Height="37.92">
+      <TextObject Name="Text4" Top="19.02" Width="198.45" Height="18.9" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="198.45" Top="19.02" Width="396.9" Height="18.9" Border.Lines="All" Text="原因" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="595.35" Top="19.02" Width="94.5" Height="18.9" Border.Lines="All" Text="業務員" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="689.85" Top="19.02" Width="66.15" Height="18.9" Border.Lines="All" Text="訂單" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="756" Top="19.02" Width="94.5" Height="18.9" Border.Lines="All" Text="單號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="850.5" Top="19.02" Width="66.15" Height="18.9" Border.Lines="All" Text="版次" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="916.65" Top="19.02" Width="94.5" Height="18.9" Border.Lines="All" Text="變更日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Top="19.02" Width="481.95" Height="18.9" Text="日期:[P1]~[P2]" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data3" Top="42.41" Width="1020.6" Height="19.02" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text3" Top="0.12" Width="198.45" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MA002]" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="198.45" Top="0.12" Width="396.9" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TE006]" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="595.35" Top="0.12" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MV002]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="689.85" Top="0.12" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TE001]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="756" Top="0.12" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TE002]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="850.5" Top="0.12" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TE003]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="916.65" Top="0.12" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.TE004]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+  </ReportPage>
+</Report>
