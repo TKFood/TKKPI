@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/28/2021 14:37:06" ReportInfo.Modified="01/28/2021 15:00:41" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9J9P6v7hcOl7QyHROIYNN3K">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TL003 AS '核價日',MA002 AS '廠商',TL004 AS '廠商ID',TM004 AS '品號',TM005 AS '品名',TM010 AS '單價',TL001 AS '核價單別',TL002 AS '核價單號'&#13;&#10;,(SELECT TOP 1 TL003 FROM [TK].dbo.PURTL TL,[TK].dbo.PURTM TM WHERE TL.TL001=TM.TM001 AND TL.TL002=TM.TM002 AND TM.TM004=PURTM.TM004 AND TL.TL004=PURTL.TL004 AND TL.TL003&lt;&gt;PURTL.TL003 ORDER BY TL003 DESC) AS '上次核價日'&#13;&#10;,(SELECT TOP 1 TM010 FROM [TK].dbo.PURTL TL,[TK].dbo.PURTM TM WHERE TL.TL001=TM.TM001 AND TL.TL002=TM.TM002 AND TM.TM004=PURTM.TM004 AND TL.TL004=PURTL.TL004 AND TL.TL003&lt;&gt;PURTL.TL003 ORDER BY TL003 DESC) AS '上次核價單價'&#13;&#10;&#13;&#10;,(SELECT TOP 1 TL003+'-'+CONVERT(NVARCHAR,TM010) FROM [TK].dbo.PURTL TL,[TK].dbo.PURTM TM WHERE TL.TL001=TM.TM001 AND TL.TL002=TM.TM002 AND TM.TM004=PURTM.TM004 AND TL.TL004=PURTL.TL004 AND TL.TL003&lt;&gt;PURTL.TL003 ORDER BY TL003 DESC) AS '備註'&#13;&#10;FROM [TK].dbo.PURTL,[TK].dbo.PURTM,[TK].dbo.PURMA&#13;&#10;WHERE TL001=TM001 AND TL002=TM002&#13;&#10;AND MA001=TL004&#13;&#10;AND TL006='Y'&#13;&#10;AND TL003&gt;='20210101' AND TL003&lt;='20210131'&#13;&#10;ORDER BY MA002,TL003,TM004&#13;&#10;">
+        <Column Name="核價日" DataType="System.String"/>
+        <Column Name="廠商" DataType="System.String"/>
+        <Column Name="廠商ID" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="單價" DataType="System.Decimal"/>
+        <Column Name="核價單別" DataType="System.String"/>
+        <Column Name="核價單號" DataType="System.String"/>
+        <Column Name="上次核價日" DataType="System.String"/>
+        <Column Name="上次核價單價" DataType="System.Decimal"/>
+        <Column Name="備註" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="28.35">
+      <TextObject Name="Text1" Width="1048.95" Height="18.9" Text="原料、物料核價單漲跌整理表"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="32.84" Width="1047.06" Height="18.9">
+      <TextObject Name="Text3" Width="94.5" Height="18.9" Border.Lines="All" Text="廠商" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="核價日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="283.5" Width="283.5" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="567" Width="94.5" Height="18.9" Border.Lines="All" Text="單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="661.5" Width="94.5" Height="18.9" Border.Lines="All" Text="上次核價日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="756" Width="94.5" Height="18.9" Border.Lines="All" Text="上次核價單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" Text="最新核價單別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="945" Width="94.5" Height="18.9" Border.Lines="All" Text="最新核價單號" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="56.24" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.廠商]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.核價日]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="189" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="283.5" Width="283.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="567" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.單價]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="3" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="661.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.上次核價日]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="756" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.上次核價單價]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="3" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text16" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.核價單別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="945" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.核價單號]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="79.63" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>

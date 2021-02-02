@@ -178,6 +178,12 @@
     <Compile Include="frmREPORTCOPTEF.Designer.cs">
       <DependentUpon>frmREPORTCOPTEF.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTSALES.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTSALES.Designer.cs">
+      <DependentUpon>frmREPORTSALES.cs</DependentUpon>
+    </Compile>
     <Compile Include="PleaseWait.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,6 +242,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTCOPTEF.resx">
       <DependentUpon>frmREPORTCOPTEF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTSALES.resx">
+      <DependentUpon>frmREPORTSALES.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PleaseWait.resx">
       <DependentUpon>PleaseWait.cs</DependentUpon>
