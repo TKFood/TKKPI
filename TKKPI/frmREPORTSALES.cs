@@ -86,7 +86,7 @@ namespace TKKPI
                             ) AS TEMP
                             GROUP BY TG006,ME002,TG005,MV002,TG004,TG007,TH004,TH005
                             ORDER BY CONVERT(DECIMAL(16,2),((SUM(TH037)/SUM(LA011))-(AVG(LA012)))),ME002,TG005
-                            ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+                             ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
 
             talbename = "TEMPds1";
 

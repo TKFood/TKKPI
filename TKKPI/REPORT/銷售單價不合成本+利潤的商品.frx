@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="02/02/2021 10:26:39" ReportInfo.Modified="02/02/2021 11:04:35" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/02/2021 10:26:39" ReportInfo.Modified="02/02/2021 11:09:05" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9LtDjYMl8za9L8dzFoZhGyf">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9J9eRi+ninFR6lzgZ4ih41n">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TG006 AS '部門代',ME002 AS '部門',TG005 AS '業務',MV002 AS '業務員',TG004 AS '客代',TG007 AS '客戶',TH004 AS '品號',TH005 AS '品名',CONVERT(DECIMAL(16,2),(SUM(TH037)/SUM(LA011))) AS '平均銷貨單價',AVG(LA012) AS '平均成本',AVG(LA012)*1.4*1.2 AS '目標成本利潤',CONVERT(DECIMAL(16,2),((SUM(TH037)/SUM(LA011))-(AVG(LA012)))) AS '單價成本差',CONVERT(DECIMAL(16,2),((SUM(TH037)/SUM(LA011))-(AVG(LA012)*1.4*1.2))) AS '目標利潤單價成本差'&#13;&#10;FROM(&#13;&#10;SELECT TG001,TG002,TG006,ME002,TG005,MV002,TG004,TG007,TH004,TH005,TH037,LA011,LA012&#13;&#10;FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.CMSMV,[TK].dbo.CMSME&#13;&#10;WHERE TG001=TH001 AND TG002=TH002 &#13;&#10;AND LA006=TH001 AND LA007=TH002 AND LA008=TH003&#13;&#10;AND TG006=MV001&#13;&#10;AND TG005=ME001&#13;&#10;AND (TH004 LIKE '4%' OR TH004 LIKE '5%')&#13;&#10;AND (TG004 LIKE '2%' OR TG004 LIKE '3%' OR TG004 LIKE 'A%' OR TG004 LIKE 'B%')&#13;&#10;AND TH037&gt;0&#13;&#10;AND LA011&gt;0&#13;&#10;AND TG003&gt;='20210101' AND TG003&lt;='20210131'&#13;&#10;) AS TEMP&#13;&#10;GROUP BY TG006,ME002,TG005,MV002,TG004,TG007,TH004,TH005&#13;&#10;ORDER BY CONVERT(DECIMAL(16,2),((SUM(TH037)/SUM(LA011))-(AVG(LA012)))),ME002,TG005">
         <Column Name="部門代" DataType="System.String"/>
         <Column Name="部門" DataType="System.String"/>
@@ -22,25 +22,23 @@
     <Parameter Name="P2" DataType="System.String"/>
   </Dictionary>
   <ReportPage Name="Page1" Landscape="true" PaperWidth="400" PaperHeight="210">
-    <ReportTitleBand Name="ReportTitle1" Width="1436.4" Height="37.8">
+    <ReportTitleBand Name="ReportTitle1" Width="1436.4" Height="56.7">
       <TextObject Name="Text1" Width="1436.4" Height="18.9" Text="銷售單價不合成本+利潤的商品" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text26" Top="18.9" Width="283.5" Height="18.9" Text="查詢日期:[P1]~[P2]" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="283.5" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="客代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Top="37.8" Width="66.15" Height="18.9" Border.Lines="All" Text="部門代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="66.15" Top="37.8" Width="151.2" Height="18.9" Border.Lines="All" Text="部門" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="217.35" Top="37.8" Width="66.15" Height="18.9" Border.Lines="All" Text="業務員" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="378" Top="37.8" Width="198.45" Height="18.9" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="576.45" Top="37.8" Width="113.4" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="689.85" Top="37.8" Width="245.7" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="935.55" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="平均銷貨單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="1030.05" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="平均成本" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="1341.9" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="目標成本利潤" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="1124.55" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="單價成本差" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="1219.05" Top="37.8" Width="122.85" Height="18.9" Border.Lines="All" Text="目標利潤單價成本差" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader1" Top="42.29" Width="1436.4" Height="18.9">
-      <TextObject Name="Text3" Width="66.15" Height="18.9" Border.Lines="All" Text="部門代" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text5" Left="66.15" Width="151.2" Height="18.9" Border.Lines="All" Text="部門" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text7" Left="217.35" Width="66.15" Height="18.9" Border.Lines="All" Text="業務員" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text9" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="客代" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text11" Left="378" Width="198.45" Height="18.9" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text13" Left="576.45" Width="113.4" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text15" Left="689.85" Width="245.7" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text17" Left="935.55" Width="94.5" Height="18.9" Border.Lines="All" Text="平均銷貨單價" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text19" Left="1030.05" Width="94.5" Height="18.9" Border.Lines="All" Text="平均成本" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text21" Left="1341.9" Width="94.5" Height="18.9" Border.Lines="All" Text="目標成本利潤" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text23" Left="1124.55" Width="94.5" Height="18.9" Border.Lines="All" Text="單價成本差" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text25" Left="1219.05" Width="122.85" Height="18.9" Border.Lines="All" Text="目標利潤單價成本差" HorzAlign="Center" VertAlign="Center"/>
-    </PageHeaderBand>
-    <DataBand Name="Data1" Top="65.69" Width="1436.4" Height="18.9" CanGrow="true" DataSource="Table">
+    <DataBand Name="Data1" Top="61.19" Width="1436.4" Height="18.9" CanGrow="true" DataSource="Table">
       <TextObject Name="Text2" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.部門代]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text4" Left="66.15" Width="151.2" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.部門]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text6" Left="217.35" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.業務員]" HorzAlign="Center" VertAlign="Center"/>
@@ -54,6 +52,6 @@
       <TextObject Name="Text22" Left="1124.55" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.單價成本差]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text24" Left="1219.05" Width="122.85" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.目標利潤單價成本差]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="89.08" Width="1436.4" Height="18.9"/>
+    <PageFooterBand Name="PageFooter1" Top="84.59" Width="1436.4" Height="18.9"/>
   </ReportPage>
 </Report>
