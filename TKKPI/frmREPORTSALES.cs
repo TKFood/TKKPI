@@ -43,9 +43,16 @@ namespace TKKPI
         public frmREPORTSALES()
         {
             InitializeComponent();
+
+            SETTEXT();
         }
 
         #region FUNCTION
+        public void SETTEXT()
+        {
+            textBox1.Text = "40";
+            textBox2.Text = "20";
+        }
         public void SETFASTREPORT()
         {
             StringBuilder SQL1 = new StringBuilder();
@@ -70,7 +77,7 @@ namespace TKKPI
 
 
             SB.AppendFormat(@" 
-                           SELECT TG006 AS '部門代',ME002 AS '部門',TG005 AS '業務',MV002 AS '業務員',TG004 AS '客代',TG007 AS '客戶',TH004 AS '品號',TH005 AS '品名',CONVERT(DECIMAL(16,2),(SUM(TH037)/SUM(LA011))) AS '平均銷貨單價',AVG(LA012) AS '平均成本',AVG(LA012)*1.4*1.2 AS '目標成本利潤',CONVERT(DECIMAL(16,2),((SUM(TH037)/SUM(LA011))-(AVG(LA012)))) AS '單價成本差',CONVERT(DECIMAL(16,2),((SUM(TH037)/SUM(LA011))-(AVG(LA012)*1.4*1.2))) AS '目標利潤單價成本差'
+                           SELECT TG006 AS '部門代',ME002 AS '部門',TG005 AS '業務',MV002 AS '業務員',TG004 AS '客代',TG007 AS '客戶',TH004 AS '品號',TH005 AS '品名',CONVERT(DECIMAL(16,2),(SUM(TH037)/SUM(LA011))) AS '平均銷貨單價',AVG(LA012) AS '平均成本',AVG(LA012)*{2}*{3} AS '目標成本利潤',CONVERT(DECIMAL(16,2),((SUM(TH037)/SUM(LA011))-(AVG(LA012)))) AS '單價成本差',CONVERT(DECIMAL(16,2),((SUM(TH037)/SUM(LA011))-(AVG(LA012)*{2}*{3}))) AS '目標利潤單價成本差'
                             FROM(
                             SELECT TG001,TG002,TG006,ME002,TG005,MV002,TG004,TG007,TH004,TH005,TH037,LA011,LA012
                             FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.CMSMV,[TK].dbo.CMSME
@@ -86,7 +93,7 @@ namespace TKKPI
                             ) AS TEMP
                             GROUP BY TG006,ME002,TG005,MV002,TG004,TG007,TH004,TH005
                             ORDER BY CONVERT(DECIMAL(16,2),((SUM(TH037)/SUM(LA011))-(AVG(LA012)))),ME002,TG005
-                             ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+                             ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"),(1+(Convert.ToDecimal(textBox1.Text)/100)), (1+(Convert.ToDecimal(textBox2.Text) / 100)));
 
             talbename = "TEMPds1";
 
