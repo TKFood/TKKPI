@@ -54,8 +54,10 @@ namespace TKKPI
         {
             DateTime FirstDay = DateTime.Now.AddDays(-DateTime.Now.Day + 1);
             dateTimePicker1.Value = FirstDay;
+            dateTimePicker2.Value = FirstDay;
 
             textBox1.Text = new TimeSpan(DateTime.Now.Ticks - FirstDay.Ticks).TotalDays.ToString();
+            textBox2.Text = new TimeSpan(DateTime.Now.Ticks - FirstDay.Ticks).TotalDays.ToString();
         }
 
         public void SETFASTREPORT()
@@ -126,6 +128,73 @@ namespace TKKPI
             return SB;
 
         }
+
+        public void SETFASTREPORT2()
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL2();
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\營銷銷售預估月份.frx");
+
+            report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+
+            report1.Preview = previewControl2;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL2()
+        {
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(@"  
+                             DECLARE @SDAY nvarchar(10)
+                            DECLARE @TOTALDAYS INT
+                            SET @SDAY='{0}'
+                            SET @TOTALDAYS={1}
+
+                            SELECT LA001 AS '品號',MB002 AS '品名',LA016 AS '批號',NUMS AS '庫存量',有效日期,製造日期,總銷售數量,平均天銷售數量,預計銷售天,預計完銷日
+                            ,DATEDIFF (MONTH,製造日期,預計完銷日) AS '生產到完銷的月數'
+                            ,@SDAY AS '銷售日起'
+                            ,@TOTALDAYS  AS '銷售天數'
+                            FROM (
+                            SELECT LA001,MB002,LA016,NUMS,有效日期,製造日期,總銷售數量,平均天銷售數量,(NUMS/平均天銷售數量) '預計銷售天'
+                            ,CONVERT(NVARCHAR,DATEADD(DAY,CEILING(NUMS/平均天銷售數量),GETDATE()),112) AS '預計完銷日'
+
+                            FROM (
+                            SELECT LA001,MB002,LA016,SUM(LA005*LA011) AS 'NUMS'
+                            ,(SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF,[TK].dbo.MOCTG WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) AS '有效日期'
+                            ,(SELECT TOP 1 TG040 FROM [TK].dbo.MOCTF,[TK].dbo.MOCTG WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG040 ) AS '製造日期'
+                            ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001>=@SDAY) AS '總銷售數量'
+                            ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
+                            FROM [TK].dbo.INVLA,[TK].dbo.INVMB
+                            WHERE LA009 IN ('21001')
+                            AND LA001=MB001
+                            AND LA001 LIKE '40%'
+                            AND LA016 LIKE '2%'
+                            AND MB002 NOT LIKE '%試吃%'
+                            GROUP BY LA001,MB002,LA016
+                            HAVING SUM(LA005*LA011)>0
+
+                            ) AS TEMP
+                            ) AS TEMP2
+                            ORDER BY LA001
+
+
+                            ", dateTimePicker2.Value.ToString("yyyyMMdd"), textBox2.Text.ToString());
+
+
+            return SB;
+
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -134,6 +203,14 @@ namespace TKKPI
             SETFASTREPORT();
 
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT2();
+        }
+
+
         #endregion
+
+
     }
 }
