@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/17/2021 13:59:17" ReportInfo.Modified="08/17/2021 14:49:45" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9L4t3BLAKiSKY4taVCoDXpS">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="DECLARE @SDAY nvarchar(10)&#13;&#10;DECLARE @TOTALDAYS INT&#13;&#10;SET @SDAY='20210801'&#13;&#10;SET @TOTALDAYS=16&#13;&#10;&#13;&#10;SELECT LA001 AS '品號',MB002 AS '品名',LA016 AS '批號',NUMS AS '庫存量',有效日期,製造日期,總銷售數量,平均天銷售數量,預計銷售天,預計完銷日&#13;&#10;,DATEDIFF (MONTH,製造日期,預計完銷日) AS '生產到完銷的月數'&#13;&#10;,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30001')) AS '中山一店'&#13;&#10;,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30002')) AS '概念二店'&#13;&#10;,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30003')) AS '北港三店'&#13;&#10;,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30004')) AS '站前四店'&#13;&#10;,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30012')) AS '微風北車店'&#13;&#10;,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30017')) AS '大潤發中崙店'&#13;&#10;,@SDAY AS '銷售日起'&#13;&#10;,@TOTALDAYS  AS '銷售天數'&#13;&#10;FROM (&#13;&#10;SELECT LA001,MB002,LA016,NUMS,有效日期,製造日期,總銷售數量,平均天銷售數量,(NUMS/平均天銷售數量) '預計銷售天'&#13;&#10;,CONVERT(NVARCHAR,DATEADD(DAY,CEILING(NUMS/平均天銷售數量),GETDATE()),112) AS '預計完銷日'&#13;&#10;FROM (&#13;&#10;SELECT LA001,MB002,LA016,SUM(LA005*LA011) AS 'NUMS'&#13;&#10;,(SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF,[TK].dbo.MOCTG WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) AS '有效日期'&#13;&#10;,(SELECT TOP 1 TG040 FROM [TK].dbo.MOCTF,[TK].dbo.MOCTG WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG040 ) AS '製造日期'&#13;&#10;,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB002 IN ('106501','106502','106503','106504','106513') AND TB010=LA001 AND TB001&gt;=@SDAY) AS '總銷售數量'&#13;&#10;,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB002 IN ('106501','106502','106503','106504','106513') AND TB010=LA001 AND TB001&gt;=@SDAY)/@TOTALDAYS AS '平均天銷售數量'&#13;&#10;FROM [TK].dbo.INVLA,[TK].dbo.INVMB&#13;&#10;WHERE LA009 IN ('30001','30002','30003','30004','30012','30017')&#13;&#10;AND LA001=MB001&#13;&#10;AND LA001 LIKE '40%'&#13;&#10;AND LA016 LIKE '2%'&#13;&#10;AND MB002 NOT LIKE '%試吃%'&#13;&#10;GROUP BY LA001,MB002,LA016&#13;&#10;HAVING SUM(LA005*LA011)&gt;0&#13;&#10;&#13;&#10;) AS TEMP&#13;&#10;) AS TEMP2&#13;&#10;ORDER BY LA001&#13;&#10;">
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="批號" DataType="System.String"/>
+        <Column Name="庫存量" DataType="System.Decimal"/>
+        <Column Name="有效日期" DataType="System.String"/>
+        <Column Name="製造日期" DataType="System.String"/>
+        <Column Name="總銷售數量" DataType="System.Decimal"/>
+        <Column Name="平均天銷售數量" DataType="System.Decimal"/>
+        <Column Name="預計銷售天" DataType="System.Decimal"/>
+        <Column Name="預計完銷日" DataType="System.String"/>
+        <Column Name="中山一店" DataType="System.Decimal"/>
+        <Column Name="概念二店" DataType="System.Decimal"/>
+        <Column Name="北港三店" DataType="System.Decimal"/>
+        <Column Name="站前四店" DataType="System.Decimal"/>
+        <Column Name="微風北車店" DataType="System.Decimal"/>
+        <Column Name="大潤發中崙店" DataType="System.Decimal"/>
+        <Column Name="銷售日起" DataType="System.String"/>
+        <Column Name="銷售天數" DataType="System.Int32"/>
+        <Column Name="生產到完銷的月數" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="500" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1814.4" Height="18.9">
+      <TextObject Name="Text1" Width="1804.95" Height="18.9" Text="門市銷售預估月份" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="23.39" Width="1814.4" Height="37.8">
+      <TextObject Name="Text3" Width="132.3" Height="37.8" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="132.3" Width="359.1" Height="37.8" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="491.4" Width="75.6" Height="37.8" Border.Lines="All" Text="批號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="567" Width="75.6" Height="37.8" Border.Lines="All" Text="庫存量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="642.6" Width="75.6" Height="37.8" Border.Lines="All" Text="有效日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="718.2" Width="75.6" Height="37.8" Border.Lines="All" Text="製造日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="793.8" Width="75.6" Height="37.8" Border.Lines="All" Text="總銷售數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="869.4" Width="94.5" Height="37.8" Border.Lines="All" Text="平均天銷售數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="963.9" Width="75.6" Height="37.8" Border.Lines="All" Text="預計銷售天" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="1039.5" Width="75.6" Height="37.8" Border.Lines="All" Text="預計完銷日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="1115.1" Width="75.6" Height="37.8" Border.Lines="All" Text="生產到完銷的月數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="1190.7" Width="75.6" Height="37.8" Border.Lines="All" Text="中山一店" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="1266.3" Width="75.6" Height="37.8" Border.Lines="All" Text="概念二店" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="1341.9" Width="75.6" Height="37.8" Border.Lines="All" Text="北港三店" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text31" Left="1417.5" Width="75.6" Height="37.8" Border.Lines="All" Text="站前四店" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text33" Left="1493.1" Width="75.6" Height="37.8" Border.Lines="All" Text="微風北車店" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text35" Left="1568.7" Width="85.05" Height="37.8" Border.Lines="All" Text="大潤發中崙店" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text37" Left="1653.75" Width="75.6" Height="37.8" Border.Lines="All" Text="銷售日起" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text39" Left="1729.35" Width="75.6" Height="37.8" Border.Lines="All" Text="銷售天數" HorzAlign="Center" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="65.69" Width="1814.4" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="132.3" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="132.3" Width="359.1" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="491.4" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.批號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="567" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.庫存量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text10" Left="642.6" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.有效日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="718.2" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.製造日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="793.8" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.總銷售數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text16" Left="869.4" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.平均天銷售數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text18" Left="963.9" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.預計銷售天]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="1039.5" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.預計完銷日]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="1115.1" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.生產到完銷的月數]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="1190.7" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.中山一店]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text26" Left="1266.3" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.概念二店]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text28" Left="1341.9" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.北港三店]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text30" Left="1417.5" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.站前四店]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text32" Left="1493.1" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.微風北車店]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text34" Left="1568.7" Width="85.05" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.大潤發中崙店]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text36" Left="1653.75" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.銷售日起]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text38" Left="1729.35" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.銷售天數]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+  </ReportPage>
+</Report>
