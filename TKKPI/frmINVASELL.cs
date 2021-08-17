@@ -56,8 +56,8 @@ namespace TKKPI
             dateTimePicker1.Value = FirstDay;
             dateTimePicker2.Value = FirstDay;
 
-            textBox1.Text = new TimeSpan(DateTime.Now.Ticks - FirstDay.Ticks).TotalDays.ToString();
-            textBox2.Text = new TimeSpan(DateTime.Now.Ticks - FirstDay.Ticks).TotalDays.ToString();
+            textBox1.Text = Math.Round(new TimeSpan(DateTime.Now.Ticks - FirstDay.Ticks).TotalDays,0).ToString();
+            textBox2.Text = Math.Round(new TimeSpan(DateTime.Now.Ticks - FirstDay.Ticks).TotalDays, 0).ToString();
         }
 
         public void SETFASTREPORT()
