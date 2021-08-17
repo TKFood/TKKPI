@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="08/17/2021 14:55:18" ReportInfo.Modified="08/17/2021 15:07:16" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/17/2021 14:55:18" ReportInfo.Modified="08/17/2021 15:12:59" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9Jxpr2XFwmUO0HjMPnJQhBv">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9Kp/KgpOh9l5Lelc+xoOKBD">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="DECLARE @SDAY nvarchar(10)&#13;&#10;DECLARE @TOTALDAYS INT&#13;&#10;SET @SDAY='20210801'&#13;&#10;SET @TOTALDAYS=16&#13;&#10;&#13;&#10;SELECT LA001 AS '品號',MB002 AS '品名',LA016 AS '批號',NUMS AS '庫存量',有效日期,製造日期,總銷售數量,平均天銷售數量,預計銷售天,預計完銷日&#13;&#10;,DATEDIFF (MONTH,製造日期,預計完銷日) AS '生產到完銷的月數'&#13;&#10;,@SDAY AS '銷售日起'&#13;&#10;,@TOTALDAYS  AS '銷售天數'&#13;&#10;FROM (&#13;&#10;SELECT LA001,MB002,LA016,NUMS,有效日期,製造日期,總銷售數量,平均天銷售數量,(NUMS/平均天銷售數量) '預計銷售天'&#13;&#10;,CONVERT(NVARCHAR,DATEADD(DAY,CEILING(NUMS/平均天銷售數量),GETDATE()),112) AS '預計完銷日'&#13;&#10;&#13;&#10;FROM (&#13;&#10;SELECT LA001,MB002,LA016,SUM(LA005*LA011) AS 'NUMS'&#13;&#10;,(SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF,[TK].dbo.MOCTG WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) AS '有效日期'&#13;&#10;,(SELECT TOP 1 TG040 FROM [TK].dbo.MOCTF,[TK].dbo.MOCTG WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG040 ) AS '製造日期'&#13;&#10;,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001&gt;=@SDAY) AS '總銷售數量'&#13;&#10;,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001&gt;=@SDAY)/@TOTALDAYS AS '平均天銷售數量'&#13;&#10;FROM [TK].dbo.INVLA,[TK].dbo.INVMB&#13;&#10;WHERE LA009 IN ('21001')&#13;&#10;AND LA001=MB001&#13;&#10;AND LA001 LIKE '40%'&#13;&#10;AND LA016 LIKE '2%'&#13;&#10;AND MB002 NOT LIKE '%試吃%'&#13;&#10;GROUP BY LA001,MB002,LA016&#13;&#10;HAVING SUM(LA005*LA011)&gt;0&#13;&#10;&#13;&#10;) AS TEMP&#13;&#10;) AS TEMP2&#13;&#10;ORDER BY LA001&#13;&#10;">
         <Column Name="品號" DataType="System.String"/>
         <Column Name="品名" DataType="System.String"/>
@@ -20,25 +20,23 @@
     </MsSqlDataConnection>
   </Dictionary>
   <ReportPage Name="Page1" Landscape="true" PaperWidth="400" PaperHeight="210">
-    <ReportTitleBand Name="ReportTitle1" Width="1436.4" Height="18.9">
+    <ReportTitleBand Name="ReportTitle1" Width="1436.4" Height="47.25">
       <TextObject Name="Text1" Width="1379.7" Height="18.9" Text="營銷銷售預估月份" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Top="18.9" Width="141.75" Height="28.35" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="141.75" Top="18.9" Width="198.45" Height="28.35" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="340.2" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="批號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="434.7" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="庫存量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="529.2" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="有效日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="623.7" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="製造日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="718.2" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="總銷售數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="812.7" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="平均天銷售數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="907.2" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="預計銷售天" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="1001.7" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="預計完銷日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="1096.2" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="生產到完銷的月數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="1190.7" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="銷售日起" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="1285.2" Top="18.9" Width="94.5" Height="28.35" Border.Lines="All" Text="銷售天數" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <ColumnHeaderBand Name="ColumnHeader1" Top="23.39" Width="1436.4" Height="28.35">
-      <TextObject Name="Text3" Width="141.75" Height="28.35" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text5" Left="141.75" Width="198.45" Height="28.35" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text7" Left="340.2" Width="94.5" Height="28.35" Border.Lines="All" Text="批號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text9" Left="434.7" Width="94.5" Height="28.35" Border.Lines="All" Text="庫存量" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text11" Left="529.2" Width="94.5" Height="28.35" Border.Lines="All" Text="有效日期" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text13" Left="623.7" Width="94.5" Height="28.35" Border.Lines="All" Text="製造日期" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text15" Left="718.2" Width="94.5" Height="28.35" Border.Lines="All" Text="總銷售數量" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text17" Left="812.7" Width="94.5" Height="28.35" Border.Lines="All" Text="平均天銷售數量" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text19" Left="907.2" Width="94.5" Height="28.35" Border.Lines="All" Text="預計銷售天" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text21" Left="1001.7" Width="94.5" Height="28.35" Border.Lines="All" Text="預計完銷日" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text23" Left="1096.2" Width="94.5" Height="28.35" Border.Lines="All" Text="生產到完銷的月數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text25" Left="1190.7" Width="94.5" Height="28.35" Border.Lines="All" Text="銷售日起" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text27" Left="1285.2" Width="94.5" Height="28.35" Border.Lines="All" Text="銷售天數" HorzAlign="Center" VertAlign="Center"/>
-    </ColumnHeaderBand>
-    <DataBand Name="Data1" Top="56.24" Width="1436.4" Height="18.9" CanGrow="true" DataSource="Table">
+    <DataBand Name="Data1" Top="51.74" Width="1436.4" Height="18.9" CanGrow="true" DataSource="Table">
       <TextObject Name="Text2" Width="141.75" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" VertAlign="Center"/>
       <TextObject Name="Text4" Left="141.75" Width="198.45" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
       <TextObject Name="Text6" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.批號]" HorzAlign="Center" VertAlign="Center"/>

@@ -84,7 +84,7 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
 
-            SB.AppendFormat(@" 
+            SB.AppendFormat(@"   
                             DECLARE @SDAY nvarchar(10)
                             DECLARE @TOTALDAYS INT
                             SET @SDAY='{0}'
