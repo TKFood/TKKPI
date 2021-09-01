@@ -101,14 +101,15 @@ namespace TKKPI
                             ,@SDAY AS '銷售日起'
                             ,@TOTALDAYS  AS '銷售天數'
                             FROM (
-                            SELECT LA001,MB002,LA016,NUMS,有效日期,製造日期,總銷售數量,平均天銷售數量,(NUMS/平均天銷售數量) '預計銷售天'
-                            ,CONVERT(NVARCHAR,DATEADD(DAY,CEILING(NUMS/平均天銷售數量),GETDATE()),112) AS '預計完銷日'
+                            SELECT LA001,MB002,LA016,NUMS,有效日期,製造日期,總銷售數量,平均天銷售數量,CASE WHEN 平均天銷售數量>0 THEN (NUMS/平均天銷售數量) ELSE -1 END '預計銷售天'
+                            ,CASE WHEN 平均天銷售數量>0 THEN CONVERT(NVARCHAR,DATEADD(DAY,CEILING(NUMS/平均天銷售數量),GETDATE()),112) ELSE '' END AS '預計完銷日'
+
                             FROM (
                             SELECT LA001,MB002,LA016,SUM(LA005*LA011) AS 'NUMS'
                             ,(SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF,[TK].dbo.MOCTG WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) AS '有效日期'
                             ,(SELECT TOP 1 TG040 FROM [TK].dbo.MOCTF,[TK].dbo.MOCTG WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG040 ) AS '製造日期'
-                            ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB002 IN ('106501','106502','106503','106504','106513') AND TB010=LA001 AND TB001>=@SDAY) AS '總銷售數量'
-                            ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB002 IN ('106501','106502','106503','106504','106513') AND TB010=LA001 AND TB001>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
+                            ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WHERE TB002 IN ('106501','106502','106503','106504','106513') AND TB010=LA001 AND TB001>=@SDAY) AS '總銷售數量'
+                            ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WHERE TB002 IN ('106501','106502','106503','106504','106513') AND TB010=LA001 AND TB001>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
                             FROM [TK].dbo.INVLA,[TK].dbo.INVMB
                             WHERE LA009 IN ('30001','30002','30003','30004','30012','30017')
                             AND LA001=MB001
@@ -164,15 +165,15 @@ namespace TKKPI
                             ,@SDAY AS '銷售日起'
                             ,@TOTALDAYS  AS '銷售天數'
                             FROM (
-                            SELECT LA001,MB002,LA016,NUMS,有效日期,製造日期,總銷售數量,平均天銷售數量,(NUMS/平均天銷售數量) '預計銷售天'
-                            ,CONVERT(NVARCHAR,DATEADD(DAY,CEILING(NUMS/平均天銷售數量),GETDATE()),112) AS '預計完銷日'
+                            SELECT LA001,MB002,LA016,NUMS,有效日期,製造日期,總銷售數量,平均天銷售數量,CASE WHEN 平均天銷售數量>0 THEN (NUMS/平均天銷售數量) ELSE -1 END '預計銷售天'
+                            ,CASE WHEN 平均天銷售數量>0 THEN CONVERT(NVARCHAR,DATEADD(DAY,CEILING(NUMS/平均天銷售數量),GETDATE()),112) ELSE '' END AS '預計完銷日'
 
                             FROM (
                             SELECT LA001,MB002,LA016,SUM(LA005*LA011) AS 'NUMS'
                             ,(SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF,[TK].dbo.MOCTG WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) AS '有效日期'
                             ,(SELECT TOP 1 TG040 FROM [TK].dbo.MOCTF,[TK].dbo.MOCTG WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG040 ) AS '製造日期'
-                            ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001>=@SDAY) AS '總銷售數量'
-                            ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
+                            ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001>=@SDAY) AS '總銷售數量'
+                            ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
                             FROM [TK].dbo.INVLA,[TK].dbo.INVMB
                             WHERE LA009 IN ('21001')
                             AND LA001=MB001
