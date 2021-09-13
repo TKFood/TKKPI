@@ -190,6 +190,12 @@
     <Compile Include="frmREPORTSALES.Designer.cs">
       <DependentUpon>frmREPORTSALES.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmRESALES.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRESALES.Designer.cs">
+      <DependentUpon>frmRESALES.cs</DependentUpon>
+    </Compile>
     <Compile Include="PleaseWait.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -254,6 +260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTSALES.resx">
       <DependentUpon>frmREPORTSALES.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRESALES.resx">
+      <DependentUpon>frmRESALES.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PleaseWait.resx">
       <DependentUpon>PleaseWait.cs</DependentUpon>
