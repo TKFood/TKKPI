@@ -615,7 +615,6 @@
             // 
             this.dateTimePicker5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.dateTimePicker5.CustomFormat = "yyyy/MM";
-            this.dateTimePicker5.Enabled = false;
             this.dateTimePicker5.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker5.Location = new System.Drawing.Point(131, 166);
             this.dateTimePicker5.Name = "dateTimePicker5";
@@ -650,6 +649,7 @@
             this.button5.TabIndex = 39;
             this.button5.Text = "新增";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label8
             // 
@@ -679,6 +679,7 @@
             this.button6.TabIndex = 42;
             this.button6.Text = "修改";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // frmRESALES
             // 

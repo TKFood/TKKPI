@@ -286,12 +286,12 @@ namespace TKKPI
                 sbSqlQuery.Clear();
 
                 sbSql.AppendFormat(@"  
-                                    SELECT [YYYYMM] AS '年月'
+                                    SELECT [YEARSMOTNS] AS '年月'
                                     ,[INTARGETMONEYS] AS '國內月目標業績'
                                     ,[OUTTARGETMONEYS] AS '國外月目標業績'
                                     FROM [TK].[dbo].[ZTARGETMONEYS]
-                                    WHERE [YYYYMM] LIKE '{0}%'
-                                    ORDER BY [YYYYMM]
+                                    WHERE [YEARSMOTNS] LIKE '{0}%'
+                                    ORDER BY [YEARSMOTNS]
                                     ", YEARS);
 
                 adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
@@ -338,7 +338,7 @@ namespace TKKPI
                 if (rowindex >= 0)
                 {
                     DataGridViewRow row = dataGridView2.Rows[rowindex];
-                    dateTimePicker3.Value = Convert.ToDateTime(row.Cells["年月"].Value.ToString().Substring(0,4)+"/"+ row.Cells["年月"].Value.ToString().Substring(4, 2) + "/01");
+                    dateTimePicker5.Value = Convert.ToDateTime(row.Cells["年月"].Value.ToString().Substring(0,4)+"/"+ row.Cells["年月"].Value.ToString().Substring(4, 2) + "/01");
                     textBox2.Text = row.Cells["國內月目標業績"].Value.ToString();
                     textBox3.Text = row.Cells["國外月目標業績"].Value.ToString();
 
@@ -352,6 +352,99 @@ namespace TKKPI
                 }
             }
         }
+
+        public void ADDZTARGETMONEYS(string YEARSMOTNS, string INTARGETMONEYS, string OUTTARGETMONEYS)
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+
+                sbSql.AppendFormat(@" 
+                                    INSERT INTO [TK].[dbo].[ZTARGETMONEYS]
+                                    ([YEARSMOTNS],[INTARGETMONEYS],[OUTTARGETMONEYS])
+                                    VALUES
+                                    ('{0}',{1},{2})
+                                    ", YEARSMOTNS, INTARGETMONEYS, OUTTARGETMONEYS);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+        public void UPDATEZTARGETMONEYS(string YEARSMOTNS, string INTARGETMONEYS, string OUTTARGETMONEYS)
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+
+                sbSql.AppendFormat(@" 
+                                   UPDATE  [TK].[dbo].[ZTARGETMONEYS]
+                                    SET [INTARGETMONEYS]={1},[OUTTARGETMONEYS]={2}
+                                    WHERE [YEARSMOTNS]='{0}'
+                                    ", YEARSMOTNS, INTARGETMONEYS, OUTTARGETMONEYS);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
 
         #endregion
 
@@ -384,9 +477,30 @@ namespace TKKPI
         }
 
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            int n;
+            if (Int32.TryParse(textBox2.Text.ToString(), out n)&& Int32.TryParse(textBox3.Text.ToString(), out n))
+            {
+                ADDZTARGETMONEYS(dateTimePicker5.Value.ToString("yyyyMM"), textBox2.Text, textBox3.Text);
+            }
+
+            SEARCHZTARGETMONEYS(dateTimePicker4.Value.ToString("yyyy"));
+
+        }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            int n;
+            if (Int32.TryParse(textBox2.Text.ToString(), out n) && Int32.TryParse(textBox3.Text.ToString(), out n))
+            {
+                UPDATEZTARGETMONEYS(dateTimePicker5.Value.ToString("yyyyMM"), textBox2.Text, textBox3.Text);
+            }
+
+            SEARCHZTARGETMONEYS(dateTimePicker4.Value.ToString("yyyy"));
+        }
 
         #endregion
 
-       
+
     }
 }
