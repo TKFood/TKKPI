@@ -35,10 +35,15 @@ namespace TKKPI
         SqlDataAdapter adapter = new SqlDataAdapter();
         SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
         SqlCommand cmd = new SqlCommand();
+        SqlTransaction tran;
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
         string talbename = null;
         int rownum = 0;
+        int result;
+
+
+        public object ID1 { get; private set; }
 
         public frmRESALES()
         {
@@ -67,7 +72,7 @@ namespace TKKPI
 
         public StringBuilder SETSQL()
         {
-            string FirstDay =dateTimePicker1.Value.ToString("yyyyMM")+"01";
+            string FirstDay = dateTimePicker1.Value.ToString("yyyyMM")+"01";
             string LastDay = dateTimePicker1.Value.ToString("yyyyMM") + "31";
 
             StringBuilder SB = new StringBuilder();
@@ -139,6 +144,133 @@ namespace TKKPI
 
         }
 
+        public void SEARCHZDATES(string YYMM)
+        {
+            string FirstDay = YYMM + "01";
+            string LastDay = YYMM + "31";
+
+            try
+            {
+                SqlDataAdapter adapter1 = new SqlDataAdapter();
+                SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();                
+                DataSet ds1 = new DataSet();
+
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    SELECT CONVERT(NVARCHAR,[DATES],111) AS '日期',[RTSALEMONEYS] AS '全聯銷售金額'
+                                    FROM [TK].[dbo].[ZDATES]
+                                    WHERE  CONVERT(NVARCHAR,[DATES],112)>='{0}' AND  CONVERT(NVARCHAR,[DATES],112)<='{1}'
+                                    ORDER BY [DATES]
+                                    ", FirstDay, LastDay);
+
+                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter1.Fill(ds1, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds1.Tables["TEMPds1"].Rows.Count == 0)
+                {
+
+                }
+                else
+                {
+                    if (ds1.Tables["TEMPds1"].Rows.Count >= 1)
+                    {
+                        //dataGridView1.Rows.Clear();
+                        dataGridView1.DataSource = ds1.Tables["TEMPds1"];
+                        dataGridView1.AutoResizeColumns();
+                        //dataGridView1.CurrentCell = dataGridView1[0, rownum];
+
+                    }
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
+                    dateTimePicker3.Value= Convert.ToDateTime(row.Cells["日期"].Value.ToString());
+                    textBox1.Text = row.Cells["全聯銷售金額"].Value.ToString();
+                   
+                }
+                else
+                {
+                    textBox1.Text = "0";
+                
+
+                }
+            }
+        }
+
+        public void UPDATEZDATES(string DATES,string RTSALEMONEYS)
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+             
+                sbSql.AppendFormat(@" 
+                                    UPDATE [TK].[dbo].[ZDATES]
+                                    SET [RTSALEMONEYS]={1}
+                                    WHERE CONVERT(NVARCHAR,[DATES],112)='{0}'
+                                    ", DATES, RTSALEMONEYS);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                   
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -146,6 +278,28 @@ namespace TKKPI
         {
             SETFASTREPORT();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SEARCHZDATES(dateTimePicker2.Value.ToString("yyyyMM"));
+
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            int n;
+            if (Int32.TryParse(textBox1.Text.ToString(), out n))
+            {
+                UPDATEZDATES(dateTimePicker3.Value.ToString("yyyyMMdd"), textBox1.Text.ToString());
+            }
+
+            SEARCHZDATES(dateTimePicker2.Value.ToString("yyyyMM"));
+
+        }
+
+
+
         #endregion
+
+      
     }
 }
