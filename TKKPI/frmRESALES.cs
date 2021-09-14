@@ -176,23 +176,24 @@ namespace TKKPI
                 adapter1.Fill(ds1, "TEMPds1");
                 sqlConn.Close();
 
-
-                if (ds1.Tables["TEMPds1"].Rows.Count == 0)
+                if (ds1.Tables["TEMPds1"].Rows.Count >= 1)
                 {
+                    //dataGridView1.Rows.Clear();
+                    dataGridView1.DataSource = ds1.Tables["TEMPds1"];
+                    dataGridView1.AutoResizeColumns();
+                    //dataGridView1.CurrentCell = dataGridView1[0, rownum];
 
+                }
+                else if (ds1.Tables["TEMPds1"].Rows.Count == 0)
+                {
+                    dataGridView1.DataSource = null;
                 }
                 else
                 {
-                    if (ds1.Tables["TEMPds1"].Rows.Count >= 1)
-                    {
-                        //dataGridView1.Rows.Clear();
-                        dataGridView1.DataSource = ds1.Tables["TEMPds1"];
-                        dataGridView1.AutoResizeColumns();
-                        //dataGridView1.CurrentCell = dataGridView1[0, rownum];
-
-                    }
+                    dataGridView1.DataSource = null;
                 }
 
+               
             }
             catch
             {
@@ -270,6 +271,87 @@ namespace TKKPI
             }
         }
 
+        public void SEARCHZTARGETMONEYS(string YEARS)
+        {
+            try
+            {
+                SqlDataAdapter adapter1 = new SqlDataAdapter();
+                SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();
+                DataSet ds1 = new DataSet();
+
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    SELECT [YYYYMM] AS '年月'
+                                    ,[INTARGETMONEYS] AS '國內月目標業績'
+                                    ,[OUTTARGETMONEYS] AS '國外月目標業績'
+                                    FROM [TK].[dbo].[ZTARGETMONEYS]
+                                    WHERE [YYYYMM] LIKE '{0}%'
+                                    ORDER BY [YYYYMM]
+                                    ", YEARS);
+
+                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter1.Fill(ds1, "TEMPds1");
+                sqlConn.Close();
+
+                if (ds1.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    //dataGridView1.Rows.Clear();
+                    dataGridView2.DataSource = ds1.Tables["TEMPds1"];
+                    dataGridView2.AutoResizeColumns();
+                    //dataGridView1.CurrentCell = dataGridView1[0, rownum];
+
+                }
+                else if (ds1.Tables["TEMPds1"].Rows.Count == 0)
+                {
+                    dataGridView2.DataSource = null;
+                }
+                else
+                {
+                    dataGridView2.DataSource = null;
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        private void dataGridView2_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView2.CurrentRow != null)
+            {
+                int rowindex = dataGridView2.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView2.Rows[rowindex];
+                    dateTimePicker3.Value = Convert.ToDateTime(row.Cells["年月"].Value.ToString().Substring(0,4)+"/"+ row.Cells["年月"].Value.ToString().Substring(4, 2) + "/01");
+                    textBox2.Text = row.Cells["國內月目標業績"].Value.ToString();
+                    textBox3.Text = row.Cells["國外月目標業績"].Value.ToString();
+
+                }
+                else
+                {
+                    textBox2.Text = "0";
+                    textBox3.Text = "0";
+
+
+                }
+            }
+        }
 
         #endregion
 
@@ -296,10 +378,15 @@ namespace TKKPI
 
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            SEARCHZTARGETMONEYS(dateTimePicker4.Value.ToString("yyyy"));
+        }
+
 
 
         #endregion
 
-      
+       
     }
 }
