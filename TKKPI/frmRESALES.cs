@@ -22,6 +22,7 @@ using System.Configuration;
 using NPOI.XSSF.UserModel;
 using FastReport;
 using FastReport.Data;
+using System.Net.Mail;
 
 namespace TKKPI
 {
@@ -41,7 +42,9 @@ namespace TKKPI
         string talbename = null;
         int rownum = 0;
         int result;
-
+        string DATES = null;
+        string DirectoryNAME = null;
+        string pathFileSALESMONEYS = null;
 
         public object ID1 { get; private set; }
 
@@ -445,7 +448,225 @@ namespace TKKPI
             }
         }
 
+        public void SENDEMAIL()
+        {
+            DataSet dsSALESMONEYS = new DataSet();
+            StringBuilder SUBJEST = new StringBuilder();
+            StringBuilder BODY = new StringBuilder();
 
+            SETPATH();
+
+            SAVEREPORT(pathFileSALESMONEYS);
+
+            dsSALESMONEYS = SERACHMAILSALESMONEYS();
+
+            if (dsSALESMONEYS.Tables["dsSALESMONEYS"].Rows.Count >= 1)
+            {
+                SUBJEST.Clear();
+                BODY.Clear();
+                SUBJEST.AppendFormat(@"每日-業務單位業績日報表-" + DateTime.Now.ToString("yyyy/MM/dd"));
+                BODY.AppendFormat("Dear SIR" + Environment.NewLine + "附件為每日業務單位業績日報表，請查收" + Environment.NewLine + " ");
+                SENDMAIL(SUBJEST, BODY, dsSALESMONEYS, pathFileSALESMONEYS);
+            }
+
+
+
+        }
+        public void SETPATH()
+        {          
+            DATES = DateTime.Now.ToString("yyyyMMdd");
+
+            DirectoryNAME = @"C:\MQTEMP\" + DATES.ToString() + @"\";
+            pathFileSALESMONEYS = @"C:\MQTEMP\" + DATES.ToString() + @"\" + "每日業務單位業績日報表" + DATES.ToString()+".pdf";
+
+            //如果日期資料夾不存在就新增
+            if (!Directory.Exists(DirectoryNAME))
+            {
+                //新增資料夾
+                Directory.CreateDirectory(DirectoryNAME);
+            }
+           
+           
+        }
+
+        public void SAVEREPORT(string pathFileSALESMONEYS)
+        {
+            string FILENAME = pathFileSALESMONEYS;
+            //string FILENAME = @"C:\MQTEMP\20210915\每日業務單位業績日報表20210915.pdf";
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL();
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\國內、外業務部業績日報表.frx");
+
+            report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            
+
+            // prepare a report
+            report1.Prepare();
+            // create an instance of HTML export filter
+            FastReport.Export.Pdf.PDFExport export = new FastReport.Export.Pdf.PDFExport();
+            // show the export options dialog and do the export
+            report1.Export(export, FILENAME);
+
+        }
+        public DataSet SERACHMAILSALESMONEYS()
+        {
+            SqlDataAdapter adapterSALESMONEYS = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilderSALESMONEYS = new SqlCommandBuilder();
+            DataSet dsSALESMONEYS = new DataSet();
+
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                //sbSql.AppendFormat(@"  WHERE [SENDTO]='COP' AND [MAIL]='tk290@tkfood.com.tw' ");
+
+                sbSql.AppendFormat(@"  
+                                    SELECT [SENDTO],[MAIL] 
+                                    FROM [TKMQ].[dbo].[MQSENDMAIL] 
+                                    WHERE [SENDTO]='SALESMONEYS'  
+                                    ");
+
+                adapterSALESMONEYS = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilderSALESMONEYS = new SqlCommandBuilder(adapterSALESMONEYS);
+                sqlConn.Open();
+                dsSALESMONEYS.Clear();
+                adapterSALESMONEYS.Fill(dsSALESMONEYS, "dsSALESMONEYS");
+                sqlConn.Close();
+
+
+
+                if (dsSALESMONEYS.Tables["dsSALESMONEYS"].Rows.Count >= 1)
+                {
+                    return dsSALESMONEYS;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
+            }
+        }
+
+        public void SENDMAIL(StringBuilder Subject, StringBuilder Body, DataSet SEND, string Attachments)
+        {
+            string MySMTPCONFIG = ConfigurationManager.AppSettings["MySMTP"];
+            string NAME = ConfigurationManager.AppSettings["NAME"];
+            string PW = ConfigurationManager.AppSettings["PW"];
+
+            System.Net.Mail.MailMessage MyMail = new System.Net.Mail.MailMessage();
+            MyMail.From = new System.Net.Mail.MailAddress("tk290@tkfood.com.tw");
+
+            //MyMail.Bcc.Add("密件副本的收件者Mail"); //加入密件副本的Mail          
+            //MyMail.Subject = "每日訂單-製令追踨表"+DateTime.Now.ToString("yyyy/MM/dd");
+            MyMail.Subject = Subject.ToString();
+            //MyMail.Body = "<h1>Dear SIR</h1>" + Environment.NewLine + "<h1>附件為每日訂單-製令追踨表，請查收</h1>" + Environment.NewLine + "<h1>若訂單沒有相對的製令則需通知製造生管開立</h1>"; //設定信件內容
+            MyMail.Body = Body.ToString();
+            //MyMail.IsBodyHtml = true; //是否使用html格式
+
+            System.Net.Mail.SmtpClient MySMTP = new System.Net.Mail.SmtpClient(MySMTPCONFIG, 25);
+            MySMTP.Credentials = new System.Net.NetworkCredential(NAME, PW);
+
+            Attachment attch = new Attachment(Attachments);
+            MyMail.Attachments.Add(attch);
+            
+
+            try
+            {
+                foreach (DataRow od in SEND.Tables[0].Rows)
+                {
+
+                    MyMail.To.Add(od["MAIL"].ToString()); //設定收件者Email，多筆mail
+                }
+
+                //MyMail.To.Add("tk290@tkfood.com.tw"); //設定收件者Email
+
+                MySMTP.Send(MyMail);
+
+                MyMail.Dispose(); //釋放資源
+
+
+            }
+            catch (Exception ex)
+            {
+                ADDLOG(DateTime.Now, Subject.ToString(), ex.ToString());
+                //ex.ToString();
+            }
+        }
+
+        public void ADDLOG(DateTime DATES, string SOURCE, string EX)
+        {
+            Guid NEWGUID = new Guid();
+            NEWGUID = Guid.NewGuid();
+
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                    INSERT INTO [TKMQ].[dbo].[LOG]
+                                    ([ID],[DATES],[SOURCE],[EX])
+                                    VALUES 
+                                    ('{0}','{1}','{2}','{3}')
+                                   ", NEWGUID, DATES.ToString("yyyy/MM/dd HH:mm:ss"), SOURCE, EX);
+
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -499,6 +720,10 @@ namespace TKKPI
             SEARCHZTARGETMONEYS(dateTimePicker4.Value.ToString("yyyy"));
         }
 
+        private void button7_Click(object sender, EventArgs e)
+        {
+            SENDEMAIL();
+        }
         #endregion
 
 
