@@ -723,6 +723,7 @@ namespace TKKPI
         private void button7_Click(object sender, EventArgs e)
         {
             SENDEMAIL();
+
             MessageBox.Show("完成");
         }
         #endregion
