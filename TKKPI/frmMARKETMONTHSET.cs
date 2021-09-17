@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Threading;
+using TKITDLL;
 
 namespace TKKPI
 {
@@ -42,8 +43,17 @@ namespace TKKPI
                 talbename = "TEMP1";
                 DataSet ds = new DataSet();
 
-                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-                sqlConn = new SqlConnection(connectionString);
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
 
                 sbSql.Clear();
                 sbSql.AppendFormat(" SELECT  [YEARMONTH] AS '活動年月',[MB001] AS '品號',[MB002] AS '品名',[MONTHSET] AS '活動內容',[ID] FROM [TKKPI].[dbo].[MARKETMONTHSET]  WHERE [YEARMONTH]='{0}'", dateTimePicker1.Value.ToString("yyyyMM"));
@@ -94,8 +104,17 @@ namespace TKKPI
                 talbename = "TEMP2";
                 DataSet ds = new DataSet();
 
-                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-                sqlConn = new SqlConnection(connectionString);
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
 
                 sbSql.Clear();
                 sbSql.AppendFormat(" SELECT KIND AS '市場',TB010 AS '品號',MB002 AS '品名',NN AS '數量',MM AS '金額'");
@@ -173,8 +192,17 @@ namespace TKKPI
                 talbename = "TEMP3";
                 DataSet ds = new DataSet();
 
-                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-                sqlConn = new SqlConnection(connectionString);
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
 
                 sbSql.Clear();
                 sbSql.AppendFormat(" SELECT KIND AS '市場',TB010 AS '品號',MB002 AS '品名',NN AS '數量',MM AS '金額'");
@@ -252,8 +280,17 @@ namespace TKKPI
                 talbename = "TEMP3";
                 DataSet ds = new DataSet();
 
-                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-                sqlConn = new SqlConnection(connectionString);
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
 
                 sbSql.Clear();
                 sbSql.AppendFormat(" SELECT ID,NN+NN1 AS '數量',MM+MM1 AS'金額'");
