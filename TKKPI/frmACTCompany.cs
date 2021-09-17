@@ -22,6 +22,7 @@ using System.Configuration;
 using NPOI.XSSF.UserModel;
 using FastReport;
 using System.Data.OleDb;
+using TKITDLL;
 
 namespace TKKPI
 {
@@ -65,8 +66,17 @@ namespace TKKPI
         public void comboboxload()
         {
 
-            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-            sqlConn = new SqlConnection(connectionString);
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
             String Sequel = "SELECT ME001,ME001+'-'+ME002 AS ME002 FROM [TK].dbo.CMSME WITH (NOLOCK) UNION ALL  SELECT '000000','全部' ORDER BY ME001";
             adapter = new SqlDataAdapter(Sequel, sqlConn);
             dt = new DataTable();
@@ -86,8 +96,17 @@ namespace TKKPI
         public void combobox4load()
         {
 
-            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-            sqlConn = new SqlConnection(connectionString);
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
             String Sequel = "SELECT ME001,ME001+'-'+ME002 AS ME002 FROM [TK].dbo.CMSME WHERE ME002 NOT LIKE '%停%'  UNION ALL  SELECT '000000','全部' ORDER BY ME001";
             adapter = new SqlDataAdapter(Sequel, sqlConn);
             dt = new DataTable();
@@ -107,8 +126,17 @@ namespace TKKPI
         public void combobox5load()
         {
 
-            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-            sqlConn = new SqlConnection(connectionString);
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
             String Sequel = "SELECT MA001,MA003 FROM [TK].dbo.ACTMA    WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' )) AND (MA008='2' OR MA008='3'         )";
             adapter = new SqlDataAdapter(Sequel, sqlConn);
             dt = new DataTable();
@@ -128,8 +156,17 @@ namespace TKKPI
         public void combobox6load()
         {
 
-            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-            sqlConn = new SqlConnection(connectionString);
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
             String Sequel = "SELECT MA001,MA003 FROM [TK].dbo.ACTMA    WHERE ((MA001 LIKE '6%') OR  (MA001 LIKE '51112%' ) OR  (MA001 LIKE '51113%' )) AND (MA008='2' OR MA008='3'         )";
             adapter = new SqlDataAdapter(Sequel, sqlConn);
             dt = new DataTable();
@@ -155,8 +192,17 @@ namespace TKKPI
 
                 if (!string.IsNullOrEmpty(sbSql.ToString()))
                 {
-                    connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-                    sqlConn = new SqlConnection(connectionString);
+                    //20210902密
+                    Class1 TKID = new Class1();//用new 建立類別實體
+                    SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                    //資料庫使用者密碼解密
+                    sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                    sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                    String connectionString;
+                    sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
 
                     adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
                     sqlCmdBuilder = new SqlCommandBuilder(adapter);
@@ -606,8 +652,17 @@ namespace TKKPI
         {
             try
             {
-                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-                sqlConn = new SqlConnection(connectionString);
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
 
                 sbSql.Clear();
                 sbSql.AppendFormat(" SELECT [ID],[YEARSMONTH],[EMP] FROM [TKKPI].[dbo].[ACTYEARSMONTHSEMP] WHERE [YEARSMONTH]='{0}'", dateTimePicker1.Value.ToString("yyyyMM"));
@@ -649,18 +704,20 @@ namespace TKKPI
                     report1 = new Report();
                     report1.Load(@"REPORT\預算及實際-全公司.frx");
 
-                    report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                    //20210902密
+                    Class1 TKID = new Class1();//用new 建立類別實體
+                    SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
 
-                    report1.SetParameterValue("P1", dateTimePicker2.Value.ToString("yyyy"));
-                    report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("MM"));
-                    report1.SetParameterValue("P3", dateTimePicker2.Value.ToString("yyyyMM"));
-                    report1.SetParameterValue("P4", dateTimePicker2.Value.ToString("yyyyMM"));
-                    string STARTYM = dateTimePicker2.Value.ToString("yyyy") + "01";
-                    report1.SetParameterValue("P5", STARTYM);
-                    report1.SetParameterValue("P6", dateTimePicker2.Value.ToString("yyyyMM"));
-                    report1.SetParameterValue("P11", comboBox5.Text.ToString());
-                    report1.SetParameterValue("P12", comboBox6.Text.ToString());
+                    //資料庫使用者密碼解密
+                    sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                    sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
 
+                    String connectionString;
+                    sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                    report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+                    
                     report1.Preview = previewControl1;
                     report1.Show();
                 }
@@ -669,7 +726,19 @@ namespace TKKPI
                     report1 = new Report();
                     report1.Load(@"REPORT\預算及實際-部門.frx");
 
-                    report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                    //20210902密
+                    Class1 TKID = new Class1();//用new 建立類別實體
+                    SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                    //資料庫使用者密碼解密
+                    sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                    sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                    String connectionString;
+                    sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                    report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
 
                     report1.SetParameterValue("P1", dateTimePicker2.Value.ToString("yyyy"));
                     report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("MM"));
@@ -693,7 +762,19 @@ namespace TKKPI
                 report1 = new Report();
                 report1.Load(@"REPORT\預算及實際-部門含課.frx");
 
-                report1.Dictionary.Connections[0].ConnectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
 
                 report1.SetParameterValue("P1", dateTimePicker2.Value.ToString("yyyy"));
                 report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("MM"));
