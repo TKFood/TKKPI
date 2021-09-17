@@ -61,8 +61,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
-            this.splitContainer1.Size = new System.Drawing.Size(984, 794);
-            this.splitContainer1.SplitterDistance = 158;
+            this.splitContainer1.Size = new System.Drawing.Size(984, 702);
+            this.splitContainer1.SplitterDistance = 139;
             this.splitContainer1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -114,7 +114,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(980, 154);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(980, 135);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // label4
@@ -206,14 +206,14 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(980, 628);
+            this.dataGridView1.Size = new System.Drawing.Size(980, 555);
             this.dataGridView1.TabIndex = 33;
             // 
             // frmCOPSell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 794);
+            this.ClientSize = new System.Drawing.Size(984, 702);
             this.Controls.Add(this.splitContainer1);
             this.Name = "frmCOPSell";
             this.Text = "frmCOPSell";
