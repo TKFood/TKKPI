@@ -74,6 +74,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="TKITDLL">
+      <HintPath>..\..\TKIT\TKITDLL\bin\Debug\TKITDLL.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="frmACTCompany.cs">
