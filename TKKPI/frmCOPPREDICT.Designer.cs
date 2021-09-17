@@ -61,8 +61,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
-            this.splitContainer1.Size = new System.Drawing.Size(984, 794);
-            this.splitContainer1.SplitterDistance = 156;
+            this.splitContainer1.Size = new System.Drawing.Size(984, 702);
+            this.splitContainer1.SplitterDistance = 137;
             this.splitContainer1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -114,7 +114,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(980, 152);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(980, 133);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // label4
@@ -205,14 +205,14 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(980, 630);
+            this.dataGridView1.Size = new System.Drawing.Size(980, 557);
             this.dataGridView1.TabIndex = 33;
             // 
             // frmCOPPREDICT
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 794);
+            this.ClientSize = new System.Drawing.Size(984, 702);
             this.Controls.Add(this.splitContainer1);
             this.Name = "frmCOPPREDICT";
             this.Text = "frmCOPPREDICT";
