@@ -191,7 +191,7 @@ namespace TKKPI
                             ,(SELECT COUNT([tb_NOTE].[COMPANY_ID]) FROM  [192.168.1.223].[HJ_BM_DB].[dbo].[tb_NOTE], [192.168.1.223].[HJ_BM_DB].[dbo].[tb_COMPANY] WHERE [STATUS]='1' AND [tb_NOTE].COMPANY_ID=[tb_COMPANY].COMPANY_ID AND [OWNER_ID]=[USER_ID]  AND CONVERT(nvarchar,[tb_NOTE].[CREATE_DATETIME],112)>='{0}'  AND CONVERT(nvarchar,[tb_NOTE].[CREATE_DATETIME],112)<='{1}') AS 'NOTES'
                             FROM  [192.168.1.223].[HJ_BM_DB].[dbo].[COPSALES]
                             ) AS TEMP
-                            ORDER BY [ORDERS] 
+                            ORDER BY [ORDERS]  
 
                             ", FirstDay, LastDay);
 

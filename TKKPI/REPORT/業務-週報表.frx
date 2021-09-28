@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="09/28/2021 13:06:09" ReportInfo.Modified="09/28/2021 16:04:39" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/28/2021 13:06:09" ReportInfo.Modified="09/28/2021 16:15:25" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9L5AbSPZCnDS9jBJzX/mZEY">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9KkzobaRr1gwdVqO+Ry4pc+">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT  [CLIENTNAME]  AS '客戶',[TBSALESEVENTS].[SALES]   AS '業務員',[TBSALESEVENTS].[KINDS]   AS '類別',[TBSALESEVENTS].[CLIENTS]   AS '客戶名',[TBSALESEVENTS].[PROJECTS]   AS '專案',[TBSALESEVENTS].[EVENTS]  AS '待辨',[TBSALESEVENTS].[SDAYS]  AS '開始日',[TBSALESEVENTS].[EDAYS]  AS '結案日',ISNULL([TBSALESEVENTS].[COMMENTS],'本週無記錄') AS '進度',CONVERT(NVARCHAR,[TBSALESEVENTS].[UPDATEDATES],112) AS '更新日期'&#13;&#10;,[TB_CLINETS].[ID],[TBSALESEVENTS].[ID]&#13;&#10;FROM [TKBUSINESS].[dbo].[TB_CLINETS]&#13;&#10;LEFT JOIN [TKBUSINESS].[dbo].[TBSALESEVENTS] ON [TB_CLINETS].CLIENTNAME=[TBSALESEVENTS].CLIENTS AND CONVERT(NVARCHAR,[TBSALESEVENTS].UPDATEDATES,112)&gt;='20210921'  AND CONVERT(NVARCHAR,[TBSALESEVENTS].UPDATEDATES,112)&lt;='20210928'&#13;&#10;WHERE 1=1&#13;&#10;ORDER BY  [TB_CLINETS].[ID],[TBSALESEVENTS].UPDATEDATES&#13;&#10;">
         <Column Name="ID" DataType="System.Decimal"/>
         <Column Name="ID1" DataType="System.Decimal"/>
@@ -126,7 +126,7 @@
       <TextObject Name="Text41" Width="94.5" Height="18.9" Border.Lines="All" Text="業務員" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text43" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="負責客戶數" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text45" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="拜訪客戶數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text47" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="拜訪次數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text47" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="記錄筆數" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text49" Left="378" Width="103.95" Height="18.9" Border.Lines="All" Text="拜訪客戶完成率%" HorzAlign="Center" VertAlign="Center"/>
     </PageHeaderBand>
     <DataBand Name="Data4" Top="46.79" Width="1047.06" Height="18.9" DataSource="Table4">
