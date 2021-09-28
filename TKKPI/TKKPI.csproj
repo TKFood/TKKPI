@@ -64,6 +64,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -193,6 +194,12 @@
     <Compile Include="frmREPORTSALES.Designer.cs">
       <DependentUpon>frmREPORTSALES.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTSWEEKS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTSWEEKS.Designer.cs">
+      <DependentUpon>frmREPORTSWEEKS.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmRESALES.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,6 +270,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTSALES.resx">
       <DependentUpon>frmREPORTSALES.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTSWEEKS.resx">
+      <DependentUpon>frmREPORTSWEEKS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmRESALES.resx">
       <DependentUpon>frmRESALES.cs</DependentUpon>
