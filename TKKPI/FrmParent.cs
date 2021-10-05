@@ -101,6 +101,10 @@ namespace TKKPI
             DataTable dtransaction = new DataTable();
             datransaction.Fill(dtransaction);
 
+            //ADD USED LOG
+            TKSYSPRUSED(MethodBase.GetCurrentMethod().DeclaringType.Namespace, dtransaction.Rows[0]["FRM_CODE"].ToString(), sender.ToString(), UserName);
+
+
             Assembly frmAssembly = Assembly.LoadFile(Application.ExecutablePath);
             foreach (Type type in frmAssembly.GetTypes())
             {
@@ -133,6 +137,72 @@ namespace TKKPI
             Process[] MyProcess = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
             if (MyProcess.Length > 0)
                 MyProcess[0].Kill(); //關閉執行中的程式
+
+        }
+
+        public void TKSYSPRUSED(string SYSTEMNAME, string PROGRAMCODE, string PROGRAMNAME, string USEDID)
+        {
+            SqlConnection sqlConn = new SqlConnection();
+            SqlTransaction tran;
+            SqlCommand cmd = new SqlCommand();
+            int result;
+            StringBuilder sbSql = new StringBuilder();
+
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+            sqlConn.Close();
+            sqlConn.Open();
+            tran = sqlConn.BeginTransaction();
+
+            sbSql.Clear();
+
+
+
+            sbSql.AppendFormat(@" 
+                                INSERT INTO [TKIT].[dbo].[TKSYSPRUSED]
+                                ([SYSTEMNAME],[PROGRAMCODE],[PROGRAMNAME],[USEDDATES],[USEDID])
+                                VALUES
+                                (@SYSTEMNAME,@PROGRAMCODE,@PROGRAMNAME,@USEDDATES,@USEDID)
+                                ");
+
+
+            using (SqlConnection connection = new SqlConnection(sqlsb.ConnectionString))
+            {
+                SqlCommand command = new SqlCommand(sbSql.ToString(), connection);
+                command.Parameters.AddWithValue("@SYSTEMNAME", SYSTEMNAME);
+                command.Parameters.AddWithValue("@PROGRAMCODE", PROGRAMCODE);
+                command.Parameters.AddWithValue("@PROGRAMNAME", PROGRAMNAME);
+                command.Parameters.AddWithValue("@USEDDATES", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                command.Parameters.AddWithValue("@USEDID", USEDID);
+
+                try
+                {
+                    connection.Open();
+                    Int32 rowsAffected = command.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                finally
+                {
+                    sqlConn.Close();
+                }
+            }
+
 
         }
     }
