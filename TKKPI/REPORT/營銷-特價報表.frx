@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/12/2021 16:04:48" ReportInfo.Modified="10/12/2021 16:38:43" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGMix9Bj+F8KJEZgGpgYQTz">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT MB001 AS '活動代號',MB003 AS '特價代號',MB004 AS '特價名稱',MB012 AS '特價起始日期',MB013 AS '特價截止日期'&#13;&#10;FROM [TK].dbo.POSMB&#13;&#10;WHERE MB001 LIKE '2021%'&#13;&#10;ORDER BY MB005,MB004">
+        <Column Name="活動代號" DataType="System.String"/>
+        <Column Name="特價代號" DataType="System.String"/>
+        <Column Name="特價名稱" DataType="System.String"/>
+        <Column Name="特價起始日期" DataType="System.String"/>
+        <Column Name="特價截止日期" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text1" Width="1039.5" Height="18.9" Text="營銷-特價報表" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="23.39" Width="1047.06" Height="18.9">
+      <TextObject Name="Text3" Width="103.95" Height="18.9" Border.Lines="All" Text="活動代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="103.95" Width="151.2" Height="18.9" Border.Lines="All" Text="特價代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="255.15" Width="595.35" Height="18.9" Border.Lines="All" Text="特價名稱" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" Text="特價起始日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="945" Width="94.5" Height="18.9" Border.Lines="All" Text="特價截止日期" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="46.79" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text2" Width="103.95" Height="18.9" Border.Lines="All" Text="[Table.活動代號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="103.95" Width="151.2" Height="18.9" Border.Lines="All" Text="[Table.特價代號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="255.15" Width="595.35" Height="18.9" Border.Lines="All" Text="[Table.特價名稱]" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.特價起始日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="945" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.特價截止日期]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="70.18" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>
