@@ -182,6 +182,12 @@
     <Compile Include="frmREMEETING.Designer.cs">
       <DependentUpon>frmREMEETING.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTAVGS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTAVGS.Designer.cs">
+      <DependentUpon>frmREPORTAVGS.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmREPORTCOPTEF.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -276,6 +282,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREMEETING.resx">
       <DependentUpon>frmREMEETING.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTAVGS.resx">
+      <DependentUpon>frmREPORTAVGS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTCOPTEF.resx">
       <DependentUpon>frmREPORTCOPTEF.cs</DependentUpon>
