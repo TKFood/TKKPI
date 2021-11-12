@@ -102,6 +102,7 @@ namespace TKKPI
                             WHERE LA001=MB001
                             AND MB064>0
                             AND ISNULL(LA016,'')<>''
+                            AND LA016 LIKE '2%'
                             AND (LA001 LIKE '201%' OR LA001 LIKE '202%' OR LA001 LIKE '203%' OR LA001 LIKE '204%'  OR LA001 LIKE '205%'  OR LA001 LIKE '206%')
                             --AND LA001='202003185'
                             GROUP BY LA001,MB002,LA009,LA016,MB065,MB064
