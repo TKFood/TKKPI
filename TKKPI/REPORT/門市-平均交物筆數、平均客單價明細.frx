@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="11/09/2021 13:03:09" ReportInfo.Modified="11/09/2021 13:05:05" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/09/2021 13:03:09" ReportInfo.Modified="11/12/2021 08:47:36" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFH/A56AJjWPyONBcnwnHZS">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUH3vv03OGFe0N5jO5wd0DcR">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TT002 AS '門市代號',MA002 AS '門市',SUM(TT008) AS '成交筆數',SUM(TT011)/SUM(TT008) AS '平均客單價'&#13;&#10;,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001&gt;='20211101' AND TT001&lt;='20211108' ORDER BY TT001)  AS '查詢起日'&#13;&#10;,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001&gt;='20211101' AND TT001&lt;='20211108' ORDER BY TT001 DESC) AS '查詢迄日'&#13;&#10;FROM [TK].dbo.POSTT,[TK].dbo.WSCMA&#13;&#10;WHERE TT002=MA001&#13;&#10;AND TT002 IN (SELECT  [TT002]  FROM [TKKPI].[dbo].[SALESTORES])&#13;&#10;AND TT001&gt;='20211001' AND TT001&lt;='20211031'&#13;&#10;GROUP BY TT002,MA002">
         <Column Name="門市代號" DataType="System.String"/>
         <Column Name="門市" DataType="System.String"/>
@@ -12,11 +12,11 @@
       </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
-  <ReportPage Name="Page1">
-    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
-      <TextObject Name="Text1" Width="718.2" Height="18.9" Text="查門市的平均交物筆數、平均客單價" HorzAlign="Center" VertAlign="Center"/>
+  <ReportPage Name="Page1" PaperWidth="170">
+    <ReportTitleBand Name="ReportTitle1" Width="567" Height="37.8">
+      <TextObject Name="Text1" Left="-151.2" Width="718.2" Height="18.9" Text="查門市的平均交物筆數、平均客單價" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader1" Top="42.29" Width="718.2" Height="18.9">
+    <PageHeaderBand Name="PageHeader1" Top="42.29" Width="567" Height="18.9">
       <TextObject Name="Text3" Width="94.5" Height="18.9" Border.Lines="All" Text="門市代號" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text5" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text7" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="查詢起日" HorzAlign="Center" VertAlign="Center"/>
@@ -24,7 +24,7 @@
       <TextObject Name="Text11" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="成交筆數" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text13" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="平均客單價" HorzAlign="Center" VertAlign="Center"/>
     </PageHeaderBand>
-    <DataBand Name="Data1" Top="65.69" Width="718.2" Height="18.9" DataSource="Table">
+    <DataBand Name="Data1" Top="65.69" Width="567" Height="18.9" DataSource="Table">
       <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門市代號]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門市]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.查詢起日]" HorzAlign="Center" VertAlign="Center"/>
@@ -32,6 +32,6 @@
       <TextObject Name="Text10" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.成交筆數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text12" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.平均客單價]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="89.08" Width="718.2" Height="18.9"/>
+    <PageFooterBand Name="PageFooter1" Top="89.08" Width="567" Height="18.9"/>
   </ReportPage>
 </Report>

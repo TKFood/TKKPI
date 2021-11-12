@@ -144,7 +144,7 @@ namespace TKKPI
                             AND TT002 IN (SELECT  [TT002]  FROM [TKKPI].[dbo].[SALESTORES])
                             AND TT001>='{0}' AND TT001<='{1}'
                             GROUP BY TT002,MA002
-
+ 
                             ", dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
 
             return SB;

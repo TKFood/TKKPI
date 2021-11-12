@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="11/09/2021 11:40:13" ReportInfo.Modified="11/09/2021 13:03:07" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/09/2021 11:40:13" ReportInfo.Modified="11/12/2021 08:48:44" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFAMEJnpi5y3MriLr6RbBFj">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHesa9K+plqtrwFQguxFBR2">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT SUBSTRING(TT001,1,6) AS '年月',TT002 AS '門市代號',MA002 AS '門市',SUM(TT008) AS '成交筆數',SUM(TT011)/SUM(TT008) AS '平均客單價'&#13;&#10;,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001&gt;='20211101' AND TT001&lt;='20211108' ORDER BY TT001)  AS '查詢起日'&#13;&#10;,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001&gt;='20211101' AND TT001&lt;='20211108' ORDER BY TT001 DESC) AS '查詢迄日'&#13;&#10;FROM [TK].dbo.POSTT,[TK].dbo.WSCMA&#13;&#10;WHERE TT002=MA001&#13;&#10;AND TT002 IN ('106501','106502','106503','106504','106513','106701','106703','106702','106704')&#13;&#10;AND TT001 LIKE '2021%'&#13;&#10;GROUP BY SUBSTRING(TT001,1,6),TT002,MA002">
         <Column Name="年月" DataType="System.String"/>
         <Column Name="門市代號" DataType="System.String"/>
@@ -13,11 +13,11 @@
       </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
-  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
-    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
-      <TextObject Name="Text1" Width="1039.5" Height="18.9" Text="營銷的平均交物筆數、平均客單價" HorzAlign="Center" VertAlign="Center"/>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="18.9">
+      <TextObject Name="Text1" Width="198.45" Height="18.9" Text="營銷的平均交物筆數、平均客單價" VertAlign="Center"/>
     </ReportTitleBand>
-    <DataBand Name="Data1" Top="23.39" Width="1047.06" Height="118.59">
+    <DataBand Name="Data1" Top="23.39" Width="718.2" Height="118.59">
       <MatrixObject Name="Matrix1" Width="129.22" Height="54.57" Border.Lines="All" FixedRows="2" FixedColumns="1" DataSource="Table">
         <MatrixColumns>
           <Header Expression="[Table.門市代號]" Totals="false"/>
@@ -46,11 +46,11 @@
       </MatrixObject>
     </DataBand>
   </ReportPage>
-  <ReportPage Name="Page2" Landscape="true" PaperWidth="297" PaperHeight="210">
-    <ReportTitleBand Name="ReportTitle2" Width="1047.06" Height="37.8">
-      <TextObject Name="Text2" Width="1039.5" Height="18.9" Text="營銷的平均交物筆數、平均客單價" HorzAlign="Center" VertAlign="Center"/>
+  <ReportPage Name="Page2">
+    <ReportTitleBand Name="ReportTitle2" Width="718.2" Height="18.9">
+      <TextObject Name="Text2" Width="198.45" Height="18.9" Text="營銷的平均交物筆數、平均客單價" VertAlign="Center"/>
     </ReportTitleBand>
-    <DataBand Name="Data2" Top="42.29" Width="1047.06" Height="84.75">
+    <DataBand Name="Data2" Top="23.39" Width="718.2" Height="84.75">
       <MatrixObject Name="Matrix2" Width="153.93" Height="54.57" Border.Lines="All" FixedRows="2" FixedColumns="1" DataSource="Table">
         <MatrixColumns>
           <Header Expression="[Table.門市代號]" Totals="false"/>
