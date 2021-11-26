@@ -75,8 +75,7 @@ namespace TKKPI
             comboBox1.DataSource = dt.DefaultView;
             comboBox1.ValueMember = "NAME";
             comboBox1.DisplayMember = "NAME";
-            sqlConn.Close();
-
+            sqlConn.Close(); 
 
         }
 
