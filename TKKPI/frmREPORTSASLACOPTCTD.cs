@@ -212,6 +212,8 @@ namespace TKKPI
                             AND TC001='A228'
                             AND (TD013 LIKE @THISYEARLASTMONTH+'%' OR TD013 LIKE @THISYEARTHISMONTH+'%'  OR TD013 LIKE @THISYEARNEXTMONTH+'%' )
                             GROUP BY TD004
+                            AND TC027='Y'
+
                             ) AS TEMP
                             GROUP BY LA005
                             ) AS TEMP2
