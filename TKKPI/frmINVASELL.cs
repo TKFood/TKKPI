@@ -193,16 +193,17 @@ namespace TKKPI
                             SET @SDAY='{0}'
                             SET @TOTALDAYS={1}
 
-                            SELECT LA001 AS '品號',MB002 AS '品名',LA016 AS '批號',NUMS AS '庫存量',有效日期,製造日期,總銷售數量,平均天銷售數量,預計銷售天,預計完銷日
+                            SELECT LA001 AS '品號',MB002 AS '品名',LA016 AS '批號',NUMS AS '庫存量',MB047 AS '售價',MB047*NUMS AS '可銷貨金額'
+                            ,有效日期,製造日期,總銷售數量,平均天銷售數量,預計銷售天,預計完銷日
                             ,DATEDIFF (MONTH,製造日期,預計完銷日) AS '生產到完銷的月數'
                             ,@SDAY AS '銷售日起'
                             ,@TOTALDAYS  AS '銷售天數'
                             FROM (
-                            SELECT LA001,MB002,LA016,NUMS,有效日期,製造日期,總銷售數量,平均天銷售數量,CASE WHEN 平均天銷售數量>0 THEN (NUMS/平均天銷售數量) ELSE -1 END '預計銷售天'
+                            SELECT LA001,MB002,MB047,LA016,NUMS,有效日期,製造日期,總銷售數量,平均天銷售數量,CASE WHEN 平均天銷售數量>0 THEN (NUMS/平均天銷售數量) ELSE -1 END '預計銷售天'
                             ,CASE WHEN 平均天銷售數量>0 THEN CONVERT(NVARCHAR,DATEADD(DAY,CEILING(NUMS/平均天銷售數量),GETDATE()),112) ELSE '' END AS '預計完銷日'
    
                             FROM (
-                            SELECT LA001,MB002,LA016,SUM(LA005*LA011) AS 'NUMS'
+                            SELECT LA001,MB002,MB047,LA016,SUM(LA005*LA011) AS 'NUMS'
                             ,(SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK) WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) AS '有效日期'
                             ,(SELECT TOP 1 TG040 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK) WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG040 ) AS '製造日期'
                             ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001>=@SDAY) AS '總銷售數量'
@@ -213,11 +214,12 @@ namespace TKKPI
                             AND LA001 LIKE '40%'
                             AND LA016 LIKE '2%'
                             AND MB002 NOT LIKE '%試吃%'
-                            GROUP BY LA001,MB002,LA016
+                            GROUP BY LA001,MB002,MB047,LA016
                             HAVING SUM(LA005*LA011)>0
 
-                            ) AS TEMP
+                            ) AS TEMP 
                             ) AS TEMP2
+  
                             ORDER BY LA001
 
 
