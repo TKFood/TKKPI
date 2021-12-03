@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/03/2021 11:39:40" ReportInfo.Modified="12/03/2021 14:54:45" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/03/2021 11:39:40" ReportInfo.Modified="12/03/2021 15:03:23" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGNdcgxJNedb73KEpHeGxK8">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEh+DowWCpPra0F47KIOhcc">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT SUBSTRING (CONVERT(NVARCHAR,LA015,112),1,6) LA015,LA006,MA002,LA005,MB002,LA007,SUM(LA016) LA016,SUM(LA017) LA017&#13;&#10;FROM [TK].dbo.SASLA,[TK].dbo.COPMA,[TK].dbo.INVMB&#13;&#10;WHERE  LA006=MA001&#13;&#10;AND LA005=MB001&#13;&#10;AND (LA005 LIKE '4%' OR LA005 LIKE '5%' )&#13;&#10;AND MB002 NOT LIKE '%試吃%'&#13;&#10;AND LA007 LIKE '1065%'&#13;&#10;AND CONVERT(NVARCHAR,LA015,112) LIKE '2021%'&#13;&#10;AND MA001='44000003'&#13;&#10;GROUP BY SUBSTRING (CONVERT(NVARCHAR,LA015,112),1,6) ,LA006,MA002,LA005,MB002,LA007&#13;&#10;ORDER BY SUBSTRING (CONVERT(NVARCHAR,LA015,112),1,6) ,LA006,MA002,LA005,MB002,LA007">
         <Column Name="LA015" DataType="System.String"/>
         <Column Name="LA006" DataType="System.String"/>
@@ -16,7 +16,7 @@
   </Dictionary>
   <ReportPage Name="Page1" Landscape="true" PaperWidth="1000" PaperHeight="1000">
     <DataBand Name="Data1" Width="3704.4" Height="66">
-      <MatrixObject Name="Matrix1" Width="402.95" Height="71.07" FixedRows="2" FixedColumns="3" CellsSideBySide="true" DataSource="Table">
+      <MatrixObject Name="Matrix1" Width="452.37" Height="71.07" FixedRows="2" FixedColumns="3" CellsSideBySide="true" DataSource="Table">
         <MatrixColumns>
           <Header Expression="[Table.LA015]"/>
         </MatrixColumns>
@@ -34,8 +34,8 @@
         <TableColumn Name="Column3" Width="52.31" AutoSize="true"/>
         <TableColumn Name="Column4" Width="58.43" AutoSize="true"/>
         <TableColumn Name="Column5" Width="58.43" AutoSize="true"/>
-        <TableColumn Name="Column6" Width="58.43" AutoSize="true"/>
-        <TableColumn Name="Column7" Width="58.43" AutoSize="true"/>
+        <TableColumn Name="Column6" Width="83.14" AutoSize="true"/>
+        <TableColumn Name="Column7" Width="83.14" AutoSize="true"/>
         <TableRow Name="Row1" Height="18.19" AutoSize="true">
           <TableCell Name="Cell1" Border.Lines="All" Text="門市/觀光" HorzAlign="Center" VertAlign="Center" RowSpan="2"/>
           <TableCell Name="Cell2" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center" RowSpan="2"/>
@@ -51,8 +51,8 @@
           <TableCell Name="Cell6"/>
           <TableCell Name="Cell11" Border.Lines="All" Text="銷售數量" HorzAlign="Center" VertAlign="Center"/>
           <TableCell Name="Cell18" Border.Lines="All" Text="銷售金額" HorzAlign="Center" VertAlign="Center"/>
-          <TableCell Name="Cell28" Border.Lines="All" Text="銷售數量" HorzAlign="Center" VertAlign="Center"/>
-          <TableCell Name="Cell29" Border.Lines="All" Text="銷售金額" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell28" Border.Lines="All" Text="合計銷售數量" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell29" Border.Lines="All" Text="合計銷售金額" HorzAlign="Center" VertAlign="Center"/>
         </TableRow>
         <TableRow Name="Row3" Height="16.5" AutoSize="true">
           <TableCell Name="Cell7" Border.Lines="All" Text="[MA002]" VertAlign="Center"/>

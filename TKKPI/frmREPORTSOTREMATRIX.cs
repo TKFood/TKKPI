@@ -131,6 +131,7 @@ namespace TKKPI
                             GROUP BY SUBSTRING (CONVERT(NVARCHAR,LA015,112),1,6) ,LA006,MA002,LA005,MB002,LA007
                             ORDER BY SUBSTRING (CONVERT(NVARCHAR,LA015,112),1,6) ,LA006,MA002,LA005,MB002,LA007
 
+
                             ", LA015, LA007);
 
             return SB;
