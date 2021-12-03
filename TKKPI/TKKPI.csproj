@@ -212,6 +212,12 @@
     <Compile Include="frmREPORTSASLACOPTCTD.Designer.cs">
       <DependentUpon>frmREPORTSASLACOPTCTD.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTSOTREMATRIX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTSOTREMATRIX.Designer.cs">
+      <DependentUpon>frmREPORTSOTREMATRIX.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmREPORTSWEEKS.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -303,6 +309,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTSASLACOPTCTD.resx">
       <DependentUpon>frmREPORTSASLACOPTCTD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTSOTREMATRIX.resx">
+      <DependentUpon>frmREPORTSOTREMATRIX.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTSWEEKS.resx">
       <DependentUpon>frmREPORTSWEEKS.cs</DependentUpon>
