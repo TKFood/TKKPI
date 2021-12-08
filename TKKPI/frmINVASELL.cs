@@ -144,7 +144,7 @@ namespace TKKPI
                             LEFT JOIN [TK].dbo.INVMB ON MB001=LA001
 
                             ORDER BY LA001
- 
+  
                             ", dateTimePicker1.Value.ToString("yyyyMMdd"),textBox1.Text.ToString());
                         
 
