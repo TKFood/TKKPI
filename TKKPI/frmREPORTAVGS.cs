@@ -51,6 +51,8 @@ namespace TKKPI
 
         public void SETFASTREPORT()
         {
+           
+
             StringBuilder SQL1 = new StringBuilder();
 
             SQL1 = SETSQL();
@@ -82,19 +84,24 @@ namespace TKKPI
 
         public StringBuilder SETSQL()
         {
+            string SDATES = null;
+            string EDATES = null;
+            SDATES = dateTimePicker1.Value.ToString("yyyy") + "0101";
+            EDATES = dateTimePicker1.Value.ToString("yyyy") + "1231";
+
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
                             SELECT SUBSTRING(TT001,1,6) AS '年月',TT002 AS '門市代號',MA002 AS '門市',SUM(TT008) AS '成交筆數',SUM(TT011)/SUM(TT008) AS '平均客單價'
-                            ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='20211101' AND TT001<='20211108' ORDER BY TT001)  AS '查詢起日'
-                            ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='20211101' AND TT001<='20211108' ORDER BY TT001 DESC) AS '查詢迄日'
+                            ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='{0}' AND TT001<='{1}' ORDER BY TT001)  AS '查詢起日'
+                            ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='{0}' AND TT001<='{1}' ORDER BY TT001 DESC) AS '查詢迄日'
                             FROM [TK].dbo.POSTT,[TK].dbo.WSCMA
                             WHERE TT002=MA001
                             AND TT002 IN (SELECT  [TT002]  FROM [TKKPI].[dbo].[SALESTORES])
                             AND TT001 LIKE '{0}%'
                             GROUP BY SUBSTRING(TT001,1,6),TT002,MA002
 
-                            ", dateTimePicker1.Value.ToString("yyyy"));
+                            ", dateTimePicker1.Value.ToString("yyyy"), SDATES, EDATES);
 
             return SB;
 
@@ -133,12 +140,14 @@ namespace TKKPI
 
         public StringBuilder SETSQL2()
         {
+
+
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
                            SELECT TT002 AS '門市代號',MA002 AS '門市',SUM(TT008) AS '成交筆數',SUM(TT011)/SUM(TT008) AS '平均客單價'
-                            ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='20211101' AND TT001<='20211108' ORDER BY TT001)  AS '查詢起日'
-                            ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='20211101' AND TT001<='20211108' ORDER BY TT001 DESC) AS '查詢迄日'
+                            ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='{0}' AND TT001<='{1}' ORDER BY TT001)  AS '查詢起日'
+                            ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='{0}' AND TT001<='{1}' ORDER BY TT001 DESC) AS '查詢迄日'
                             FROM [TK].dbo.POSTT,[TK].dbo.WSCMA
                             WHERE TT002=MA001
                             AND TT002 IN (SELECT  [TT002]  FROM [TKKPI].[dbo].[SALESTORES])
