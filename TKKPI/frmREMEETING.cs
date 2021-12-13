@@ -102,7 +102,7 @@ namespace TKKPI
 
             SB.AppendFormat(@" 
                            SELECT 部門,業務員,交易幣別,SUM(金額) 金額,CONVERT(INT,SUM(未出金額)) 未出金額
-                            ,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額)) ELSE (CASE WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  ELSE ( CASE WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30 END ) END ) END AS '本幣金額'
+                            ,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額))  WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30  WHEN 交易幣別 IN ('HKD') THEN CONVERT(INT,SUM(未出金額))*4 END AS '本幣金額'
                             FROM (
                             SELECT MV004 AS '部門',MV002 AS '業務員',TC008 AS '交易幣別',  (TD012) AS '金額' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV
