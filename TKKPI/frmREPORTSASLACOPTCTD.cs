@@ -211,8 +211,9 @@ namespace TKKPI
                             AND (TD004 LIKE '4%' OR TD004 LIKE '5%')
                             AND TC001='A228'
                             AND (TD013 LIKE @THISYEARLASTMONTH+'%' OR TD013 LIKE @THISYEARTHISMONTH+'%'  OR TD013 LIKE @THISYEARNEXTMONTH+'%' )
-                            GROUP BY TD004
                             AND TC027='Y'
+                            GROUP BY TD004
+                           
 
                             ) AS TEMP
                             GROUP BY LA005
