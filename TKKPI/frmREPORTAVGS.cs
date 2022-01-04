@@ -92,15 +92,20 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
+                            SELECT 年月,門市代號,門市,成交筆數,平均客單價,查詢起日,查詢迄日,(門市來客數+觀光銷售來客數) AS 來客數,(CASE WHEN 門市來客數>0 THEN ROUND(成交筆數/門市來客數,4) ELSE 0 END) AS PCTS,ROUND(成交筆數*平均客單價,0) AS '銷售總金額'
+                            FROM (
                             SELECT SUBSTRING(TT001,1,6) AS '年月',TT002 AS '門市代號',MA002 AS '門市',SUM(TT008) AS '成交筆數',SUM(TT011)/SUM(TT008) AS '平均客單價'
                             ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='{0}' AND TT001<='{1}' ORDER BY TT001)  AS '查詢起日'
                             ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='{0}' AND TT001<='{1}' ORDER BY TT001 DESC) AS '查詢迄日'
+                            ,(SELECT ISNULL(SUM(Fin_data+Fout_data)/2,0) FROM [TKMK].[dbo].[View_t_visitors] WHERE TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') AND [View_t_visitors].TT002=POSTT.TT002 AND CONVERT(NVARCHAR,Fcreate_time1,112) LIKE SUBSTRING(TT001,1,6)+'%') AS '門市來客數'
+                            ,(SELECT ISNULL(SUM(Fin_data),0) FROM [TKMK].[dbo].[View_t_visitors] WHERE TT002 IN ('106701') AND [View_t_visitors].TT002=POSTT.TT002 AND CONVERT(NVARCHAR,Fcreate_time1,112) LIKE SUBSTRING(TT001,1,6)+'%') AS '觀光銷售來客數'
                             FROM [TK].dbo.POSTT,[TK].dbo.WSCMA
                             WHERE TT002=MA001
                             AND TT002 IN (SELECT  [TT002]  FROM [TKKPI].[dbo].[SALESTORES])
                             AND TT001 LIKE '{0}%'
                             GROUP BY SUBSTRING(TT001,1,6),TT002,MA002
-
+                            ) AS TEMP
+                            ORDER BY 年月,門市代號
                             ", dateTimePicker1.Value.ToString("yyyy"), SDATES, EDATES);
 
             return SB;
