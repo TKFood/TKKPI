@@ -224,6 +224,12 @@
     <Compile Include="frmREPORTSWEEKS.Designer.cs">
       <DependentUpon>frmREPORTSWEEKS.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTVISITORS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTVISITORS.Designer.cs">
+      <DependentUpon>frmREPORTVISITORS.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmREPROTPOS.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -315,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTSWEEKS.resx">
       <DependentUpon>frmREPORTSWEEKS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTVISITORS.resx">
+      <DependentUpon>frmREPORTVISITORS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPROTPOS.resx">
       <DependentUpon>frmREPROTPOS.cs</DependentUpon>
