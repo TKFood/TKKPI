@@ -131,12 +131,12 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
-                            SELECT TT002,STORESNAME,YEARS,HOURS,SUM(Fin_data+Fout_data)/2 AS NUMS
+                            SELECT TT002,STORESNAME,YEARS,MONTHS,HOURS,SUM(Fin_data+Fout_data)/2 AS NUMS
                             FROM [TKMK].[dbo].[View_t_visitors]
                             WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
                             AND YEARS='{0}'
-                            GROUP BY  TT002,STORESNAME,YEARS,HOURS
-                            ORDER BY  TT002,STORESNAME,YEARS,CONVERT(INT,HOURS)
+                            GROUP BY  TT002,STORESNAME,YEARS,MONTHS,HOURS
+                            ORDER BY  TT002,STORESNAME,YEARS,MONTHS,CONVERT(INT,HOURS)
                             ", dateTimePicker1.Value.ToString("yyyy"));
 
             return SB;
