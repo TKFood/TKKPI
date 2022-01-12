@@ -23,6 +23,7 @@ using NPOI.XSSF.UserModel;
 using FastReport;
 using FastReport.Data;
 using TKITDLL;
+using System.Data.SQLite;
 
 namespace TKKPI
 {
@@ -102,6 +103,17 @@ namespace TKKPI
                             WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
                             AND YEARS='{0}'
                             GROUP BY  TT002,STORESNAME,YEARS,MONTHS
+
+                            UNION ALL
+                            SELECT TT002,STORESNAME,YEARS,MONTHS,SUM(Fin_data) AS NUMS
+                            ,(SELECT ISNULL(SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') AS 'TT008'
+                            ,(SELECT ISNULL(SUM(TT011)/SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'AVGTT011'
+                            ,(SELECT ISNULL(SUM(TT011),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'SUMTT011'
+                            FROM [TKMK].[dbo].[View_t_visitors]
+                            WHERE  TT002 IN ('106701') 
+                            AND YEARS='{0}'
+                            GROUP BY  TT002,STORESNAME,YEARS,MONTHS
+
                             )AS TEMP 
                             ORDER BY  TT002,STORESNAME,YEARS,MONTHS
                             ", dateTimePicker1.Value.ToString("yyyy"));
@@ -114,11 +126,23 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
+
+                            SELECT TT002,STORESNAME,YEARS,WEEKS,NUMS
+                            FROM (
                             SELECT TT002,STORESNAME,YEARS,WEEKS,SUM(Fin_data+Fout_data)/2 AS NUMS
                             FROM [TKMK].[dbo].[View_t_visitors]
                             WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                             AND YEARS='{0}'
+                            GROUP BY  TT002,STORESNAME,YEARS,WEEKS
+
+                            UNION ALL
+                            SELECT TT002,STORESNAME,YEARS,WEEKS,SUM(Fin_data) AS NUMS
+                            FROM [TKMK].[dbo].[View_t_visitors]
+                            WHERE  TT002 IN ('106701') 
                             AND YEARS='{0}'
                             GROUP BY  TT002,STORESNAME,YEARS,WEEKS
+
+                            ) AS TEMP
                             ORDER BY  TT002,STORESNAME,YEARS,WEEKS
                             ", dateTimePicker1.Value.ToString("yyyy"));
 
@@ -131,17 +155,36 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
-                            SELECT TT002,STORESNAME,YEARS,MONTHS,HOURS,SUM(Fin_data+Fout_data)/2 AS NUMS
+                           SELECT TT002,STORESNAME,YEARS,MONTHS,HOURS,NUMS,DAYSS,CONVERT(INT,NUMS/DAYSS) AS 'AVGDAYSS'
+                            FROM (
+                            SELECT TT002,STORESNAME,YEARS,MONTHS,HOURS,SUM(Fin_data+Fout_data)/2 AS NUMS, day(dateadd(ms,-3,DATEADD(m, DATEDIFF(m,0,YEARS/MONTHS/1)+1,0))) AS DAYSS
                             FROM [TKMK].[dbo].[View_t_visitors]
                             WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
                             AND YEARS='{0}'
                             GROUP BY  TT002,STORESNAME,YEARS,MONTHS,HOURS
+
+                            UNION ALL
+                            SELECT TT002,STORESNAME,YEARS,MONTHS,HOURS,SUM(Fin_data) AS NUMS, day(dateadd(ms,-3,DATEADD(m, DATEDIFF(m,0,YEARS/MONTHS/1)+1,0))) AS DAYSS
+                            FROM [TKMK].[dbo].[View_t_visitors]
+                            WHERE  TT002 IN ('106701') 
+                            AND YEARS='{0}'
+
+                            GROUP BY  TT002,STORESNAME,YEARS,MONTHS,HOURS
+                            ) AS TEMP
                             ORDER BY  TT002,STORESNAME,YEARS,MONTHS,CONVERT(INT,HOURS)
                             ", dateTimePicker1.Value.ToString("yyyy"));
 
             return SB;
 
         }
+
+        public void ADDTKMKt_visitors()
+        {
+            //SQLite的檔案要先copy到 F:\kldatabase.db
+
+
+        }
+
 
         #endregion
 
@@ -150,7 +193,12 @@ namespace TKKPI
         {
             SETFASTREPORT();
         }
+        private void button1_Click(object sender, EventArgs e)
+        {
 
+        }
         #endregion
+
+
     }
 }
