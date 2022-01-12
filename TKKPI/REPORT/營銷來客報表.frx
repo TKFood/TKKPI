@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="01/12/2022 10:29:28" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="01/12/2022 11:26:25" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGVqfxAwauCpYcu0DLJmCqH">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFHiRLevS42GUdshYPpb5pm">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TT002,STORESNAME,YEARS,MONTHS,NUMS,TT008,AVGTT011,SUMTT011,ROUND(TT008/NUMS,4) AS PCTS&#13;&#10;FROM (&#13;&#10;SELECT TT002,STORESNAME,YEARS,MONTHS,SUM(Fin_data+Fout_data)/2 AS NUMS&#13;&#10;,(SELECT ISNULL(SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') AS 'TT008'&#13;&#10;,(SELECT ISNULL(SUM(TT011)/SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'AVGTT011'&#13;&#10;,(SELECT ISNULL(SUM(TT011),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'SUMTT011'&#13;&#10;FROM [TKMK].[dbo].[View_t_visitors]&#13;&#10;WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') &#13;&#10;AND YEARS='2022'&#13;&#10;GROUP BY  TT002,STORESNAME,YEARS,MONTHS&#13;&#10;)AS TEMP &#13;&#10;ORDER BY  TT002,STORESNAME,YEARS,MONTHS">
         <Column Name="TT002" DataType="System.String"/>
         <Column Name="STORESNAME" DataType="System.String"/>
@@ -29,6 +29,23 @@
         <Column Name="MONTHS" DataType="System.Int32"/>
         <Column Name="DAYSS" DataType="System.Int32"/>
         <Column Name="AVGDAYSS" DataType="System.Int32"/>
+      </TableDataSource>
+      <TableDataSource Name="Table3" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TOP 10 &#13;&#10;[TT002]&#13;&#10;,[Fdevice_sn]&#13;&#10;,[STORESNAME]&#13;&#10;,[Fcreate_time1]&#13;&#10;,[Fcreate_time2]&#13;&#10;,[Fin_data]&#13;&#10;,[Fout_data]&#13;&#10;,[id]&#13;&#10;,[Fcreate_time]&#13;&#10;,[YEARS]&#13;&#10;,[MONTHS]&#13;&#10;,[DAYS]&#13;&#10;,[DAYOFWEEK]&#13;&#10;,[WEEKS]&#13;&#10;,[HOURS]&#13;&#10;FROM [TKMK].[dbo].[View_t_visitors]&#13;&#10;ORDER BY [Fcreate_time] DESC">
+        <Column Name="TT002" DataType="System.String"/>
+        <Column Name="Fdevice_sn" DataType="System.String"/>
+        <Column Name="STORESNAME" DataType="System.String"/>
+        <Column Name="Fcreate_time1" DataType="System.String"/>
+        <Column Name="Fcreate_time2" DataType="System.String"/>
+        <Column Name="Fin_data" DataType="System.Int32"/>
+        <Column Name="Fout_data" DataType="System.Int32"/>
+        <Column Name="id" DataType="System.Int32"/>
+        <Column Name="Fcreate_time" DataType="System.DateTime"/>
+        <Column Name="YEARS" DataType="System.String"/>
+        <Column Name="MONTHS" DataType="System.Int32"/>
+        <Column Name="DAYS" DataType="System.String"/>
+        <Column Name="DAYOFWEEK" DataType="System.String"/>
+        <Column Name="WEEKS" DataType="System.String"/>
+        <Column Name="HOURS" DataType="System.String"/>
       </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
@@ -99,5 +116,19 @@
       <TextObject Name="Text44" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.AVGDAYSS]" HorzAlign="Center" VertAlign="Center"/>
     </DataBand>
     <PageFooterBand Name="PageFooter3" Top="46.79" Width="718.2" Height="18.9"/>
+  </ReportPage>
+  <ReportPage Name="Page4">
+    <PageHeaderBand Name="PageHeader4" Width="718.2" Height="18.9">
+      <TextObject Name="Text47" Width="94.5" Height="18.9" Border.Lines="All" Text="TT002" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text49" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="STORESNAME" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text51" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="id" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text53" Left="283.5" Width="207.9" Height="18.9" Border.Lines="All" Text="Fcreate_time" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data4" Top="23.39" Width="718.2" Height="18.9" DataSource="Table3">
+      <TextObject Name="Text46" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.TT002]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text48" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.STORESNAME]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text50" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.id]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text52" Left="283.5" Width="207.9" Height="18.9" Border.Lines="All" Text="[Table3.Fcreate_time]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
   </ReportPage>
 </Report>

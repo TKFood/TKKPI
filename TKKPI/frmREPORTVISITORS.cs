@@ -54,10 +54,13 @@ namespace TKKPI
             StringBuilder SQL1 = new StringBuilder();
             StringBuilder SQL2 = new StringBuilder();
             StringBuilder SQL3 = new StringBuilder();
+            StringBuilder SQL4 = new StringBuilder();
 
             SQL1 = SETSQL();
             SQL2 = SETSQL2();
             SQL3 = SETSQL3();
+            SQL4 = SETSQL4();
+
             Report report1 = new Report();
             report1.Load(@"REPORT\營銷來客報表.frx");
 
@@ -173,6 +176,37 @@ namespace TKKPI
                             ) AS TEMP
                             ORDER BY  TT002,STORESNAME,YEARS,MONTHS,CONVERT(INT,HOURS)
                             ", dateTimePicker1.Value.ToString("yyyy"));
+
+            return SB;
+
+        }
+
+        public StringBuilder SETSQL4()
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(@" 
+                            
+                            SELECT TOP 10 
+                            [TT002]
+                            ,[Fdevice_sn]
+                            ,[STORESNAME]
+                            ,[Fcreate_time1]
+                            ,[Fcreate_time2]
+                            ,[Fin_data]
+                            ,[Fout_data]
+                            ,[id]
+                            ,[Fcreate_time]
+                            ,[YEARS]
+                            ,[MONTHS]
+                            ,[DAYS]
+                            ,[DAYOFWEEK]
+                            ,[WEEKS]
+                            ,[HOURS]
+                            FROM [TKMK].[dbo].[View_t_visitors]
+                            ORDER BY [Fcreate_time] DESC
+
+                            ");
 
             return SB;
 
