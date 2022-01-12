@@ -225,7 +225,7 @@ namespace TKKPI
                 if(!string.IsNullOrEmpty(MAXID))
                 {
                     //SQLite的檔案要先copy到 F:\kldatabase.db
-                    string path = @"F:\kldatabase.db";
+                    string path = @"E:\kldatabase.db";
                     SQLiteConnection = new SQLiteConnection("data source=" + path);
                     SQLiteConnection.Open();
 
@@ -252,7 +252,7 @@ namespace TKKPI
 
                     else
                     {
-                        MessageBox.Show("沒有新資料，請更新kldatabasepri F:");
+                        MessageBox.Show("沒有新資料，請更新kldatabasepri 到E:");
                     }
 
                     SQLiteConnection.Close();
@@ -261,13 +261,13 @@ namespace TKKPI
                 }
                 else
                 {
-                    MessageBox.Show("沒有新資料，請更新kldatabasepri F:");
+                    MessageBox.Show("沒有新資料，請更新kldatabasepri 到E:");
                 }
                
             }
             catch
             {
-
+                MessageBox.Show("有錯誤");
             }
             finally
             {
