@@ -181,8 +181,27 @@ namespace TKKPI
         public void ADDTKMKt_visitors()
         {
             //SQLite的檔案要先copy到 F:\kldatabase.db
+            string path = @"F:\kldatabase.db";
+            SQLiteConnection SQLiteConnection = new SQLiteConnection("data source=" + path);
+            SQLiteConnection.Open();
 
+            SQLiteCommand cmd = SQLiteConnection.CreateCommand();
 
+            sbSql.Clear();
+            sbSql.AppendFormat(@"  
+                                    SELECT *
+                                    FROM t_visitors
+                                    WHERE ID>'{0}'
+                                    ", "12437");
+
+            cmd.CommandText = sbSql.ToString();
+
+            // 用DataAdapter和DataTable類，記得要 using System.Data
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+
+            SQLiteConnection.Close();
         }
 
 
@@ -195,7 +214,7 @@ namespace TKKPI
         }
         private void button1_Click(object sender, EventArgs e)
         {
-
+            ADDTKMKt_visitors();
         }
         #endregion
 
