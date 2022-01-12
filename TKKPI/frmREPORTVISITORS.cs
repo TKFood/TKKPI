@@ -180,31 +180,172 @@ namespace TKKPI
 
         public void ADDTKMKt_visitors()
         {
-            //SQLite的檔案要先copy到 F:\kldatabase.db
-            string path = @"F:\kldatabase.db";
-            SQLiteConnection SQLiteConnection = new SQLiteConnection("data source=" + path);
-            SQLiteConnection.Open();
+            SQLiteConnection SQLiteConnection = new SQLiteConnection();
+            string MAXID = null;
+           
 
-            SQLiteCommand cmd = SQLiteConnection.CreateCommand();
+            try
+            {
+                MAXID = FINDTKMKt_visitorsMAXID();
 
-            sbSql.Clear();
-            sbSql.AppendFormat(@"  
-                                    SELECT *
-                                    FROM t_visitors
-                                    WHERE ID>'{0}'
-                                    ", "12437");
+                if(!string.IsNullOrEmpty(MAXID))
+                {
+                    //SQLite的檔案要先copy到 F:\kldatabase.db
+                    string path = @"F:\kldatabase.db";
+                    SQLiteConnection = new SQLiteConnection("data source=" + path);
+                    SQLiteConnection.Open();
 
-            cmd.CommandText = sbSql.ToString();
+                    SQLiteCommand cmd = SQLiteConnection.CreateCommand();
 
-            // 用DataAdapter和DataTable類，記得要 using System.Data
-            SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
-            DataTable table = new DataTable();
-            adapter.Fill(table);
+                    sbSql.Clear();
+                    sbSql.AppendFormat(@"  
+                                        SELECT *
+                                        FROM t_visitors
+                                        WHERE ID>'{0}'
+                                     ", MAXID);
 
-            SQLiteConnection.Close();
+                    cmd.CommandText = sbSql.ToString();
+
+                    // 用DataAdapter和DataTable類，記得要 using System.Data
+                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    if(table.Rows.Count>0)
+                    {
+                        ADDTOTKMKt_visitors(table);
+                    }
+
+                    else
+                    {
+                        MessageBox.Show("沒有新資料，請更新kldatabasepri F:");
+                    }
+
+                    SQLiteConnection.Close();
+
+
+                }
+                else
+                {
+                    MessageBox.Show("沒有新資料，請更新kldatabasepri F:");
+                }
+               
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                
+            }
+           
         }
 
+        public string FINDTKMKt_visitorsMAXID()
+        {
+            string MAXID = null;
 
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                SqlDataAdapter adapter1 = new SqlDataAdapter();
+                SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();
+                DataSet ds1 = new DataSet();
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    SELECT TOP 1 MAX([id])  id  FROM [TKMK].[dbo].[t_visitors]
+                                    ");
+
+                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter1.Fill(ds1, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds1.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    MAXID = ds1.Tables["TEMPds1"].Rows[0]["id"].ToString();                    
+                }
+                else
+                {
+
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+
+            return MAXID;
+        }
+
+        public void ADDTOTKMKt_visitors(DataTable dtt_visitors)
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconnTKMK"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            using (SqlConnection connection = sqlConn)
+            {
+                connection.Open();
+                SqlTransaction sqlTrans = connection.BeginTransaction();
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.KeepIdentity, sqlTrans))
+                {
+                    DataTable dt = dtt_visitors;
+                    bulkCopy.DestinationTableName = "t_visitors";
+                    bulkCopy.BatchSize = 1000;
+                    bulkCopy.BulkCopyTimeout = 60;
+
+                    try
+                    {
+                        bulkCopy.WriteToServer(dt);
+                        sqlTrans.Commit();
+
+                        MessageBox.Show("完成");
+                    }
+
+                    catch (Exception)
+                    {
+                        sqlTrans.Rollback();                       
+                    }
+
+                   
+
+
+                }
+
+            }
+        }
         #endregion
 
         #region BUTTON
