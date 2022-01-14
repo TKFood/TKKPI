@@ -187,16 +187,17 @@ namespace TKKPI
 
             SB.AppendFormat(@" 
                             
+                            
                             SELECT TOP 10 
                             [TT002]
                             ,[Fdevice_sn]
                             ,[STORESNAME]
-                            ,[Fcreate_time1]
-                            ,[Fcreate_time2]
+                            ,[Fdate1]
+                            ,[Fdate2]
                             ,[Fin_data]
                             ,[Fout_data]
                             ,[id]
-                            ,[Fcreate_time]
+                            ,[Fdate]
                             ,[YEARS]
                             ,[MONTHS]
                             ,[DAYS]
@@ -204,7 +205,7 @@ namespace TKKPI
                             ,[WEEKS]
                             ,[HOURS]
                             FROM [TKMK].[dbo].[View_t_visitors]
-                            ORDER BY [Fcreate_time] DESC
+                            ORDER BY [Fdate] DESC  
 
                             ");
 
