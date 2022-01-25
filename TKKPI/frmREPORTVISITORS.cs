@@ -223,26 +223,30 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
-                            
-                            
-                            SELECT TT002,STORESNAME,YEARS,COUNT(WEEKS) WEEKSCOUNTS,DAYOFWEEK,SUM(NUMS) NUMS,SUM(NUMS)/COUNT(WEEKS)  AS NUMSAVGS
+
+                            SELECT TT002,STORESNAME,YEARS,COUNT(WEEKS) WEEKSCOUNTS,DAYOFWEEK,SUM(NUMS) NUMS,SUM(SUMTT011) SUMTT011,SUM(SUMTT008) SUMTT008
+                            ,SUM(NUMS)/COUNT(WEEKS) AS 'NUMSAVGS',SUM(SUMTT008)/SUM(NUMS) AS 'PCTS',SUM(SUMTT011)/SUM(SUMTT008) AS 'AVGTT011'
                             FROM (
-                            SELECT TT002,STORESNAME,YEARS,WEEKS,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS NUMS
+                            SELECT View_t_visitors.TT002,STORESNAME,YEARS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS NUMS
+                            ,(SELECT SUM(TT011) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
+                            ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
                             FROM [TKMK].[dbo].[View_t_visitors]
-                            WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                            WHERE  View_t_visitors.TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
                             AND YEARS='{0}'
-                            GROUP BY  TT002,STORESNAME,YEARS,WEEKS,DAYOFWEEK
+                            GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,WEEKS,Fdate1,DAYOFWEEK
 
                             UNION ALL
-                            SELECT TT002,STORESNAME,YEARS,WEEKS,DAYOFWEEK,SUM(Fin_data) AS NUMS
+                            SELECT View_t_visitors.TT002,STORESNAME,YEARS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data) AS NUMS
+                            ,(SELECT SUM(TT011) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
+                            ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
                             FROM [TKMK].[dbo].[View_t_visitors]
-                            WHERE  TT002 IN ('106701') 
+                            WHERE  View_t_visitors.TT002 IN ('106701') 
                             AND YEARS='{0}'
-                            GROUP BY  TT002,STORESNAME,YEARS,WEEKS,DAYOFWEEK
+                            GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,WEEKS,Fdate1,DAYOFWEEK
 
                             ) AS TEMP
                             GROUP BY TT002,STORESNAME,YEARS,DAYOFWEEK
-                            ORDER BY  TT002,STORESNAME,YEARS,DAYOFWEEK
+                            ORDER BY TT002,STORESNAME,YEARS,DAYOFWEEK
 
                             ", dateTimePicker1.Value.ToString("yyyy"));
 
