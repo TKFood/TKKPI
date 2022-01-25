@@ -55,11 +55,13 @@ namespace TKKPI
             StringBuilder SQL2 = new StringBuilder();
             StringBuilder SQL3 = new StringBuilder();
             StringBuilder SQL4 = new StringBuilder();
+            StringBuilder SQL5 = new StringBuilder();
 
             SQL1 = SETSQL();
             SQL2 = SETSQL2();
             SQL3 = SETSQL3();
             SQL4 = SETSQL4();
+            SQL5 = SETSQL5();
 
             Report report1 = new Report();
             report1.Load(@"REPORT\營銷來客報表.frx");
@@ -84,7 +86,10 @@ namespace TKKPI
             table1.SelectCommand = SQL2.ToString();
             TableDataSource table2= report1.GetDataSource("Table2") as TableDataSource;
             table2.SelectCommand = SQL3.ToString();
-
+            TableDataSource table3 = report1.GetDataSource("Table3") as TableDataSource;
+            table3.SelectCommand = SQL4.ToString();
+            TableDataSource table4 = report1.GetDataSource("Table4") as TableDataSource;
+            table4.SelectCommand = SQL5.ToString();
 
 
             report1.Preview = previewControl1;
@@ -208,6 +213,38 @@ namespace TKKPI
                             ORDER BY [Fdate] DESC  
 
                             ");
+
+            return SB;
+
+        }
+
+        public StringBuilder SETSQL5()
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(@" 
+                            
+                            
+                            SELECT TT002,STORESNAME,YEARS,COUNT(WEEKS) WEEKSCOUNTS,DAYOFWEEK,SUM(NUMS) NUMS,SUM(NUMS)/COUNT(WEEKS)  AS NUMSAVGS
+                            FROM (
+                            SELECT TT002,STORESNAME,YEARS,WEEKS,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS NUMS
+                            FROM [TKMK].[dbo].[View_t_visitors]
+                            WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                            AND YEARS='{0}'
+                            GROUP BY  TT002,STORESNAME,YEARS,WEEKS,DAYOFWEEK
+
+                            UNION ALL
+                            SELECT TT002,STORESNAME,YEARS,WEEKS,DAYOFWEEK,SUM(Fin_data) AS NUMS
+                            FROM [TKMK].[dbo].[View_t_visitors]
+                            WHERE  TT002 IN ('106701') 
+                            AND YEARS='{0}'
+                            GROUP BY  TT002,STORESNAME,YEARS,WEEKS,DAYOFWEEK
+
+                            ) AS TEMP
+                            GROUP BY TT002,STORESNAME,YEARS,DAYOFWEEK
+                            ORDER BY  TT002,STORESNAME,YEARS,DAYOFWEEK
+
+                            ", dateTimePicker1.Value.ToString("yyyy"));
 
             return SB;
 
