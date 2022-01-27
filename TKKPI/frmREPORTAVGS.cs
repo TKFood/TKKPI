@@ -91,7 +91,7 @@ namespace TKKPI
 
             StringBuilder SB = new StringBuilder();
 
-            SB.AppendFormat(@" 
+            SB.AppendFormat(@"  
                             SELECT 年月,門市代號,門市,成交筆數,平均客單價,查詢起日,查詢迄日,(門市來客數+觀光銷售來客數) AS 來客數,(CASE WHEN 門市來客數>0 THEN ROUND(成交筆數/門市來客數,4)	WHEN 觀光銷售來客數>0 THEN ROUND(成交筆數/觀光銷售來客數,4)  ELSE 0 END) AS PCTS,銷售總金額 AS '銷售總金額'
                             FROM (
                             SELECT SUBSTRING(TT001,1,6) AS '年月',TT002 AS '門市代號',MA002 AS '門市'
