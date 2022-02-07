@@ -169,13 +169,15 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@"  
-                            SELECT TT002,STORESNAME,YEARS,MONTHS,HOURS,DAYSS,SUM(NUMS) NUMS,SUM(SUMTA026) SUMTA026,SUM(COUNTSTA026) COUNTSTA026
+                           SELECT TT002,STORESNAME,YEARS,MONTHS,HOURS,DAYSS,SUM(NUMS) NUMS,SUM(SUMTA026) SUMTA026,SUM(COUNTSTA026) COUNTSTA026
                             ,(CASE WHEN SUM(NUMS)>0 AND SUM(COUNTSTA026)>0 THEN  ROUND(CONVERT(decimal,SUM(COUNTSTA026),2)/CONVERT(decimal,SUM(NUMS),2),4) ELSE 0 END) AS 'PCTS'
                             ,(CASE WHEN SUM(COUNTSTA026)>0 AND SUM(SUMTA026)>0 THEN  SUM(SUMTA026)/SUM(COUNTSTA026) ELSE 0 END )AS 'AVGTA026'
                             FROM (
-                            SELECT TT002,STORESNAME,YEARS,MONTHS,[Fdate1],HOURS,SUM(Fin_data+Fout_data)/2 AS NUMS, day(dateadd(ms,-3,DATEADD(m, DATEDIFF(m,0,YEARS/MONTHS/1)+1,0))) AS DAYSS
-                            ,(SELECT ISNULL(SUM(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=[View_t_visitors].HOURS) AS 'SUMTA026'
-                            ,(SELECT ISNULL(COUNT(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=[View_t_visitors].HOURS) AS 'COUNTSTA026'
+                            SELECT 
+
+                            TT002,STORESNAME,YEARS,MONTHS,[Fdate1],HOURS,SUM(Fin_data+Fout_data)/2 AS NUMS, day(dateadd(ms,-3,DATEADD(m, DATEDIFF(m,0,YEARS/MONTHS/1)+1,0))) AS DAYSS
+                            ,(SELECT ISNULL(SUM(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS= Right('00' + Cast([View_t_visitors].HOURS as varchar),2)) AS 'SUMTA026'
+                            ,(SELECT ISNULL(COUNT(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=Right('00' + Cast([View_t_visitors].HOURS as varchar),2)) AS 'COUNTSTA026'
                             FROM [TKMK].[dbo].[View_t_visitors]
                             WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
                             AND YEARS='{0}'
@@ -184,8 +186,8 @@ namespace TKKPI
 
                             UNION ALL
                             SELECT TT002,STORESNAME,YEARS,MONTHS,[Fdate1],HOURS,SUM(Fin_data) AS NUMS, day(dateadd(ms,-3,DATEADD(m, DATEDIFF(m,0,YEARS/MONTHS/1)+1,0))) AS DAYSS
-                            ,(SELECT ISNULL(SUM(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=[View_t_visitors].HOURS) AS 'SUMTA026'
-                            ,(SELECT ISNULL(COUNT(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=[View_t_visitors].HOURS) AS 'COUNTSTA026'
+                            ,(SELECT ISNULL(SUM(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=Right('00' + Cast([View_t_visitors].HOURS as varchar),2)) AS 'SUMTA026'
+                            ,(SELECT ISNULL(COUNT(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=Right('00' + Cast([View_t_visitors].HOURS as varchar),2)) AS 'COUNTSTA026'
                             FROM [TKMK].[dbo].[View_t_visitors]
                             WHERE  TT002 IN ('106701') 
                             AND YEARS='{0}'
