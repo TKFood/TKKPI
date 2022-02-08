@@ -103,7 +103,7 @@ namespace TKKPI
         public StringBuilder SETSQL()
         {
             StringBuilder SB = new StringBuilder();
-
+              
             SB.AppendFormat(@" 
                             SELECT  ME001,ME002,YEARS,MONTHS,SUM(TT008) SUMTT008,SUM(TT018)/SUM(TT008) AS 'AVGTT018',SUM(TT018) SUMTT018
                             FROM 
