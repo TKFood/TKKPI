@@ -266,8 +266,12 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
-                            SELECT TT002,STORESNAME,YEARS,MONTHS,SUM(SUMNUMS) SUMNUMS,SUM(SUMTT011) SUMTT011,SUM(SUMTT008) SUMTT008
+                           SELECT TT002,STORESNAME,YEARS,MONTHS,SUM(SUMNUMS) SUMNUMS,SUM(SUMTT011) SUMTT011,SUM(SUMTT008) SUMTT008
                             ,SUM(SUMTT008)/SUM(SUMNUMS) AS PCTS,SUM(SUMTT011)/SUM(SUMTT008) AS AVGTT011
+                            
+                            ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE POSTT.TT002=TEMP.TT002 AND POSTT.TT001 LIKE TEMP.YEARS+Right('00' + Cast(TEMP.MONTHS as varchar),2)+'%' ) AS 'REALSUMTT008'
+                            ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE POSTT.TT002=TEMP.TT002 AND POSTT.TT001 LIKE TEMP.YEARS+Right('00' + Cast(TEMP.MONTHS as varchar),2)+'%' ) AS 'REALSUMTT018'
+                            ,((SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE POSTT.TT002=TEMP.TT002 AND POSTT.TT001 LIKE TEMP.YEARS+Right('00' + Cast(TEMP.MONTHS as varchar),2)+'%' )/(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE POSTT.TT002=TEMP.TT002 AND POSTT.TT001 LIKE TEMP.YEARS+Right('00' + Cast(TEMP.MONTHS as varchar),2)+'%' )) AS 'REALAVGTT018'
                             FROM (
                             SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS SUMNUMS
                             ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
@@ -288,6 +292,8 @@ namespace TKKPI
                             ) AS TEMP
                             GROUP BY TT002,STORESNAME,YEARS,MONTHS
                             ORDER BY TT002,STORESNAME,YEARS,MONTHS
+
+
 
 
 
