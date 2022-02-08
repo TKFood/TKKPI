@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="02/08/2022 15:25:35" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="02/08/2022 15:39:18" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEgQzDX1EDNpsVrySH+OC9L">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEhvfLxzDqFmRvvuiMWxFLw">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT  ME001,ME002,YEARS,MONTHS,SUM(TT008) SUMTT008,SUM(TT018)/SUM(TT008) AS 'AVGTT018',SUM(TT018) SUMTT018&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT ME001,ME002,TT001,SUBSTRING(TT001,1,4) AS 'YEARS',SUBSTRING(TT001,5,2)  AS 'MONTHS',TT018,TT008&#13;&#10;FROM [TK].dbo.POSTT,[TK].dbo.CMSME&#13;&#10;WHERE TT002=ME001&#13;&#10;AND TT001 LIKE '2022%'&#13;&#10;) AS TEMP&#13;&#10;WHERE ME001 LIKE '106%'&#13;&#10;GROUP BY ME001,ME002,YEARS,MONTHS&#13;&#10;ORDER BY ME001,ME002,YEARS,MONTHS">
         <Column Name="YEARS" DataType="System.String"/>
         <Column Name="MONTHS" DataType="System.Int32"/>
@@ -84,7 +84,7 @@
   <ReportPage Name="Page6" Landscape="true" PaperWidth="297" PaperHeight="210">
     <ReportTitleBand Name="ReportTitle5" Width="1047.06" Height="103.95">
       <TextObject Name="Text91" Width="1030.05" Height="18.9" Text="來客數報表" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text92" Top="18.9" Width="1030.05" Height="56.7" Text="說明:&#13;&#10;銷售金額是未稅&#13;&#10;銷售金額加總會因來客數記錄不同而有所差異，但以月份表的金額是正確的" VertAlign="Center"/>
+      <TextObject Name="Text92" Top="18.9" Width="1030.05" Height="56.7" Text="說明:&#13;&#10;銷售金額是未稅金額&#13;&#10;銷售金額加總會因來客數記錄不同而有所差異，但以月份表的金額是正確的" VertAlign="Center"/>
       <TextObject Name="Text93" Left="472.5" Top="75.6" Width="66.15" Height="28.35" Border.Lines="All" Text="來客記錄的提袋率%" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text94" Top="75.6" Width="94.5" Height="28.35" Border.Lines="All" Text="代號" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text95" Left="94.5" Top="75.6" Width="94.5" Height="28.35" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
