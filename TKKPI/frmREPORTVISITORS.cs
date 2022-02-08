@@ -56,12 +56,14 @@ namespace TKKPI
             StringBuilder SQL3 = new StringBuilder();
             StringBuilder SQL4 = new StringBuilder();
             StringBuilder SQL5 = new StringBuilder();
+            StringBuilder SQL6 = new StringBuilder();
 
             SQL1 = SETSQL();
             SQL2 = SETSQL2();
             SQL3 = SETSQL3();
             SQL4 = SETSQL4();
             SQL5 = SETSQL5();
+            SQL6 = SETSQL6();
 
             Report report1 = new Report();
             report1.Load(@"REPORT\營銷來客報表.frx");
@@ -90,6 +92,8 @@ namespace TKKPI
             table3.SelectCommand = SQL4.ToString();
             TableDataSource table4 = report1.GetDataSource("Table4") as TableDataSource;
             table4.SelectCommand = SQL5.ToString();
+            TableDataSource table5 = report1.GetDataSource("Table5") as TableDataSource;
+            table5.SelectCommand = SQL6.ToString();
 
 
             report1.Preview = previewControl1;
@@ -101,29 +105,17 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
-                            SELECT TT002,STORESNAME,YEARS,MONTHS,NUMS,TT008,AVGTT011,SUMTT011,ROUND(TT008/NUMS,4) AS PCTS
-                            FROM (
-                            SELECT TT002,STORESNAME,YEARS,MONTHS,SUM(Fin_data+Fout_data)/2 AS NUMS
-                            ,(SELECT ISNULL(SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') AS 'TT008'
-                            ,(SELECT ISNULL(SUM(TT018)/SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'AVGTT011'
-                            ,(SELECT ISNULL(SUM(TT018),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'SUMTT011'
-                            FROM [TKMK].[dbo].[View_t_visitors]
-                            WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
-                            AND YEARS='{0}'
-                            GROUP BY  TT002,STORESNAME,YEARS,MONTHS
-
-                            UNION ALL
-                            SELECT TT002,STORESNAME,YEARS,MONTHS,SUM(Fin_data) AS NUMS
-                            ,(SELECT ISNULL(SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') AS 'TT008'
-                            ,(SELECT ISNULL(SUM(TT018)/SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'AVGTT011'
-                            ,(SELECT ISNULL(SUM(TT018),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'SUMTT011'
-                            FROM [TKMK].[dbo].[View_t_visitors]
-                            WHERE  TT002 IN ('106701') 
-                            AND YEARS='{0}'
-                            GROUP BY  TT002,STORESNAME,YEARS,MONTHS
-
-                            )AS TEMP 
-                            ORDER BY  TT002,STORESNAME,YEARS,MONTHS
+                            SELECT  ME001,ME002,YEARS,MONTHS,SUM(TT008) SUMTT008,SUM(TT018)/SUM(TT008) AS 'AVGTT018',SUM(TT018) SUMTT018
+                            FROM 
+                            (
+                            SELECT ME001,ME002,TT001,SUBSTRING(TT001,1,4) AS 'YEARS',SUBSTRING(TT001,5,2)  AS 'MONTHS',TT018,TT008
+                            FROM [TK].dbo.POSTT,[TK].dbo.CMSME
+                            WHERE TT002=ME001
+                            AND TT001 LIKE '{0}%'
+                            ) AS TEMP
+                            WHERE ME001 LIKE '106%'
+                            GROUP BY ME001,ME002,YEARS,MONTHS
+                            ORDER BY ME001,ME002,YEARS,MONTHS
                             ", dateTimePicker1.Value.ToString("yyyy"));
 
             return SB;
@@ -268,6 +260,43 @@ namespace TKKPI
             return SB;
 
         }
+
+        public StringBuilder SETSQL6()
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(@" 
+                            SELECT TT002,STORESNAME,YEARS,MONTHS,SUM(SUMNUMS) SUMNUMS,SUM(SUMTT011) SUMTT011,SUM(SUMTT008) SUMTT008
+                            ,SUM(SUMTT008)/SUM(SUMNUMS) AS PCTS,SUM(SUMTT011)/SUM(SUMTT008) AS AVGTT011
+                            FROM (
+                            SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS SUMNUMS
+                            ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
+                            ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
+                            FROM [TKMK].[dbo].[View_t_visitors]
+                            WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                            AND YEARS='{0}'
+                            GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
+   
+                            UNION ALL
+                            SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data) AS SUMNUMS
+                            ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
+                            ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
+                            FROM [TKMK].[dbo].[View_t_visitors]
+                            WHERE  TT002 IN ('106701') 
+                            AND YEARS='{0}'
+                            GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
+                            ) AS TEMP
+                            GROUP BY TT002,STORESNAME,YEARS,MONTHS
+                            ORDER BY TT002,STORESNAME,YEARS,MONTHS
+
+
+
+                            ", dateTimePicker1.Value.ToString("yyyy"));
+
+            return SB;
+
+        }
+
 
         public void ADDTKMKt_visitors()
         {

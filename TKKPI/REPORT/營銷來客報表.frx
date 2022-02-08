@@ -1,17 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="01/27/2022 08:45:53" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="02/08/2022 09:28:12" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGPspXlaPU/0CSMJc5ue8Mc">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TT002,STORESNAME,YEARS,MONTHS,NUMS,TT008,AVGTT011,SUMTT011,ROUND(TT008/NUMS,4) AS PCTS&#13;&#10;FROM (&#13;&#10;SELECT TT002,STORESNAME,YEARS,MONTHS,SUM(Fin_data+Fout_data)/2 AS NUMS&#13;&#10;,(SELECT ISNULL(SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') AS 'TT008'&#13;&#10;,(SELECT ISNULL(SUM(TT018)/SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'AVGTT011'&#13;&#10;,(SELECT ISNULL(SUM(TT018),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'SUMTT011'&#13;&#10;FROM [TKMK].[dbo].[View_t_visitors]&#13;&#10;WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') &#13;&#10;AND YEARS='2022'&#13;&#10;GROUP BY  TT002,STORESNAME,YEARS,MONTHS&#13;&#10;&#13;&#10;UNION ALL&#13;&#10;SELECT TT002,STORESNAME,YEARS,MONTHS,SUM(Fin_data) AS NUMS&#13;&#10;,(SELECT ISNULL(SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') AS 'TT008'&#13;&#10;,(SELECT ISNULL(SUM(TT018)/SUM(TT008),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'AVGTT011'&#13;&#10;,(SELECT ISNULL(SUM(TT018),0) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND TT001 LIKE YEARS+RIGHT('00'+CAST(MONTHS AS nvarchar(10)),2) +'%') 'SUMTT011'&#13;&#10;FROM [TKMK].[dbo].[View_t_visitors]&#13;&#10;WHERE  TT002 IN ('106701') &#13;&#10;AND YEARS='2022'&#13;&#10;GROUP BY  TT002,STORESNAME,YEARS,MONTHS&#13;&#10;&#13;&#10;)AS TEMP &#13;&#10;ORDER BY  TT002,STORESNAME,YEARS,MONTHS">
-        <Column Name="TT002" DataType="System.String"/>
-        <Column Name="STORESNAME" DataType="System.String"/>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGApYbx0bin/LvYhI4ng24E">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT  ME001,ME002,YEARS,MONTHS,SUM(TT008) SUMTT008,SUM(TT018)/SUM(TT008) AS 'AVGTT018',SUM(TT018) SUMTT018&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT ME001,ME002,TT001,SUBSTRING(TT001,1,4) AS 'YEARS',SUBSTRING(TT001,5,2)  AS 'MONTHS',TT018,TT008&#13;&#10;FROM [TK].dbo.POSTT,[TK].dbo.CMSME&#13;&#10;WHERE TT002=ME001&#13;&#10;AND TT001 LIKE '2022%'&#13;&#10;) AS TEMP&#13;&#10;WHERE ME001 LIKE '106%'&#13;&#10;GROUP BY ME001,ME002,YEARS,MONTHS&#13;&#10;ORDER BY ME001,ME002,YEARS,MONTHS">
         <Column Name="YEARS" DataType="System.String"/>
         <Column Name="MONTHS" DataType="System.Int32"/>
-        <Column Name="NUMS" DataType="System.Int32"/>
-        <Column Name="TT008" DataType="System.Decimal"/>
-        <Column Name="AVGTT011" DataType="System.Decimal"/>
-        <Column Name="SUMTT011" DataType="System.Decimal"/>
-        <Column Name="PCTS" DataType="System.Decimal"/>
+        <Column Name="ME001" DataType="System.String"/>
+        <Column Name="ME002" DataType="System.String"/>
+        <Column Name="SUMTT008" DataType="System.Decimal"/>
+        <Column Name="SUMTT018" DataType="System.Decimal"/>
+        <Column Name="AVGTT018" DataType="System.Decimal"/>
       </TableDataSource>
       <TableDataSource Name="Table1" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TT002,STORESNAME,YEARS,WEEKS,SUM(NUMS) NUMS,SUM(SUMTT011) SUMTT011,SUM(SUMTT008) SUMTT008&#13;&#10;,(SUM(SUMTT008)/SUM(NUMS)) AS 'PCTS',(SUM(SUMTT011)/SUM(SUMTT008)) AS 'AVGTT011'&#13;&#10;FROM (&#13;&#10;SELECT View_t_visitors.TT002,STORESNAME,YEARS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS NUMS&#13;&#10;,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'&#13;&#10;,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'&#13;&#10;FROM [TKMK].[dbo].[View_t_visitors]&#13;&#10;WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') &#13;&#10;AND YEARS='2022'&#13;&#10;GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,WEEKS,Fdate1,DAYOFWEEK&#13;&#10;   &#13;&#10;UNION ALL&#13;&#10;SELECT View_t_visitors.TT002,STORESNAME,YEARS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data) AS NUMS&#13;&#10;,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'&#13;&#10;,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'&#13;&#10;FROM [TKMK].[dbo].[View_t_visitors]&#13;&#10;WHERE  TT002 IN ('106701') &#13;&#10;AND YEARS='2022'&#13;&#10;GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,WEEKS,Fdate1,DAYOFWEEK&#13;&#10;&#13;&#10;) AS TEMP&#13;&#10;GROUP BY TT002,STORESNAME,YEARS,WEEKS&#13;&#10;ORDER BY TT002,STORESNAME,YEARS,WEEKS">
         <Column Name="TT002" DataType="System.String"/>
@@ -67,36 +65,67 @@
         <Column Name="AVGTT011" DataType="System.Decimal"/>
         <Column Name="NUMSAVGS" DataType="System.Int32"/>
       </TableDataSource>
+      <TableDataSource Name="Table5" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TT002,STORESNAME,YEARS,MONTHS,SUM(SUMNUMS) SUMNUMS,SUM(SUMTT011) SUMTT011,SUM(SUMTT008) SUMTT008&#13;&#10;,SUM(SUMTT008)/SUM(SUMNUMS) AS PCTS,SUM(SUMTT011)/SUM(SUMTT008) AS AVGTT011&#13;&#10;FROM (&#13;&#10;SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS SUMNUMS&#13;&#10;,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'&#13;&#10;,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'&#13;&#10;FROM [TKMK].[dbo].[View_t_visitors]&#13;&#10;WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') &#13;&#10;AND YEARS='2022'&#13;&#10;GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK&#13;&#10;   &#13;&#10;UNION ALL&#13;&#10;SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data) AS SUMNUMS&#13;&#10;,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'&#13;&#10;,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'&#13;&#10;FROM [TKMK].[dbo].[View_t_visitors]&#13;&#10;WHERE  TT002 IN ('106701') &#13;&#10;AND YEARS='2022'&#13;&#10;GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK&#13;&#10;) AS TEMP&#13;&#10;GROUP BY TT002,STORESNAME,YEARS,MONTHS&#13;&#10;ORDER BY TT002,STORESNAME,YEARS,MONTHS&#13;&#10;&#13;&#10;">
+        <Column Name="TT002" DataType="System.String"/>
+        <Column Name="STORESNAME" DataType="System.String"/>
+        <Column Name="YEARS" DataType="System.String"/>
+        <Column Name="MONTHS" DataType="System.Int32"/>
+        <Column Name="AVGTT011" DataType="System.Decimal"/>
+        <Column Name="SUMTT011" DataType="System.Decimal"/>
+        <Column Name="PCTS" DataType="System.Decimal"/>
+        <Column Name="SUMNUMS" DataType="System.Int32"/>
+        <Column Name="SUMTT008" DataType="System.Decimal"/>
+      </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
-  <ReportPage Name="Page1">
-    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="75.6">
-      <TextObject Name="Text1" Width="708.75" Height="18.9" Text="來客數報表" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text90" Top="18.9" Width="708.75" Height="56.7" Text="說明:&#13;&#10;銷售金額是未稅&#13;&#10;銷售金額加總會因來客數記錄不同而有所差異，但以月份表的金額是正確的" VertAlign="Center"/>
+  <ReportPage Name="Page6">
+    <ReportTitleBand Name="ReportTitle5" Width="718.2" Height="94.5">
+      <TextObject Name="Text91" Width="708.75" Height="18.9" Text="來客數報表" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text92" Top="18.9" Width="708.75" Height="56.7" Text="說明:&#13;&#10;銷售金額是未稅&#13;&#10;銷售金額加總會因來客數記錄不同而有所差異，但以月份表的金額是正確的" VertAlign="Center"/>
+      <TextObject Name="Text93" Left="453.6" Top="75.6" Width="66.15" Height="18.9" Border.Lines="All" Text="提袋率%" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text94" Top="75.6" Width="94.5" Height="18.9" Border.Lines="All" Text="代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text95" Left="94.5" Top="75.6" Width="94.5" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text96" Left="189" Top="75.6" Width="66.15" Height="18.9" Border.Lines="All" Text="年度" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text97" Left="255.15" Top="75.6" Width="66.15" Height="18.9" Border.Lines="All" Text="月份" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text98" Left="321.3" Top="75.6" Width="66.15" Height="18.9" Border.Lines="All" Text="來客數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text99" Left="519.75" Top="75.6" Width="75.6" Height="18.9" Border.Lines="All" Text="平均客單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text100" Left="387.45" Top="75.6" Width="66.15" Height="18.9" Border.Lines="All" Text="成交筆數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text101" Left="595.35" Top="75.6" Width="113.4" Height="18.9" Border.Lines="All" Text="銷售總金額(POS機)" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader1" Top="80.09" Width="718.2" Height="18.9">
-      <TextObject Name="Text3" Width="94.5" Height="18.9" Border.Lines="All" Text="代號" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text5" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text7" Left="189" Width="66.15" Height="18.9" Border.Lines="All" Text="年度" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text9" Left="255.15" Width="66.15" Height="18.9" Border.Lines="All" Text="月份" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text11" Left="321.3" Width="66.15" Height="18.9" Border.Lines="All" Text="來客數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text13" Left="453.6" Width="66.15" Height="18.9" Border.Lines="All" Text="提袋率%" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text15" Left="519.75" Width="75.6" Height="18.9" Border.Lines="All" Text="平均客單價" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text17" Left="387.45" Width="66.15" Height="18.9" Border.Lines="All" Text="成交筆數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text19" Left="595.35" Width="113.4" Height="18.9" Border.Lines="All" Text="銷售總金額(POS機)" HorzAlign="Center" VertAlign="Center"/>
-    </PageHeaderBand>
-    <DataBand Name="Data1" Top="103.49" Width="718.2" Height="18.9" DataSource="Table">
-      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.TT002]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.STORESNAME]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text6" Left="189" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.YEARS]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text8" Left="255.15" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.MONTHS]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text10" Left="321.3" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.NUMS]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text12" Left="453.6" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.PCTS]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text14" Left="519.75" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table.AVGTT011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text16" Left="387.45" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.TT008]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text18" Left="595.35" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table.SUMTT011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    <DataBand Name="Data6" Top="98.99" Width="718.2" Height="18.9" DataSource="Table5">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table5.TT002]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text2" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table5.STORESNAME]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="189" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table5.YEARS]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="255.15" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table5.MONTHS]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="321.3" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table5.SUMNUMS]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="387.45" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table5.SUMTT008]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="453.6" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table5.PCTS]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="519.75" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table5.AVGTT011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="595.35" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table5.SUMTT011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="126.88" Width="718.2" Height="18.9"/>
+    <PageFooterBand Name="PageFooter5" Top="122.39" Width="718.2" Height="18.9"/>
+  </ReportPage>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text90" Width="708.75" Height="18.9" Text="這是只統計POS機的結帳資料" VertAlign="Center"/>
+      <TextObject Name="Text3" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="189" Top="18.9" Width="66.15" Height="18.9" Border.Lines="All" Text="年度" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="255.15" Top="18.9" Width="66.15" Height="18.9" Border.Lines="All" Text="月份" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="387.45" Top="18.9" Width="75.6" Height="18.9" Border.Lines="All" Text="平均客單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="321.3" Top="18.9" Width="66.15" Height="18.9" Border.Lines="All" Text="成交筆數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="463.05" Top="18.9" Width="113.4" Height="18.9" Border.Lines="All" Text="銷售總金額(POS機)" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="42.29" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text14" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.ME001]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.ME002]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="189" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.YEARS]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text102" Left="255.15" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.MONTHS]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text103" Left="321.3" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.SUMTT008]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text104" Left="387.45" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table.AVGTT018]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text105" Left="463.05" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table.SUMTT018]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="65.69" Width="718.2" Height="18.9"/>
   </ReportPage>
   <ReportPage Name="Page2" Landscape="true" PaperWidth="297" PaperHeight="210">
     <ReportTitleBand Name="ReportTitle2" Width="1047.06" Height="18.9">
