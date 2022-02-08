@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="02/08/2022 09:56:30" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="02/08/2022 10:34:36" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHf/7Vm2Y3Wx9RuB6N/0Ezb">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEiGDZyPVhP3LyYwNymE6Um">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT  ME001,ME002,YEARS,MONTHS,SUM(TT008) SUMTT008,SUM(TT018)/SUM(TT008) AS 'AVGTT018',SUM(TT018) SUMTT018&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT ME001,ME002,TT001,SUBSTRING(TT001,1,4) AS 'YEARS',SUBSTRING(TT001,5,2)  AS 'MONTHS',TT018,TT008&#13;&#10;FROM [TK].dbo.POSTT,[TK].dbo.CMSME&#13;&#10;WHERE TT002=ME001&#13;&#10;AND TT001 LIKE '2022%'&#13;&#10;) AS TEMP&#13;&#10;WHERE ME001 LIKE '106%'&#13;&#10;GROUP BY ME001,ME002,YEARS,MONTHS&#13;&#10;ORDER BY ME001,ME002,YEARS,MONTHS">
         <Column Name="YEARS" DataType="System.String"/>
         <Column Name="MONTHS" DataType="System.Int32"/>
@@ -83,8 +83,8 @@
   </Dictionary>
   <ReportPage Name="Page6" Landscape="true" PaperWidth="297" PaperHeight="210">
     <ReportTitleBand Name="ReportTitle5" Width="1047.06" Height="103.95">
-      <TextObject Name="Text91" Width="1011.15" Height="18.9" Text="來客數報表" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text92" Top="18.9" Width="1011.15" Height="56.7" Text="說明:&#13;&#10;銷售金額是未稅&#13;&#10;銷售金額加總會因來客數記錄不同而有所差異，但以月份表的金額是正確的" VertAlign="Center"/>
+      <TextObject Name="Text91" Width="1030.05" Height="18.9" Text="來客數報表" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text92" Top="18.9" Width="1030.05" Height="56.7" Text="說明:&#13;&#10;銷售金額是未稅&#13;&#10;銷售金額加總會因來客數記錄不同而有所差異，但以月份表的金額是正確的" VertAlign="Center"/>
       <TextObject Name="Text93" Left="472.5" Top="75.6" Width="66.15" Height="28.35" Border.Lines="All" Text="來客記錄的提袋率%" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text94" Top="75.6" Width="94.5" Height="28.35" Border.Lines="All" Text="代號" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text95" Left="94.5" Top="75.6" Width="94.5" Height="28.35" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
@@ -94,9 +94,9 @@
       <TextObject Name="Text99" Left="538.65" Top="75.6" Width="75.6" Height="28.35" Border.Lines="All" Text="來客記錄的平均客單價" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text100" Left="387.45" Top="75.6" Width="85.05" Height="28.35" Border.Lines="All" Text="來客記錄的&#13;&#10;成交筆數" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text101" Left="614.25" Top="75.6" Width="113.4" Height="28.35" Border.Lines="All" Text="來客記錄的&#13;&#10;銷售總金額(POS機)" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text109" Left="822.15" Top="75.6" Width="94.5" Height="28.35" Border.Lines="All" Text="實際的平均&#13;&#10;客單價" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text110" Left="727.65" Top="75.6" Width="94.5" Height="28.35" Border.Lines="All" Text="實際的成交筆數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text111" Left="916.65" Top="75.6" Width="94.5" Height="28.35" Border.Lines="All" Text="實際的銷售&#13;&#10;總金額(POS機)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text109" Left="822.15" Top="75.6" Width="94.5" Height="28.35" Border.Lines="All" Text="實際的&#13;&#10;平均客單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text110" Left="727.65" Top="75.6" Width="94.5" Height="28.35" Border.Lines="All" Text="實際的&#13;&#10;成交筆數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text111" Left="916.65" Top="75.6" Width="113.4" Height="28.35" Border.Lines="All" Text="實際的&#13;&#10;銷售總金額(POS機)" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
     <DataBand Name="Data6" Top="108.44" Width="1047.06" Height="18.9" DataSource="Table5">
       <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table5.TT002]" HorzAlign="Center" VertAlign="Center"/>
@@ -110,7 +110,7 @@
       <TextObject Name="Text13" Left="614.25" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table5.SUMTT011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text106" Left="727.65" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table5.REALSUMTT008]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text107" Left="822.15" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table5.REALSUMTT018]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text108" Left="916.65" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table5.REALAVGTT018]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text108" Left="916.65" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table5.REALAVGTT018]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
     <PageFooterBand Name="PageFooter5" Top="131.84" Width="1047.06" Height="18.9"/>
   </ReportPage>

@@ -115,7 +115,7 @@ namespace TKKPI
                             ) AS TEMP
                             WHERE ME001 LIKE '106%'
                             GROUP BY ME001,ME002,YEARS,MONTHS
-                            ORDER BY ME001,ME002,YEARS,MONTHS
+                            ORDER BY ME001,ME002,YEARS,MONTHS 
                             ", dateTimePicker1.Value.ToString("yyyy"));
 
             return SB;
