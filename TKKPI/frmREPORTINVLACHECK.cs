@@ -51,9 +51,42 @@ namespace TKKPI
         public frmREPORTINVLACHECK()
         {
             InitializeComponent();
+
+            comboBox1load();
         }
 
         #region FUNCTION
+        public void comboBox1load()
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT MC001,MC002,MC001+MC002 AS MC0012 FROM [TK].dbo.CMSMC    WHERE MC001 LIKE '2%'  ORDER BY  MC001 ");
+
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("MC001", typeof(string));
+            dt.Columns.Add("MC002", typeof(string));
+            dt.Columns.Add("MC0012", typeof(string));
+            da.Fill(dt);
+            comboBox1.DataSource = dt.DefaultView;
+            comboBox1.ValueMember = "MC001";
+            comboBox1.DisplayMember = "MC0012";
+            sqlConn.Close();
+
+
+        }
 
         public void ADDTBINVLACHECK()
         {
@@ -61,6 +94,8 @@ namespace TKKPI
             days = days + 1;
             DateTime dt = new DateTime();
             dt = dateTimePicker1.Value;
+
+            string MC001 = comboBox1.SelectedValue.ToString();
 
             DataTable DTMB001 = SEARSHMB001(textBox1.Text.Trim(), textBox2.Text.Trim());
 
@@ -105,12 +140,12 @@ namespace TKKPI
                                                 ([SDATE],[LA009],[LA001],[MB002],[NUMS])
                                                 (SELECT '{0}',LA009,LA001,MB002,ISNULL(SUM(LA005*LA011),0) AS 'NUMS'
                                                 FROM [TK].dbo.INVLA WITH (NOLOCK) ,[TK].dbo.INVMB WITH (NOLOCK) 
-                                                WHERE LA009='20001'
+                                                WHERE LA009='{2}'
                                                 AND LA001=MB001
                                                 AND LA001='{1}'
                                                 AND LA004<='{0}'
                                                 GROUP BY LA009,LA001,MB002)
-                                                ", dt.ToString("yyyyMMdd"), MB001);
+                                                ", dt.ToString("yyyyMMdd"), MB001, MC001);
 
                             dt = dt.AddDays(1);
                         }

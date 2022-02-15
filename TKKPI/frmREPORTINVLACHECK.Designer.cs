@@ -43,6 +43,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -134,13 +136,15 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel4.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.dateTimePicker1, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.button4, 3, 2);
             this.tableLayoutPanel4.Controls.Add(this.dateTimePicker2, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.label1, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.label3, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.textBox1, 1, 1);
             this.tableLayoutPanel4.Controls.Add(this.textBox2, 3, 1);
+            this.tableLayoutPanel4.Controls.Add(this.button4, 3, 3);
+            this.tableLayoutPanel4.Controls.Add(this.label4, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.comboBox1, 1, 2);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
@@ -179,10 +183,10 @@
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(454, 84);
+            this.button4.Location = new System.Drawing.Point(454, 137);
             this.button4.Margin = new System.Windows.Forms.Padding(4);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(142, 32);
+            this.button4.Size = new System.Drawing.Size(142, 43);
             this.button4.TabIndex = 16;
             this.button4.Text = "查詢";
             this.button4.UseVisualStyleBackColor = true;
@@ -251,6 +255,27 @@
             this.textBox2.Size = new System.Drawing.Size(144, 27);
             this.textBox2.TabIndex = 30;
             // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(4, 92);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(142, 16);
+            this.label4.TabIndex = 31;
+            this.label4.Text = "庫別";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(153, 90);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(144, 24);
+            this.comboBox1.TabIndex = 32;
+            // 
             // frmREPORTINVLACHECK
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -290,5 +315,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
