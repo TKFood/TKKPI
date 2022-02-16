@@ -137,14 +137,17 @@ namespace TKKPI
 
                             sbSql.AppendFormat(@"  
                                                 INSERT INTO [TKKPI].[dbo].[TBINVLACHECK]
-                                                ([SDATE],[LA009],[LA001],[MB002],[NUMS])
-                                                (SELECT '{0}',LA009,LA001,MB002,ISNULL(SUM(LA005*LA011),0) AS 'NUMS'
-                                                FROM [TK].dbo.INVLA WITH (NOLOCK) ,[TK].dbo.INVMB WITH (NOLOCK) 
-                                                WHERE LA009='{2}'
+                                                ([SDATE],[LA009],[LA001],[MC002],[MB002],[NUMS])
+                                                (
+                                                SELECT '{0}',LA009,LA001,[MC002],MB002,ISNULL(SUM(LA005*LA011),0) AS 'NUMS'
+                                                FROM [TK].dbo.INVLA WITH (NOLOCK) ,[TK].dbo.INVMB WITH (NOLOCK) ,[TK].dbo.CMSMC
+                                                WHERE LA009=MC001
                                                 AND LA001=MB001
+                                                AND LA009='{2}'                                                
                                                 AND LA001='{1}'
                                                 AND LA004<='{0}'
-                                                GROUP BY LA009,LA001,MB002)
+                                                GROUP BY LA009,LA001,MB002,[MC002]  
+                                                )
                                                 ", dt.ToString("yyyyMMdd"), MB001, MC001);
 
                             dt = dt.AddDays(1);
