@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/16/2022 08:18:08" ReportInfo.Modified="02/16/2022 09:33:00" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHtJFmLDOBIGudIgBxZvI8i">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;[SDATE] AS '日期'&#13;&#10;,[LA009] AS '庫別'&#13;&#10;,[MC002] AS '倉庫'&#13;&#10;,[LA001] AS '品號'&#13;&#10;,[MB002] AS '品名'&#13;&#10;,[NUMS] AS '庫存數'&#13;&#10;FROM [TKKPI].[dbo].[TBINVLACHECK]&#13;&#10;ORDER BY [LA001],[LA009],[SDATE]">
+        <Column Name="日期" DataType="System.String"/>
+        <Column Name="庫別" DataType="System.String"/>
+        <Column Name="倉庫" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="庫存數" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <PageHeaderBand Name="PageHeader1" Width="718.2" Height="18.9">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="庫別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="倉庫" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="283.5" Width="141.75" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="425.25" Width="198.45" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="庫存數" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="23.39" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.庫別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.倉庫]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="283.5" Width="141.75" Height="18.9" Border.Lines="All" Text="[Table.品號]" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="425.25" Width="198.45" Height="18.9" Border.Lines="All" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.庫存數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+</Report>

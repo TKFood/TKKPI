@@ -166,13 +166,13 @@ namespace TKKPI
                     {
                         tran.Rollback();    //交易取消
 
-                        MessageBox.Show("失敗");
+                        //MessageBox.Show("失敗");
                     }
                     else
                     {
                         tran.Commit();      //執行交易  
 
-                        MessageBox.Show("成功");
+                        //MessageBox.Show("成功");
                     }
 
                 }
@@ -244,12 +244,70 @@ namespace TKKPI
             }
         }
 
+        public void SETFASTREPORT()
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            StringBuilder SQL2 = new StringBuilder();
+            StringBuilder SQL3 = new StringBuilder();
+            StringBuilder SQL4 = new StringBuilder();
+            StringBuilder SQL5 = new StringBuilder();
+            StringBuilder SQL6 = new StringBuilder();
+
+            SQL1 = SETSQL();
+    
+
+            Report report1 = new Report();
+            report1.Load(@"REPORT\每日庫存數報表.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+           
+
+            report1.Preview = previewControl1;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL()
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(@" 
+                            SELECT 
+                            [SDATE] AS '日期'
+                            ,[LA009] AS '庫別'
+                            ,[MC002] AS '倉庫'
+                            ,[LA001] AS '品號'
+                            ,[MB002] AS '品名'
+                            ,[NUMS] AS '庫存數'
+                            FROM [TKKPI].[dbo].[TBINVLACHECK]
+                            ORDER BY [LA001],[LA009],[SDATE]
+                            ");
+
+            return SB;
+
+        }
+
         #endregion
 
         #region BUTTON
         private void button4_Click(object sender, EventArgs e)
         {
             ADDTBINVLACHECK();
+            SETFASTREPORT();
         }
         #endregion
 
