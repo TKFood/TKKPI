@@ -113,11 +113,11 @@ namespace TKKPI
                             ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30017')) AS '大潤發中崙店'
 
                             ,ISNULL(MB047,0) AS '售價'
-                            ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30001'))*ISNULL(MB047,0) AS '中山一店可銷貨金額'
-                            ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30002'))*ISNULL(MB047,0) AS '概念二店可銷貨金額'
-                            ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30003'))*ISNULL(MB047,0) AS '北港三店可銷貨金額'
-                            ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30004'))*ISNULL(MB047,0) AS '站前四店可銷貨金額'
-                            ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30012'))*ISNULL(MB047,0) AS '微風北車店可銷貨金額'
+                            ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30001'))*ISNULL(MB051,0) AS '中山一店可銷貨金額'
+                            ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30002'))*ISNULL(MB051,0) AS '概念二店可銷貨金額'
+                            ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30003'))*ISNULL(MB051,0) AS '北港三店可銷貨金額'
+                            ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30004'))*ISNULL(MB051,0) AS '站前四店可銷貨金額'
+                            ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30012'))*ISNULL(MB051,0) AS '微風北車店可銷貨金額'
                             ,@SDAY AS '銷售日起'
                             ,@TOTALDAYS  AS '銷售天數'
                             FROM (
@@ -193,7 +193,7 @@ namespace TKKPI
                             SET @SDAY='{0}'
                             SET @TOTALDAYS={1}
 
-                            SELECT LA001 AS '品號',MB002 AS '品名',LA016 AS '批號',NUMS AS '庫存量',MB047 AS '售價',MB047*NUMS AS '可銷貨金額'
+                            SELECT LA001 AS '品號',MB002 AS '品名',LA016 AS '批號',NUMS AS '庫存量',MB047 AS '售價',MB051*NUMS AS '可銷貨金額'
                             ,有效日期,製造日期,總銷售數量,平均天銷售數量,預計銷售天,預計完銷日
                             ,DATEDIFF (MONTH,製造日期,預計完銷日) AS '生產到完銷的月數'
                             ,@SDAY AS '銷售日起'
