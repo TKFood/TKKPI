@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/24/2022 14:10:24" ReportInfo.Modified="02/24/2022 14:31:47" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFAzLuIqdAdhZKohBvwiMtT">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT '202203' AS '年月',TG004 AS '客戶代號',MA002 AS '客戶',LASTTH037 AS '去年同月銷售金額',THISTH037 AS '本月銷售金額',THISTD012 AS '本月訂單金額',((THISTH037+THISTD012)-LASTTH037)  AS '差異金額(本月銷售金額+本月訂單金額-去年同月銷售金額)'&#13;&#10;FROM (&#13;&#10;SELECT TG004,MA002&#13;&#10;,(SELECT ISNULL(SUM(TH.TH037),0) FROM [TK].dbo.COPTG TG,[TK].dbo.COPTH TH WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND TG.TG023='Y' AND TG.TG002 LIKE '202103%' AND TG.TG004=TEMP.TG004) AS 'LASTTH037'&#13;&#10;,(SELECT ISNULL(SUM(TH.TH037),0) FROM [TK].dbo.COPTG TG,[TK].dbo.COPTH TH WHERE TG.TG001=TH.TH001 AND TG.TG002=TH.TH002 AND TG.TG023='Y' AND TG.TG002 LIKE '202203%' AND TG.TG004=TEMP.TG004) AS 'THISTH037'&#13;&#10;,(SELECT ISNULL(SUM((TD.TD008-TD.TD009)*TD.TD011),0) FROM [TK].dbo.COPTC TC,[TK].dbo.COPTD TD WHERE TC.TC001=TD.TD001 AND TC.TC002=TD.TD002 AND TC.TC027='Y' AND TD.TD013 LIKE '202203%' AND TC.TC004=TEMP.TG004) AS 'THISTD012'&#13;&#10;FROM (&#13;&#10;SELECT TG004&#13;&#10;FROM [TK].dbo.COPTG,[TK].dbo.COPTH&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND TG002 LIKE '202103%'&#13;&#10;AND TG023='Y'&#13;&#10;GROUP BY TG004&#13;&#10;HAVING SUM(TH037)&gt;0&#13;&#10;UNION ALL&#13;&#10;SELECT TG004&#13;&#10;FROM [TK].dbo.COPTG,[TK].dbo.COPTH&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND TG002 LIKE '202203%'&#13;&#10;AND TG023='Y'&#13;&#10;GROUP BY TG004&#13;&#10;HAVING SUM(TH037)&gt;0&#13;&#10;) AS TEMP&#13;&#10;LEFT JOIN [TK].dbo.COPMA ON COPMA.MA001=TEMP.TG004&#13;&#10;WHERE TEMP.TG004 NOT LIKE '1%'&#13;&#10;AND TEMP.TG004 NOT LIKE '5%'&#13;&#10;AND TEMP.TG004 NOT LIKE '7%'&#13;&#10;GROUP BY TG004,MA002&#13;&#10;) AS TEMP2&#13;&#10;ORDER BY ((THISTH037+THISTD012)-LASTTH037) DESC">
+        <Column Name="年月" DataType="System.String"/>
+        <Column Name="客戶代號" DataType="System.String"/>
+        <Column Name="客戶" DataType="System.String"/>
+        <Column Name="去年同月銷售金額" DataType="System.Decimal"/>
+        <Column Name="本月銷售金額" DataType="System.Decimal"/>
+        <Column Name="本月訂單金額" DataType="System.Decimal"/>
+        <Column Name="差異金額(本月銷售金額+本月訂單金額-去年同月銷售金額)" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Total Name="Total去年同月銷售金額" Expression="[Table.去年同月銷售金額]" Evaluator="Data1"/>
+    <Total Name="Total本月銷售金額" Expression="[Table.本月銷售金額]" Evaluator="Data1"/>
+    <Total Name="Total本月訂單金額" Expression="[Table.本月訂單金額]" Evaluator="Data1"/>
+    <Total Name="Total差異金額" Expression="[Table.差異金額(本月銷售金額+本月訂單金額-去年同月銷售金額)]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="37.8">
+      <TextObject Name="Text6" Left="245.7" Top="9.45" Width="189" Height="28.35" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text2" Top="9.45" Width="94.5" Height="28.35" Border.Lines="All" Text="年月" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Top="9.45" Width="151.2" Height="28.35" Border.Lines="All" Text="客戶代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="623.7" Top="9.45" Width="113.4" Height="28.35" Border.Lines="All" Text="去年同月銷售金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="434.7" Top="9.45" Width="94.5" Height="28.35" Border.Lines="All" Text="本月銷售金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="529.2" Top="9.45" Width="94.5" Height="28.35" Border.Lines="All" Text="本月訂單金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="737.1" Top="9.45" Width="179.55" Height="28.35" Border.Lines="All" Text="差異金額(本月銷售金額+本月訂單金額-去年同月銷售金額)" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="42.29" Width="1047.06" Height="18.9" CanShrink="true" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.年月]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="94.5" Width="151.2" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.客戶代號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="245.7" Width="189" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.客戶]" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="623.7" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.去年同月銷售金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="434.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.本月銷售金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.本月訂單金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text13" Left="737.1" Width="179.55" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.差異金額(本月銷售金額+本月訂單金額-去年同月銷售金額)]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="65.69" Width="1047.06" Height="18.9">
+      <TextObject Name="Text19" Width="434.7" Height="18.9" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="434.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Total本月銷售金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Total本月訂單金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="623.7" Width="113.4" Height="18.9" Border.Lines="All" Text="[Total去年同月銷售金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="737.1" Width="179.55" Height="18.9" Border.Lines="All" Text="[Total差異金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="89.08" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>
