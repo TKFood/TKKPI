@@ -149,7 +149,7 @@ namespace TKKPI
 
                             ) AS TEMP
                             GROUP BY TT002,STORESNAME,YEARS,WEEKS
-                            ORDER BY TT002,STORESNAME,YEARS,WEEKS
+                            ORDER BY TT002,STORESNAME,YEARS,CONVERT(INT,WEEKS)
                             ", dateTimePicker1.Value.ToString("yyyy"));
 
             return SB;
