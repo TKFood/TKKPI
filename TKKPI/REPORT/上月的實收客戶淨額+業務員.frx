@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/10/2022 08:39:05" ReportInfo.Modified="03/10/2022 10:39:28" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEPu5bW/acFk/walk9bdz8o">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT LA008,MV002,LA006,MA002&#13;&#10;,(SUM(LA017)-SUM(LA020)-SUM(LA022)) 銷貨淨額&#13;&#10;,SUM(LA024) 銷貨成本&#13;&#10;,(SUM(LA017)-SUM(LA020)-SUM(LA022)-SUM(LA023)-SUM(LA024)) 銷貨毛利&#13;&#10;&#13;&#10;,SUM(LA017) 銷貨金額,SUM(LA020) 銷退金額,SUM(LA022) 折讓金額,SUM(LA023) 壞帳金額&#13;&#10;FROM [TK].dbo.SASLA,[TK].dbo.COPMA,[TK].dbo.CMSMV&#13;&#10;WHERE LA006=MA001&#13;&#10;AND LA008=MV001&#13;&#10;AND LA015&gt;='20220201' AND LA015&lt;='20220227'&#13;&#10;AND LA007 LIKE '117%'&#13;&#10;GROUP BY LA008,MV002,LA006,MA002&#13;&#10;ORDER BY SUM(LA017) DESC&#13;&#10;">
+        <Column Name="LA008" DataType="System.String"/>
+        <Column Name="MV002" DataType="System.String"/>
+        <Column Name="LA006" DataType="System.String"/>
+        <Column Name="MA002" DataType="System.String"/>
+        <Column Name="銷貨淨額" DataType="System.Decimal"/>
+        <Column Name="銷貨成本" DataType="System.Decimal"/>
+        <Column Name="銷貨毛利" DataType="System.Decimal"/>
+        <Column Name="銷貨金額" DataType="System.Decimal"/>
+        <Column Name="銷退金額" DataType="System.Decimal"/>
+        <Column Name="折讓金額" DataType="System.Decimal"/>
+        <Column Name="壞帳金額" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="18.9">
+      <TextObject Name="Text1" Width="718.2" Height="18.9" Text="上月的實收客戶+業務員" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="23.39" Width="718.2" Height="18.9">
+      <TextObject Name="Text3" Width="94.5" Height="18.9" Border.Lines="All" Text="業務員" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="客代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="189" Width="245.7" Height="18.9" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="434.7" Width="94.5" Height="18.9" Border.Lines="All" Text="銷貨淨額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="銷貨成本" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="銷貨毛利" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="46.79" Width="718.2" Height="20.02" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text8" Left="434.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.銷貨淨額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text10" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.銷貨成本]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.銷貨毛利]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MV002]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.LA006]" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="189" Width="245.7" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MA002]" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="71.3" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>
