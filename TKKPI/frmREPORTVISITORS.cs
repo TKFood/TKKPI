@@ -167,7 +167,7 @@ namespace TKKPI
                             FROM (
                             SELECT 
 
-                            TT002,STORESNAME,YEARS,MONTHS,[Fdate1],HOURS,SUM(Fin_data+Fout_data)/2 AS NUMS, day(dateadd(ms,-3,DATEADD(m, DATEDIFF(m,0,YEARS/MONTHS/1)+1,0))) AS DAYSS
+                            TT002,STORESNAME,YEARS,MONTHS,[Fdate1],HOURS,SUM(Fin_data+Fout_data)/2 AS NUMS, day(dateadd(ms,-3,DATEADD(m, DATEDIFF(m,0,CONVERT(datetime,CONVERT(NVARCHAR(4),YEARS)+'/'+CONVERT(NVARCHAR(4),MONTHS)+'/1'))+1,0))) AS DAYSS
                             ,(SELECT ISNULL(SUM(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS= Right('00' + Cast([View_t_visitors].HOURS as varchar),2)) AS 'SUMTA026'
                             ,(SELECT ISNULL(COUNT(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=Right('00' + Cast([View_t_visitors].HOURS as varchar),2)) AS 'COUNTSTA026'
                             FROM [TKMK].[dbo].[View_t_visitors]
@@ -177,7 +177,7 @@ namespace TKKPI
 
 
                             UNION ALL
-                            SELECT TT002,STORESNAME,YEARS,MONTHS,[Fdate1],HOURS,SUM(Fout_data) AS NUMS, day(dateadd(ms,-3,DATEADD(m, DATEDIFF(m,0,YEARS/MONTHS/1)+1,0))) AS DAYSS
+                            SELECT TT002,STORESNAME,YEARS,MONTHS,[Fdate1],HOURS,SUM(Fout_data) AS NUMS, day(dateadd(ms,-3,DATEADD(m, DATEDIFF(m,0,CONVERT(datetime,CONVERT(NVARCHAR(4),YEARS)+'/'+CONVERT(NVARCHAR(4),MONTHS)+'/1'))+1,0))) AS DAYSS
                             ,(SELECT ISNULL(SUM(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=Right('00' + Cast([View_t_visitors].HOURS as varchar),2)) AS 'SUMTA026'
                             ,(SELECT ISNULL(COUNT(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=Right('00' + Cast([View_t_visitors].HOURS as varchar),2)) AS 'COUNTSTA026'
                             FROM [TKMK].[dbo].[View_t_visitors]
