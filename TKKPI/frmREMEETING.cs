@@ -108,6 +108,7 @@ namespace TKKPI
                             FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV
                             WHERE TC001 = TD001 AND TC002 = TD002
                             AND TC006=MV001
+                            AND TC027='Y'
                             AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N'
                             ) AS TEMP
@@ -154,7 +155,7 @@ namespace TKKPI
         {
             StringBuilder SB = new StringBuilder();
 
-           
+            //AND TC027='Y'
             SB.AppendFormat(@" DECLARE @DAY1 NVARCHAR(8)
                                DECLARE @DAY2 NVARCHAR(8)
                                SET @DAY1 = '{0}'
@@ -169,12 +170,14 @@ namespace TKKPI
                                 FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV
                                 WHERE TC001 = TD001 AND TC002 = TD002
                                 AND TC006=MV001
+                                
                                 AND TD013>=@DAY1 AND TD013<=@DAY2 AND TC001  IN ('A221', 'A222', 'A225', 'A226') AND TD016='N' 
                                 UNION ALL
                                 SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月',MV004 AS '部門',MV002 AS '業務員', (TD012) AS '金額' ,TC008 AS '交易幣別',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'
                                 FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV
                                 WHERE TC001 = TD001 AND TC002 = TD002
                                 AND TC006=MV001
+                                
                                 AND TD013>=@DAY1 AND TD013<=@DAY2 AND TC001 NOT IN ('A221', 'A222', 'A225', 'A226') AND TD016='N' 
  
                                 ) AS TEMP
