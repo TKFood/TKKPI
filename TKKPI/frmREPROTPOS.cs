@@ -168,13 +168,18 @@ namespace TKKPI
 
 
             SB.AppendFormat(@"   
-                            SELECT POSMB.MB003  AS '特價代號',POSMB.MB004  AS '特價名稱',TB002  AS '店代',MA002  AS '店名',TB010  AS '品號',INVMB.MB002  AS '品名',SUM(TB019) AS '數量',SUM(TB031) AS '未稅金額'
-                            FROM [TK].dbo.POSTB,[TK].dbo.INVMB,[TK].dbo.WSCMA,[TK].dbo.POSMB
+                            SELECT (ISNULL(POSMB.MB003,'')+ISNULL(MI003,'')+ISNULL(MM003,'')+ISNULL(MO003,'') ) AS '特價代號',(ISNULL(POSMB.MB004,'')+ISNULL(MI004,'')+ISNULL(MM004,'')+ISNULL(MO004,''))  AS '特價名稱',TB002  AS '店代',MA002  AS '店名',TB010  AS '品號',INVMB.MB002  AS '品名',SUM(TB019) AS '數量',SUM(TB031) AS '未稅金額'
+                            FROM [TK].dbo.INVMB,[TK].dbo.WSCMA,[TK].dbo.POSTB
+                            LEFT JOIN [TK].dbo.POSMB ON MB003=TB036
+                            LEFT JOIN [TK].dbo.POSMI ON MI003=TB036
+                            LEFT JOIN [TK].dbo.POSMM ON MM003=TB036
+                            LEFT JOIN [TK].dbo.POSMO ON MO003=TB036
                             WHERE TB010=INVMB.MB001
                             AND MA001=TB002
-                            AND TB036=POSMB.MB003
                             AND TB036 LIKE '%{0}%'
-                            GROUP BY POSMB.MB003,POSMB.MB004,TB002,MA002,TB010,INVMB.MB002
+                            GROUP BY (ISNULL(POSMB.MB003,'')+ISNULL(MI003,'')+ISNULL(MM003,'')+ISNULL(MO003,'') ) ,(ISNULL(POSMB.MB004,'')+ISNULL(MI004,'')+ISNULL(MM004,'')+ISNULL(MO004,'')),TB002,MA002,TB010,INVMB.MB002
+
+ 
 
                             ", TB036);
 
