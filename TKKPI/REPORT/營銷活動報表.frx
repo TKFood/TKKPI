@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2022 11:47:28" ReportInfo.Modified="04/13/2022 13:11:33" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUExWz9173n8PcAM8Sy0xUbd">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TOP 1 TB004 AS '營業日期',TB002 AS '店代',MA002 AS '店名',TB003 AS '機號',TB010 AS '品號',MB002 AS '品名',TB019 AS '數量',TB031 AS '未稅金額',TB044 AS '備註'&#13;&#10;,商品+組合+贈品加價購+配對搭贈 AS '活動代號'&#13;&#10;,商品名稱+組合名稱+贈品加價購名稱+配對搭贈名稱  AS '活動名稱'&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT POSTB.*&#13;&#10;,ISNULL(RTRIM(LTRIM(MB003)),'') AS '商品',ISNULL(MB004,'') AS '商品名稱'&#13;&#10;,ISNULL(RTRIM(LTRIM(MI003)),'') AS '組合',ISNULL(MI004,'') AS '組合名稱'&#13;&#10;,ISNULL(RTRIM(LTRIM(MM003)),'') AS '贈品加價購',ISNULL(MM004,'') AS '贈品加價購名稱'&#13;&#10;,ISNULL(RTRIM(LTRIM(MO003)),'') AS '配對搭贈',ISNULL(MO004,'') AS '配對搭贈名稱'&#13;&#10;FROM [TK].dbo.POSTB WITH (NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.POSMB ON MB003=TB036&#13;&#10;LEFT JOIN [TK].dbo.POSMI ON MI003=TB036&#13;&#10;LEFT JOIN [TK].dbo.POSMM ON MM003=TB036&#13;&#10;LEFT JOIN [TK].dbo.POSMO ON MO003=TB036&#13;&#10;&#13;&#10;WHERE 1=1&#13;&#10;AND ISNULL(TB044,'')&lt;&gt;''&#13;&#10;) AS TEMMP&#13;&#10;LEFT JOIN [TK].dbo.INVMB ON MB001=TB010&#13;&#10;LEFT JOIN [TK].dbo.WSCMA ON MA001=TB002&#13;&#10;WHERE 1=1&#13;&#10;AND ISNULL(商品+組合+贈品加價購+配對搭贈,'')&lt;&gt;''&#13;&#10;AND TB001&gt;='20220101' AND TB001&lt;='20220101'&#13;&#10;ORDER BY TB002,TB004">
+        <Column Name="營業日期" DataType="System.String"/>
+        <Column Name="店代" DataType="System.String"/>
+        <Column Name="店名" DataType="System.String"/>
+        <Column Name="機號" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="數量" DataType="System.Decimal"/>
+        <Column Name="未稅金額" DataType="System.Decimal"/>
+        <Column Name="備註" DataType="System.String"/>
+        <Column Name="活動代號" DataType="System.String"/>
+        <Column Name="活動名稱" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Total Name="Total數量" Expression="[Table.數量]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="Total未稅金額" Expression="[Table.未稅金額]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="360" PaperHeight="210">
+    <PageHeaderBand Name="PageHeader1" Width="1285.2" Height="18.9">
+      <TextObject Name="Text2" Width="75.6" Height="18.9" Border.Lines="All" Text="營業日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="75.6" Width="75.6" Height="18.9" Border.Lines="All" Text="店代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="151.2" Width="94.5" Height="18.9" Border.Lines="All" Text="店名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="245.7" Width="151.2" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="396.9" Width="396.9" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="793.8" Width="94.5" Height="18.9" Border.Lines="All" Text="數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="888.3" Width="94.5" Height="18.9" Border.Lines="All" Text="未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="982.8" Width="94.5" Height="18.9" Border.Lines="All" Text="活動代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="1077.3" Width="207.9" Height="18.9" Border.Lines="All" Text="活動名稱" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="23.39" Width="1285.2" Condition="[Table.活動代號]">
+      <DataBand Name="Data1" Top="27.89" Width="1285.2" Height="18.9" CanGrow="true" DataSource="Table">
+        <TextObject Name="Text1" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.營業日期]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text3" Left="75.6" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.店代]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text5" Left="151.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.店名]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text7" Left="245.7" Width="151.2" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text9" Left="396.9" Width="396.9" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+        <TextObject Name="Text11" Left="793.8" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text13" Left="888.3" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text15" Left="982.8" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.活動代號]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text17" Left="1077.3" Width="207.9" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.活動名稱]" VertAlign="Center"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="51.28" Width="1285.2" Height="18.9">
+        <TextObject Name="Text19" Left="793.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Total數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        <TextObject Name="Text20" Left="888.3" Width="94.5" Height="18.9" Border.Lines="All" Text="[Total未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        <TextObject Name="Text21" Left="982.8" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text22" Left="1077.3" Width="207.9" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" VertAlign="Center"/>
+        <TextObject Name="Text23" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text24" Left="75.6" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text25" Left="151.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text26" Left="245.7" Width="151.2" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text27" Left="396.9" Width="396.9" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="活動小計" VertAlign="Center"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="74.68" Width="1285.2" Height="18.9"/>
+  </ReportPage>
+</Report>
