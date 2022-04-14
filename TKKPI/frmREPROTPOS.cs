@@ -263,6 +263,171 @@ namespace TKKPI
 
         }
 
+        public void SETFASTREPORT4(string SDATE, string EDATE)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL4(SDATE, EDATE);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\營銷-觀光賣場總表.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", SDATE);
+            //report1.SetParameterValue("P2", EDATE);
+
+
+            report1.Preview = previewControl4;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL4(string SDATE, string EDATE)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(@"   
+                            SELECT  CASE WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=1 THEN '星期一' WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=2 THEN '星期二'WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=3 THEN '星期三'WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=4 THEN '星期四'WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=5 THEN '星期五'WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=6 THEN '星期六'WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=7 THEN '星期日' END AS '星期'
+                            ,TA001 AS '日期',MA002 AS '賣場',TA002 AS '賣場代號',SUM(未稅金額) 總未稅金額,SUM(團客未稅金額) 團客未稅金額,(SUM(未稅金額)-SUM(團客未稅金額)) 散客未稅金額
+                            ,(SELECT ISNULL(SUM([CARNUM]),0) FROM [TKMK].[dbo].[GROUPSALES] WITH (NOLOCK) WHERE [STATUS]='完成接團' AND CONVERT(NVARCHAR,[CREATEDATES],112)=TA001) AS '來車數'
+                            ,(SELECT ISNULL([NAMES],'')+CHAR(10) FROM [TKKPI].[dbo].[SALESPROJECTS] WITH (NOLOCK) WHERE SDATES<=TA001 AND EDATES>=TA001 FOR XML PATH('')) AS '調整事項'
+                            ,(SELECT ISNULL([MB004],'')+CHAR(10) FROM [TK].dbo.POSMB  WITH (NOLOCK) WHERE MB012<=TA001 AND MB013>=TA001  FOR XML PATH('')) AS 'POS活動'
+                            FROM 
+                            (
+                            SELECT TA001,TA002
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH (NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002) AS '未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH (NOLOCK),[TK].dbo.POSTB TB WITH (NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TA009 LIKE '68%') AS '團客未稅金額'
+                            FROM [TK].dbo.POSTA WITH (NOLOCK)
+                            WHERE 1=1
+                            AND TA002 IN ('106701')
+                            AND TA001>='{0}' AND TA001<='{1}'
+                            GROUP BY TA001,TA002
+
+                            ) AS TEMP
+                            LEFT JOIN [TK].dbo.WSCMA  WITH (NOLOCK) ON MA001=TA002
+                            GROUP BY TA001,TA002,MA002
+                            ORDER BY TA001,TA002,MA002
+ 
+
+                            ", SDATE, EDATE);
+
+
+            return SB;
+
+        }
+
+        public void Search(string SDATE,string EDATE)
+        {
+            //try
+            //{
+            //    //20210902密
+            //    Class1 TKID = new Class1();//用new 建立類別實體
+            //    SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //    //資料庫使用者密碼解密
+            //    sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            //    sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            //    String connectionString;
+            //    sqlConn = new SqlConnection(sqlsb.ConnectionString);
+               
+            //    StringBuilder sbSql = new StringBuilder();
+
+
+            //    sbSql.AppendFormat(@"   
+                            
+            //                        SELECT  CASE WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=1 THEN '星期一' WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=2 THEN '星期二'WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=3 THEN '星期三'WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=4 THEN '星期四'WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=5 THEN '星期五'WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=6 THEN '星期六'WHEN DATEPART(WEEKDAY, CONVERT(DATETIME,TA001)-1)=7 THEN '星期日' END AS '星期'
+            //                        ,TA001 AS '日期',MA002 AS '賣場',TA002 AS '賣場代號',SUM(未稅金額) 總未稅金額,SUM(團客未稅金額) 團客未稅金額,(SUM(未稅金額)-SUM(團客未稅金額)) 散客未稅金額
+            //                        ,(SELECT ISNULL(SUM([CARNUM]),0) FROM [TKMK].[dbo].[GROUPSALES] WITH (NOLOCK) WHERE [STATUS]='完成接團' AND CONVERT(NVARCHAR,[CREATEDATES],112)=TA001) AS '來車數'
+            //                        ,(SELECT ISNULL([NAMES],'')+CHAR(10) FROM [TKKPI].[dbo].[SALESPROJECTS] WITH (NOLOCK) WHERE SDATES<=TA001 AND EDATES>=TA001 FOR XML PATH('')) AS '調整事項'
+            //                        ,(SELECT ISNULL([MB004],'')+CHAR(10) FROM [TK].dbo.POSMB  WITH (NOLOCK) WHERE MB012<=TA001 AND MB013>=TA001  FOR XML PATH('')) AS 'POS活動'
+            //                        FROM 
+            //                        (
+            //                        SELECT TA001,TA002,TA003,TA006
+            //                        ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH (NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND POSTA.TA003=TB.TB003 AND POSTA.TA006=TB.TB006) AS '未稅金額'
+            //                        ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH (NOLOCK),[TK].dbo.POSTB TB WITH (NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND POSTA.TA003=TB.TB003 AND POSTA.TA006=TB.TB006 AND TA009 LIKE '68%') AS '團客未稅金額'
+            //                        FROM [TK].dbo.POSTA WITH (NOLOCK)
+            //                        WHERE 1=1
+            //                        AND TA002 IN ('106701')
+            //                        AND TA001>='{0}' AND TA001<='{1}'
+
+            //                        ) AS TEMP
+            //                        LEFT JOIN [TK].dbo.WSCMA  WITH (NOLOCK) ON MA001=TA002
+            //                        GROUP BY TA001,TA002,MA002
+            //                        ORDER BY TA001,TA002,MA002
+
+            //                        ", SDATE, EDATE);
+
+            //    adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+            //    sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+            //    sqlConn.Open();
+            //    ds.Clear();
+            //    adapter.Fill(ds, "ds");
+            //    sqlConn.Close();
+
+
+            //    if (ds.Tables["ds"].Rows.Count == 0)
+            //    {
+            //        dataGridView1.DataSource = null;
+            //    }
+            //    else
+            //    {
+            //        dataGridView1.DataSource = ds.Tables["ds"];
+                 
+            //        //rownum = ds.Tables[talbename].Rows.Count - 1;
+
+            //        //依內容自動換行
+            //        dataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            //        //自動調欄寬
+            //        dataGridView1.AutoResizeColumns();
+            //        //自動調欄高
+            //        dataGridView1.AutoResizeRows();
+            //        //設定顯示格式-數字
+            //        dataGridView1.Columns["總未稅金額"].DefaultCellStyle.Format = "N0";
+            //        dataGridView1.Columns["團客未稅金額"].DefaultCellStyle.Format = "N0";
+            //        dataGridView1.Columns["散客未稅金額"].DefaultCellStyle.Format = "N0";
+
+            //        dataGridView1.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
+
+            //        //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+            //    }
+
+
+
+            //}
+            //catch
+            //{
+
+            //}
+            //finally
+            //{
+
+            //}
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -280,6 +445,13 @@ namespace TKKPI
         {
             SETFASTREPORT3(dateTimePicker2.Value.ToString("yyyyMMdd"),dateTimePicker3.Value.ToString("yyyyMMdd"), textBox2.Text.ToString().Trim());
         }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //Search(dateTimePicker4.Value.ToString("yyyyMMdd"), dateTimePicker5.Value.ToString("yyyyMMdd"));
+
+            SETFASTREPORT4(dateTimePicker4.Value.ToString("yyyyMMdd"), dateTimePicker5.Value.ToString("yyyyMMdd"));
+        }
+
         #endregion
 
 
