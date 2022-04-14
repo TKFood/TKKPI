@@ -312,6 +312,10 @@ namespace TKKPI
                             ,(SELECT ISNULL(SUM([CARNUM]),0) FROM [TKMK].[dbo].[GROUPSALES] WITH (NOLOCK) WHERE [STATUS]='完成接團' AND CONVERT(NVARCHAR,[CREATEDATES],112)=TA001) AS '來車數'
                             ,(SELECT ISNULL([NAMES],'')+CHAR(10) FROM [TKKPI].[dbo].[SALESPROJECTS] WITH (NOLOCK) WHERE SDATES<=TA001 AND EDATES>=TA001 FOR XML PATH('')) AS '調整事項'
                             ,(SELECT ISNULL([MB004],'')+CHAR(10) FROM [TK].dbo.POSMB  WITH (NOLOCK) WHERE MB012<=TA001 AND MB013>=TA001  FOR XML PATH('')) AS 'POS活動'
+                            ,(SELECT ISNULL([MI004],'')+CHAR(10) FROM [TK].dbo.POSMI  WITH (NOLOCK) WHERE MI005<=TA001 AND MI006>=TA001  FOR XML PATH('')) AS '組合活動'
+                            ,(SELECT ISNULL([MM004],'')+CHAR(10) FROM [TK].dbo.POSMM  WITH (NOLOCK) WHERE MM005<=TA001 AND MM006>=TA001  FOR XML PATH('')) AS '贈品加價購活動'
+                            ,(SELECT ISNULL([MO003],'')+CHAR(10) FROM [TK].dbo.POSMO  WITH (NOLOCK) WHERE MO005<=TA001 AND MO006>=TA001  FOR XML PATH('')) AS '配對搭贈活動'
+
                             FROM 
                             (
                             SELECT TA001,TA002
