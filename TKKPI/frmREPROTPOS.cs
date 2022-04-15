@@ -503,6 +503,267 @@ namespace TKKPI
 
         }
 
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            string MNAME = null;
+            textBox3.Text = null;
+
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
+                    MNAME = row.Cells["調整事項"].Value.ToString();
+                    textBox3.Text = row.Cells["調整事項"].Value.ToString();
+
+                    SETFASTREPORT5(MNAME);
+
+
+                }
+                else
+                {
+                   
+
+                }
+            }
+        }
+
+        public void SETFASTREPORT5(string MNAMES)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL5(MNAMES);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\營銷-調整事項品號.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", SDATE);
+            //report1.SetParameterValue("P2", EDATE);
+
+
+            report1.Preview = previewControl5;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL5(string MNAMES)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+            //組合活動，過濾會員等級折扣 ISNULL(MI009,'')=''
+
+            SB.AppendFormat(@"   
+                            SELECT 
+                            MB001 AS '品號'
+                            ,MB002 AS '品名'
+                            ,[NAMES] AS '調整事項'
+                            ,[SDATES] AS '開始日'
+                            ,[EDATES] AS '結束日'
+
+                            FROM [TKKPI].dbo.SALESPROJECTS,[TKKPI].dbo.SALESPROJECTSINVMB
+                            WHERE 1=1
+                            AND SALESPROJECTS.NAMES=SALESPROJECTSINVMB.MNAMES
+                            AND MNAMES ='{0}'
+                            ORDER BY MB001
+
+                            ", MNAMES);
+
+
+            return SB;
+
+        }
+
+        public void SETFASTREPORT6(string SDATES,string EDATES,string MNAME)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL6(SDATES, EDATES, MNAME);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\營銷-調整事項每日總金額.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", SDATE);
+            //report1.SetParameterValue("P2", EDATE);
+
+
+            report1.Preview = previewControl6;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL6(string SDATES, string EDATES, string MNAME)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+            //組合活動，過濾會員等級折扣 ISNULL(MI009,'')=''
+
+            SB.AppendFormat(@"   
+                          
+                            SELECT ISNULL(KINDS,'') AS '調整事項',TA001 AS '銷售日',TA002 AS '賣場代',MA002 AS '賣場',總未稅金額,團客金額,(總未稅金額-團客金額) AS 散客金額
+                            FROM (
+                            SELECT NAMES AS 'KINDS',TA001,TA002
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB010 IN (SELECT MB001 FROM [TKKPI].dbo.SALESPROJECTSINVMB WHERE MNAMES='{2}' )) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006  AND POSTA.TA001=TA.TA001 AND POSTA.TA002=TA.TA002 AND TA.TA009 LIKE '68%' AND TB.TB010 IN (SELECT MB001 FROM [TKKPI].dbo.SALESPROJECTSINVMB WHERE MNAMES='{2}' )) AS '團客金額'
+                            FROM [TK].dbo.POSTA WITH(NOLOCK)
+                            LEFT JOIN [TKKPI].dbo.SALESPROJECTS ON NAMES='{2}' AND  SDATES<=TA001 AND EDATES>=TA001
+                            WHERE 1=1
+                            AND TA002='106701'
+                            AND TA001>='{0}' AND TA001<='{1}'
+                            GROUP BY TA001,TA002,NAMES
+                            ) AS TEMP
+                            LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002
+                            ORDER BY TA001,TA002
+
+                            ", SDATES, EDATES, MNAME);
+
+
+            return SB;
+
+        }
+
+        public void SETFASTREPORT7(string SDATES, string EDATES, string MNAME)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL7(SDATES, EDATES, MNAME);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\營銷-調整事項每日明細.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", SDATE);
+            //report1.SetParameterValue("P2", EDATE);
+
+
+            report1.Preview = previewControl7;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL7(string SDATES, string EDATES, string MNAME)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+            //組合活動，過濾會員等級折扣 ISNULL(MI009,'')=''
+
+            SB.AppendFormat(@"   
+                            
+                            SELECT 
+                            [NAMES] AS '調整事項'
+                            ,[SDATES] AS '開始日'
+                            ,[EDATES] AS '結束日'
+                            ,[MB001] AS '品號'
+                            ,[MB002] AS '品名'
+                            ,TA001 AS '銷售日'
+                            ,TA002 AS '賣場代'
+                            ,MA002 AS '賣場'
+                            ,總未稅金額
+                            ,團客金額
+                            ,(總未稅金額-團客金額) AS 散客金額
+                            FROM 
+                            (
+                            SELECT 
+                            SALESPROJECTS.[ID] AS SALESPROJECTSID
+                            ,[SDATES]
+                            ,[EDATES]
+                            ,[NAMES]
+                            ,SALESPROJECTSINVMB.[ID] AS SALESPROJECTSINVMBID
+                            ,[MNAMES]
+                            ,[MB001]
+                            ,[MB002]
+                            ,TA001
+                            ,TA002
+
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MB001) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MB001) AS '團客金額'
+
+                            FROM [TKKPI].dbo.SALESPROJECTS,[TKKPI].dbo.SALESPROJECTSINVMB,[TK].dbo.POSTA WITH(NOLOCK) 
+                            WHERE 1=1
+                            AND SALESPROJECTS.NAMES=SALESPROJECTSINVMB.MNAMES
+                            AND SALESPROJECTSINVMB.MNAMES='{2}'
+                            AND TA002='106701'
+                            AND TA001>='{0}' AND TA001<='{1}' 
+                            GROUP BY SALESPROJECTS.[ID]
+                            ,[SDATES]
+                            ,[EDATES]
+                            ,[NAMES]
+                            ,SALESPROJECTSINVMB.[ID]
+                            ,[MNAMES]
+                            ,[MB001]
+                            ,[MB002]
+                            ,TA001
+                            ,TA002
+                            ) AS TEMP
+                            LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002
+                            ORDER BY TA001,MB001
+
+                            ", SDATES, EDATES, MNAME);
+
+
+            return SB;
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -529,6 +790,16 @@ namespace TKKPI
         private void button5_Click(object sender, EventArgs e)
         {
             Search(dateTimePicker6.Value.ToString("yyyy"));
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(textBox3.Text.ToString().Trim()))
+            {
+                SETFASTREPORT6(dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"), textBox3.Text.ToString().Trim());
+                SETFASTREPORT7(dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"), textBox3.Text.ToString().Trim());
+            }
+            
         }
 
         #endregion

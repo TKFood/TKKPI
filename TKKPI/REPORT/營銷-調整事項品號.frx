@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/15/2022 13:33:30" ReportInfo.Modified="04/15/2022 13:36:02" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEyDPZclRqp2LDv3rlSFdJ+">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT &#13;&#10;MB001 AS '品號'&#13;&#10;,MB002 AS '品名'&#13;&#10;,[NAMES] AS '調整事項'&#13;&#10;,[SDATES] AS '開始日'&#13;&#10;,[EDATES] AS '結束日'&#13;&#10;&#13;&#10;FROM [TKKPI].dbo.SALESPROJECTS,[TKKPI].dbo.SALESPROJECTSINVMB&#13;&#10;WHERE 1=1&#13;&#10;AND SALESPROJECTS.NAMES=SALESPROJECTSINVMB.MNAMES&#13;&#10;AND MNAMES ='巧克力專區'&#13;&#10;ORDER BY MB001">
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="調整事項" DataType="System.String"/>
+        <Column Name="結束日" DataType="System.String"/>
+        <Column Name="開始日" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <PageHeaderBand Name="PageHeader1" Width="718.2" Height="18.9">
+      <TextObject Name="Text2" Width="151.2" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="151.2" Width="207.9" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="359.1" Width="170.1" Height="18.9" Border.Lines="All" Text="調整事項" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="開始日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="結束日" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="23.39" Width="718.2" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Width="151.2" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="151.2" Width="207.9" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="359.1" Width="170.1" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.調整事項]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.開始日]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.結束日]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="46.79" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>
