@@ -433,6 +433,76 @@ namespace TKKPI
 
         }
 
+        public void Search(string SYEARS)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                talbename = "TEMPds1";
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                        SELECT 
+                                        [NAMES] AS '調整事項'
+                                        ,[SDATES] AS ' 開始日'
+                                        ,[EDATES] AS '結束日'
+
+                                        FROM [TKKPI].dbo.SALESPROJECTS
+                                        WHERE 1=1
+                                        AND SDATES LIKE '{0}%'
+                                        ORDER BY SDATES
+
+                                         ", SYEARS);
+
+
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, talbename);
+                sqlConn.Close();
+
+
+                if (ds.Tables[talbename].Rows.Count == 0)
+                {
+                    dataGridView1.DataSource = null;
+                }
+                else
+                {
+                    dataGridView1.DataSource = ds.Tables[talbename];
+                    dataGridView1.AutoResizeColumns();
+                    //rownum = ds.Tables[talbename].Rows.Count - 1;
+                    dataGridView1.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
+
+                    //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+                }
+                
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -455,6 +525,10 @@ namespace TKKPI
             //Search(dateTimePicker4.Value.ToString("yyyyMMdd"), dateTimePicker5.Value.ToString("yyyyMMdd"));
 
             SETFASTREPORT4(dateTimePicker4.Value.ToString("yyyyMMdd"), dateTimePicker5.Value.ToString("yyyyMMdd"));
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Search(dateTimePicker6.Value.ToString("yyyy"));
         }
 
         #endregion
