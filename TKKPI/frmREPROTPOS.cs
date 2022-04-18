@@ -435,6 +435,11 @@ namespace TKKPI
 
         public void Search(string SYEARS)
         {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+    
+            DataSet ds = new DataSet();
+
             try
             {
                 //20210902密
@@ -763,6 +768,130 @@ namespace TKKPI
             return SB;
 
         }
+        public void SearchPOS(string SYEARS)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                talbename = "TEMPds1";
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                       
+                                    SELECT '活動特價' AS '類型',MB004 AS '活動名稱',MB012 AS '開始日',MB013 AS '結束日',MF004 AS '適用門市',MB003 AS '活動代號'
+                                    FROM [TK].dbo.POSMB
+                                    LEFT JOIN [TK].dbo.POSMF ON MF003=MB003
+                                    WHERE 1=1
+                                    AND MB008='Y'
+                                    AND MB013 LIKE '{0}%'
+                                    AND MF004 IN ('106701')
+                                    UNION ALL
+                                    SELECT  '組合品搭贈' AS KIND,MI003,MI004,MI005,MI006,MF004
+                                    FROM [TK].dbo.POSMI
+                                    LEFT JOIN [TK].dbo.POSMF ON MF003=MI003
+                                    WHERE 1=1
+                                    AND MI015='Y'
+                                    AND MI005 LIKE '{0}%'
+                                    AND MF004 IN ('106701')
+                                    UNION ALL
+                                    SELECT  '滿額折價' AS KIND,MM003,MM004,MM005,MM006,MM004
+                                    FROM [TK].dbo.POSMM
+                                    LEFT JOIN [TK].dbo.POSMF ON MF003=MM003
+                                    WHERE 1=1
+                                    AND MM015='Y'
+                                    AND MM005 LIKE '{0}%'
+                                    AND MF004 IN ('106701')
+                                    UNION ALL
+                                    SELECT  '配對搭贈' AS KIND,MO003,MO004,MO005,MO006,MF004
+                                    FROM [TK].dbo.POSMO
+                                    LEFT JOIN [TK].dbo.POSMF ON MF003=MO003
+                                    WHERE 1=1
+                                    AND MO008='Y'
+                                    AND MO005 LIKE '{0}%'
+                                    AND MF004 IN ('106701')
+
+
+                                         ", SYEARS);
+
+
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, talbename);
+                sqlConn.Close();
+
+
+                if (ds.Tables[talbename].Rows.Count == 0)
+                {
+                    dataGridView2.DataSource = null;
+                }
+                else
+                {
+                    dataGridView2.DataSource = ds.Tables[talbename];
+                    dataGridView2.AutoResizeColumns();
+                    //rownum = ds.Tables[talbename].Rows.Count - 1;
+                    dataGridView2.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
+
+                    //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+        private void dataGridView2_SelectionChanged(object sender, EventArgs e)
+        {
+            string MNAME = null;
+            textBox4.Text = null;
+
+            if (dataGridView2.CurrentRow != null)
+            {
+                int rowindex = dataGridView2.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView2.Rows[rowindex];
+                    MNAME = row.Cells["活動名稱"].Value.ToString();
+                    textBox4.Text = row.Cells["活動名稱"].Value.ToString();
+
+                    //SETFASTREPORT5(MNAME);
+
+
+                }
+                else
+                {
+
+
+                }
+            }
+        }
+
 
         #endregion
 
@@ -801,9 +930,18 @@ namespace TKKPI
             }
             
         }
+        private void button7_Click(object sender, EventArgs e)
+        {
+            SearchPOS(dateTimePicker6.Value.ToString("yyyy"));
+        }
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
         #endregion
 
-
+       
     }
 }
