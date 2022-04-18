@@ -112,6 +112,7 @@
             this.button8 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
@@ -506,9 +507,9 @@
             this.tableLayoutPanel6.Controls.Add(this.dateTimePicker7, 1, 0);
             this.tableLayoutPanel6.Controls.Add(this.label12, 2, 0);
             this.tableLayoutPanel6.Controls.Add(this.dateTimePicker8, 3, 0);
-            this.tableLayoutPanel6.Controls.Add(this.button6, 3, 1);
             this.tableLayoutPanel6.Controls.Add(this.textBox3, 1, 1);
             this.tableLayoutPanel6.Controls.Add(this.label10, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(this.button6, 4, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -564,7 +565,7 @@
             // 
             this.button6.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.button6.ForeColor = System.Drawing.Color.Blue;
-            this.button6.Location = new System.Drawing.Point(283, 43);
+            this.button6.Location = new System.Drawing.Point(417, 43);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(114, 34);
             this.button6.TabIndex = 31;
@@ -575,10 +576,10 @@
             // textBox3
             // 
             this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel6.SetColumnSpan(this.textBox3, 2);
+            this.tableLayoutPanel6.SetColumnSpan(this.textBox3, 3);
             this.textBox3.Location = new System.Drawing.Point(123, 46);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(154, 27);
+            this.textBox3.Size = new System.Drawing.Size(288, 27);
             this.textBox3.TabIndex = 35;
             // 
             // label10
@@ -1109,7 +1110,7 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 26);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(635, 333);
+            this.tabPage8.Size = new System.Drawing.Size(635, 295);
             this.tabPage8.TabIndex = 0;
             this.tabPage8.Text = "tabPage8";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -1214,7 +1215,7 @@
             this.previewControl9.Name = "previewControl9";
             this.previewControl9.PageOffset = new System.Drawing.Point(10, 10);
             this.previewControl9.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl9.Size = new System.Drawing.Size(629, 327);
+            this.previewControl9.Size = new System.Drawing.Size(629, 289);
             this.previewControl9.TabIndex = 17;
             // 
             // previewControl10
@@ -1247,9 +1248,10 @@
             this.tableLayoutPanel8.Controls.Add(this.dateTimePicker10, 1, 0);
             this.tableLayoutPanel8.Controls.Add(this.label15, 2, 0);
             this.tableLayoutPanel8.Controls.Add(this.dateTimePicker11, 3, 0);
-            this.tableLayoutPanel8.Controls.Add(this.button8, 3, 1);
             this.tableLayoutPanel8.Controls.Add(this.textBox4, 1, 1);
             this.tableLayoutPanel8.Controls.Add(this.label16, 0, 1);
+            this.tableLayoutPanel8.Controls.Add(this.button8, 4, 1);
+            this.tableLayoutPanel8.Controls.Add(this.textBox5, 1, 2);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel8.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
@@ -1305,7 +1307,7 @@
             // 
             this.button8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.button8.ForeColor = System.Drawing.Color.Blue;
-            this.button8.Location = new System.Drawing.Point(283, 43);
+            this.button8.Location = new System.Drawing.Point(417, 43);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(114, 34);
             this.button8.TabIndex = 31;
@@ -1316,10 +1318,10 @@
             // textBox4
             // 
             this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel8.SetColumnSpan(this.textBox4, 2);
+            this.tableLayoutPanel8.SetColumnSpan(this.textBox4, 3);
             this.textBox4.Location = new System.Drawing.Point(123, 46);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(154, 27);
+            this.textBox4.Size = new System.Drawing.Size(288, 27);
             this.textBox4.TabIndex = 35;
             // 
             // label16
@@ -1331,6 +1333,15 @@
             this.label16.Size = new System.Drawing.Size(114, 16);
             this.label16.TabIndex = 34;
             this.label16.Text = "特價名稱";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel8.SetColumnSpan(this.textBox5, 3);
+            this.textBox5.Location = new System.Drawing.Point(123, 86);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(288, 27);
+            this.textBox5.TabIndex = 41;
             // 
             // frmREPROTPOS
             // 
@@ -1514,5 +1525,6 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox textBox5;
     }
 }

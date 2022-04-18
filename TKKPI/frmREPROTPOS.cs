@@ -768,6 +768,276 @@ namespace TKKPI
             return SB;
 
         }
+
+        public void SETFASTREPORT8(string ID)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL8(ID);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\營銷-POS活動品號.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", SDATE);
+            //report1.SetParameterValue("P2", EDATE);
+
+
+            report1.Preview = previewControl8;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL8(string ID)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+            //組合活動，過濾會員等級折扣 ISNULL(MI009,'')=''
+
+            SB.AppendFormat(@"   
+                            SELECT MC004,INVMB.MB002,POSMB.MB012,POSMB.MB013,POSMB.MB004
+                            FROM [TK].dbo.POSMC,[TK].dbo.INVMB,[TK].dbo.POSMB
+                            WHERE 1=1
+                            AND MC004=INVMB.MB001
+                            AND POSMB.MB003=MC003
+                            AND MC011='Y'
+                            AND MC003='{0}'
+                            UNION ALL
+                            SELECT MJ004,MB002,MI005,MI006,MI004
+                            FROM [TK].dbo.POSMJ,[TK].dbo.INVMB,[TK].dbo.POSMI
+                            WHERE 1=1
+                            AND MJ004=MB001
+                            AND MI003=MJ003
+                            AND MJ006='Y'
+                            AND MJ003='{0}'
+                            UNION ALL
+                            SELECT CONVERT(NVARCHAR,MN005),'金額以上',MM005,MM006,MM004
+                            FROM [TK].dbo.POSMN,[TK].dbo.POSMM
+                            WHERE 1=1
+                            AND MN003=MM003
+                            AND MN010='Y'
+                            AND MN003='{0}'
+                            UNION ALL
+                            SELECT MP005,MB002,MO011,MO012,MO004
+                            FROM [TK].dbo.POSMP,[TK].dbo.INVMB,[TK].dbo.POSMO
+                            WHERE 1=1
+                            AND MP005=MB001
+                            AND MP003=MO003
+                            AND MP008='Y'
+                            AND MP003='{0}'
+
+
+                            ", ID);
+
+
+            return SB;
+
+        }
+
+        public void SETFASTREPORT9(string SDATES, string EDATES, string ID)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL9(SDATES, EDATES, ID);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\營銷-POS活動每日總金額.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", SDATE);
+            //report1.SetParameterValue("P2", EDATE);
+
+
+            report1.Preview = previewControl9;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL9(string SDATES, string EDATES, string ID)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+            //組合活動，過濾會員等級折扣 ISNULL(MI009,'')=''
+
+            SB.AppendFormat(@"   
+
+                            SELECT ISNULL(KINDS,'') AS 'POS活動',TA001 AS '銷售日',TA002 AS '賣場代',MA002 AS '賣場',總未稅金額,團客金額,(總未稅金額-團客金額) AS 散客金額
+                            FROM (
+                            SELECT MB004 AS 'KINDS',TA001,TA002
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB010 IN (SELECT MC004 FROM [TK].dbo.POSMC WHERE MC003='{2}')) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006  AND POSTA.TA001=TA.TA001 AND POSTA.TA002=TA.TA002 AND TA.TA009 LIKE '68%' AND TB.TB010 IN  (SELECT MC004 FROM [TK].dbo.POSMC WHERE MC003='{2}')) AS '團客金額'
+                            FROM [TK].dbo.POSTA WITH(NOLOCK)
+                            LEFT JOIN [TK].dbo.POSMB ON MB003='{2}' AND  MB012<=TA001 AND MB013>=TA001
+                            LEFT JOIN [TK].dbo.POSMI ON MI003='{2}' AND  MI005<=TA001 AND MI006>=TA001
+                            LEFT JOIN [TK].dbo.POSMM ON MM003='{2}' AND  MM005<=TA001 AND MM006>=TA001
+                            LEFT JOIN [TK].dbo.POSMO ON MO003='{2}' AND  MO005<=TA001 AND MO006>=TA001
+
+                            WHERE 1=1
+                            AND TA002='106701'
+                            AND TA001>='{0}' AND TA001<='{1}'
+                            GROUP BY TA001,TA002,MB004
+                            ) AS TEMP
+                            LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002
+                            ORDER BY TA001,TA002
+                           
+
+                            ", SDATES, EDATES, ID);
+
+
+            return SB;
+
+        }
+
+        public void SETFASTREPORT10(string SDATES, string EDATES, string ID)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL10(SDATES, EDATES, ID);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\營銷-POS活動每日明細.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", SDATE);
+            //report1.SetParameterValue("P2", EDATE);
+
+
+            report1.Preview = previewControl10;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL10(string SDATES, string EDATES, string ID)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+            //組合活動，過濾會員等級折扣 ISNULL(MI009,'')=''
+
+            SB.AppendFormat(@"   
+                            SELECT TEMP.MB003,TEMP.MB004  AS 'POS活動',TEMP.MB012 AS '開始日',TEMP.MB013 AS '結束日',TA001 AS '銷售日',TA002 AS '賣場代',MA002  AS '賣場',MC004 AS '品號',INVMB.MB002 AS '品名'
+                            ,總未稅金額
+                            ,團客金額
+                            ,(總未稅金額-團客金額) AS 散客金額
+                            FROM
+                            (
+                            SELECT 
+                            MB003,MB004,TA001,TA002,MC004,POSMB.MB012,POSMB.MB013
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MC004) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MC004) AS '團客金額'
+
+                            FROM [TK].dbo.POSMB,[TK].dbo.POSMC,[TK].dbo.POSTA WITH(NOLOCK) 
+                            WHERE 1=1
+                            AND MB003=MC003
+                            AND MC003='{2}'
+                            AND TA002='106701'
+                            AND TA001>='{0}' AND TA001<='{1}' 
+                            GROUP BY 
+                            MB003,MB004,TA001,TA002,MC004,POSMB.MB012,POSMB.MB013
+
+                            UNION ALL
+                            SELECT 
+                            MI003,MI004,TA001,TA002,MJ004,MI005,MI006
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MJ004) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MJ004) AS '團客金額'
+
+                            FROM [TK].dbo.POSMI,[TK].dbo.POSMJ,[TK].dbo.POSTA WITH(NOLOCK) 
+                            WHERE 1=1
+                            AND MI003=MJ003
+                            AND MI003='{2}'
+                            AND TA002='106701'
+                            AND TA001>='{0}' AND TA001<='{1}' 
+                            GROUP BY 
+                            MI003,MI004,TA001,TA002,MJ004,MI005,MI006
+                            UNION ALL
+
+                            SELECT 
+                            MO003,MO004,TA001,TA002,MP005,MO011,MO012
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MP005) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MP005) AS '團客金額'
+
+                            FROM [TK].dbo.POSMO,[TK].dbo.POSMP,[TK].dbo.POSTA WITH(NOLOCK) 
+                            WHERE 1=1
+                            AND MO003=MP003
+                            AND MO003='{2}'
+                            AND TA002='106701'
+                            AND TA001>='{0}' AND TA001<='{1}' 
+                            GROUP BY 
+                            MO003,MO004,TA001,TA002,MP005,MO011,MO012
+
+
+                            ) AS TEMP
+                            LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002
+                            LEFT JOIN [TK].dbo.INVMB ON MB001=MC004
+                            WHERE 總未稅金額>0
+
+
+
+
+
+                            ", SDATES, EDATES, ID);
+
+
+            return SB;
+
+        }
+
         public void SearchPOS(string SYEARS)
         {
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -869,6 +1139,7 @@ namespace TKKPI
         private void dataGridView2_SelectionChanged(object sender, EventArgs e)
         {
             string MNAME = null;
+            string ID = null;
             textBox4.Text = null;
 
             if (dataGridView2.CurrentRow != null)
@@ -878,9 +1149,12 @@ namespace TKKPI
                 {
                     DataGridViewRow row = dataGridView2.Rows[rowindex];
                     MNAME = row.Cells["活動名稱"].Value.ToString();
-                    textBox4.Text = row.Cells["活動名稱"].Value.ToString();
+                    ID = row.Cells["活動代號"].Value.ToString().Trim();
 
-                    //SETFASTREPORT5(MNAME);
+                    textBox4.Text = row.Cells["活動名稱"].Value.ToString();
+                    textBox5.Text = row.Cells["活動代號"].Value.ToString();
+
+                    SETFASTREPORT8(ID);
 
 
                 }
@@ -936,7 +1210,11 @@ namespace TKKPI
         }
         private void button8_Click(object sender, EventArgs e)
         {
-
+            if (!string.IsNullOrEmpty(textBox5.Text.ToString().Trim()))
+            {
+                SETFASTREPORT9(dateTimePicker10.Value.ToString("yyyyMMdd"), dateTimePicker11.Value.ToString("yyyyMMdd"), textBox5.Text.ToString().Trim());
+                SETFASTREPORT10(dateTimePicker10.Value.ToString("yyyyMMdd"), dateTimePicker11.Value.ToString("yyyyMMdd"), textBox5.Text.ToString().Trim());
+            }
         }
 
 
