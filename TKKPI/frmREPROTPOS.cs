@@ -1414,7 +1414,7 @@ namespace TKKPI
 
                 String connectionString;
                 sqlConn = new SqlConnection(sqlsb.ConnectionString);
-                 
+                  
 
                 sqlConn.Close();
                 sqlConn.Open();
