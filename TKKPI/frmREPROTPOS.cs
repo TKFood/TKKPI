@@ -320,8 +320,8 @@ namespace TKKPI
                             FROM 
                             (
                             SELECT TA001,TA002
-                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH (NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002) AS '未稅金額'
-                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH (NOLOCK),[TK].dbo.POSTB TB WITH (NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TA009 LIKE '68%') AS '團客未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH (NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB042 NOT IN ('4') ) AS '未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH (NOLOCK),[TK].dbo.POSTB TB WITH (NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB042 NOT IN ('4') AND TA009 LIKE '68%') AS '團客未稅金額'
                             FROM [TK].dbo.POSTA WITH (NOLOCK)
                             WHERE 1=1
                             AND TA002 IN ('106701')
@@ -648,8 +648,8 @@ namespace TKKPI
                             SELECT ISNULL(KINDS,'') AS '調整事項',TA001 AS '銷售日',TA002 AS '賣場代',MA002 AS '賣場',總未稅金額,團客金額,(總未稅金額-團客金額) AS 散客金額
                             FROM (
                             SELECT NAMES AS 'KINDS',TA001,TA002
-                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB010 IN (SELECT MB001 FROM [TKKPI].dbo.SALESPROJECTSINVMB WHERE MNAMES='{2}' )) AS '總未稅金額'
-                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006  AND POSTA.TA001=TA.TA001 AND POSTA.TA002=TA.TA002 AND TA.TA009 LIKE '68%' AND TB.TB010 IN (SELECT MB001 FROM [TKKPI].dbo.SALESPROJECTSINVMB WHERE MNAMES='{2}' )) AS '團客金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB010 IN (SELECT MB001 FROM [TKKPI].dbo.SALESPROJECTSINVMB WHERE MNAMES='{2}' ) AND TB.TB042 NOT IN ('4') ) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006  AND POSTA.TA001=TA.TA001 AND POSTA.TA002=TA.TA002 AND TA.TA009 LIKE '68%' AND TB.TB010 IN (SELECT MB001 FROM [TKKPI].dbo.SALESPROJECTSINVMB WHERE MNAMES='{2}' ) AND TB.TB042 NOT IN ('4') ) AS '團客金額'
                             FROM [TK].dbo.POSTA WITH(NOLOCK)
                             LEFT JOIN [TKKPI].dbo.SALESPROJECTS ON NAMES='{2}' AND  SDATES<=TA001 AND EDATES>=TA001
                             WHERE 1=1
@@ -739,8 +739,8 @@ namespace TKKPI
                             ,TA001
                             ,TA002
 
-                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MB001) AS '總未稅金額'
-                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MB001) AS '團客金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MB001 AND TB.TB042 NOT IN ('4') ) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MB001 AND TB.TB042 NOT IN ('4') ) AS '團客金額'
 
                             FROM [TKKPI].dbo.SALESPROJECTS,[TKKPI].dbo.SALESPROJECTSINVMB,[TK].dbo.POSTA WITH(NOLOCK) 
                             WHERE 1=1
@@ -902,8 +902,8 @@ namespace TKKPI
                             SELECT ISNULL(KINDS,'') AS 'POS活動',TA001 AS '銷售日',TA002 AS '賣場代',MA002 AS '賣場',總未稅金額,團客金額,(總未稅金額-團客金額) AS 散客金額
                             FROM (
                             SELECT MB004 AS 'KINDS',TA001,TA002
-                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB010 IN (SELECT MC004 FROM [TK].dbo.POSMC WHERE MC003='{2}')) AS '總未稅金額'
-                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006  AND POSTA.TA001=TA.TA001 AND POSTA.TA002=TA.TA002 AND TA.TA009 LIKE '68%' AND TB.TB010 IN  (SELECT MC004 FROM [TK].dbo.POSMC WHERE MC003='{2}')) AS '團客金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB010 IN (SELECT MC004 FROM [TK].dbo.POSMC WHERE MC003='{2}') AND TB.TB042 NOT IN ('4') ) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006  AND POSTA.TA001=TA.TA001 AND POSTA.TA002=TA.TA002 AND TA.TA009 LIKE '68%' AND TB.TB010 IN  (SELECT MC004 FROM [TK].dbo.POSMC WHERE MC003='{2}') AND TB.TB042 NOT IN ('4') ) AS '團客金額'
                             FROM [TK].dbo.POSTA WITH(NOLOCK)
                             LEFT JOIN [TK].dbo.POSMB ON MB003='{2}' AND  MB012<=TA001 AND MB013>=TA001
                             LEFT JOIN [TK].dbo.POSMI ON MI003='{2}' AND  MI005<=TA001 AND MI006>=TA001
@@ -979,8 +979,8 @@ namespace TKKPI
                             (
                             SELECT 
                             MB003,MB004,TA001,TA002,MC004,POSMB.MB012,POSMB.MB013
-                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MC004) AS '總未稅金額'
-                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MC004) AS '團客金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MC004 AND TB.TB042 NOT IN ('4') ) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MC004 AND TB.TB042 NOT IN ('4') ) AS '團客金額'
 
                             FROM [TK].dbo.POSMB,[TK].dbo.POSMC,[TK].dbo.POSTA WITH(NOLOCK) 
                             WHERE 1=1
@@ -1071,32 +1071,32 @@ namespace TKKPI
                                     AND MB013 LIKE '{0}%'
                                     AND MF004 IN ('106701')
                                     UNION ALL
-                                    SELECT  '組合品搭贈' AS KIND,MI003,MI004,MI005,MI006,MF004
+                                    SELECT  '組合品搭贈' AS KIND,MI004,MI005,MI006,MF004,MI003
                                     FROM [TK].dbo.POSMI
                                     LEFT JOIN [TK].dbo.POSMF ON MF003=MI003
                                     WHERE 1=1
                                     AND MI015='Y'
-                                    AND MI005 LIKE '{0}%'
+                                    AND MI005 LIKE  '{0}%'
                                     AND MF004 IN ('106701')
                                     UNION ALL
-                                    SELECT  '滿額折價' AS KIND,MM003,MM004,MM005,MM006,MM004
+                                    SELECT  '滿額折價' AS KIND,MM004,MM005,MM006,MM004,MM003
                                     FROM [TK].dbo.POSMM
                                     LEFT JOIN [TK].dbo.POSMF ON MF003=MM003
                                     WHERE 1=1
                                     AND MM015='Y'
-                                    AND MM005 LIKE '{0}%'
+                                    AND MM005 LIKE  '{0}%'
                                     AND MF004 IN ('106701')
                                     UNION ALL
-                                    SELECT  '配對搭贈' AS KIND,MO003,MO004,MO005,MO006,MF004
+                                    SELECT  '配對搭贈' AS KIND,MO004,MO005,MO006,MF004,MO003
                                     FROM [TK].dbo.POSMO
                                     LEFT JOIN [TK].dbo.POSMF ON MF003=MO003
                                     WHERE 1=1
                                     AND MO008='Y'
-                                    AND MO005 LIKE '{0}%'
+                                    AND MO005 LIKE  '{0}%'
                                     AND MF004 IN ('106701')
 
 
-                                         ", SYEARS);
+                                    ", SYEARS);
 
 
 
@@ -1118,7 +1118,7 @@ namespace TKKPI
                     dataGridView2.DataSource = ds.Tables[talbename];
                     dataGridView2.AutoResizeColumns();
                     //rownum = ds.Tables[talbename].Rows.Count - 1;
-                    dataGridView2.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
+                    dataGridView2.CurrentCell = dataGridView2.Rows[rownum].Cells[0];
 
                     //dataGridView1.CurrentCell = dataGridView1[0, 2];
 
