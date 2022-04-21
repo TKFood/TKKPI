@@ -508,6 +508,82 @@ namespace TKKPI
 
         }
 
+        public void Search2(string SYEARS)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                talbename = "TEMPds1";
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                        SELECT 
+                                        [NAMES] AS '調整事項'
+                                        ,[SDATES] AS ' 開始日'
+                                        ,[EDATES] AS '結束日'
+
+                                        FROM [TKKPI].dbo.SALESPROJECTS
+                                        WHERE 1=1
+                                        AND SDATES LIKE '{0}%'
+                                        ORDER BY SDATES
+
+                                         ", SYEARS);
+
+
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, talbename);
+                sqlConn.Close();
+
+
+                if (ds.Tables[talbename].Rows.Count == 0)
+                {
+                    dataGridView3.DataSource = null;
+                }
+                else
+                {
+                    dataGridView3.DataSource = ds.Tables[talbename];
+                    dataGridView3.AutoResizeColumns();
+                    //rownum = ds.Tables[talbename].Rows.Count - 1;
+                    dataGridView3.CurrentCell = dataGridView3.Rows[rownum].Cells[0];
+
+                    //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+
+
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             string MNAME = null;
@@ -1167,6 +1243,76 @@ namespace TKKPI
         }
 
 
+        public void ADDSALESPROJECTS(string SDATES,
+                              string EDATES,
+                              string NAMES
+                             )
+        {
+            SqlDataAdapter adapter1 = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();
+            DataSet ds1 = new DataSet();
+
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+
+                sbSql.AppendFormat(@" 
+                                    INSERT INTO [TKKPI].[dbo].[SALESPROJECTS]
+                                    ([SDATES],[EDATES],[NAMES])
+                                    VALUES
+                                    ('{0}','{1}','{2}')
+
+                                    ", SDATES, EDATES, NAMES);
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+                    //MessageBox.Show("完成");
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -1216,10 +1362,22 @@ namespace TKKPI
                 SETFASTREPORT10(dateTimePicker10.Value.ToString("yyyyMMdd"), dateTimePicker11.Value.ToString("yyyyMMdd"), textBox5.Text.ToString().Trim());
             }
         }
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Search2(dateTimePicker14.Value.ToString("yyyy"));
+        }
 
+        private void button10_Click(object sender, EventArgs e)
+        {
+            ADDSALESPROJECTS(dateTimePicker12.Value.ToString("yyyyMMdd"), dateTimePicker13.Value.ToString("yyyyMMdd"),textBox6.Text.Trim());
+            Search2(dateTimePicker14.Value.ToString("yyyy"));
+
+        }
+
+   
 
         #endregion
 
-       
+
     }
 }
