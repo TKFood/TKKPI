@@ -1628,13 +1628,13 @@
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel10.Controls.Add(this.button11, 3, 5);
             this.tableLayoutPanel10.Controls.Add(this.textBox7, 1, 0);
             this.tableLayoutPanel10.Controls.Add(this.label21, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.label22, 0, 2);
             this.tableLayoutPanel10.Controls.Add(this.label23, 0, 3);
             this.tableLayoutPanel10.Controls.Add(this.textBox8, 1, 2);
             this.tableLayoutPanel10.Controls.Add(this.textBox9, 1, 3);
+            this.tableLayoutPanel10.Controls.Add(this.button11, 3, 4);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
@@ -1654,12 +1654,13 @@
             // 
             this.button11.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.button11.ForeColor = System.Drawing.Color.Blue;
-            this.button11.Location = new System.Drawing.Point(283, 203);
+            this.button11.Location = new System.Drawing.Point(283, 163);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(114, 34);
             this.button11.TabIndex = 41;
             this.button11.Text = "新增";
             this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // textBox7
             // 
