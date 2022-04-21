@@ -1313,6 +1313,97 @@ namespace TKKPI
 
         }
 
+        private void dataGridView3_SelectionChanged(object sender, EventArgs e)
+        {
+            textBox7.Text = null;
+
+            if (dataGridView3.CurrentRow != null)
+            {
+                int rowindex = dataGridView3.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView3.Rows[rowindex];
+
+                    textBox7.Text = row.Cells["調整事項"].Value.ToString();
+
+                  
+
+
+                }
+                else
+                {
+
+
+                }
+            }
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+            textBox9.Text = SEARCHMB001(textBox8.Text.Trim());
+        }
+
+        public string SEARCHMB001(string MB001)
+        {
+            SqlDataAdapter adapter1 = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();
+            DataSet ds1 = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+         
+                sbSql.AppendFormat(@"  
+                                    SELECT MB001,MB002
+                                    FROM [TK].dbo.INVMB
+                                    WHERE   MB001='{0}'                                
+
+                                    ", MB001);
+
+                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter1.Fill(ds1, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds1.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    return ds1.Tables["TEMPds1"].Rows[0]["MB002"].ToString();
+
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -1374,10 +1465,12 @@ namespace TKKPI
 
         }
 
-   
+
+
+
 
         #endregion
 
-
+     
     }
 }
