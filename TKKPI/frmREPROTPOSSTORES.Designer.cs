@@ -1111,6 +1111,7 @@
             this.button1.TabIndex = 31;
             this.button1.Text = "查詢";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // splitContainer2
             // 
@@ -1225,6 +1226,7 @@
             this.button2.TabIndex = 31;
             this.button2.Text = "查詢";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // previewControl2
             // 

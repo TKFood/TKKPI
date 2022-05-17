@@ -761,6 +761,141 @@ namespace TKKPI
 
         }
 
+        public void SETFASTREPORT(string YEARS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL(YEARS);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\門市-特價報表.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+
+            report1.Preview = previewControl1;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL(string YEARS)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(@"   
+                           SELECT KIND,活動代號,特價代號,活動名稱,活動起始日期,活動截止日期
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB WHERE TB036=特價代號) AS '未稅金額'
+                            ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WHERE TB036=特價代號) AS '數量'
+                            FROM (
+                            SELECT '特價' AS 'KIND', MB001 AS '活動代號',MB003 AS '特價代號',MB004 AS '活動名稱',MB012 AS '活動起始日期',MB013 AS '活動截止日期'
+                            FROM [TK].dbo.POSMB
+                            WHERE MB001 LIKE '{0}%'
+                            UNION ALL
+                            SELECT '組合品搭贈' AS 'KIND',MI001 AS '活動代號',MI003 AS '特價代號',MI004 AS '活動名稱',MI005 AS '活動起始日期',MI006 AS '活動截止日期'
+                            FROM [TK].dbo.POSMI
+                            WHERE MI001 LIKE '{0}%'
+                            UNION ALL
+                            SELECT '滿額折價' AS 'KIND',MM001 AS '活動代號',MM003 AS '特價代號',MM004 AS '活動名稱',MM005 AS '活動起始日期',MM006 AS '活動截止日期'
+                            FROM [TK].dbo.POSMM
+                            WHERE MM001 LIKE '{0}%'
+                            UNION ALL
+                            SELECT '配對搭贈' AS 'KIND',MO001 AS '活動代號',MO003 AS '特價代號',MO004 AS '活動名稱',MO005 AS '活動起始日期',MO006 AS '活動截止日期'
+                            FROM [TK].dbo.POSMO
+                            WHERE MO001 LIKE '{0}%'
+                            ) AS TEMP
+
+
+
+                            ", YEARS);
+
+
+            return SB;
+
+        }
+
+        public void SETFASTREPORT2(string TB036)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL2(TB036);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\門市-特價商品銷售.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+
+            report1.Preview = previewControl2;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL2(string TB036)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(@"   
+                            SELECT (ISNULL(POSMB.MB003,'')+ISNULL(MI003,'')+ISNULL(MM003,'')+ISNULL(MO003,'') ) AS '特價代號',(ISNULL(POSMB.MB004,'')+ISNULL(MI004,'')+ISNULL(MM004,'')+ISNULL(MO004,''))  AS '特價名稱',TB002  AS '店代',MA002  AS '店名',TB010  AS '品號',INVMB.MB002  AS '品名',SUM(TB019) AS '數量',SUM(TB031) AS '未稅金額'
+                            FROM [TK].dbo.INVMB,[TK].dbo.WSCMA,[TK].dbo.POSTB
+                            LEFT JOIN [TK].dbo.POSMB ON MB003=TB036
+                            LEFT JOIN [TK].dbo.POSMI ON MI003=TB036
+                            LEFT JOIN [TK].dbo.POSMM ON MM003=TB036
+                            LEFT JOIN [TK].dbo.POSMO ON MO003=TB036
+                            WHERE TB010=INVMB.MB001
+                            AND MA001=TB002
+                            AND TB036 LIKE '%{0}%'
+                            GROUP BY (ISNULL(POSMB.MB003,'')+ISNULL(MI003,'')+ISNULL(MM003,'')+ISNULL(MO003,'') ) ,(ISNULL(POSMB.MB004,'')+ISNULL(MI004,'')+ISNULL(MM004,'')+ISNULL(MO004,'')),TB002,MA002,TB010,INVMB.MB002
+
+ 
+
+                            ", TB036);
+
+
+            return SB;
+
+        }
+
+
 
         #endregion
 
@@ -795,7 +930,15 @@ namespace TKKPI
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT(dateTimePicker1.Value.ToString("yyyy"));
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT2(textBox1.Text.ToString().Trim());
+        }
         #endregion
 
 
