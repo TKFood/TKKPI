@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/15/2022 13:33:30" ReportInfo.Modified="05/17/2022 11:10:35" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHZm0lIbLNa54kdLX6DRG70">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT MC004,INVMB.MB002,POSMB.MB012,POSMB.MB013,POSMB.MB004&#13;&#10;FROM [TK].dbo.POSMC,[TK].dbo.INVMB,[TK].dbo.POSMB&#13;&#10;WHERE 1=1&#13;&#10;AND MC004=INVMB.MB001&#13;&#10;AND POSMB.MB003=MC003&#13;&#10;AND MC011='Y'&#13;&#10;AND MC003='120220101001'&#13;&#10;UNION ALL&#13;&#10;SELECT MJ004,MB002,MI005,MI006,MI004&#13;&#10;FROM [TK].dbo.POSMJ,[TK].dbo.INVMB,[TK].dbo.POSMI&#13;&#10;WHERE 1=1&#13;&#10;AND MJ004=MB001&#13;&#10;AND MI003=MJ003&#13;&#10;AND MJ006='Y'&#13;&#10;AND MJ003='420220406001'&#13;&#10;UNION ALL&#13;&#10;SELECT CONVERT(NVARCHAR,MN005),'金額以上',MM005,MM006,MM004&#13;&#10;FROM [TK].dbo.POSMN,[TK].dbo.POSMM&#13;&#10;WHERE 1=1&#13;&#10;AND MN003=MM003&#13;&#10;AND MN010='Y'&#13;&#10;AND MN003='620220311001'&#13;&#10;UNION ALL&#13;&#10;SELECT MP005,MB002,MO011,MO012,MO004&#13;&#10;FROM [TK].dbo.POSMP,[TK].dbo.INVMB,[TK].dbo.POSMO&#13;&#10;WHERE 1=1&#13;&#10;AND MP005=MB001&#13;&#10;AND MP003=MO003&#13;&#10;AND MP008='Y'&#13;&#10;AND MP003='120220101001'">
+        <Column Name="MC004" DataType="System.String"/>
+        <Column Name="MB002" DataType="System.String"/>
+        <Column Name="MB012" DataType="System.String"/>
+        <Column Name="MB013" DataType="System.String"/>
+        <Column Name="MB004" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <PageHeaderBand Name="PageHeader1" Width="718.2" Height="18.9">
+      <TextObject Name="Text2" Width="132.3" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="132.3" Width="226.8" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="359.1" Width="170.1" Height="18.9" Border.Lines="All" Text="POS活動" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="開始日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="結束日" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="23.39" Width="718.2" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text1" Width="132.3" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MC004]" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="132.3" Width="226.8" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MB002]" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="359.1" Width="170.1" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MB004]" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MB012]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.MB013]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="46.79" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>
