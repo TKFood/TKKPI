@@ -133,6 +133,172 @@ namespace TKKPI
 
         }
 
+        public void Search(string SYEARS)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                talbename = "TEMPds1";
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"  
+                                        SELECT 
+                                        [NAMES] AS '調整事項'
+                                        ,[SDATES] AS ' 開始日'
+                                        ,[EDATES] AS '結束日'
+
+                                        FROM [TKKPI].[dbo].[SALESPROJECTSSTORES]
+                                        WHERE 1=1
+                                        AND SDATES LIKE '{0}%'
+                                        ORDER BY SDATES
+
+                                         ", SYEARS);
+
+
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, talbename);
+                sqlConn.Close();
+
+
+                if (ds.Tables[talbename].Rows.Count == 0)
+                {
+                    dataGridView1.DataSource = null;
+                }
+                else
+                {
+                    dataGridView1.DataSource = ds.Tables[talbename];
+                    dataGridView1.AutoResizeColumns();
+                    //rownum = ds.Tables[talbename].Rows.Count - 1;
+                    dataGridView1.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
+
+                    //dataGridView1.CurrentCell = dataGridView1[0, 2];
+
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            string MNAME = null;
+            textBox3.Text = null;
+
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
+                    MNAME = row.Cells["調整事項"].Value.ToString();
+                    textBox3.Text = row.Cells["調整事項"].Value.ToString();
+
+                    SETFASTREPORT5(MNAME);
+
+
+                }
+                else
+                {
+
+
+                }
+            }
+        }
+
+        public void SETFASTREPORT5(string MNAMES)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL5(MNAMES);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\門市-調整事項品號.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", SDATE);
+            //report1.SetParameterValue("P2", EDATE);
+
+
+            report1.Preview = previewControl5;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL5(string MNAMES)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+            //組合活動，過濾會員等級折扣 ISNULL(MI009,'')=''
+
+            SB.AppendFormat(@"   
+                            SELECT 
+                            MB001 AS '品號'
+                            ,MB002 AS '品名'
+                            ,[NAMES] AS '調整事項'
+                            ,[SDATES] AS '開始日'
+                            ,[EDATES] AS '結束日'
+
+                            FROM [TKKPI].dbo.[SALESPROJECTSSTORES],[TKKPI].dbo.[SALESPROJECTSINVMBSTORES]
+                            WHERE 1=1
+                            AND SALESPROJECTSSTORES.NAMES=SALESPROJECTSINVMBSTORES.MNAMES
+                            AND MNAMES ='{0}'
+                            ORDER BY MB001
+
+                            ", MNAMES);
+
+
+            return SB;
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -141,6 +307,13 @@ namespace TKKPI
             SETFASTREPORT4(dateTimePicker4.Value.ToString("yyyyMMdd"), dateTimePicker5.Value.ToString("yyyyMMdd"));
         }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Search(dateTimePicker6.Value.ToString("yyyy"));
+        }
+
         #endregion
+
+      
     }
 }
