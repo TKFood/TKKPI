@@ -121,15 +121,16 @@ namespace TKKPI
 
             SB.AppendFormat(@" 
                             SELECT SUBSTRING (CONVERT(NVARCHAR,LA015,112),1,6) LA015,LA006,MA002,LA005,MB002,LA007,SUM(LA016) LA016,SUM(LA017) LA017
-                            FROM [TK].dbo.SASLA,[TK].dbo.COPMA,[TK].dbo.INVMB
-                            WHERE  LA006=MA001
+                            FROM [TK].dbo.SASLA,[TK].dbo.WSCMA,[TK].dbo.INVMB
+                            WHERE  1=1
+                            AND LA007=MA001
                             AND LA005=MB001
                             AND (LA005 LIKE '4%' OR LA005 LIKE '5%' )
                             AND MB002 NOT LIKE '%試吃%'
                             AND CONVERT(NVARCHAR,LA015,112) LIKE '{0}%'
-                            AND MA001='{1}'
+                            AND LA007='{1}'
                             GROUP BY SUBSTRING (CONVERT(NVARCHAR,LA015,112),1,6) ,LA006,MA002,LA005,MB002,LA007
-                            ORDER BY SUBSTRING (CONVERT(NVARCHAR,LA015,112),1,6) ,LA006,MA002,LA005,MB002,LA007
+                            ORDER BY SUBSTRING (CONVERT(NVARCHAR,LA015,112),1,6) ,LA006,MA002,LA005,MB002,LA007 
 
 
                             ", LA015, LA007);
