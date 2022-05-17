@@ -895,7 +895,80 @@ namespace TKKPI
 
         }
 
+        public void SETFASTREPORT3(string SDATE, string EDATE, string TB036)
+        {
+            StringBuilder SQL1 = new StringBuilder();
 
+            SQL1 = SETSQL3(SDATE, EDATE, TB036);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\門市-活動報表.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+
+            report1.Preview = previewControl3;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL3(string SDATE, string EDATE, string TB036)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(@"   
+                            SELECT TB004 AS '營業日期',TB002 AS '店代',MA002 AS '店名',TB003 AS '機號',TB010 AS '品號',MB002 AS '品名',TB019 AS '數量',TB031 AS '未稅金額',TB044 AS '備註'
+                            ,商品+組合+贈品加價購+配對搭贈 AS '活動代號'
+                            ,商品名稱+組合名稱+贈品加價購名稱+配對搭贈名稱  AS '活動名稱'
+                            FROM 
+                            (
+                            SELECT POSTB.*
+                            ,ISNULL(RTRIM(LTRIM(MB003)),'') AS '商品',ISNULL(MB004,'') AS '商品名稱'
+                            ,ISNULL(RTRIM(LTRIM(MI003)),'') AS '組合',ISNULL(MI004,'') AS '組合名稱'
+                            ,ISNULL(RTRIM(LTRIM(MM003)),'') AS '贈品加價購',ISNULL(MM004,'') AS '贈品加價購名稱'
+                            ,ISNULL(RTRIM(LTRIM(MO003)),'') AS '配對搭贈',ISNULL(MO004,'') AS '配對搭贈名稱'
+                            FROM [TK].dbo.POSTB WITH (NOLOCK)
+                            LEFT JOIN [TK].dbo.POSMB ON MB003=TB036
+                            LEFT JOIN [TK].dbo.POSMI ON MI003=TB036
+                            LEFT JOIN [TK].dbo.POSMM ON MM003=TB036
+                            LEFT JOIN [TK].dbo.POSMO ON MO003=TB036
+
+                            WHERE 1=1
+                            AND ISNULL(TB044,'')<>''
+                            ) AS TEMMP
+                            LEFT JOIN [TK].dbo.INVMB ON MB001=TB010
+                            LEFT JOIN [TK].dbo.WSCMA ON MA001=TB002
+                            WHERE 1=1
+                            AND ISNULL(商品+組合+贈品加價購+配對搭贈,'')<>''
+                            AND TB001>='{0}' AND TB001<='{1}'
+                            AND (ISNULL(商品+組合+贈品加價購+配對搭贈,'') LIKE '%{2}%' OR 商品名稱+組合名稱+贈品加價購名稱+配對搭贈名稱 LIKE '%{2}%')
+                            ORDER BY TB002,TB004 
+                            ", SDATE, EDATE, TB036);
+
+
+            return SB;
+
+        }
 
         #endregion
 
@@ -939,6 +1012,11 @@ namespace TKKPI
         {
             SETFASTREPORT2(textBox1.Text.ToString().Trim());
         }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT3(dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"), textBox2.Text.ToString().Trim());
+        }
+
         #endregion
 
 
