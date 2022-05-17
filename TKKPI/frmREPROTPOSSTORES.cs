@@ -299,6 +299,74 @@ namespace TKKPI
 
         }
 
+        public void SETFASTREPORT6(string SDATES, string EDATES, string MNAME)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL6(SDATES, EDATES, MNAME);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\門市-調整事項每日總金額.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", SDATE);
+            //report1.SetParameterValue("P2", EDATE);
+
+
+            report1.Preview = previewControl6;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL6(string SDATES, string EDATES, string MNAME)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+            //組合活動，過濾會員等級折扣 ISNULL(MI009,'')=''
+
+            SB.AppendFormat(@"   
+                          
+                           SELECT ISNULL(KINDS,'') AS '調整事項',TA001 AS '銷售日',TA002 AS '賣場代',MA002 AS '賣場',總未稅金額
+                            FROM (
+                            SELECT NAMES AS 'KINDS',TA001,TA002
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB010 IN (SELECT MB001 FROM [TKKPI].dbo.SALESPROJECTSINVMBSTORES WHERE MNAMES='{2}' ) AND TB.TB042 NOT IN ('4') ) AS '總未稅金額'
+                            FROM [TK].dbo.POSTA WITH(NOLOCK)
+                            LEFT JOIN [TKKPI].dbo.SALESPROJECTSSTORES ON NAMES='{2}' AND  SDATES<=TA001 AND EDATES>=TA001
+                            WHERE 1=1
+                            AND TA002 IN ('106501','106502','106503','106504')
+                            AND TA001>='{0}' AND TA001<='{1}'
+                            GROUP BY TA001,TA002,NAMES
+                            ) AS TEMP
+                            LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002
+                            ORDER BY TA001,TA002
+
+                            ", SDATES, EDATES, MNAME);
+
+
+            return SB;
+
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -311,9 +379,17 @@ namespace TKKPI
         {
             Search(dateTimePicker6.Value.ToString("yyyy"));
         }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(textBox3.Text.ToString().Trim()))
+            {
+                SETFASTREPORT6(dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"), textBox3.Text.ToString().Trim());
+                //SETFASTREPORT7(dateTimePicker7.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"), textBox3.Text.ToString().Trim());
+            }
+        }
 
         #endregion
 
-      
+
     }
 }
