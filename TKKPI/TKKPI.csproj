@@ -278,6 +278,12 @@
     <Compile Include="frmREPROTPOS.Designer.cs">
       <DependentUpon>frmREPROTPOS.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPROTPOSSTORES.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPROTPOSSTORES.Designer.cs">
+      <DependentUpon>frmREPROTPOSSTORES.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmRESALES.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -378,6 +384,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPROTPOS.resx">
       <DependentUpon>frmREPROTPOS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPROTPOSSTORES.resx">
+      <DependentUpon>frmREPROTPOSSTORES.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmRESALES.resx">
       <DependentUpon>frmRESALES.cs</DependentUpon>
