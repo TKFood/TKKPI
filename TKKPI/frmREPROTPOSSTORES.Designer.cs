@@ -959,6 +959,7 @@
             this.button8.TabIndex = 31;
             this.button8.Text = "查詢";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // textBox5
             // 

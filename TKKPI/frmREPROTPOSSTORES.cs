@@ -577,6 +577,80 @@ namespace TKKPI
             return SB;
 
         }
+        public void SETFASTREPORT9(string SDATES, string EDATES, string ID)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL9(SDATES, EDATES, ID);
+
+
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\門市-POS活動每日總金額.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+            //report1.SetParameterValue("P1", SDATE);
+            //report1.SetParameterValue("P2", EDATE);
+
+
+            report1.Preview = previewControl9;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL9(string SDATES, string EDATES, string ID)
+        {
+
+
+            StringBuilder SB = new StringBuilder();
+
+            //組合活動，過濾會員等級折扣 ISNULL(MI009,'')=''
+
+            SB.AppendFormat(@"   
+
+                            SELECT ISNULL(KINDS,'') AS 'POS活動',TA001 AS '銷售日',TA002 AS '賣場代',MA002 AS '賣場',總未稅金額,團客金額,(總未稅金額-團客金額) AS 散客金額
+                            FROM (
+                            SELECT MB004 AS 'KINDS',TA001,TA002
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB010 IN (SELECT MC004 FROM [TK].dbo.POSMC WHERE MC003='{2}') AND TB.TB042 NOT IN ('4') ) AS '總未稅金額'
+                            ,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006  AND POSTA.TA001=TA.TA001 AND POSTA.TA002=TA.TA002 AND TA.TA009 LIKE '68%' AND TB.TB010 IN  (SELECT MC004 FROM [TK].dbo.POSMC WHERE MC003='{2}') AND TB.TB042 NOT IN ('4') ) AS '團客金額'
+                            FROM [TK].dbo.POSTA WITH(NOLOCK)
+                            LEFT JOIN [TK].dbo.POSMB ON MB003='{2}' AND  MB012<=TA001 AND MB013>=TA001
+                            LEFT JOIN [TK].dbo.POSMI ON MI003='{2}' AND  MI005<=TA001 AND MI006>=TA001
+                            LEFT JOIN [TK].dbo.POSMM ON MM003='{2}' AND  MM005<=TA001 AND MM006>=TA001
+                            LEFT JOIN [TK].dbo.POSMO ON MO003='{2}' AND  MO005<=TA001 AND MO006>=TA001
+ 
+                            WHERE 1=1
+                            AND TA002 IN ('106501','106502','106503','106504')
+                            AND TA001>='{0}' AND TA001<='{1}'
+                            GROUP BY TA001,TA002,MB004
+                            ) AS TEMP
+                            LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002
+                            ORDER BY TA001,TA002
+                           
+
+                            ", SDATES, EDATES, ID);
+
+
+            return SB;
+
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -601,10 +675,18 @@ namespace TKKPI
         {
             SearchPOS(dateTimePicker6.Value.ToString("yyyy"));
         }
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(textBox5.Text.ToString().Trim()))
+            {
+                SETFASTREPORT9(dateTimePicker10.Value.ToString("yyyyMMdd"), dateTimePicker11.Value.ToString("yyyyMMdd"), textBox5.Text.ToString().Trim());
+                //SETFASTREPORT10(dateTimePicker10.Value.ToString("yyyyMMdd"), dateTimePicker11.Value.ToString("yyyyMMdd"), textBox5.Text.ToString().Trim());
+            }
+        }
 
 
         #endregion
 
-       
+
     }
 }
