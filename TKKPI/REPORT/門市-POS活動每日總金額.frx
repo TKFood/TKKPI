@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="04/15/2022 13:43:00" ReportInfo.Modified="05/17/2022 11:20:14" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/15/2022 13:43:00" ReportInfo.Modified="05/17/2022 11:25:23" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUF27ngyaK7VWLgL6u9Bp0kg">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHOTd515MNiX/zGYXrC/FAP">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT ISNULL(KINDS,'') AS 'POS活動',TA001 AS '銷售日',TA002 AS '賣場代',MA002 AS '賣場',總未稅金額&#13;&#10;FROM (&#13;&#10;SELECT MB004 AS 'KINDS',TA001,TA002&#13;&#10;,(SELECT ISNULL(SUM(TB031),0) FROM [TK].dbo.POSTB TB WITH(NOLOCK) WHERE POSTA.TA001=TB.TB001 AND POSTA.TA002=TB.TB002 AND TB.TB010 IN (SELECT MC004 FROM [TK].dbo.POSMC WHERE MC003='120220101001')) AS '總未稅金額'&#13;&#10;FROM [TK].dbo.POSTA WITH(NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.POSMB ON MB003='120220101001' AND  MB012&lt;=TA001 AND MB013&gt;=TA001&#13;&#10;WHERE 1=1&#13;&#10;AND TA002 IN ('106501','106502','106503','106504')&#13;&#10;AND TA001&gt;='20220301' AND TA001&lt;='20220430'&#13;&#10;GROUP BY TA001,TA002,MB004&#13;&#10;) AS TEMP&#13;&#10;LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002&#13;&#10;ORDER BY TA001,TA002">
         <Column Name="銷售日" DataType="System.String"/>
         <Column Name="賣場代" DataType="System.String"/>
@@ -15,8 +15,8 @@
     <PageHeaderBand Name="PageHeader1" Width="718.2" Height="18.9">
       <TextObject Name="Text2" Width="151.2" Height="18.9" Border.Lines="All" Text="POS活動" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text4" Left="151.2" Width="94.5" Height="18.9" Border.Lines="All" Text="銷售日" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text6" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" Text="賣場" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text8" Left="245.7" Width="94.5" Height="18.9" Border.Lines="All" Text="賣場代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="245.7" Width="94.5" Height="18.9" Border.Lines="All" Text="門市代" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text10" Left="434.7" Width="94.5" Height="18.9" Border.Lines="All" Text="總未稅金額" HorzAlign="Center" VertAlign="Center"/>
     </PageHeaderBand>
     <DataBand Name="Data1" Top="23.39" Width="718.2" Height="18.9" DataSource="Table">

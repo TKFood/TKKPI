@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/15/2022 13:43:00" ReportInfo.Modified="05/17/2022 11:23:37" ReportInfo.CreatorVersion="2016.4.4.0">
+  <ScriptText>　using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEU03+WpBThSMzgfosuPYzS">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT TEMP.MB003,TEMP.MB004  AS 'POS活動',TEMP.MB012 AS '開始日',TEMP.MB013 AS '結束日',TA001 AS '銷售日',TA002 AS '賣場代',MA002  AS '賣場',MC004 AS '品號',INVMB.MB002 AS '品名'&#13;&#10;,總未稅金額&#13;&#10;,團客金額&#13;&#10;,(總未稅金額-團客金額) AS 散客金額&#13;&#10;FROM&#13;&#10;(&#13;&#10;SELECT &#13;&#10;MB003,MB004,TA001,TA002,MC004,POSMB.MB012,POSMB.MB013&#13;&#10;,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MC004) AS '總未稅金額'&#13;&#10;,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MC004) AS '團客金額'&#13;&#10;&#13;&#10;FROM [TK].dbo.POSMB,[TK].dbo.POSMC,[TK].dbo.POSTA WITH(NOLOCK) &#13;&#10;WHERE 1=1&#13;&#10;AND MB003=MC003&#13;&#10;AND MC003='120220101001'&#13;&#10;AND TA002 IN ('106501','106502','106503','106504')&#13;&#10;AND TA001&gt;='20220401' AND TA001&lt;='20220431' &#13;&#10;GROUP BY &#13;&#10;MB003,MB004,TA001,TA002,MC004,POSMB.MB012,POSMB.MB013&#13;&#10;&#13;&#10;UNION ALL&#13;&#10;SELECT &#13;&#10;MI003,MI004,TA001,TA002,MJ004,MI005,MI006&#13;&#10;,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MJ004) AS '總未稅金額'&#13;&#10;,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MJ004) AS '團客金額'&#13;&#10;&#13;&#10;FROM [TK].dbo.POSMI,[TK].dbo.POSMJ,[TK].dbo.POSTA WITH(NOLOCK) &#13;&#10;WHERE 1=1&#13;&#10;AND MI003=MJ003&#13;&#10;AND MI003='120220101001'&#13;&#10;AND TA002 IN ('106501','106502','106503','106504')&#13;&#10;AND TA001&gt;='20220401' AND TA001&lt;='20220431' &#13;&#10;GROUP BY &#13;&#10;MI003,MI004,TA001,TA002,MJ004,MI005,MI006&#13;&#10;UNION ALL&#13;&#10;&#13;&#10;SELECT &#13;&#10;MO003,MO004,TA001,TA002,MP005,MO011,MO012&#13;&#10;,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MP005) AS '總未稅金額'&#13;&#10;,(SELECT ISNULL(SUM(TB031),0) FROM  [TK].dbo.POSTA TA WITH(NOLOCK),[TK].dbo.POSTB TB WITH(NOLOCK) WHERE TA.TA001=TB.TB001 AND TA.TA002=TB.TB002 AND TA.TA003=TB.TB003 AND TA.TA006=TB.TB006 AND TA.TA009 LIKE '68%' AND TA.TA001=POSTA.TA001 AND TA.TA002=POSTA.TA002 AND TB.TB010=MP005) AS '團客金額'&#13;&#10;&#13;&#10;FROM [TK].dbo.POSMO,[TK].dbo.POSMP,[TK].dbo.POSTA WITH(NOLOCK) &#13;&#10;WHERE 1=1&#13;&#10;AND MO003=MP003&#13;&#10;AND MO003='120220101001'&#13;&#10;AND TA002 IN ('106501','106502','106503','106504')&#13;&#10;AND TA001&gt;='20220401' AND TA001&lt;='20220431' &#13;&#10;GROUP BY &#13;&#10;MO003,MO004,TA001,TA002,MP005,MO011,MO012&#13;&#10;&#13;&#10;&#13;&#10;) AS TEMP&#13;&#10;LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002&#13;&#10;LEFT JOIN [TK].dbo.INVMB ON MB001=MC004&#13;&#10;WHERE 總未稅金額&gt;0">
+        <Column Name="總未稅金額" DataType="System.Decimal"/>
+        <Column Name="團客金額" DataType="System.Decimal"/>
+        <Column Name="散客金額" DataType="System.Decimal"/>
+        <Column Name="MB003" DataType="System.String"/>
+        <Column Name="POS活動" DataType="System.String"/>
+        <Column Name="開始日" DataType="System.String"/>
+        <Column Name="結束日" DataType="System.String"/>
+        <Column Name="銷售日" DataType="System.String"/>
+        <Column Name="賣場代" DataType="System.String"/>
+        <Column Name="賣場" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="300">
+    <PageHeaderBand Name="PageHeader1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text2" Width="151.2" Height="18.9" Border.Lines="All" Text="POS活動" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="151.2" Width="94.5" Height="18.9" Border.Lines="All" Text="銷售日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="245.7" Width="94.5" Height="18.9" Border.Lines="All" Text="門市代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="總未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="434.7" Width="141.75" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="576.45" Width="189" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="23.39" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="151.2" Height="18.9" Border.Lines="All" Text="[Table.POS活動]" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="151.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.銷售日]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.賣場]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="245.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.賣場代]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.總未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text15" Left="434.7" Width="141.75" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="576.45" Width="189" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="46.79" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>
