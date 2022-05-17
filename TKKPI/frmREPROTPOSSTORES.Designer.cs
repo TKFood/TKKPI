@@ -1443,6 +1443,7 @@
             this.dataGridView3.RowTemplate.Height = 24;
             this.dataGridView3.Size = new System.Drawing.Size(406, 321);
             this.dataGridView3.TabIndex = 2;
+            this.dataGridView3.SelectionChanged += new System.EventHandler(this.dataGridView3_SelectionChanged);
             // 
             // tableLayoutPanel9
             // 
@@ -1492,6 +1493,7 @@
             this.button10.TabIndex = 41;
             this.button10.Text = "新增";
             this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // textBox6
             // 
@@ -1562,6 +1564,7 @@
             this.button9.TabIndex = 31;
             this.button9.Text = "查詢";
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // dateTimePicker14
             // 
@@ -1715,6 +1718,7 @@
             this.button11.TabIndex = 41;
             this.button11.Text = "新增";
             this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // frmREPROTPOSSTORES
             // 
