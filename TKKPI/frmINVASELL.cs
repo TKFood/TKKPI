@@ -143,7 +143,7 @@ namespace TKKPI
                             ) AS TEMP2
                             LEFT JOIN [TK].dbo.INVMB ON MB001=LA001
                             WHERE INVMB.MB002 NOT LIKE '%暫停%'
-                            ORDER BY LA001 
+                            ORDER BY LA001  
   
                             ", dateTimePicker1.Value.ToString("yyyyMMdd"),textBox1.Text.ToString());
                         
