@@ -57,10 +57,12 @@ namespace TKKPI
             dateTimePicker1.Value = FirstDay;
             dateTimePicker2.Value = FirstDay;
             dateTimePicker3.Value = FirstDay;
+            dateTimePicker4.Value = FirstDay;
 
             textBox1.Text = Math.Round(new TimeSpan(DateTime.Now.Ticks - FirstDay.Ticks).TotalDays,0).ToString();
             textBox2.Text = Math.Round(new TimeSpan(DateTime.Now.Ticks - FirstDay.Ticks).TotalDays, 0).ToString();
             textBox3.Text = Math.Round(new TimeSpan(DateTime.Now.Ticks - FirstDay.Ticks).TotalDays, 0).ToString();
+            textBox4.Text = Math.Round(new TimeSpan(DateTime.Now.Ticks - FirstDay.Ticks).TotalDays, 0).ToString();
 
         }
 
@@ -316,6 +318,83 @@ namespace TKKPI
 
         }
 
+        public void SETFASTREPORT4(string SDATES,string DAYS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1 = SETSQL4(SDATES, DAYS);
+            Report report1 = new Report();
+
+            report1.Load(@"REPORT\電商銷售預估月份.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+
+            report1.Preview = previewControl4;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL4(string SDATES, string DAYS)
+        {
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(@"  
+                            DECLARE @SDAY nvarchar(10)
+                            DECLARE @TOTALDAYS INT
+                            SET @SDAY='{0}'
+                            SET @TOTALDAYS={1}
+
+                            SELECT LA001 AS '品號',MB002 AS '品名',LA016 AS '批號',NUMS AS '庫存量',MB051 AS '售價',MB051*NUMS AS '可銷貨金額'
+                            ,有效日期,製造日期,總銷售數量,平均天銷售數量,預計銷售天,預計完銷日
+                            ,DATEDIFF (MONTH,製造日期,預計完銷日) AS '生產到完銷的月數'
+                            ,@SDAY AS '銷售日起'
+                            ,@TOTALDAYS  AS '銷售天數'
+                            FROM (
+                            SELECT LA001,MB002,MB051,LA016,NUMS,有效日期,製造日期,總銷售數量,平均天銷售數量,CASE WHEN 平均天銷售數量>0 THEN (NUMS/平均天銷售數量) ELSE -1 END '預計銷售天'
+                            ,CASE WHEN 平均天銷售數量>0 THEN CONVERT(NVARCHAR,DATEADD(DAY,CEILING(NUMS/平均天銷售數量),GETDATE()),112) ELSE '' END AS '預計完銷日'
+   
+                            FROM (
+                            SELECT LA001,MB002,MB051,LA016,SUM(LA005*LA011) AS 'NUMS'
+                            ,(SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK) WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) AS '有效日期'
+                            ,(SELECT TOP 1 TG040 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK) WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG040 ) AS '製造日期'
+                            ,(SELECT ISNULL(SUM(TH008),0) FROM [TK].dbo.COPTH,[TK].dbo.COPTG WITH (NOLOCK) WHERE TG001=TH001 AND TG002=TH002 AND TH020='Y' AND TH001 IN ('A233','A234') AND TH004=LA001 AND TG003>=@SDAY) AS '總銷售數量'
+                            ,(SELECT ISNULL(SUM(TH008),0) FROM [TK].dbo.COPTH,[TK].dbo.COPTG WITH (NOLOCK) WHERE TG001=TH001 AND TG002=TH002 AND TH020='Y' AND TH001 IN ('A233','A234') AND TH004=LA001 AND TG003>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
+                            FROM [TK].dbo.INVLA WITH (NOLOCK) ,[TK].dbo.INVMB WITH (NOLOCK) 
+                            WHERE LA009 IN ('20017')
+                            AND LA001=MB001
+                            AND LA001 LIKE '40%'
+                            AND LA016 LIKE '2%'
+                            AND MB002 NOT LIKE '%試吃%'
+                            GROUP BY LA001,MB002,MB051,LA016
+                            HAVING SUM(LA005*LA011)>0
+
+                            ) AS TEMP 
+                            ) AS TEMP2
+                            WHERE MB002 NOT LIKE '%暫停%'
+                            ORDER BY LA001
+
+
+                            ", SDATES, DAYS);
+
+
+            return SB;
+
+        }
 
         #endregion
 
@@ -333,6 +412,10 @@ namespace TKKPI
         private void button3_Click(object sender, EventArgs e)
         {
             SETFASTREPORT3();
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT4(dateTimePicker4.Value.ToString("yyyyMMdd"),textBox4.Text);
         }
 
         #endregion
