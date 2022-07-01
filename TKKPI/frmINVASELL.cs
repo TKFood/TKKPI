@@ -131,14 +131,14 @@ namespace TKKPI
 
                             FROM (
                             SELECT LA001,MB002,LA016,SUM(LA005*LA011) AS 'NUMS'
-                            ,(SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK)  WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) AS '有效日期'
+                            ,CASE WHEN ISNULL((SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK)  WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ),'')<>'' THEN (SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK)  WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) ELSE  LA016 END  AS '有效日期'
                             ,(SELECT TOP 1 TG040 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK) WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG040 ) AS '製造日期'
                             ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB002 IN ('106501','106502','106503','106504','106513') AND TB010=LA001 AND TB001>=@SDAY) AS '總銷售數量'
                             ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB002 IN ('106501','106502','106503','106504','106513') AND TB010=LA001 AND TB001>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
                             FROM [TK].dbo.INVLA WITH (NOLOCK) ,[TK].dbo.INVMB WITH (NOLOCK) 
                             WHERE LA009 IN ('30001','30002','30003','30004','30012','30017')
                             AND LA001=MB001
-                            AND LA001 LIKE '40%'
+                            AND (LA001 LIKE '4%' OR LA001 LIKE '5%')
                             AND LA016 LIKE '2%'
                             AND MB002 NOT LIKE '%試吃%'
                             GROUP BY LA001,MB002,LA016
@@ -209,14 +209,14 @@ namespace TKKPI
    
                             FROM (
                             SELECT LA001,MB002,MB051,LA016,SUM(LA005*LA011) AS 'NUMS'
-                            ,(SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK) WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) AS '有效日期'
+                            ,CASE WHEN ISNULL((SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK)  WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ),'')<>'' THEN (SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK)  WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) ELSE  LA016 END  AS '有效日期'
                             ,(SELECT TOP 1 TG040 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK) WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG040 ) AS '製造日期'
                             ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001>=@SDAY) AS '總銷售數量'
                             ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB002 IN ('106701') AND TB010=LA001 AND TB001>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
                             FROM [TK].dbo.INVLA WITH (NOLOCK) ,[TK].dbo.INVMB WITH (NOLOCK) 
                             WHERE LA009 IN ('21001')
                             AND LA001=MB001
-                            AND LA001 LIKE '40%'
+                            AND (LA001 LIKE '4%' OR LA001 LIKE '5%')
                             AND LA016 LIKE '2%'
                             AND MB002 NOT LIKE '%試吃%'
                             GROUP BY LA001,MB002,MB051,LA016
@@ -300,7 +300,7 @@ namespace TKKPI
                             FROM [TK].dbo.INVLA WITH (NOLOCK) ,[TK].dbo.INVMB WITH (NOLOCK) 
                             WHERE LA009 IN ('21002','30018')
                             AND LA001=MB001
-                            AND LA001 LIKE '40%'
+                            AND (LA001 LIKE '4%' OR LA001 LIKE '5%')
                             AND MB002 NOT LIKE '%試吃%'
                             GROUP BY LA001,MB002
                             HAVING SUM(LA005*LA011)>0
@@ -370,14 +370,14 @@ namespace TKKPI
    
                             FROM (
                             SELECT LA001,MB002,MB051,LA016,SUM(LA005*LA011) AS 'NUMS'
-                            ,(SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK) WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) AS '有效日期'
+                            ,CASE WHEN ISNULL((SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK)  WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ),'')<>'' THEN (SELECT TOP 1 TG018 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK)  WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG018 ) ELSE  LA016 END  AS '有效日期'
                             ,(SELECT TOP 1 TG040 FROM [TK].dbo.MOCTF WITH (NOLOCK) ,[TK].dbo.MOCTG WITH (NOLOCK) WHERE TF001=TG001 AND TF002=TG002 AND TG004=LA001 AND TG017=LA016 ORDER BY TG040 ) AS '製造日期'
                             ,(SELECT ISNULL(SUM(TH008),0) FROM [TK].dbo.COPTH,[TK].dbo.COPTG WITH (NOLOCK) WHERE TG001=TH001 AND TG002=TH002 AND TH020='Y' AND TH001 IN ('A233','A234') AND TH004=LA001 AND TG003>=@SDAY) AS '總銷售數量'
                             ,(SELECT ISNULL(SUM(TH008),0) FROM [TK].dbo.COPTH,[TK].dbo.COPTG WITH (NOLOCK) WHERE TG001=TH001 AND TG002=TH002 AND TH020='Y' AND TH001 IN ('A233','A234') AND TH004=LA001 AND TG003>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
                             FROM [TK].dbo.INVLA WITH (NOLOCK) ,[TK].dbo.INVMB WITH (NOLOCK) 
                             WHERE LA009 IN ('20017')
                             AND LA001=MB001
-                            AND LA001 LIKE '40%'
+                            AND (LA001 LIKE '4%' OR LA001 LIKE '5%')
                             AND LA016 LIKE '2%'
                             AND MB002 NOT LIKE '%試吃%'
                             GROUP BY LA001,MB002,MB051,LA016
