@@ -63,7 +63,7 @@ namespace TKKPI
             SQL1 = SETSQL();
             Report report1 = new Report();
 
-            report1.Load(@"REPORT\國內、外業務部業績日報表V2.frx");
+            report1.Load(@"REPORT\國內、外業務部業績日報表V3.frx");
 
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
