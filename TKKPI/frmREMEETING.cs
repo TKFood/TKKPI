@@ -71,7 +71,7 @@ namespace TKKPI
 
             SQL1 = SETSQL();
             Report report1 = new Report();
-            report1.Load(@"REPORT\未出訂單業績明細.frx");
+            report1.Load(@"REPORT\未出訂單業績明細V2.frx");
 
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
@@ -101,19 +101,20 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
             SB.AppendFormat(@" 
-                           SELECT 部門,業務員,交易幣別,SUM(金額) 金額,CONVERT(INT,SUM(未出金額)) 未出金額
+                           SELECT 部門,業務員,單別,單名,交易幣別,SUM(金額) 金額,CONVERT(INT,SUM(未出金額)) 未出金額
                             ,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額))  WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30  WHEN 交易幣別 IN ('HKD') THEN CONVERT(INT,SUM(未出金額))*4 END AS '本幣金額'
                             FROM (
-                            SELECT MV004 AS '部門',MV002 AS '業務員',TC008 AS '交易幣別',  (TD012) AS '金額' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'
-                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV
+                            SELECT MV004 AS '部門',MV002 AS '業務員',TC001 AS '單別',MQ002  AS '單名',TC008 AS '交易幣別',  (TD012) AS '金額' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'
+                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV,[TK].dbo.CMSMQ
                             WHERE TC001 = TD001 AND TC002 = TD002
                             AND TC006=MV001
+                            AND TC001=MQ001
                             AND TC027='Y'
                             AND TD013 >= '{0}' AND TD013 <= '{1}'
                             AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N'
                             ) AS TEMP
-                            GROUP BY 部門,業務員,交易幣別
-                            ORDER BY 部門,交易幣別
+                            GROUP BY 部門,業務員,交易幣別,單別,單名
+                            ORDER BY 單別,單名,業務員
 
                             ", dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
 

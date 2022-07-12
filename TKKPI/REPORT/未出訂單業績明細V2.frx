@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/28/2019 15:15:31" ReportInfo.Modified="07/12/2022 09:09:58" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/28/2019 15:15:31" ReportInfo.Modified="07/12/2022 14:06:35" ReportInfo.CreatorVersion="2016.4.4.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -82,14 +82,16 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9K3jF0NoURf2LT2vbgvvFBF">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT 部門,業務員,交易幣別,SUM(金額) 金額,CONVERT(INT,SUM(未出金額)) 未出金額&#13;&#10;,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額)) ELSE (CASE WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  ELSE ( CASE WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30 END ) END ) END AS '本幣金額'&#13;&#10;FROM (&#13;&#10;SELECT MV004 AS '部門',MV002 AS '業務員',TC008 AS '交易幣別',  (TD012) AS '金額' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'&#13;&#10;FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV&#13;&#10;WHERE TC001 = TD001 AND TC002 = TD002&#13;&#10;AND TC006=MV001&#13;&#10;AND TD013 &gt;= '20210101' AND TD013 &lt;= '20210131'&#13;&#10;AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N'&#13;&#10;) AS TEMP&#13;&#10;GROUP BY 部門,業務員,交易幣別&#13;&#10;ORDER BY 部門,交易幣別&#13;&#10;">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9KvG2pLY3m99otWdr1v7FqD">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT 部門,業務員,單別,單名,交易幣別,SUM(金額) 金額,CONVERT(INT,SUM(未出金額)) 未出金額&#13;&#10;,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額))  WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30  WHEN 交易幣別 IN ('HKD') THEN CONVERT(INT,SUM(未出金額))*4 END AS '本幣金額'&#13;&#10;FROM (&#13;&#10;SELECT MV004 AS '部門',MV002 AS '業務員',TC001 AS '單別',MQ002  AS '單名',TC008 AS '交易幣別',  (TD012) AS '金額' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'&#13;&#10;FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV,[TK].dbo.CMSMQ&#13;&#10;WHERE TC001 = TD001 AND TC002 = TD002&#13;&#10;AND TC006=MV001&#13;&#10;AND TC001=MQ001&#13;&#10;AND TC027='Y'&#13;&#10;AND TD013 &gt;= '20220712' AND TD013 &lt;= '20220731'&#13;&#10;AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N'&#13;&#10;) AS TEMP&#13;&#10;GROUP BY 部門,業務員,交易幣別,單別,單名&#13;&#10;ORDER BY 單別,單名,業務員">
         <Column Name="業務員" DataType="System.String"/>
         <Column Name="交易幣別" DataType="System.String"/>
         <Column Name="金額" DataType="System.Decimal"/>
         <Column Name="未出金額" DataType="System.Decimal"/>
         <Column Name="部門" DataType="System.String"/>
         <Column Name="本幣金額" DataType="System.Int32"/>
+        <Column Name="單別" DataType="System.String"/>
+        <Column Name="單名" DataType="System.String"/>
       </TableDataSource>
     </MsSqlDataConnection>
     <Parameter Name="P1" DataType="System.String"/>
@@ -100,25 +102,29 @@ namespace FastReport
     <ColumnHeaderBand Name="ColumnHeader1" Width="1047.06" Height="18.9">
       <TextObject Name="Text2" Left="160.65" Width="66.15" Height="18.9" Border.Lines="All" Text="部門" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text4" Left="226.8" Width="94.5" Height="18.9" Border.Lines="All" Text="業務員" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text6" Left="321.3" Width="75.6" Height="18.9" Border.Lines="All" Text="交易幣別" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text8" Left="396.9" Width="94.5" Height="18.9" Border.Lines="All" Text="訂單金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="500.85" Width="75.6" Height="18.9" Border.Lines="All" Text="交易幣別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="576.45" Width="94.5" Height="18.9" Border.Lines="All" Text="訂單金額" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text9" Width="160.65" Height="18.9" Border.Lines="All" Text="訂單區間" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text16" Left="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="未出金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text18" Left="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="未出金額台幣" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="670.95" Width="94.5" Height="18.9" Border.Lines="All" Text="未出金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="未出金額台幣" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="321.3" Width="66.15" Height="18.9" Border.Lines="All" Text="單別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="387.45" Width="113.4" Height="18.9" Border.Lines="All" Text="單名" HorzAlign="Center" VertAlign="Center"/>
     </ColumnHeaderBand>
     <DataBand Name="Data1" Top="23.39" Width="1047.06" Height="18.9" DataSource="Table">
       <TextObject Name="Text1" Left="160.65" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.部門]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text3" Left="226.8" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.業務員]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text5" Left="321.3" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table.交易幣別]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text7" Left="396.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text5" Left="500.85" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table.交易幣別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="576.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text10" Width="160.65" Height="18.9" Border.Lines="All" Text="[P1]~[P2]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text15" Left="491.4" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.未出金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text19" Left="585.9" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text19_BeforePrint" Text="[Table.本幣金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="670.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.未出金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text19" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text19_BeforePrint" Text="[Table.本幣金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="321.3" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.單別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="387.45" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table.單名]" HorzAlign="Center" VertAlign="Center"/>
     </DataBand>
     <ReportSummaryBand Name="ReportSummary1" Top="46.79" Width="1047.06" Height="37.8">
-      <TextObject Name="Text13" Width="491.4" Height="18.9" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text17" Left="491.4" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text14_BeforePrint" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text20" Left="585.9" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text20_BeforePrint" Text="[Total本幣金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Width="670.95" Height="18.9" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="670.95" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text14_BeforePrint" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text20_BeforePrint" Text="[Total本幣金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
     </ReportSummaryBand>
   </ReportPage>
 </Report>
