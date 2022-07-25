@@ -185,15 +185,16 @@ namespace TKKPI
                             SELECT USER_NAME AS '業務員',SALES AS '負責客戶數',COMS AS '拜訪客戶數',NOTES AS '拜訪次數',CONVERT(decimal(16,2),(CONVERT(decimal(16,2),COMS)/CONVERT(decimal(16,2),SALES))*100 ) AS '拜訪客戶完成率%'
                             ,ORDERS,USER_ID,USER_ACCOUNT
                             FROM (
-                            SELECT [ORDERS],[USER_ID],[USER_NAME],[USER_ACCOUNT]
+                            SELECT 0 [ORDERS],[USER_ID],[USER_NAME],[USER_ACCOUNT]
                             ,(SELECT COUNT(DISTINCT  [COMPANY_ID]) FROM  [192.168.1.223].[HJ_BM_DB].[dbo].[tb_COMPANY] WHERE [STATUS]='1' AND [COMPANY_NAME] NOT LIKE '%停用%' AND [OWNER_ID]=[USER_ID]) AS 'SALES'
                             ,(SELECT COUNT(DISTINCT  [tb_NOTE].[COMPANY_ID]) FROM  [192.168.1.223].[HJ_BM_DB].[dbo].[tb_NOTE], [192.168.1.223].[HJ_BM_DB].[dbo].[tb_COMPANY] WHERE [STATUS]='1' AND [tb_NOTE].COMPANY_ID=[tb_COMPANY].COMPANY_ID AND [OWNER_ID]=[USER_ID]  AND CONVERT(nvarchar,[tb_NOTE].[CREATE_DATETIME],112)>='{0}'  AND CONVERT(nvarchar,[tb_NOTE].[CREATE_DATETIME],112)<='{1}') AS 'COMS'
                             ,(SELECT COUNT([tb_NOTE].[COMPANY_ID]) FROM  [192.168.1.223].[HJ_BM_DB].[dbo].[tb_NOTE], [192.168.1.223].[HJ_BM_DB].[dbo].[tb_COMPANY] WHERE [STATUS]='1' AND [tb_NOTE].COMPANY_ID=[tb_COMPANY].COMPANY_ID AND [OWNER_ID]=[USER_ID]  AND CONVERT(nvarchar,[tb_NOTE].[CREATE_DATETIME],112)>='{0}'  AND CONVERT(nvarchar,[tb_NOTE].[CREATE_DATETIME],112)<='{1}') AS 'NOTES'
-                            FROM  [192.168.1.223].[HJ_BM_DB].[dbo].[COPSALES]
-                            WHERE [USER_ACCOUNT] NOT IN ('120003','170007')
+                            FROM  [TK].dbo.CMSMV, [192.168.1.223].[HJ_BM_DB].[dbo].[tb_USER]
+                            WHERE MV001=[tb_USER].[USER_ACCOUNT]
+                            AND MV001 IN ('100005','160155','140078','200050')
 
                             ) AS TEMP
-                            ORDER BY [ORDERS]  
+                            ORDER BY [ORDERS]   
 
                             ", FirstDay, LastDay);
 
