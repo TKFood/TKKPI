@@ -471,6 +471,71 @@ namespace TKKPI
 
             }
         }
+
+
+        public void SETFASTREPORT2(string SDATES,string EDATES)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+
+            SQL1.AppendFormat(@"
+                                SELECT  TA001 AS '日期',TA002 AS '門市代',MA002 AS '門市',NUMS AS '成交筆數',MMS AS '交易金額',CLINETS AS '來客數',CARS AS '團車數'
+                                FROM 
+                                (
+                                SELECT TA001,TA002,MA002,COUNT(TA001) AS NUMS,SUM(TA026) AS MMS
+                                ,(SELECT SUM(Fout_data) FROM [TKMK].[dbo].[View_t_visitors] WHERE TT002=TA002 AND Fdate1=TA001) AS 'CLINETS'
+                                ,(SELECT SUM([CARNUM]) FROM [TKMK].[dbo].[GROUPSALES] WHERE CONVERT(NVARCHAR,[CREATEDATES],112)= TA001) AS 'CARS'
+                                FROM [TK].dbo.POSTA,[TK].dbo.WSCMA
+                                WHERE 1=1
+                                AND TA002=MA001
+                                AND TA002 IN ('106701') 
+                                AND TA001>='{0}' AND TA001<='{1}'
+                                GROUP BY TA001,TA002,MA002
+                                UNION ALL
+                                SELECT TA001,TA002,MA002,COUNT(TA001) AS NUMS,SUM(TA026) AS MMS
+                                ,(SELECT SUM(Fin_data+Fout_data)/2 FROM [TKMK].[dbo].[View_t_visitors] WHERE TT002=TA002 AND Fdate1=TA001) AS 'CLINETS'
+                                ,0 AS 'CARS'
+                                FROM [TK].dbo.POSTA,[TK].dbo.WSCMA
+                                WHERE 1=1
+                                AND TA002=MA001
+                                AND TA002 IN ('106501','106502','106503','106504') 
+                                AND TA001>='{0}' AND TA001<='{1}'
+                                GROUP BY TA001,TA002,MA002
+                                ) 
+                                AS TEMP
+                                ORDER BY TA002,MA002,TA001
+                                ", SDATES, EDATES);
+
+
+            Report report1 = new Report();
+            report1.Load(@"REPORT\每日來客報表.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+   
+
+
+            report1.Preview = previewControl2;
+            report1.Show();
+        }
+
+     
+
+
         #endregion
 
         #region BUTTON
@@ -481,6 +546,10 @@ namespace TKKPI
         private void button1_Click(object sender, EventArgs e)
         {
             ADDTKMKt_visitors();
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT2(dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
         }
         #endregion
 

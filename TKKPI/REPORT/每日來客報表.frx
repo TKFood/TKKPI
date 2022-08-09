@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/09/2022 14:40:31" ReportInfo.Modified="08/09/2022 14:43:25" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEp1FmmtPVwe7IAIQFhOdHo">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT  TA001 AS '日期',TA002 AS '門市代',MA002 AS '門市',NUMS AS '成交筆數',MMS AS '交易金額',CLINETS AS '來客數',CARS AS '團車數'&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT TA001,TA002,MA002,COUNT(TA001) AS NUMS,SUM(TA026) AS MMS&#13;&#10;,(SELECT SUM(Fout_data) FROM [TKMK].[dbo].[View_t_visitors] WHERE TT002=TA002 AND Fdate1=TA001) AS 'CLINETS'&#13;&#10;,(SELECT SUM([CARNUM]) FROM [TKMK].[dbo].[GROUPSALES] WHERE CONVERT(NVARCHAR,[CREATEDATES],112)= TA001) AS 'CARS'&#13;&#10;FROM [TK].dbo.POSTA,[TK].dbo.WSCMA&#13;&#10;WHERE 1=1&#13;&#10;AND TA002=MA001&#13;&#10;AND TA002 IN ('106701') &#13;&#10;AND TA001&gt;='20220729' AND TA001&lt;='20220808'&#13;&#10;GROUP BY TA001,TA002,MA002&#13;&#10;UNION ALL&#13;&#10;SELECT TA001,TA002,MA002,COUNT(TA001) AS NUMS,SUM(TA026) AS MMS&#13;&#10;,(SELECT SUM(Fin_data+Fout_data)/2 FROM [TKMK].[dbo].[View_t_visitors] WHERE TT002=TA002 AND Fdate1=TA001) AS 'CLINETS'&#13;&#10;,0 AS 'CARS'&#13;&#10;FROM [TK].dbo.POSTA,[TK].dbo.WSCMA&#13;&#10;WHERE 1=1&#13;&#10;AND TA002=MA001&#13;&#10;AND TA002 IN ('106501','106502','106503','106504') &#13;&#10;AND TA001&gt;='20220729' AND TA001&lt;='20220808'&#13;&#10;GROUP BY TA001,TA002,MA002&#13;&#10;) &#13;&#10;AS TEMP&#13;&#10;ORDER BY TA002,MA002,TA001">
+        <Column Name="日期" DataType="System.String"/>
+        <Column Name="門市代" DataType="System.String"/>
+        <Column Name="門市" DataType="System.String"/>
+        <Column Name="成交筆數" DataType="System.Int32"/>
+        <Column Name="交易金額" DataType="System.Decimal"/>
+        <Column Name="來客數" DataType="System.Int32"/>
+        <Column Name="團車數" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="37.8">
+      <TextObject Name="Text1" Width="1039.5" Height="18.9" Text="每日來客報表" HorzAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="42.29" Width="1047.06" Height="18.9">
+      <TextObject Name="Text3" Width="94.5" Height="18.9" Border.Lines="All" Text="日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="門市代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="189" Width="151.2" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" Text="成交筆數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="434.7" Width="94.5" Height="18.9" Border.Lines="All" Text="交易金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="來客數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="團車數" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="65.69" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.門市代]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="189" Width="151.2" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.門市]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="340.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.成交筆數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="434.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交易金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.來客數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.團車數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="89.08" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>
