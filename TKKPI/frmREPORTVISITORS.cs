@@ -58,7 +58,7 @@ namespace TKKPI
             StringBuilder SQL5 = new StringBuilder();
             StringBuilder SQL6 = new StringBuilder();
 
-            SQL1 = SETSQL();
+            SQL1 = SETSQL(); 
             SQL2 = SETSQL2();
             SQL3 = SETSQL3();
             SQL4 = SETSQL4();
@@ -276,7 +276,7 @@ namespace TKKPI
                             GROUP BY TT002,STORESNAME,YEARS,MONTHS,WEEKDAY,DAYOFWEEK
                             ORDER BY TT002,STORESNAME,YEARS,MONTHS,WEEKDAY,DAYOFWEEK
  
-                            ", dateTimePicker1.Value.ToString("yyyy"));
+                            ", dateTimePicker1.Value.ToString("yyyy")); 
 
             return SB;
 
