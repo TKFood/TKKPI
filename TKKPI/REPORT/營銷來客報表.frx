@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="03/02/2022 10:51:15" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="10/24/2022 08:48:44" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUF6eqPvgOpCvjuVaz6E32WT">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHwbQ6quDjdfTx4Z0tZUIVj" CommandTimeout="60">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT  ME001,ME002,YEARS,MONTHS,SUM(TT008) SUMTT008,SUM(TT018)/SUM(TT008) AS 'AVGTT018',SUM(TT018) SUMTT018&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT ME001,ME002,TT001,SUBSTRING(TT001,1,4) AS 'YEARS',SUBSTRING(TT001,5,2)  AS 'MONTHS',TT018,TT008&#13;&#10;FROM [TK].dbo.POSTT,[TK].dbo.CMSME&#13;&#10;WHERE TT002=ME001&#13;&#10;AND TT001 LIKE '2022%'&#13;&#10;) AS TEMP&#13;&#10;WHERE ME001 LIKE '106%'&#13;&#10;GROUP BY ME001,ME002,YEARS,MONTHS&#13;&#10;ORDER BY ME001,ME002,YEARS,MONTHS">
         <Column Name="YEARS" DataType="System.String"/>
         <Column Name="MONTHS" DataType="System.Int32"/>

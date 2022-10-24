@@ -81,7 +81,7 @@ namespace TKKPI
 
             report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
 
-
+             
             TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
             table.SelectCommand = SQL1.ToString();
             TableDataSource table1 = report1.GetDataSource("Table1") as TableDataSource;
