@@ -99,9 +99,13 @@ namespace TKKPI
             report1.Preview = previewControl1;
             report1.Show();
         }
-
+        /// <summary>
+        /// 查詢各門市的各月
+        /// </summary>
+        /// <returns></returns>
         public StringBuilder SETSQL()
         {
+            
             StringBuilder SB = new StringBuilder();
                
             SB.AppendFormat(@" 
@@ -121,6 +125,10 @@ namespace TKKPI
             return SB;
 
         }
+        /// <summary>
+        /// 查詢各門市的各週
+        /// </summary>
+        /// <returns></returns>
         public StringBuilder SETSQL2()
         {
             StringBuilder SB = new StringBuilder();
@@ -155,6 +163,10 @@ namespace TKKPI
             return SB;
 
         }
+        /// <summary>
+        /// 查詢各門市的各月的交易時間 
+        /// </summary>
+        /// <returns></returns>
 
         public StringBuilder SETSQL3()
         {
@@ -192,7 +204,10 @@ namespace TKKPI
             return SB;
 
         }
-
+        /// <summary>
+        /// 找最近的前10筆
+        /// </summary>
+        /// <returns></returns>
         public StringBuilder SETSQL4()
         {
             StringBuilder SB = new StringBuilder();
@@ -224,7 +239,10 @@ namespace TKKPI
             return SB;
 
         }
-
+        /// <summary>
+        /// 查詢各門市的各月的交易星期
+        /// </summary>
+        /// <returns></returns>
         public StringBuilder SETSQL5()
         {
             StringBuilder SB = new StringBuilder();
@@ -263,7 +281,10 @@ namespace TKKPI
             return SB;
 
         }
-
+        /// <summary>
+        /// 查詢各門市的各月
+        /// </summary>
+        /// <returns></returns>
         public StringBuilder SETSQL6()
         {
             StringBuilder SB = new StringBuilder();
