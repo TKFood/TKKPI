@@ -558,7 +558,66 @@ namespace TKKPI
             report1.Show();
         }
 
-     
+
+        public void SETFASTREPORT3(string YY,string MM)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+
+
+            SQL1.AppendFormat(@"
+                               
+                                SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS SUMNUMS
+                                ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
+                                ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
+                                FROM [TKMK].[dbo].[View_t_visitors]
+                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                                 AND YEARS='{0}'
+                                AND MONTHS='{1}'
+                                GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
+
+                                UNION ALL
+                                SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fout_data) AS SUMNUMS
+                                ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
+                                ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
+                                FROM [TKMK].[dbo].[View_t_visitors]
+                                WHERE  TT002 IN ('106701') 
+                                AND YEARS='{0}'
+                                AND MONTHS='{1}'
+              
+                                GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
+                                ORDER BY View_t_visitors.TT002,Fdate1
+
+                                ", YY,MM);
+
+
+            Report report1 = new Report();
+            report1.Load(@"REPORT\來客數-每月.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+
+            report1.Preview = previewControl3;
+            report1.Show();
+        }
+
+
 
 
         #endregion
@@ -575,6 +634,10 @@ namespace TKKPI
         private void button2_Click(object sender, EventArgs e)
         {
             SETFASTREPORT2(dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyyMMdd"));
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT3(dateTimePicker4.Value.Year.ToString(), dateTimePicker4.Value.Month.ToString());
         }
         #endregion
 
