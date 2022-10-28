@@ -43,6 +43,9 @@ namespace TKKPI
         string tablename = null;
         int rownum = 0;
 
+        SqlTransaction tran;
+        int result;
+
         public frmREPORTVISITORS()
         {
             InitializeComponent();
@@ -364,6 +367,7 @@ namespace TKKPI
                     if(table.Rows.Count>0)
                     {
                         ADDTOTKMKt_visitors(table);
+                        UPDATEt_visitors();
                     }
 
                     else
@@ -636,7 +640,71 @@ namespace TKKPI
         }
 
 
+        public void UPDATEt_visitors()
+        {
 
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"
+                                     UPDATE [TKMK].[dbo].[t_visitors]
+                                    SET [TT002]= [t_STORESNAME].[TT002],[STORESNAME]=[t_STORESNAME].[STORESNAME]
+                                    FROM [TKMK].[dbo].[t_STORESNAME]
+                                    WHERE [t_STORESNAME].[Fdevice_sn]=[t_visitors].[Fdevice_sn]
+                                    AND ISNULL([t_visitors].[TT002],'')=''
+
+                                    ");
+
+
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+
+
+                }
+                else
+                {
+                    tran.Commit();      //執行交易                    
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+
+
+        }
 
         #endregion
 
