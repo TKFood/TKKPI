@@ -473,6 +473,24 @@ namespace TKKPI
                 {
                     DataTable dt = dtt_visitors;
                     bulkCopy.DestinationTableName = "t_visitors";
+
+                    //對應資料行
+                    //bulkCopy.ColumnMappings.Add("DataTable的欄位A", "資料庫裡的資料表的的欄位A");
+                    bulkCopy.ColumnMappings.Add("Fuid", "Fuid");
+                    bulkCopy.ColumnMappings.Add("Fvisit_md5", "Fvisit_md5");
+                    bulkCopy.ColumnMappings.Add("Fdevice_sn", "Fdevice_sn");
+                    bulkCopy.ColumnMappings.Add("Fdate", "Fdate");
+                    bulkCopy.ColumnMappings.Add("Fin_data", "Fin_data");
+                    bulkCopy.ColumnMappings.Add("Fout_data", "Fout_data");
+                    bulkCopy.ColumnMappings.Add("Fcreate_time", "Fcreate_time");
+                    bulkCopy.ColumnMappings.Add("Fdata_version", "Fdata_version");
+                    bulkCopy.ColumnMappings.Add("Fbatvoltage", "Fbatvoltage");
+                    bulkCopy.ColumnMappings.Add("Fbatpercent", "Fbatpercent");
+                    bulkCopy.ColumnMappings.Add("Flosefocus", "Flosefocus");
+                    bulkCopy.ColumnMappings.Add("Fcharge", "Fcharge");
+                    bulkCopy.ColumnMappings.Add("Ftemperature", "Ftemperature");
+                    bulkCopy.ColumnMappings.Add("id", "id");
+
                     bulkCopy.BatchSize = 1000;
                     bulkCopy.BulkCopyTimeout = 60;
 
