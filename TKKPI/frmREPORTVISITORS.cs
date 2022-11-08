@@ -610,7 +610,7 @@ namespace TKKPI
                                 GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
                                 ORDER BY View_t_visitors.TT002,Fdate1
 
-                                ", YY,MM);
+                                ", YY,MM); 
 
 
             Report report1 = new Report();
