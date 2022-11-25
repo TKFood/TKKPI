@@ -640,6 +640,89 @@ namespace TKKPI
         }
 
 
+        public void SETFASTREPORT4(string YY, string MM)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+              
+
+            SQL1.AppendFormat(@"
+                                SELECT TT002 AS '門代'
+                                ,STORESNAME AS '門店'
+                                ,YEARS AS '年'
+                                ,MONTHS AS '月'
+                                ,WEEKS AS '週'
+                                ,Fdate1 AS '日'
+                                ,DAYOFWEEK AS '星期'
+                                ,SUMNUMS AS '來客數'
+                                ,SUMTT011 AS '銷售金額'
+                                ,COUNTSTA001 AS '交易筆數'
+                                ,SUMSTB019 AS '交易商品數'
+                                ,(CASE WHEN SUMNUMS>0 AND COUNTSTA001>0 THEN CONVERT(DECIMAL(16,2),((CONVERT(DECIMAL(16,4),COUNTSTA001)/CONVERT(DECIMAL(16,4),SUMNUMS))*100)) ELSE 0 END ) AS '提袋率'
+                                ,(CASE WHEN SUMNUMS>0 AND SUMTT011>0 THEN CONVERT(DECIMAL(16,0),SUMTT011/SUMNUMS) ELSE 0 END ) AS '客單價'
+                                ,(CASE WHEN SUMTT011>0 AND COUNTSTA001>0 THEN CONVERT(DECIMAL(16,0),SUMTT011/COUNTSTA001) ELSE 0 END ) AS '每單單價'
+                                ,(CASE WHEN SUMSTB019>0 AND COUNTSTA001>0 THEN CONVERT(DECIMAL(16,2),SUMSTB019/COUNTSTA001) ELSE 0 END ) AS '每單平均商品數'
+
+                                FROM 
+                                (
+                                SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS SUMNUMS
+                                ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
+                                ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT  WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
+                                ,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'
+                                ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
+                                FROM [TKMK].[dbo].[View_t_visitors]
+                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                                AND YEARS='{0}'
+                                AND MONTHS='{1}'
+                                GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
+
+                                UNION ALL
+                                SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fout_data) AS SUMNUMS
+                                ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
+                                ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WITH(NOLOCK)  WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
+                                ,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'
+                                ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
+                                FROM [TKMK].[dbo].[View_t_visitors]
+                                WHERE  TT002 IN ('106701') 
+                                AND YEARS='{0}'
+                                AND MONTHS='{1}'
+              
+                                GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
+                                ) AS TEMP
+                                ORDER BY TT002,Fdate1
+
+                                
+
+                                ", YY, MM);
+
+
+            Report report1 = new Report();
+            report1.Load(@"REPORT\營銷-每日明細.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+
+            report1.Preview = previewControl4;
+            report1.Show();
+        }
+
+
         public void UPDATEt_visitors()
         {
 
@@ -725,6 +808,11 @@ namespace TKKPI
         {
             SETFASTREPORT3(dateTimePicker4.Value.Year.ToString(), dateTimePicker4.Value.Month.ToString());
         }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT4(dateTimePicker5.Value.Year.ToString(), dateTimePicker5.Value.Month.ToString());
+        }
+
         #endregion
 
 
