@@ -643,7 +643,7 @@ namespace TKKPI
         public void SETFASTREPORT4(string YY, string MM)
         { 
             StringBuilder SQL1 = new StringBuilder();
-
+             
                
 
             SQL1.AppendFormat(@"
