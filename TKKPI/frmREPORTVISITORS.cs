@@ -644,7 +644,7 @@ namespace TKKPI
         { 
             StringBuilder SQL1 = new StringBuilder();
 
-              
+               
 
             SQL1.AppendFormat(@"
                                 SELECT TT002 AS '門代'
