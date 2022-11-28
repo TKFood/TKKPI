@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/28/2022 10:18:15" ReportInfo.Modified="11/28/2022 11:49:40" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGfGA5ZrxGbs/4YeMK69p9Z">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20221128 pos每單單價分布&#13;&#10;SELECT TA002 AS '門市代號',MA002  AS '門市',TA004 AS '交易日期',TA005 AS '交易時間',TA026 AS '交易金額'&#13;&#10;FROM [TK].dbo.POSTA WITH(NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002&#13;&#10;WHERE 1=1&#13;&#10;AND TA002 IN ('106501','106502','106503','106504','106701','106702')&#13;&#10;AND  TA004&gt;='20221101' AND TA004&lt;='20221131'&#13;&#10;ORDER BY TA002,TA004,TA005,TA006&#13;&#10;">
+        <Column Name="門市" DataType="System.String"/>
+        <Column Name="交易日期" DataType="System.String"/>
+        <Column Name="交易時間" DataType="System.String"/>
+        <Column Name="交易金額" DataType="System.Decimal"/>
+        <Column Name="門市代號" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="18.9">
+      <TextObject Name="Text12" Width="472.5" Height="18.9" Border.Lines="All" Text="每單單價分布" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="23.39" Width="718.2" Height="18.9">
+      <TextObject Name="Text3" Width="94.5" Height="18.9" Border.Lines="All" Text="門市代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="交易日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="交易時間" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="交易金額" HorzAlign="Center" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="46.79" Width="718.2" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Left="-9450" Top="-9450" Width="94.5" Height="18.9" Border.Lines="All"/>
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門市代號]"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門市]"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.交易日期]"/>
+      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.交易時間]"/>
+      <TextObject Name="Text10" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.交易金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+</Report>
