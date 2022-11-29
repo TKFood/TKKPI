@@ -65,8 +65,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.dateTimePicker6 = new System.Windows.Forms.DateTimePicker();
             this.button6 = new System.Windows.Forms.Button();
-            this.previewControl5 = new FastReport.Preview.PreviewControl();
             this.dateTimePicker7 = new System.Windows.Forms.DateTimePicker();
+            this.previewControl5 = new FastReport.Preview.PreviewControl();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -102,11 +102,11 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -245,7 +245,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(976, 672);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "每日明細";
+            this.tabPage2.Text = "每日來車";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // splitContainer2
@@ -674,6 +674,17 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // dateTimePicker7
+            // 
+            this.dateTimePicker7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dateTimePicker7.CustomFormat = "yyyy/MM/dd";
+            this.dateTimePicker7.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker7.Location = new System.Drawing.Point(304, 13);
+            this.dateTimePicker7.Margin = new System.Windows.Forms.Padding(4);
+            this.dateTimePicker7.Name = "dateTimePicker7";
+            this.dateTimePicker7.Size = new System.Drawing.Size(142, 27);
+            this.dateTimePicker7.TabIndex = 25;
+            // 
             // previewControl5
             // 
             this.previewControl5.BackColor = System.Drawing.SystemColors.AppWorkspace;
@@ -686,17 +697,6 @@
             this.previewControl5.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.previewControl5.Size = new System.Drawing.Size(972, 525);
             this.previewControl5.TabIndex = 11;
-            // 
-            // dateTimePicker7
-            // 
-            this.dateTimePicker7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.dateTimePicker7.CustomFormat = "yyyy/MM/dd";
-            this.dateTimePicker7.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker7.Location = new System.Drawing.Point(304, 13);
-            this.dateTimePicker7.Margin = new System.Windows.Forms.Padding(4);
-            this.dateTimePicker7.Name = "dateTimePicker7";
-            this.dateTimePicker7.Size = new System.Drawing.Size(142, 27);
-            this.dateTimePicker7.TabIndex = 25;
             // 
             // frmREPORTVISITORS
             // 
