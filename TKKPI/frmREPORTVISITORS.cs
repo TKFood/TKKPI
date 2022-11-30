@@ -834,7 +834,7 @@ namespace TKKPI
 
         public void SETFASTREPORT6(string SDATE, string EDATE)
         {
-            StringBuilder SQL1 = new StringBuilder();
+            StringBuilder SQL1 = new StringBuilder(); 
 
 
 
