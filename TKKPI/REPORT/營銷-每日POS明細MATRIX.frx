@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/30/2022 14:54:08" ReportInfo.Modified="11/30/2022 16:18:05" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFCJNk0K7CFEkb1NKmAOCDi">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT 門市代號,門市&#13;&#10;,SUM(M500) AS 'M500' &#13;&#10;,SUM(M1000) AS 'M1000' &#13;&#10;,SUM(M1500) AS 'M1500' &#13;&#10;,SUM(M2000) AS 'M2000' &#13;&#10;,SUM(M2500) AS 'M2500' &#13;&#10;,SUM(M3000) AS 'M3000' &#13;&#10;,SUM(M3500) AS 'M3500' &#13;&#10;,SUM(M4000) AS 'M4000' &#13;&#10;,SUM(M4500) AS 'M4500' &#13;&#10;,SUM(M5000) AS 'M5000' &#13;&#10;,SUM(M5500) AS 'M5500' &#13;&#10;,SUM(M6000) AS 'M6000' &#13;&#10;,SUM(M6500) AS 'M6500' &#13;&#10;,SUM(M7000) AS 'M7000' &#13;&#10;,SUM(M7500) AS 'M7500' &#13;&#10;,SUM(M8000) AS 'M8000' &#13;&#10;,SUM(M8500) AS 'M8500' &#13;&#10;,SUM(M9000) AS 'M9000' &#13;&#10;,SUM(M9500) AS 'M9500' &#13;&#10;,SUM(M10000) AS 'M10000' &#13;&#10;,SUM(M20000) AS 'M20000' &#13;&#10;,SUM(M30000) AS 'M30000' &#13;&#10;,SUM(M30001) AS 'M30001' &#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT TA002 AS '門市代號',MA002  AS '門市',TA004 AS '交易日期',TA005 AS '交易時間',TA026 AS '交易金額'&#13;&#10;, (CASE WHEN TA026&gt;0 AND TA026&lt;500 THEN 1 ELSE 0 END ) AS 'M500'&#13;&#10;, (CASE WHEN TA026&gt;=500 AND TA026&lt;1000 THEN 1 ELSE 0 END ) AS 'M1000'&#13;&#10;, (CASE WHEN TA026&gt;=1000 AND TA026&lt;1500 THEN 1 ELSE 0 END ) AS 'M1500'&#13;&#10;, (CASE WHEN TA026&gt;=1500 AND TA026&lt;2000 THEN 1 ELSE 0 END ) AS 'M2000'&#13;&#10;, (CASE WHEN TA026&gt;=2000 AND TA026&lt;2500 THEN 1 ELSE 0 END ) AS 'M2500'&#13;&#10;, (CASE WHEN TA026&gt;=2500 AND TA026&lt;3000 THEN 1 ELSE 0 END ) AS 'M3000'&#13;&#10;, (CASE WHEN TA026&gt;=3000 AND TA026&lt;3500 THEN 1 ELSE 0 END ) AS 'M3500'&#13;&#10;, (CASE WHEN TA026&gt;=3500 AND TA026&lt;4000 THEN 1 ELSE 0 END ) AS 'M4000'&#13;&#10;, (CASE WHEN TA026&gt;=4000 AND TA026&lt;4500 THEN 1 ELSE 0 END ) AS 'M4500'&#13;&#10;, (CASE WHEN TA026&gt;=4500 AND TA026&lt;5000 THEN 1 ELSE 0 END ) AS 'M5000'&#13;&#10;, (CASE WHEN TA026&gt;=5000 AND TA026&lt;5500 THEN 1 ELSE 0 END ) AS 'M5500'&#13;&#10;, (CASE WHEN TA026&gt;=5500 AND TA026&lt;6000 THEN 1 ELSE 0 END ) AS 'M6000'&#13;&#10;, (CASE WHEN TA026&gt;=6000 AND TA026&lt;6500 THEN 1 ELSE 0 END ) AS 'M6500'&#13;&#10;, (CASE WHEN TA026&gt;=6500 AND TA026&lt;7000 THEN 1 ELSE 0 END ) AS 'M7000'&#13;&#10;, (CASE WHEN TA026&gt;=7000 AND TA026&lt;7500 THEN 1 ELSE 0 END ) AS 'M7500'&#13;&#10;, (CASE WHEN TA026&gt;=7500 AND TA026&lt;8000 THEN 1 ELSE 0 END ) AS 'M8000'&#13;&#10;, (CASE WHEN TA026&gt;=8000 AND TA026&lt;8500 THEN 1 ELSE 0 END ) AS 'M8500'&#13;&#10;, (CASE WHEN TA026&gt;=8500 AND TA026&lt;9000 THEN 1 ELSE 0 END ) AS 'M9000'&#13;&#10;, (CASE WHEN TA026&gt;=9000 AND TA026&lt;9500 THEN 1 ELSE 0 END ) AS 'M9500'&#13;&#10;, (CASE WHEN TA026&gt;=9500 AND TA026&lt;10000 THEN 1 ELSE 0 END ) AS 'M10000'&#13;&#10;, (CASE WHEN TA026&gt;=10000 AND TA026&lt;20000 THEN 1 ELSE 0 END ) AS 'M20000'&#13;&#10;, (CASE WHEN TA026&gt;=20000 AND TA026&lt;30000 THEN 1 ELSE 0 END ) AS 'M30000'&#13;&#10;, (CASE WHEN TA026&gt;=30000  THEN 1 ELSE 0 END ) AS 'M30001'&#13;&#10;&#13;&#10;&#13;&#10;FROM [TK].dbo.POSTA WITH(NOLOCK)&#13;&#10;LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002&#13;&#10;WHERE 1=1&#13;&#10;AND TA002 IN ('106501','106502','106503','106504','106701','106702')&#13;&#10;AND  TA004&gt;='20221101' AND TA004&lt;='20221131'&#13;&#10;) AS  TEMP &#13;&#10;GROUP BY 門市代號,門市&#13;&#10;ORDER BY 門市代號,門市">
+        <Column Name="門市代號" DataType="System.String"/>
+        <Column Name="門市" DataType="System.String"/>
+        <Column Name="M500" DataType="System.Int32"/>
+        <Column Name="M1000" DataType="System.Int32"/>
+        <Column Name="M1500" DataType="System.Int32"/>
+        <Column Name="M2000" DataType="System.Int32"/>
+        <Column Name="M2500" DataType="System.Int32"/>
+        <Column Name="M3000" DataType="System.Int32"/>
+        <Column Name="M3500" DataType="System.Int32"/>
+        <Column Name="M4000" DataType="System.Int32"/>
+        <Column Name="M4500" DataType="System.Int32"/>
+        <Column Name="M5000" DataType="System.Int32"/>
+        <Column Name="M5500" DataType="System.Int32"/>
+        <Column Name="M6000" DataType="System.Int32"/>
+        <Column Name="M6500" DataType="System.Int32"/>
+        <Column Name="M7000" DataType="System.Int32"/>
+        <Column Name="M7500" DataType="System.Int32"/>
+        <Column Name="M8000" DataType="System.Int32"/>
+        <Column Name="M8500" DataType="System.Int32"/>
+        <Column Name="M9000" DataType="System.Int32"/>
+        <Column Name="M9500" DataType="System.Int32"/>
+        <Column Name="M10000" DataType="System.Int32"/>
+        <Column Name="M20000" DataType="System.Int32"/>
+        <Column Name="M30000" DataType="System.Int32"/>
+        <Column Name="M30001" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="800" PaperHeight="210">
+    <ColumnHeaderBand Name="ColumnHeader1" Width="2948.4" Height="37.8">
+      <TextObject Name="Text2" Width="94.5" Height="37.8" Border.Lines="All" Text="門市代號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="37.8" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="37.8" Border.Lines="All" Text="0~500" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="37.8" Border.Lines="All" Text="500~1000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="378" Width="94.5" Height="37.8" Border.Lines="All" Text="1000~1500" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="472.5" Width="94.5" Height="37.8" Border.Lines="All" Text="1500~2000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="567" Width="94.5" Height="37.8" Border.Lines="All" Text="2000~2500" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="661.5" Width="94.5" Height="37.8" Border.Lines="All" Text="2500~3000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="756" Width="94.5" Height="37.8" Border.Lines="All" Text="3000~3500" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="850.5" Width="94.5" Height="37.8" Border.Lines="All" Text="3500~4000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="945" Width="94.5" Height="37.8" Border.Lines="All" Text="4000~4500" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="1039.5" Width="94.5" Height="37.8" Border.Lines="All" Text="4500~5000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text30" Left="1134" Width="94.5" Height="37.8" Border.Lines="All" Text="5000~5500" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text32" Left="1228.5" Width="94.5" Height="37.8" Border.Lines="All" Text="5500~6000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text34" Left="1323" Width="94.5" Height="37.8" Border.Lines="All" Text="6000~6500" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text36" Left="1417.5" Width="94.5" Height="37.8" Border.Lines="All" Text="6500~7000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text38" Left="1512" Width="94.5" Height="37.8" Border.Lines="All" Text="7000~7500" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text40" Left="1606.5" Width="94.5" Height="37.8" Border.Lines="All" Text="7500~8000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text42" Left="1701" Width="94.5" Height="37.8" Border.Lines="All" Text="8000~8500" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text44" Left="1795.5" Width="94.5" Height="37.8" Border.Lines="All" Text="8500~9000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text46" Left="1890" Width="94.5" Height="37.8" Border.Lines="All" Text="9000~9500" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text48" Left="1984.5" Width="94.5" Height="37.8" Border.Lines="All" Text="9500~10000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text50" Left="2079" Width="94.5" Height="37.8" Border.Lines="All" Text="10000~20000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text52" Left="2173.5" Width="94.5" Height="37.8" Border.Lines="All" Text="20000~30000" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text54" Left="2268" Width="94.5" Height="37.8" Border.Lines="All" Text="30001以上" HorzAlign="Center" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="42.29" Width="2948.4" Height="18.9" DataSource="Table">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門市代號]" VertAlign="Center"/>
+      <TextObject Name="Text3" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門市]" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M500]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M1000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M1500]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M2000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M2500]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="661.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M3000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="756" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M3500]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M4000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="945" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M4500]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="1039.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M5000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="1134" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M5500]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text31" Left="1228.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M6000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text33" Left="1323" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M6500]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text35" Left="1417.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M7000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text37" Left="1512" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M7500]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text39" Left="1606.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M8000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text41" Left="1701" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M8500]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text43" Left="1795.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M9000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text45" Left="1890" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M9500]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text47" Left="1984.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M10000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text49" Left="2079" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M20000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text51" Left="2173.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M30000]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text53" Left="2268" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.M30001]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+    </DataBand>
+  </ReportPage>
+</Report>

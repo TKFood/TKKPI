@@ -832,6 +832,104 @@ namespace TKKPI
             report1.Show();
         }
 
+        public void SETFASTREPORT6(string SDATE, string EDATE)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+
+
+            SQL1.AppendFormat(@"
+                               SELECT 門市代號,門市
+                                ,SUM(M500) AS 'M500' 
+                                ,SUM(M1000) AS 'M1000' 
+                                ,SUM(M1500) AS 'M1500' 
+                                ,SUM(M2000) AS 'M2000' 
+                                ,SUM(M2500) AS 'M2500' 
+                                ,SUM(M3000) AS 'M3000' 
+                                ,SUM(M3500) AS 'M3500' 
+                                ,SUM(M4000) AS 'M4000' 
+                                ,SUM(M4500) AS 'M4500' 
+                                ,SUM(M5000) AS 'M5000' 
+                                ,SUM(M5500) AS 'M5500' 
+                                ,SUM(M6000) AS 'M6000' 
+                                ,SUM(M6500) AS 'M6500' 
+                                ,SUM(M7000) AS 'M7000' 
+                                ,SUM(M7500) AS 'M7500' 
+                                ,SUM(M8000) AS 'M8000' 
+                                ,SUM(M8500) AS 'M8500' 
+                                ,SUM(M9000) AS 'M9000' 
+                                ,SUM(M9500) AS 'M9500' 
+                                ,SUM(M10000) AS 'M10000' 
+                                ,SUM(M20000) AS 'M20000' 
+                                ,SUM(M30000) AS 'M30000' 
+                                ,SUM(M30001) AS 'M30001' 
+                                FROM 
+                                (
+                                SELECT TA002 AS '門市代號',MA002  AS '門市',TA004 AS '交易日期',TA005 AS '交易時間',TA026 AS '交易金額'
+                                , (CASE WHEN TA026>0 AND TA026<500 THEN 1 ELSE 0 END ) AS 'M500'
+                                , (CASE WHEN TA026>=500 AND TA026<1000 THEN 1 ELSE 0 END ) AS 'M1000'
+                                , (CASE WHEN TA026>=1000 AND TA026<1500 THEN 1 ELSE 0 END ) AS 'M1500'
+                                , (CASE WHEN TA026>=1500 AND TA026<2000 THEN 1 ELSE 0 END ) AS 'M2000'
+                                , (CASE WHEN TA026>=2000 AND TA026<2500 THEN 1 ELSE 0 END ) AS 'M2500'
+                                , (CASE WHEN TA026>=2500 AND TA026<3000 THEN 1 ELSE 0 END ) AS 'M3000'
+                                , (CASE WHEN TA026>=3000 AND TA026<3500 THEN 1 ELSE 0 END ) AS 'M3500'
+                                , (CASE WHEN TA026>=3500 AND TA026<4000 THEN 1 ELSE 0 END ) AS 'M4000'
+                                , (CASE WHEN TA026>=4000 AND TA026<4500 THEN 1 ELSE 0 END ) AS 'M4500'
+                                , (CASE WHEN TA026>=4500 AND TA026<5000 THEN 1 ELSE 0 END ) AS 'M5000'
+                                , (CASE WHEN TA026>=5000 AND TA026<5500 THEN 1 ELSE 0 END ) AS 'M5500'
+                                , (CASE WHEN TA026>=5500 AND TA026<6000 THEN 1 ELSE 0 END ) AS 'M6000'
+                                , (CASE WHEN TA026>=6000 AND TA026<6500 THEN 1 ELSE 0 END ) AS 'M6500'
+                                , (CASE WHEN TA026>=6500 AND TA026<7000 THEN 1 ELSE 0 END ) AS 'M7000'
+                                , (CASE WHEN TA026>=7000 AND TA026<7500 THEN 1 ELSE 0 END ) AS 'M7500'
+                                , (CASE WHEN TA026>=7500 AND TA026<8000 THEN 1 ELSE 0 END ) AS 'M8000'
+                                , (CASE WHEN TA026>=8000 AND TA026<8500 THEN 1 ELSE 0 END ) AS 'M8500'
+                                , (CASE WHEN TA026>=8500 AND TA026<9000 THEN 1 ELSE 0 END ) AS 'M9000'
+                                , (CASE WHEN TA026>=9000 AND TA026<9500 THEN 1 ELSE 0 END ) AS 'M9500'
+                                , (CASE WHEN TA026>=9500 AND TA026<10000 THEN 1 ELSE 0 END ) AS 'M10000'
+                                , (CASE WHEN TA026>=10000 AND TA026<20000 THEN 1 ELSE 0 END ) AS 'M20000'
+                                , (CASE WHEN TA026>=20000 AND TA026<30000 THEN 1 ELSE 0 END ) AS 'M30000'
+                                , (CASE WHEN TA026>=30000  THEN 1 ELSE 0 END ) AS 'M30001'
+
+
+                                FROM [TK].dbo.POSTA WITH(NOLOCK)
+                                LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002
+                                WHERE 1=1
+                                AND TA002 IN ('106501','106502','106503','106504','106701','106702')
+                                AND  TA004>='{0}' AND TA004<='{1}'
+                                ) AS  TEMP 
+                                GROUP BY 門市代號,門市
+                                ORDER BY 門市代號,門市
+
+                                ", SDATE, EDATE);
+
+
+            Report report1 = new Report();
+            report1.Load(@"REPORT\營銷-每日POS明細MATRIX.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+
+
+            report1.Preview = previewControl6;
+            report1.Show();
+        }
+
+
         #endregion
 
         #region BUTTON
@@ -859,6 +957,7 @@ namespace TKKPI
         private void button6_Click(object sender, EventArgs e)
         {
             SETFASTREPORT5(dateTimePicker6.Value.ToString("yyyyMMdd"), dateTimePicker7.Value.ToString("yyyyMMdd"));
+            SETFASTREPORT6(dateTimePicker6.Value.ToString("yyyyMMdd"), dateTimePicker7.Value.ToString("yyyyMMdd"));
         }
         #endregion
 
