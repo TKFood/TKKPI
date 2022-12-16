@@ -646,7 +646,7 @@ namespace TKKPI
              
                
 
-            SQL1.AppendFormat(@"
+            SQL1.AppendFormat(@" 
                                
                                 SELECT TT002 AS '門代'
                                 ,STORESNAME AS '門店'
