@@ -63,7 +63,7 @@ namespace TKKPI
             SQL1 = SETSQL();
             Report report1 = new Report();
 
-            report1.Load(@"REPORT\國內、外業務部業績日報表V4.frx");
+            report1.Load(@"REPORT\國內、外業務部業績日報表V5.frx");
 
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
@@ -93,8 +93,8 @@ namespace TKKPI
             string LastDay = dateTimePicker1.Value.ToString("yyyyMM") + "31";
 
             StringBuilder SB = new StringBuilder();
-
-
+             
+             
             SB.AppendFormat(@"   
                            --20220712 業務員日 報表
                             --20210910 業務員日 報表
@@ -121,9 +121,9 @@ namespace TKKPI
                             ,國外洪櫻芬銷退
                             ,國外葉枋俐銷貨
                             ,國外葉枋俐銷退
-                            ,(國內張釋予銷貨+國內張釋予銷退+國內蔡顏鴻銷貨+國內蔡顏鴻銷退+國內何姍怡銷貨+國內何姍怡銷退+國內洪櫻芬銷貨+國內洪櫻芬銷退+官網及現銷銷貨+官網及現銷銷退+全聯銷貨) AS '國內業務合計'
+                            ,(國內張釋予銷貨+國內張釋予銷退+國內蔡顏鴻銷貨+國內蔡顏鴻銷退+國內何姍怡銷貨+國內何姍怡銷退+國內洪櫻芬銷貨+國內洪櫻芬銷退+全聯銷貨) AS '國內業務合計'
                             ,(國外洪櫻芬銷貨+國外洪櫻芬銷退+國外葉枋俐銷貨+國外葉枋俐銷退) AS '國外業務合計'
-                            ,(國內張釋予銷貨+國內張釋予銷退+國內蔡顏鴻銷貨+國內蔡顏鴻銷退+國內何姍怡銷貨+國內何姍怡銷退+國內洪櫻芬銷貨+國內洪櫻芬銷退+官網及現銷銷貨+官網及現銷銷退+全聯銷貨+國外洪櫻芬銷貨+國外洪櫻芬銷退+國外葉枋俐銷貨+國外葉枋俐銷退) AS '總計'
+                            ,(國內張釋予銷貨+國內張釋予銷退+國內蔡顏鴻銷貨+國內蔡顏鴻銷退+國內何姍怡銷貨+國內何姍怡銷退+國內洪櫻芬銷貨+國內洪櫻芬銷退+全聯銷貨+國外洪櫻芬銷貨+國外洪櫻芬銷退+國外葉枋俐銷貨+國外葉枋俐銷退) AS '總計'
                             ,(SELECT ISNULL(INTARGETMONEYS,0) FROM [TK].[dbo].[ZTARGETMONEYS] WHERE YEARSMOTNS=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6)) AS '國內月目標業績'
                             ,(SELECT ISNULL([OUTTARGETMONEYS],0) FROM [TK].[dbo].[ZTARGETMONEYS] WHERE YEARSMOTNS=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6)) AS '國外月目標業績'
                             ,(SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND SUBSTRING(TG003,1,6)=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6) AND TG023='Y' AND (TG004 LIKE '1%' OR TG004 LIKE '2%' OR TG004 LIKE 'A2%' OR TG004 LIKE 'B2%') AND (TG004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%'))  AND TG006 IN ('200050','140078','100005','160155','170007') ) AS '國內月總銷貨'
@@ -557,7 +557,7 @@ namespace TKKPI
             SQL1 = SETSQL();
             Report report1 = new Report();
 
-            report1.Load(@"REPORT\國內、外業務部業績日報表V2.frx");
+            report1.Load(@"REPORT\國內、外業務部業績日報表V5.frx");
 
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
