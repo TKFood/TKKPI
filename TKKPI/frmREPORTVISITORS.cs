@@ -63,7 +63,7 @@ namespace TKKPI
 
             SQL1 = SETSQL(); 
             SQL2 = SETSQL2();
-            SQL3 = SETSQL3();
+            SQL3 = SETSQL3(); 
             SQL4 = SETSQL4();
             SQL5 = SETSQL5();
             SQL6 = SETSQL6();

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="02/01/2023 09:50:46" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="02/01/2023 11:14:59" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHVOGUq4EE0hEwcDeJRCny5" CommandTimeout="90">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEy2SdIrwWAiJWn2OiEBl9y" CommandTimeout="90">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT  ME001,ME002,YEARS,MONTHS,SUM(TT008) SUMTT008,SUM(TT018)/SUM(TT008) AS 'AVGTT018',SUM(TT018) SUMTT018&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT ME001,ME002,TT001,SUBSTRING(TT001,1,4) AS 'YEARS',SUBSTRING(TT001,5,2)  AS 'MONTHS',TT018,TT008&#13;&#10;FROM [TK].dbo.POSTT,[TK].dbo.CMSME&#13;&#10;WHERE TT002=ME001&#13;&#10;AND TT001 LIKE '2022%'&#13;&#10;) AS TEMP&#13;&#10;WHERE ME001 LIKE '106%'&#13;&#10;GROUP BY ME001,ME002,YEARS,MONTHS&#13;&#10;ORDER BY ME001,ME002,YEARS,MONTHS">
         <Column Name="YEARS" DataType="System.String"/>
         <Column Name="MONTHS" DataType="System.Int32"/>
@@ -172,10 +172,10 @@
       <TextObject Name="Text39" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="來客數" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text41" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="月份" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text43" Left="567" Width="56.7" Height="18.9" Border.Lines="All" Text="天數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text45" Left="718.2" Width="113.4" Height="18.9" Border.Lines="All" Text="銷售總金額(POS機)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text45" Left="907.2" Width="113.4" Height="18.9" Border.Lines="All" Text="銷售總金額(POS機)" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text85" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="成交筆數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text87" Left="831.6" Width="94.5" Height="18.9" Border.Lines="All" Text="提袋率%" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text89" Left="926.1" Width="94.5" Height="18.9" Border.Lines="All" Text="平均客單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text87" Left="718.2" Width="94.5" Height="18.9" Border.Lines="All" Text="提袋率%" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text89" Left="812.7" Width="94.5" Height="18.9" Border.Lines="All" Text="平均客單價" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
     <DataBand Name="Data3" Top="23.39" Width="1047.06" Height="18.9" DataSource="Table2">
       <TextObject Name="Text30" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.TT002]" HorzAlign="Center" VertAlign="Center"/>
@@ -185,10 +185,10 @@
       <TextObject Name="Text38" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.NUMS]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text40" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.MONTHS]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text42" Left="567" Width="56.7" Height="18.9" Border.Lines="All" Text="[Table2.DAYSS]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text44" Left="718.2" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table2.SUMTA026]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text44" Left="907.2" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table2.SUMTA026]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text84" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.COUNTSTA026]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
-      <TextObject Name="Text86" Left="831.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.PCTS]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text88" Left="926.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.AVGTA026]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text86" Left="718.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.PCTS]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text88" Left="812.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table2.AVGTA026]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
     <PageFooterBand Name="PageFooter3" Top="46.79" Width="1047.06" Height="18.9"/>
   </ReportPage>
@@ -202,9 +202,9 @@
       <TextObject Name="Text65" Left="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="週數" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text67" Left="737.1" Width="94.5" Height="18.9" Border.Lines="All" Text="每週來客數" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text69" Left="831.6" Width="75.6" Height="18.9" Border.Lines="All" Text="成交筆數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text71" Left="907.2" Width="113.4" Height="18.9" Border.Lines="All" Text="銷售總金額(POS機)" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text73" Left="1020.6" Width="94.5" Height="18.9" Border.Lines="All" Text="提袋率%" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text75" Left="1115.1" Width="94.5" Height="18.9" Border.Lines="All" Text="平均客單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text71" Left="1096.2" Width="113.4" Height="18.9" Border.Lines="All" Text="銷售總金額(POS機)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text73" Left="907.2" Width="94.5" Height="18.9" Border.Lines="All" Text="提袋率%" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text75" Left="1001.7" Width="94.5" Height="18.9" Border.Lines="All" Text="平均客單價" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text112" Left="359.1" Width="94.5" Height="18.9" Border.Lines="All" Text="月份" HorzAlign="Center" VertAlign="Center"/>
     </ReportTitleBand>
     <DataBand Name="Data5" Top="23.39" Width="1209.6" Height="18.9" DataSource="Table4">
@@ -216,9 +216,9 @@
       <TextObject Name="Text64" Left="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table4.WEEKSCOUNTS]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
       <TextObject Name="Text66" Left="737.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table4.NUMSAVGS]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
       <TextObject Name="Text68" Left="831.6" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table4.SUMTT008]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text70" Left="907.2" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table4.SUMTT011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text72" Left="1020.6" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table4.PCTS]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text74" Left="1115.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table4.AVGTT011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text70" Left="1096.2" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table4.SUMTT011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text72" Left="907.2" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table4.PCTS]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text74" Left="1001.7" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table4.AVGTT011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text113" Left="359.1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table4.MONTHS]" HorzAlign="Center" VertAlign="Center"/>
     </DataBand>
     <PageFooterBand Name="PageFooter4" Top="46.79" Width="1209.6"/>
