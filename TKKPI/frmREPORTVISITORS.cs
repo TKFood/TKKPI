@@ -936,7 +936,7 @@ namespace TKKPI
         #region BUTTON
         private void button4_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT();
+            SETFASTREPORT(); 
         }
         private void button1_Click(object sender, EventArgs e)
         {
