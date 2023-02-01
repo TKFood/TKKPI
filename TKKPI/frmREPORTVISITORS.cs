@@ -62,7 +62,7 @@ namespace TKKPI
             StringBuilder SQL6 = new StringBuilder();
 
             SQL1 = SETSQL(); 
-            SQL2 = SETSQL2();
+            SQL2 = SETSQL2(); 
             SQL3 = SETSQL3(); 
             SQL4 = SETSQL4();
             SQL5 = SETSQL5();

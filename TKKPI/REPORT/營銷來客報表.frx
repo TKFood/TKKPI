@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="02/01/2023 11:14:59" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/04/2022 16:39:55" ReportInfo.Modified="02/01/2023 11:34:10" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEy2SdIrwWAiJWn2OiEBl9y" CommandTimeout="90">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUH4PxQGAd/L6RrP+bHeO6Fe" CommandTimeout="90">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT  ME001,ME002,YEARS,MONTHS,SUM(TT008) SUMTT008,SUM(TT018)/SUM(TT008) AS 'AVGTT018',SUM(TT018) SUMTT018&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT ME001,ME002,TT001,SUBSTRING(TT001,1,4) AS 'YEARS',SUBSTRING(TT001,5,2)  AS 'MONTHS',TT018,TT008&#13;&#10;FROM [TK].dbo.POSTT,[TK].dbo.CMSME&#13;&#10;WHERE TT002=ME001&#13;&#10;AND TT001 LIKE '2022%'&#13;&#10;) AS TEMP&#13;&#10;WHERE ME001 LIKE '106%'&#13;&#10;GROUP BY ME001,ME002,YEARS,MONTHS&#13;&#10;ORDER BY ME001,ME002,YEARS,MONTHS">
         <Column Name="YEARS" DataType="System.String"/>
         <Column Name="MONTHS" DataType="System.Int32"/>
@@ -198,7 +198,7 @@
       <TextObject Name="Text57" Left="94.5" Width="170.1" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text59" Left="264.6" Width="94.5" Height="18.9" Border.Lines="All" Text="年度" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text61" Left="453.6" Width="94.5" Height="18.9" Border.Lines="All" Text="星期" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text63" Left="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="來客數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text63" Left="548.1" Width="94.5" Height="18.9" Border.Lines="All" Text="總來客數" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text65" Left="642.6" Width="94.5" Height="18.9" Border.Lines="All" Text="週數" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text67" Left="737.1" Width="94.5" Height="18.9" Border.Lines="All" Text="每週來客數" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text69" Left="831.6" Width="75.6" Height="18.9" Border.Lines="All" Text="成交筆數" HorzAlign="Center" VertAlign="Center"/>
