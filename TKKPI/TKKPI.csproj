@@ -113,6 +113,12 @@
     <Compile Include="frmACTCompany.Designer.cs">
       <DependentUpon>frmACTCompany.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmACTREPOSRT1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmACTREPOSRT1.Designer.cs">
+      <DependentUpon>frmACTREPOSRT1.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmACTYEARSMONTHSEMP.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -303,6 +309,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmACTCompany.resx">
       <DependentUpon>frmACTCompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmACTREPOSRT1.resx">
+      <DependentUpon>frmACTREPOSRT1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmACTYEARSMONTHSEMP.resx">
       <DependentUpon>frmACTYEARSMONTHSEMP.cs</DependentUpon>

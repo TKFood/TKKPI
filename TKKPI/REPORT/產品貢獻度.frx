@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/31/2023 11:15:48" ReportInfo.Modified="03/31/2023 13:46:50" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUF7XTPhLkpG+x1i2lM86hHc">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT *&#13;&#10;,RANK() OVER (ORDER BY 本期銷貨額 DESC) AS '銷貨排名'&#13;&#10;,本期銷貨額/SUM(本期銷貨額) OVER() AS '銷售比重'&#13;&#10;,(本期銷貨額-成本總額)/SUM((本期銷貨額-成本總額)) OVER() AS '毛利額比重'&#13;&#10;,RANK() OVER (ORDER BY (CASE WHEN  (本期銷貨額-成本總額)&gt;0 AND 本期銷貨額&gt;0 THEN (本期銷貨額-成本總額)/本期銷貨額 ELSE 0 END) DESC) AS '毛利率排名'&#13;&#10;,(CASE WHEN 本期銷貨額&gt;0 AND 成本總額&gt;0 THEN 本期銷貨額/成本總額 ELSE 0 END )AS '產品週轉率'&#13;&#10;,RANK() OVER (ORDER BY (CASE WHEN 本期銷貨額&gt;0 AND 成本總額&gt;0 THEN (本期銷貨額/成本總額) ELSE 0 END ) DESC) AS '週轉排名'&#13;&#10;,((SELECT SUM([SUMLA013])  FROM [TK].[dbo].[ZINVLASUM] WHERE [ZINVLASUM].MB001=TEMP.品號 AND DATES&gt;='20230101' AND DATES&lt;='20230131')/31) AS '平均存貨額'&#13;&#10;,((本期銷貨額-成本總額)/SUM((本期銷貨額-成本總額)) OVER()*(CASE WHEN 本期銷貨額&gt;0 AND 成本總額&gt;0 THEN 本期銷貨額/成本總額 ELSE 0 END )) AS '交叉比率'&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT  MB001 AS '品號', MB002 AS '商品/類別',MB003 AS '規格',MB004 AS '單位',SUM(LA017) AS '本期銷貨額'&#13;&#10;,SUM(LA024) AS '成本總額'&#13;&#10;,SUM(LA017-LA024) AS '毛利總額'&#13;&#10;,(CASE WHEN SUM(LA017-LA024)&gt;0 AND SUM(LA017)&gt;0 THEN (SUM(LA017-LA024)/SUM(LA017)) ELSE 0 END) AS '毛利率'&#13;&#10;FROM [TK].dbo.INVMB,[TK].dbo.SASLA&#13;&#10;WHERE MB001=LA005&#13;&#10;AND (MB001 LIKE '4%' OR MB001 LIKE '5%')&#13;&#10;AND MB001 NOT LIKE '49%'&#13;&#10;AND MB001 NOT LIKE '59%'&#13;&#10;AND CONVERT(NVARCHAR, LA015, 112) &gt;= '20230101' AND  CONVERT(NVARCHAR, LA015, 112) &lt;= '20230131'&#13;&#10;GROUP BY MB001, MB002,MB003,MB004&#13;&#10;) AS TEMP&#13;&#10;ORDER BY 本期銷貨額 DESC&#13;&#10;">
+        <Column Name="本期銷貨額" DataType="System.Decimal"/>
+        <Column Name="成本總額" DataType="System.Decimal"/>
+        <Column Name="毛利總額" DataType="System.Decimal"/>
+        <Column Name="毛利率" DataType="System.Decimal"/>
+        <Column Name="銷貨排名" DataType="System.Int64"/>
+        <Column Name="銷售比重" DataType="System.Decimal"/>
+        <Column Name="毛利額比重" DataType="System.Decimal"/>
+        <Column Name="毛利率排名" DataType="System.Int64"/>
+        <Column Name="產品週轉率" DataType="System.Decimal"/>
+        <Column Name="週轉排名" DataType="System.Int64"/>
+        <Column Name="平均存貨額" DataType="System.Decimal"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="商品/類別" DataType="System.String"/>
+        <Column Name="規格" DataType="System.String"/>
+        <Column Name="單位" DataType="System.String"/>
+        <Column Name="交叉比率" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="500" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1814.4" Height="18.9">
+      <TextObject Name="Text1" Width="1814.4" Height="18.9" Text="產品貢獻度" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="23.5" Width="1814.4" Height="18.9">
+      <TextObject Name="Text3" Width="132.3" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="132.3" Width="226.8" Height="18.9" Border.Lines="All" Text="商品/類別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="359.1" Width="226.8" Height="18.9" Border.Lines="All" Text="規格" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="585.9" Width="94.5" Height="18.9" Border.Lines="All" Text="單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="680.4" Width="94.5" Height="18.9" Border.Lines="All" Text="平均存貨額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="774.9" Width="94.5" Height="18.9" Border.Lines="All" Text="本期銷貨額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="869.4" Width="94.5" Height="18.9" Border.Lines="All" Text="銷貨排名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="963.9" Width="94.5" Height="18.9" Border.Lines="All" Text="銷售比重" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="1058.4" Width="94.5" Height="18.9" Border.Lines="All" Text="成本總額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="1152.9" Width="94.5" Height="18.9" Border.Lines="All" Text="毛利總額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="1247.4" Width="94.5" Height="18.9" Border.Lines="All" Text="毛利率" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="1341.9" Width="94.5" Height="18.9" Border.Lines="All" Text="毛利額比重" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="1436.4" Width="94.5" Height="18.9" Border.Lines="All" Text="毛利率排名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="1530.9" Width="94.5" Height="18.9" Border.Lines="All" Text="產品週轉率" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text31" Left="1625.4" Width="94.5" Height="18.9" Border.Lines="All" Text="週轉排名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text33" Left="1719.9" Width="94.5" Height="18.9" Border.Lines="All" Text="交叉比率" HorzAlign="Center" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="47" Width="1814.4" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="132.3" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="132.3" Width="226.8" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.商品/類別]" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="359.1" Width="226.8" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.規格]" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="585.9" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.單位]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="680.4" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.平均存貨額]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="774.9" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.本期銷貨額]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text14" Left="869.4" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.銷貨排名]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="963.9" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.銷售比重]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text18" Left="1058.4" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.成本總額]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text20" Left="1152.9" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.毛利總額]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text22" Left="1247.4" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.毛利率]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text24" Left="1341.9" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.毛利額比重]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text26" Left="1436.4" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.毛利率排名]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="1530.9" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.產品週轉率]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text30" Left="1625.4" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.週轉排名]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text32" Left="1719.9" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交叉比率]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+</Report>
