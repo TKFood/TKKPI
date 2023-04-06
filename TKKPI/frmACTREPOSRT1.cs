@@ -207,6 +207,91 @@ namespace TKKPI
             return SB;
 
         }
+
+        public void ADD_ZINVLASUM(string YM)
+        {
+            string SDAY = YM + "01";
+            string EDAY = YM + "31";
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+
+                sbSql.AppendFormat(@" 
+                                    DECLARE @date AS DATE = '{0}'
+                                    DECLARE @endDate AS DATE = '{1}'
+
+                                    DELETE [TK].[dbo].[ZINVLASUM] WHERE [DATES]>=@date AND [DATES]<=@endDate
+
+                                    WHILE @date <= @endDate
+                                    BEGIN
+	                                    INSERT INTO [TK].[dbo].[ZINVLASUM]
+	                                    ([MB001],[DATES],[SUMLA011],[SUMLA013])
+                                       SELECT  MB001,CONVERT(NVARCHAR,@date,112),0,0
+	                                    FROM [TK].dbo.INVMB
+	                                    WHERE 1=1
+	                                    AND (MB001 LIKE '4%' OR MB001 LIKE '5%')
+	                                    AND MB001 NOT LIKE '49%'
+	                                    AND MB001 NOT LIKE '59%'
+                                        SET @date = DATEADD(day, 1, @date)
+                                    END
+
+                                    UPDATE [TK].[dbo].[ZINVLASUM]
+                                    SET [SUMLA013]=INVLASUMLA013, [SUMLA011]=INVLASUMLA011
+                                    FROM
+                                    (
+                                    SELECT [MB001],[DATES]
+                                    ,(SELECT ISNULL(SUM(LA005*LA013),0) FROM [TK].dbo.INVLA WHERE LA001=[ZINVLASUM].MB001 AND LA004<=[DATES]) AS INVLASUMLA013
+                                    ,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA WHERE LA001=[ZINVLASUM].MB001 AND LA004<=[DATES]) AS INVLASUMLA011
+                                    FROM [TK].[dbo].[ZINVLASUM]
+                                    ) AS TEMP
+                                    WHERE TEMP.MB001=[ZINVLASUM].MB001 AND TEMP.[DATES]=[ZINVLASUM].[DATES]
+                                    ", SDAY, EDAY);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -218,8 +303,12 @@ namespace TKKPI
         {
             SETFASTREPORT2(dateTimePicker2.Value.ToString("yyyyMM"), dateTimePicker3.Value.ToString("yyyyMM"));
         }
+
         #endregion
 
-
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ADD_ZINVLASUM(dateTimePicker4.Value.ToString("yyyyMM"));
+        }
     }
 }
