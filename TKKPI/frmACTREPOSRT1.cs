@@ -231,6 +231,7 @@ namespace TKKPI
                 sqlConn.Open();
                 tran = sqlConn.BeginTransaction();
 
+                sbSql.Clear();
 
                 sbSql.AppendFormat(@" 
                                     DECLARE @date AS DATE = '{0}'
@@ -264,7 +265,7 @@ namespace TKKPI
                                     ", SDAY, EDAY);
 
                 cmd.Connection = sqlConn;
-                cmd.CommandTimeout = 60;
+                cmd.CommandTimeout = 60*20;
                 cmd.CommandText = sbSql.ToString();
                 cmd.Transaction = tran;
                 result = cmd.ExecuteNonQuery();
@@ -272,10 +273,14 @@ namespace TKKPI
                 if (result == 0)
                 {
                     tran.Rollback();    //交易取消
+
+                    MessageBox.Show("錯誤");
                 }
                 else
                 {
                     tran.Commit();      //執行交易  
+
+                    MessageBox.Show("完成");
 
                 }
 
