@@ -110,10 +110,11 @@ namespace TKKPI
                                 ,((本期銷貨額-成本總額)/SUM((本期銷貨額-成本總額)) OVER()*(CASE WHEN 本期銷貨額>0 AND 成本總額>0 THEN 本期銷貨額/成本總額 ELSE 0 END )) AS '交叉比率'
                                 FROM 
                                 (
-                                SELECT  MB001 AS '品號', MB002 AS '商品/類別',MB003 AS '規格',MB004 AS '單位',SUM(LA017) AS '本期銷貨額'
+                                SELECT  MB001 AS '品號', MB002 AS '商品/類別',MB003 AS '規格',MB004 AS '單位',SUM(LA017-LA020-LA022-LA023) AS '本期銷貨額'
                                 ,SUM(LA024) AS '成本總額'
-                                ,SUM(LA017-LA024) AS '毛利總額'
-                                ,(CASE WHEN SUM(LA017-LA024)>0 AND SUM(LA017)>0 THEN (SUM(LA017-LA024)/SUM(LA017)) ELSE 0 END) AS '毛利率'
+                                ,SUM(LA017-LA020-LA022-LA023-LA024) AS '毛利總額'
+                                ,(CASE WHEN SUM(LA017-LA020-LA022-LA023-LA024)>0 AND SUM(LA017-LA020-LA022-LA023)>0 THEN (SUM(LA017-LA020-LA022-LA023-LA024)/SUM(LA017-LA020-LA022-LA023)) ELSE 0 END) AS '毛利率'
+
                                 FROM [TK].dbo.INVMB,[TK].dbo.SASLA
                                 WHERE MB001=LA005
                                 AND (MB001 LIKE '4%' OR MB001 LIKE '5%')
@@ -188,10 +189,11 @@ namespace TKKPI
                                 ,((本期銷貨額-成本總額)/SUM((本期銷貨額-成本總額)) OVER()*(CASE WHEN 本期銷貨額>0 AND 成本總額>0 THEN 本期銷貨額/成本總額 ELSE 0 END )) AS '交叉比率'
                                 FROM 
                                 (
-                                SELECT  MB001 AS '品號', MB002 AS '商品/類別',MB003 AS '規格',MB004 AS '單位',SUM(LA017) AS '本期銷貨額'
+                                 SELECT  MB001 AS '品號', MB002 AS '商品/類別',MB003 AS '規格',MB004 AS '單位',SUM(LA017-LA020-LA022-LA023) AS '本期銷貨額'
                                 ,SUM(LA024) AS '成本總額'
-                                ,SUM(LA017-LA024) AS '毛利總額'
-                                ,(CASE WHEN SUM(LA017-LA024)>0 AND SUM(LA017)>0 THEN (SUM(LA017-LA024)/SUM(LA017)) ELSE 0 END) AS '毛利率'
+                                ,SUM(LA017-LA020-LA022-LA023-LA024) AS '毛利總額'
+                                ,(CASE WHEN SUM(LA017-LA020-LA022-LA023-LA024)>0 AND SUM(LA017-LA020-LA022-LA023)>0 THEN (SUM(LA017-LA020-LA022-LA023-LA024)/SUM(LA017-LA020-LA022-LA023)) ELSE 0 END) AS '毛利率'
+
                                 FROM [TK].dbo.INVMB,[TK].dbo.SASLA
                                 WHERE MB001=LA005
                                 AND (MB001 LIKE '4%' OR MB001 LIKE '5%')
@@ -205,7 +207,7 @@ namespace TKKPI
 
 
             return SB;
-
+             
         }
 
         public void ADD_ZINVLASUM(string YM)
