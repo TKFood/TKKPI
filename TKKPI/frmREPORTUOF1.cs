@@ -50,11 +50,11 @@ namespace TKKPI
         }
 
         #region FUNCTION
-        public void SETFASTREPORT()
+        public void SETFASTREPORT(string SUBJECT,string NAMES)
         {
             StringBuilder SQL1 = new StringBuilder();
 
-            SQL1 = SETSQL();
+            SQL1 = SETSQL(SUBJECT, NAMES);
             Report report1 = new Report();
 
             report1.Load(@"REPORT\UOF交辨追踨.frx");
@@ -82,11 +82,36 @@ namespace TKKPI
         }
 
         //      --AND TB_EIP_SCH_WORK.SUBJECT  LIKE '%校稿%'
-        public StringBuilder SETSQL()
+        public StringBuilder SETSQL(string SUBJECT,string NAMES)
         {          
 
             StringBuilder SB = new StringBuilder();
+            StringBuilder SBQUERY = new StringBuilder();
+            StringBuilder SBQUERY1 = new StringBuilder();
 
+            if (!string.IsNullOrEmpty(SUBJECT))
+            {
+                SBQUERY.AppendFormat(@" 
+                                     AND TB_EIP_SCH_WORK.SUBJECT  LIKE '%{0}%'
+                                        ", SUBJECT);
+            }
+            else
+            {
+                SBQUERY.AppendFormat(@" 
+                                        ");
+            }
+
+            if (!string.IsNullOrEmpty(NAMES))
+            {
+                SBQUERY1.AppendFormat(@" 
+                                     AND TB_EB_USER.NAME LIKE '%{0}%'
+                                        ", NAMES);
+            }
+            else
+            {
+                SBQUERY1.AppendFormat(@" 
+                                        ");
+            }
 
             SB.AppendFormat(@"   
                             
@@ -113,15 +138,17 @@ namespace TKKPI
                             LEFT JOIN [UOF].dbo.TB_EB_USER ON TB_EB_USER.USER_GUID=TB_EIP_SCH_WORK.EXECUTE_USER
                             LEFT JOIN [UOF].dbo.TB_EB_USER USER2 ON USER2.USER_GUID=TB_EIP_SCH_DEVOLVE.DIRECTOR
 
-                            WHERE 1=1
-                      
+                            WHERE 1=1                      
                             AND TB_EIP_SCH_WORK.WORK_STATE  IN ('NotYetBegin','Proceeding')
                             AND TB_EIP_SCH_DEVOLVE.DEVOLVE_GUID NOT IN (SELECT [DEVOLVE_GUID]  FROM [UOF].[dbo].[Z_TB_EIP_SCH_DEVOLVE_IGNORES])
+                            {0}
+                            {1}
+
                             ORDER BY CONVERT(nvarchar,TB_EIP_SCH_WORK.END_TIME,111) 
 
 
 
-                            ");
+                            ", SBQUERY.ToString(), SBQUERY1.ToString());
 
 
             return SB;
@@ -134,7 +161,7 @@ namespace TKKPI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT();
+            SETFASTREPORT(textBox1.Text.Trim(), textBox2.Text.Trim());
         }
         #endregion
     }
