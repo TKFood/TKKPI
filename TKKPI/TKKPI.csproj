@@ -275,6 +275,12 @@
     <Compile Include="frmREPORTSWEEKS.Designer.cs">
       <DependentUpon>frmREPORTSWEEKS.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTUOF1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTUOF1.Designer.cs">
+      <DependentUpon>frmREPORTUOF1.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmREPORTVISITORS.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -390,6 +396,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTSWEEKS.resx">
       <DependentUpon>frmREPORTSWEEKS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTUOF1.resx">
+      <DependentUpon>frmREPORTUOF1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTVISITORS.resx">
       <DependentUpon>frmREPORTVISITORS.cs</DependentUpon>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/27/2023 14:07:24" ReportInfo.Modified="04/27/2023 14:43:02" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8UCRz3pFThovAyioQZrmSGyLpZuMiVUEbjT9s5BjO1weTRB0lSkmrANKsmPIiGxxqCe98y1MRhb4s7i4p794bbbXTln8ZELqSNTC5TIGXx5grZI8pem6fQVi/PW28P5w38/u/bSxkOXcmPCnOVhQQE66YIzgnVYTM/sIC/GhDAyOpSX3DuGdxnzSsLpXIwnBag==">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20230427 查交辨&#13;&#10;SELECT &#13;&#10;(CASE WHEN  DATEDIFF(DAY, TB_EIP_SCH_WORK.END_TIME, getdate())&gt;0 THEN DATEDIFF(DAY, TB_EIP_SCH_WORK.END_TIME, getdate()) ELSE 0 END) AS '逾時天數'&#13;&#10;,USER2.NAME AS '交辨人'&#13;&#10;,CONVERT(nvarchar,TB_EIP_SCH_WORK.END_TIME,111) AS '交辨預計要求完成日期'&#13;&#10;,CONVERT(nvarchar,TB_EIP_SCH_WORK.CREATE_TIME,111) AS '交辨開始日期'&#13;&#10;,TB_EIP_SCH_DEVOLVE.SUBJECT AS '校稿區內容'&#13;&#10;,TB_EIP_SCH_WORK.SUBJECT AS '交辨項目'&#13;&#10;,TB_EIP_SCH_WORK.EXECUTE_USER AS '被交辨人ID'&#13;&#10;,TB_EIP_SCH_WORK.WORK_STATE AS 'WORK_STATE'&#13;&#10;,(ISNULL(TB_EIP_SCH_WORK.PROCEEDING_DESC,'')+ISNULL(TB_EIP_SCH_WORK.COMPLETE_DESC,''))  AS '交辨回覆'&#13;&#10;,TB_EB_USER.NAME AS '被交辨人'&#13;&#10;,(CASE  WHEN TB_EIP_SCH_WORK.WORK_STATE='Completed' THEN '審稿完成' WHEN TB_EIP_SCH_WORK.WORK_STATE='Audit' THEN '交辨完成' WHEN TB_EIP_SCH_WORK.WORK_STATE='Proceeding' THEN '處理中' WHEN TB_EIP_SCH_WORK.WORK_STATE='NotYetBegin' THEN '未開始' END) AS '交辨狀態'&#13;&#10;,(CASE WHEN ISNULL(TB_EIP_SCH_WORK.COMPLETE_TIME,'')&lt;&gt;'' THEN CONVERT(NVARCHAR,TB_EIP_SCH_WORK.COMPLETE_TIME,111)+' '+ SUBSTRING(CONVERT(NVARCHAR,TB_EIP_SCH_WORK.COMPLETE_TIME,24),1,8) ELSE CONVERT(NVARCHAR,TB_EIP_SCH_WORK.PROCEEDING_TIME,111)+' '+ SUBSTRING(CONVERT(NVARCHAR,TB_EIP_SCH_WORK.PROCEEDING_TIME,24),1,8) END)  AS '回覆時間'&#13;&#10;,TB_EIP_SCH_DEVOLVE_EXAMINE_LOG.*&#13;&#10;,TB_EB_USER.ACCOUNT&#13;&#10;,TB_EIP_SCH_DEVOLVE.DEVOLVE_GUID AS 'DEVOLVE_GUID'&#13;&#10;,TB_EB_USER.EMAIL&#13;&#10;FROM [UOF].dbo.TB_EIP_SCH_DEVOLVE&#13;&#10;LEFT JOIN [UOF].dbo.TB_EIP_SCH_DEVOLVE_EXAMINE_LOG ON TB_EIP_SCH_DEVOLVE_EXAMINE_LOG.DEVOLVE_GUID=TB_EIP_SCH_DEVOLVE.DEVOLVE_GUID&#13;&#10;LEFT JOIN [UOF].dbo.TB_EIP_SCH_WORK ON TB_EIP_SCH_WORK.DEVOLVE_GUID=TB_EIP_SCH_DEVOLVE.DEVOLVE_GUID&#13;&#10;LEFT JOIN [UOF].dbo.TB_EB_USER ON TB_EB_USER.USER_GUID=TB_EIP_SCH_WORK.EXECUTE_USER&#13;&#10;LEFT JOIN [UOF].dbo.TB_EB_USER USER2 ON USER2.USER_GUID=TB_EIP_SCH_DEVOLVE.DIRECTOR&#13;&#10;&#13;&#10;WHERE 1=1&#13;&#10;--AND TB_EIP_SCH_WORK.SUBJECT  LIKE '%校稿%'&#13;&#10;AND TB_EIP_SCH_WORK.WORK_STATE  IN ('NotYetBegin','Proceeding')&#13;&#10;AND TB_EIP_SCH_DEVOLVE.DEVOLVE_GUID NOT IN (SELECT [DEVOLVE_GUID]  FROM [UOF].[dbo].[Z_TB_EIP_SCH_DEVOLVE_IGNORES])&#13;&#10;ORDER BY CONVERT(nvarchar,TB_EIP_SCH_WORK.END_TIME,111) &#13;&#10;&#13;&#10;&#13;&#10;">
+        <Column Name="逾時天數" DataType="System.Int32"/>
+        <Column Name="交辨人" DataType="System.String"/>
+        <Column Name="交辨預計要求完成日期" DataType="System.String"/>
+        <Column Name="交辨開始日期" DataType="System.String"/>
+        <Column Name="校稿區內容" DataType="System.String"/>
+        <Column Name="交辨項目" DataType="System.String"/>
+        <Column Name="被交辨人ID" DataType="System.String"/>
+        <Column Name="WORK_STATE" DataType="System.String"/>
+        <Column Name="交辨回覆" DataType="System.String"/>
+        <Column Name="被交辨人" DataType="System.String"/>
+        <Column Name="交辨狀態" DataType="System.String"/>
+        <Column Name="回覆時間" DataType="System.String"/>
+        <Column Name="LOG_GUID" DataType="System.String"/>
+        <Column Name="DEVOLVE_GUID" DataType="System.String"/>
+        <Column Name="STATUS" DataType="System.String"/>
+        <Column Name="COMMENT" DataType="System.String"/>
+        <Column Name="CREATOR" DataType="System.String"/>
+        <Column Name="CREATE_FROM" DataType="System.String"/>
+        <Column Name="CREATE_DATE" DataType="System.DateTimeOffset"/>
+        <Column Name="MODIFIER" DataType="System.String"/>
+        <Column Name="MODIFY_FROM" DataType="System.String"/>
+        <Column Name="MODIFY_DATE" DataType="System.DateTimeOffset"/>
+        <Column Name="ACCOUNT" DataType="System.String"/>
+        <Column Name="DEVOLVE_GUID1" DataType="System.String"/>
+        <Column Name="EMAIL" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="交辨追踨"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="23.5" Width="1047.06" Height="37.8">
+      <TextObject Name="Text3" Width="94.5" Height="37.8" Border.Lines="All" Text="逾時天數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="94.5" Height="37.8" Border.Lines="All" Text="被交辨人" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="189" Width="576.45" Height="37.8" Border.Lines="All" Text="交辨項目" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="765.45" Width="94.5" Height="37.8" Border.Lines="All" Text="交辨人" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="859.95" Width="94.5" Height="37.8" Border.Lines="All" Text="交辨預計要求完成日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="954.45" Width="94.5" Height="37.8" Border.Lines="All" Text="交辨開始日期" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="65.9" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.逾時天數]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.被交辨人]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="189" Width="576.45" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交辨項目]" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交辨人]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交辨預計要求完成日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="954.45" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.交辨開始日期]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="89.39" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>
