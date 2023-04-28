@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="09/10/2021 16:18:39" ReportInfo.Modified="04/28/2023 13:48:48" ReportInfo.CreatorVersion="2016.4.4.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Text2_BeforePrint(object sender, EventArgs e)
+    {
+      //Text2.Text=((String)Report.GetColumnValue(&quot;Table.DATES&quot;)).Substring(0,4)+'/'+((String)Report.GetColumnValue(&quot;Table.DATES&quot;)).Substring(4,2)+'/'+((String)Report.GetColumnValue(&quot;Table.DATES&quot;)).Substring(6,2);
+      DateTime dt=Convert.ToDateTime(((String)Report.GetColumnValue(&quot;Table.DATES&quot;)).Substring(0,4)+'/'+((String)Report.GetColumnValue(&quot;Table.DATES&quot;)).Substring(4,2)+'/'+((String)Report.GetColumnValue(&quot;Table.DATES&quot;)).Substring(6,2));
+      
+      //Text2.Text=  dt.DayOfWeek.ToString();
+      
+      if (dt.DayOfWeek.ToString()==&quot;Saturday&quot;)
+      {
+        Text2.Text=Text2.Text+&quot;假日&quot;;
+        Text2.FillColor=Color.LightBlue;
+      }
+      else if (dt.DayOfWeek.ToString()==&quot;Sunday&quot;)
+      {
+        Text2.Text=Text2.Text+&quot;假日&quot;;
+        Text2.FillColor=Color.LightBlue;
+      }
+      else
+      {
+        Text2.Text=Text2.Text;
+        Text2.FillColor=Color.White;
+      }
+     
+    }
+
+    private void Text4_BeforePrint(object sender, EventArgs e)
+    {
+        Text4.FillColor=Text2.FillColor;
+    }
+
+    private void Text6_BeforePrint(object sender, EventArgs e)
+    {
+         Text6.FillColor=Text2.FillColor;
+    }
+
+    private void Text8_BeforePrint(object sender, EventArgs e)
+    {
+         Text8.FillColor=Text2.FillColor;
+    }
+
+    private void Text10_BeforePrint(object sender, EventArgs e)
+    {
+          Text10.FillColor=Text2.FillColor;
+    }
+
+    private void Text12_BeforePrint(object sender, EventArgs e)
+    {
+          Text12.FillColor=Text2.FillColor;
+    }
+
+    private void Text14_AfterPrint(object sender, EventArgs e)
+    {
+          Text14.FillColor=Text2.FillColor;
+    }
+
+  
+
+  
+
+  
+
+    private void Text65_BeforePrint(object sender, EventArgs e)
+    {
+             Text65.FillColor=Text2.FillColor;
+    }
+
+    private void Text24_AfterPrint(object sender, EventArgs e)
+    {
+            Text24.FillColor=Text2.FillColor;
+    }
+
+    private void Text24_BeforePrint(object sender, EventArgs e)
+    {
+           Text24.FillColor=Text2.FillColor;
+    }
+
+    private void Text26_BeforePrint(object sender, EventArgs e)
+    {
+              Text26.FillColor=Text2.FillColor;
+    }
+
+    private void Text28_BeforePrint(object sender, EventArgs e)
+    {
+           Text28.FillColor=Text2.FillColor;
+    }
+
+    private void Text30_BeforePrint(object sender, EventArgs e)
+    {
+            //Text30.FillColor=Text2.FillColor;
+    }
+
+    private void Text25_BeforePrint(object sender, EventArgs e)
+    {
+             //Text25.FillColor=Text2.FillColor;
+    }
+
+    private void Text42_BeforePrint(object sender, EventArgs e)
+    {
+             Text42.FillColor=Text2.FillColor;
+    }
+
+    private void Text46_BeforePrint(object sender, EventArgs e)
+    {
+             Text46.FillColor=Text2.FillColor;
+    }
+
+    private void Text14_BeforePrint(object sender, EventArgs e)
+    {
+              Text14.FillColor=Text2.FillColor;
+    }
+
+   
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpNK7VAg28EMb2zujBtCWMs8uR7KE3TT1XHtlPqNg0WX9KWfcSHklBghbHi7dsO1RzD">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20220712 業務員日 報表&#13;&#10;--20210910 業務員日 報表&#13;&#10;--200050 張釋予&#13;&#10;--140078 蔡顏鴻&#13;&#10;--100005 何姍怡&#13;&#10;--160155 洪櫻芬&#13;&#10;--170007 林杏育&#13;&#10;--120003 葉枋俐&#13;&#10;SELECT &#13;&#10;DATES&#13;&#10;,國內張釋予銷貨&#13;&#10;,國內張釋予銷退&#13;&#10;,國內蔡顏鴻銷貨&#13;&#10;,國內蔡顏鴻銷退&#13;&#10;,國內何姍怡銷貨&#13;&#10;,國內何姍怡銷退&#13;&#10;,國內洪櫻芬銷貨&#13;&#10;,國內洪櫻芬銷退&#13;&#10;,官網及現銷銷貨&#13;&#10;,官網及現銷銷退&#13;&#10;,全聯銷貨&#13;&#10;,國外洪櫻芬銷貨&#13;&#10;,國外洪櫻芬銷退&#13;&#10;,國外葉枋俐銷貨&#13;&#10;,國外葉枋俐銷退&#13;&#10;,(國內張釋予銷貨+國內張釋予銷退+國內蔡顏鴻銷貨+國內蔡顏鴻銷退+國內何姍怡銷貨+國內何姍怡銷退+國內洪櫻芬銷貨+國內洪櫻芬銷退+官網及現銷銷貨+官網及現銷銷退+全聯銷貨) AS '國內業務合計'&#13;&#10;,(國外洪櫻芬銷貨+國外洪櫻芬銷退+國外葉枋俐銷貨+國外葉枋俐銷退) AS '國外業務合計'&#13;&#10;,(國內張釋予銷貨+國內張釋予銷退+國內蔡顏鴻銷貨+國內蔡顏鴻銷退+國內何姍怡銷貨+國內何姍怡銷退+國內洪櫻芬銷貨+國內洪櫻芬銷退+官網及現銷銷貨+官網及現銷銷退+全聯銷貨+國外洪櫻芬銷貨+國外洪櫻芬銷退+國外葉枋俐銷貨+國外葉枋俐銷退) AS '總計'&#13;&#10;,(SELECT ISNULL(INTARGETMONEYS,0) FROM [TK].[dbo].[ZTARGETMONEYS] WHERE YEARSMOTNS=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6)) AS '國內月目標業績'&#13;&#10;,(SELECT ISNULL([OUTTARGETMONEYS],0) FROM [TK].[dbo].[ZTARGETMONEYS] WHERE YEARSMOTNS=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6)) AS '國外月目標業績'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND SUBSTRING(TG003,1,6)=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6) AND TG023='Y' AND (TG004 LIKE '1%' OR TG004 LIKE '2%' OR TG004 LIKE 'A2%' OR TG004 LIKE 'B2%') AND (TG004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%'))  AND TG006 IN ('200050','140078','100005','160155','170007') ) AS '國內月總銷貨'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND SUBSTRING(TI003,1,6)=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6) AND TI019='Y' AND (TI004 LIKE '1%' OR TI004 LIKE '2%' OR TI004 LIKE 'A2%' OR TI004 LIKE 'B2%') AND (TI004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TI006 IN ('200050','140078','100005','160155','170007') ) AS '國內月總銷退'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND SUBSTRING(TG003,1,6)=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6) AND TG023='Y' AND (TG004 LIKE '3%' OR TG004 LIKE 'A3%' OR TG004 LIKE 'B3%') AND TG006 IN ('160155','120003')) AS '國外月總銷貨'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND SUBSTRING(TI003,1,6)=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6)  AND TI019='Y'AND (TI004 LIKE '3%' OR TI004 LIKE 'A3%' OR TI004 LIKE 'B3%') AND TI006 IN ('160155','120003')) AS '國外月總銷退'&#13;&#10;,(((SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND SUBSTRING(TG003,1,6)=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6) AND TG023='Y' AND (TG004 LIKE '1%' OR TG004 LIKE '2%' OR TG004 LIKE 'A2%' OR TG004 LIKE 'B2%') AND (TG004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%'))  AND TG006 IN ('200050','140078','100005','160155','170007') )+(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND SUBSTRING(TI003,1,6)=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6) AND TI019='Y' AND (TI004 LIKE '1%' OR TI004 LIKE '2%' OR TI004 LIKE 'A2%' OR TI004 LIKE 'B2%') AND (TI004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TI006 IN ('200050','140078','100005','160155','170007') ))/(SELECT ISNULL(INTARGETMONEYS,0) FROM [TK].[dbo].[ZTARGETMONEYS] WHERE YEARSMOTNS=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6))) AS '國內月累績達成率'&#13;&#10;,(((SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND SUBSTRING(TG003,1,6)=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6) AND TG023='Y' AND (TG004 LIKE '3%' OR TG004 LIKE 'A3%' OR TG004 LIKE 'B3%') AND TG006 IN ('160155','120003'))+(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND SUBSTRING(TI003,1,6)=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6)  AND TI019='Y'AND (TI004 LIKE '3%' OR TI004 LIKE 'A3%' OR TI004 LIKE 'B3%') AND TI006 IN ('160155','120003')))/(SELECT ISNULL([OUTTARGETMONEYS],0) FROM [TK].[dbo].[ZTARGETMONEYS] WHERE YEARSMOTNS=SUBSTRING(CONVERT(nvarchar,DATES,112),1,6))) AS '國外月累績達成率'&#13;&#10;FROM (&#13;&#10;SELECT CONVERT(nvarchar,DATES,112) AS DATES&#13;&#10;,[RTSALEMONEYS]  AS '全聯銷貨'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG003=CONVERT(nvarchar,DATES,112) AND TG023='Y' AND (TG004 LIKE '1%' OR TG004 LIKE '2%' OR TG004 LIKE 'A2%' OR TG004 LIKE 'B2%') AND (TG004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%'))  AND TG006='200050') AS '國內張釋予銷貨'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND TI003=CONVERT(nvarchar,DATES,112) AND TI019='Y' AND (TI004 LIKE '1%' OR TI004 LIKE '2%' OR TI004 LIKE 'A2%' OR TI004 LIKE 'B2%') AND (TI004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TI006='200050') AS '國內張釋予銷退'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG003=CONVERT(nvarchar,DATES,112) AND TG023='Y' AND (TG004 LIKE '1%' OR TG004 LIKE '2%' OR TG004 LIKE 'A2%' OR TG004 LIKE 'B2%') AND (TG004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TG006='140078') AS '國內蔡顏鴻銷貨'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND TI003=CONVERT(nvarchar,DATES,112) AND TI019='Y' AND (TI004 LIKE '1%' OR TI004 LIKE '2%' OR TI004 LIKE 'A2%' OR TI004 LIKE 'B2%') AND (TI004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TI006='140078') AS '國內蔡顏鴻銷退'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG003=CONVERT(nvarchar,DATES,112) AND TG023='Y' AND (TG004 LIKE '1%' OR TG004 LIKE '2%' OR TG004 LIKE 'A2%' OR TG004 LIKE 'B2%') AND (TG004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TG006='100005') AS '國內何姍怡銷貨'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND TI003=CONVERT(nvarchar,DATES,112) AND TI019='Y' AND (TI004 LIKE '1%' OR TI004 LIKE '2%' OR TI004 LIKE 'A2%' OR TI004 LIKE 'B2%') AND (TI004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TI006='100005') AS '國內何姍怡銷退'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG003=CONVERT(nvarchar,DATES,112) AND TG023='Y' AND (TG004 LIKE '1%' OR TG004 LIKE '2%' OR TG004 LIKE 'A2%' OR TG004 LIKE 'B2%') AND (TG004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TG006='160155') AS '國內洪櫻芬銷貨'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND TI003=CONVERT(nvarchar,DATES,112) AND TI019='Y' AND (TI004 LIKE '1%' OR TI004 LIKE '2%' OR TI004 LIKE 'A2%' OR TI004 LIKE 'B2%') AND (TI004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TI006='160155') AS '國內洪櫻芬銷退'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG003=CONVERT(nvarchar,DATES,112) AND TG023='Y' AND (TG004 LIKE '1%' OR TG004 LIKE '2%' OR TG004 LIKE 'A2%' OR TG004 LIKE 'B2%') AND (TG004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TG001 IN ('A230','A233','A234','A235','A23A','A23E') AND TG006 NOT IN ('200050','140078','100005','160155')) AS '官網及現銷銷貨' &#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND TI003=CONVERT(nvarchar,DATES,112) AND TI019='Y' AND (TI004 LIKE '1%' OR TI004 LIKE '2%' OR TI004 LIKE 'A2%' OR TI004 LIKE 'B2%') AND (TI004 NOT IN (SELECT MA001 FROM [TK].dbo.COPMA WHERE MA002 LIKE '%全聯%')) AND TI001 IN ('A243','A246','A247','A248','A249') AND TI006 NOT IN ('200050','140078','100005','160155')) AS '官網及現銷銷退' &#13;&#10;,'-' AS '-'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND (CASE WHEN ISDATE(COPTG.UDF01)=1 THEN COPTG.UDF01 ELSE TG003 END =CONVERT(nvarchar,DATES,112)) AND TG023='Y' AND (TG004 LIKE '3%' OR TG004 LIKE 'A3%' OR TG004 LIKE 'B3%') AND TG006='160155') AS '國外洪櫻芬銷貨'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND TI003=CONVERT(nvarchar,DATES,112)  AND TI019='Y'AND (TI004 LIKE '3%' OR TI004 LIKE 'A3%' OR TI004 LIKE 'B3%') AND TI006='160155') AS '國外洪櫻芬銷退'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TH037),0)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG003=CONVERT(nvarchar,DATES,112) AND TG023='Y' AND (TG004 LIKE '3%' OR TG004 LIKE 'A3%' OR TG004 LIKE 'B3%') AND TG006='120003') AS '國外葉枋俐銷貨'&#13;&#10;,(SELECT CONVERT(INT,ISNULL(SUM(TJ033)*-1,0)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND TI003=CONVERT(nvarchar,DATES,112)  AND TI019='Y'AND (TI004 LIKE '3%' OR TI004 LIKE 'A3%' OR TI004 LIKE 'B3%') AND TI006='120003') AS '國外葉枋俐銷退'&#13;&#10;FROM [TK].dbo.ZDATES&#13;&#10;WHERE CONVERT(nvarchar,DATES,112)&gt;='20220701' AND CONVERT(nvarchar,DATES,112)&lt;='20220731'&#13;&#10;) AS TEMP&#13;&#10;ORDER BY DATES">
+        <Column Name="國內張釋予銷貨" DataType="System.Int32"/>
+        <Column Name="國內張釋予銷退" DataType="System.Int32"/>
+        <Column Name="國內蔡顏鴻銷貨" DataType="System.Int32"/>
+        <Column Name="國內蔡顏鴻銷退" DataType="System.Int32"/>
+        <Column Name="國內何姍怡銷貨" DataType="System.Int32"/>
+        <Column Name="國內何姍怡銷退" DataType="System.Int32"/>
+        <Column Name="國內洪櫻芬銷貨" DataType="System.Int32"/>
+        <Column Name="國內洪櫻芬銷退" DataType="System.Int32"/>
+        <Column Name="國外洪櫻芬銷貨" DataType="System.Int32"/>
+        <Column Name="國外洪櫻芬銷退" DataType="System.Int32"/>
+        <Column Name="國外葉枋俐銷貨" DataType="System.Int32"/>
+        <Column Name="國外葉枋俐銷退" DataType="System.Int32"/>
+        <Column Name="國內業務合計" DataType="System.Int32"/>
+        <Column Name="總計" DataType="System.Int32"/>
+        <Column Name="國外業務合計" DataType="System.Int32"/>
+        <Column Name="DATES" DataType="System.String"/>
+        <Column Name="全聯銷貨" DataType="System.Int32"/>
+        <Column Name="國內月目標業績" DataType="System.Int32"/>
+        <Column Name="國外月目標業績" DataType="System.Int32"/>
+        <Column Name="國內月總銷貨" DataType="System.Int32"/>
+        <Column Name="國內月總銷退" DataType="System.Int32"/>
+        <Column Name="國外月總銷貨" DataType="System.Int32"/>
+        <Column Name="國外月總銷退" DataType="System.Int32"/>
+        <Column Name="國內月累績達成率" DataType="System.Decimal"/>
+        <Column Name="國外月累績達成率" DataType="System.Decimal"/>
+        <Column Name="官網及現銷銷貨" DataType="System.Int32"/>
+        <Column Name="官網及現銷銷退" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Total Name="Total國內張釋予銷貨" Expression="[Table.國內張釋予銷貨]" Evaluator="Data1"/>
+    <Total Name="Total國內張釋予銷退" Expression="[Table.國內張釋予銷退]" Evaluator="Data1"/>
+    <Total Name="Total國內蔡顏鴻銷貨" Expression="[Table.國內蔡顏鴻銷貨]" Evaluator="Data1"/>
+    <Total Name="Total國內蔡顏鴻銷退" Expression="[Table.國內蔡顏鴻銷退]" Evaluator="Data1"/>
+    <Total Name="Total國內何姍怡銷貨" Expression="[Table.國內何姍怡銷貨]" Evaluator="Data1"/>
+    <Total Name="Total國內何姍怡銷退" Expression="[Table.國內何姍怡銷退]" Evaluator="Data1"/>
+    <Total Name="Total國內洪櫻芬銷貨" Expression="[Table.國內洪櫻芬銷貨]" Evaluator="Data1"/>
+    <Total Name="Total國內洪櫻芬銷退" Expression="[Table.國內洪櫻芬銷退]" Evaluator="Data1"/>
+    <Total Name="Total國外洪櫻芬銷貨" Expression="[Table.國外洪櫻芬銷貨]" Evaluator="Data1"/>
+    <Total Name="Total國外洪櫻芬銷退" Expression="[Table.國外洪櫻芬銷退]" Evaluator="Data1"/>
+    <Total Name="Total國外葉枋俐銷貨" Expression="[Table.國外葉枋俐銷貨]" Evaluator="Data1"/>
+    <Total Name="Total國外葉枋俐銷退" Expression="[Table.國外葉枋俐銷退]" Evaluator="Data1"/>
+    <Total Name="Total國內業務合計" Expression="[Table.國內業務合計]" Evaluator="Data1"/>
+    <Total Name="Total國外業務合計" Expression="[Table.國外業務合計]" Evaluator="Data1"/>
+    <Total Name="Total總計" Expression="[Table.總計]" Evaluator="Data1"/>
+    <Total Name="Total全聯銷貨" Expression="[Table.全聯銷貨]" Evaluator="Data1"/>
+    <Total Name="Total官網及現銷銷貨" Expression="[Table.官網及現銷銷貨]" Evaluator="Data1"/>
+    <Total Name="Total官網及現銷銷退" Expression="[Table.官網及現銷銷退]" Evaluator="Data1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="460" PaperHeight="300">
+    <ReportTitleBand Name="ReportTitle1" Width="1663.2" Height="66.15">
+      <TextObject Name="Text1" Width="1417.5" Height="18.9" Text="國內、外業務部業績日報表" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text68" Left="94.5" Top="28.35" Width="94.5" Height="18.9" Text="[Table.國內月目標業績]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text69" Left="94.5" Top="47.25" Width="94.5" Height="18.9" Text="[Table.國外月目標業績]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text70" Top="28.35" Width="94.5" Height="18.9" Text="國內月目標業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text71" Top="47.25" Width="94.5" Height="18.9" Text="國外月目標業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text72" Left="567" Top="28.35" Width="122.85" Height="18.9" Text="國內月累績達成率" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text73" Left="567" Top="47.25" Width="122.85" Height="18.9" Text="國外月累績達成率" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text74" Left="699.3" Top="28.35" Width="94.5" Height="18.9" Text="[Table.國內月累績達成率]" Format="Percent" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text75" Left="699.3" Top="47.25" Width="94.5" Height="18.9" Text="[Table.國外月累績達成率]" Format="Percent" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text76" Left="274.05" Top="28.35" Width="94.5" Height="18.9" Text="國內月總業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text77" Left="274.05" Top="47.25" Width="94.5" Height="18.9" Text="國外月總業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text78" Left="368.55" Top="28.35" Width="94.5" Height="18.9" Text="[[Table.國內月總銷貨]+[Table.國內月總銷退]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text79" Left="368.55" Top="47.25" Width="94.5" Height="18.9" Text="[[Table.國外月總銷貨]+[Table.國外月總銷退]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text80" Left="198.45" Top="28.35" Width="66.15" Height="18.9" Text="元(未稅)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text81" Left="198.45" Top="47.25" Width="66.15" Height="18.9" Text="元(未稅)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text82" Left="472.5" Top="28.35" Width="66.15" Height="18.9" Text="元(未稅)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text83" Left="472.5" Top="47.25" Width="66.15" Height="18.9" Text="元(未稅)" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="70.75" Width="1663.2" Height="56.7">
+      <TextObject Name="Text3" Width="94.5" Height="56.7" Border.Lines="All" Text="日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="銷貨" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="189" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="銷退/銷折" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="283.5" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="銷貨" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="378" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="銷退/銷折" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="472.5" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="銷貨" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="567" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="銷退/銷折" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="850.5" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="銷貨" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="945" Top="37.8" Width="94.5" Height="18.9" Border.Lines="All" Text="銷退/銷折" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text32" Left="94.5" Top="18.9" Width="189" Height="18.9" Border.Lines="All" Text="張釋予" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text33" Left="94.5" Width="661.5" Height="18.9" Border.Lines="All" Text="國內" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text34" Left="283.5" Top="18.9" Width="189" Height="18.9" Border.Lines="All" Text="蔡顏鴻" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text35" Left="472.5" Top="18.9" Width="189" Height="18.9" Border.Lines="All" Text="何姍怡" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text38" Left="756" Width="94.5" Height="56.7" Border.Lines="All" Text="國內業務&#13;&#10;合計" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text40" Left="1039.5" Width="94.5" Height="56.7" Border.Lines="All" Text="國外業務&#13;&#10;合計" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text41" Left="850.5" Width="189" Height="18.9" Border.Lines="All" Text="國外&#13;&#10;" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text43" Left="850.5" Top="18.9" Width="189" Height="18.9" Border.Lines="All" Text="洪櫻芬" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text45" Left="1134" Width="94.5" Height="56.7" Border.Lines="All" Text="總計" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text66" Left="661.5" Top="18.9" Width="94.5" Height="37.8" Border.Lines="All" Text="全聯銷貨" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="132.05" Width="1663.2" Height="18.9" Guides="0,0" DataSource="Table">
+      <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text2_BeforePrint" Text="[Table.DATES]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text4_BeforePrint" Text="[Table.國內張釋予銷貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="189" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text6_BeforePrint" Text="[Table.國內張釋予銷退]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" TextFill.Color="Red"/>
+      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text8_BeforePrint" Text="[Table.國內蔡顏鴻銷貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="378" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text10_BeforePrint" Text="[Table.國內蔡顏鴻銷退]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" TextFill.Color="Red"/>
+      <TextObject Name="Text12" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text12_BeforePrint" Text="[Table.國內何姍怡銷貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="567" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text14_BeforePrint" AfterPrintEvent="Text14_AfterPrint" Text="[Table.國內何姍怡銷退]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" TextFill.Color="Red"/>
+      <TextObject Name="Text24" Left="756" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text24_BeforePrint" AfterPrintEvent="Text24_AfterPrint" Text="[Table.國內業務合計]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text26_BeforePrint" Text="[Table.國外洪櫻芬銷貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="945" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text28_BeforePrint" Text="[Table.國外洪櫻芬銷退]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" TextFill.Color="Red"/>
+      <TextObject Name="Text42" Left="1039.5" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text42_BeforePrint" Text="[Table.國外業務合計]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text46" Left="1134" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text46_BeforePrint" Text="[Table.總計]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text65" Left="661.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" BeforePrintEvent="Text65_BeforePrint" Text="[Table.全聯銷貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="155.54" Width="1663.2" Height="18.9">
+      <TextObject Name="Text47" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="月累計" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text48" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total國內張釋予銷貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text49" Left="189" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total國內張釋予銷退]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" TextFill.Color="Red"/>
+      <TextObject Name="Text50" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total國內蔡顏鴻銷貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text51" Left="378" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total國內蔡顏鴻銷退]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" TextFill.Color="Red"/>
+      <TextObject Name="Text52" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total國內何姍怡銷貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text53" Left="567" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total國內何姍怡銷退]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" TextFill.Color="Red"/>
+      <TextObject Name="Text58" Left="756" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total國內業務合計]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text59" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total國外洪櫻芬銷貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text60" Left="945" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total國外洪櫻芬銷退]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" TextFill.Color="Red"/>
+      <TextObject Name="Text63" Left="1039.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total國外業務合計]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text64" Left="1134" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total總計]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text67" Left="661.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Total全聯銷貨]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="179.04" Width="1663.2" Height="18.9"/>
+  </ReportPage>
+</Report>
