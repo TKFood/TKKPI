@@ -40,7 +40,7 @@ namespace TKKPI
         SqlTransaction tran;
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
-        string talbename = null;
+        string talbename = null; 
         int rownum = 0;
         int result;
 
