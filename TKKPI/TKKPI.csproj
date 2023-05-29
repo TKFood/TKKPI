@@ -239,6 +239,12 @@
     <Compile Include="frmREPORTINVLACHECK.Designer.cs">
       <DependentUpon>frmREPORTINVLACHECK.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTPOSTB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTPOSTB.Designer.cs">
+      <DependentUpon>frmREPORTPOSTB.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmREPORTSALES.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -378,6 +384,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTINVLACHECK.resx">
       <DependentUpon>frmREPORTINVLACHECK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTPOSTB.resx">
+      <DependentUpon>frmREPORTPOSTB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTSALES.resx">
       <DependentUpon>frmREPORTSALES.cs</DependentUpon>

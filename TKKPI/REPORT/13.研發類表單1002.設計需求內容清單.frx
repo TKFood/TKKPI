@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/28/2023 15:59:24" ReportInfo.Modified="04/28/2023 16:02:43" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGn7BiVGNIb7rA3GAcKv+Jv">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="/****** SSMS 中 SelectTopNRows 命令的指令碼  ******/&#13;&#10;SELECT &#13;&#10;[RDF1002SN] AS '表單編號'&#13;&#10;,[NAME] AS '申請人'&#13;&#10;,[RDFrm1002DATE1] AS '預計設計須完成日(需求單位填寫)'&#13;&#10;,[RDFrm1002DATE2] AS '預計設計上校稿日(行銷單位填寫)'&#13;&#10;,[RDFrm1002CS] AS '設計別'&#13;&#10;,[RDFrm1002DP] AS '需求部門'&#13;&#10;,[RDFrm1002PD] AS '產品名稱'&#13;&#10;,[RDFrm1002ST] AS '產品規格'&#13;&#10;,[RDFrm1002G7T1] AS '預計出貨日期'&#13;&#10;,[RDFrm1002G7T2] AS '預計上市日期'&#13;&#10;,[RDFrm1002G7T3] AS '預計銷售通路/國家別'&#13;&#10;,[RDFrm1002G7T4] AS '預估量（最小單位）'&#13;&#10;,[RDFrm1002G7T5] AS '商品屬性'&#13;&#10;,[RDFrm1002G5T6] AS '產品包裝形式'&#13;&#10;,[RDFrm1002DS] AS '設計需求具體內容'&#13;&#10;FROM [TKRESEARCH].[dbo].[TK_UOF_RESEARCH_1002]&#13;&#10;ORDER BY [RDF1002SN]&#13;&#10;&#13;&#10;	 ">
+        <Column Name="表單編號" DataType="System.String"/>
+        <Column Name="申請人" DataType="System.String"/>
+        <Column Name="預計設計須完成日(需求單位填寫)" DataType="System.String"/>
+        <Column Name="預計設計上校稿日(行銷單位填寫)" DataType="System.String"/>
+        <Column Name="設計別" DataType="System.String"/>
+        <Column Name="需求部門" DataType="System.String"/>
+        <Column Name="產品名稱" DataType="System.String"/>
+        <Column Name="產品規格" DataType="System.String"/>
+        <Column Name="預計出貨日期" DataType="System.String"/>
+        <Column Name="預計上市日期" DataType="System.String"/>
+        <Column Name="預計銷售通路/國家別" DataType="System.String"/>
+        <Column Name="預估量（最小單位）" DataType="System.String"/>
+        <Column Name="商品屬性" DataType="System.String"/>
+        <Column Name="產品包裝形式" DataType="System.String"/>
+        <Column Name="設計需求具體內容" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="500" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1814.4" Height="18.9">
+      <TextObject Name="Text1" Width="453.6" Height="18.9" Text="13.研發類表單:1002.設計需求內容清單"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="23.5" Width="1814.4" Height="47.25">
+      <TextObject Name="Text3" Width="103.95" Height="47.25" Border.Lines="All" Text="表單編號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="103.95" Width="66.15" Height="47.25" Border.Lines="All" Text="申請人" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="170.1" Width="113.4" Height="47.25" Border.Lines="All" Text="預計設計須完成日(需求單位填寫)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="283.5" Width="113.4" Height="47.25" Border.Lines="All" Text="預計設計上校稿日(行銷單位填寫)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="396.9" Width="75.6" Height="47.25" Border.Lines="All" Text="設計別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="472.5" Width="94.5" Height="47.25" Border.Lines="All" Text="需求部門" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="567" Width="94.5" Height="47.25" Border.Lines="All" Text="產品名稱" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="661.5" Width="94.5" Height="47.25" Border.Lines="All" Text="產品規格" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="756" Width="94.5" Height="47.25" Border.Lines="All" Text="預計出貨日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="850.5" Width="94.5" Height="47.25" Border.Lines="All" Text="預計上市日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="945" Width="94.5" Height="47.25" Border.Lines="All" Text="預計銷售通路/國家別" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="1039.5" Width="94.5" Height="47.25" Border.Lines="All" Text="預估量（最小單位）" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="1134" Width="94.5" Height="47.25" Border.Lines="All" Text="商品屬性" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="1228.5" Width="94.5" Height="47.25" Border.Lines="All" Text="產品包裝形式" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text31" Left="1323" Width="491.4" Height="47.25" Border.Lines="All" Text="設計需求具體內容" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="75.35" Width="1814.4" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="103.95" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.表單編號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="103.95" Width="66.15" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.申請人]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="170.1" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.預計設計須完成日(需求單位填寫)]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="283.5" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.預計設計上校稿日(行銷單位填寫)]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="396.9" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.設計別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.需求部門]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="567" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.產品名稱]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="661.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.產品規格]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="756" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.預計出貨日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.預計上市日期]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="945" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.預計銷售通路/國家別]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="1039.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.預估量（最小單位）]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="1134" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.商品屬性]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="1228.5" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.產品包裝形式]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text30" Left="1323" Width="491.4" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.設計需求具體內容]" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="98.84" Width="1814.4" Height="18.9"/>
+  </ReportPage>
+</Report>
