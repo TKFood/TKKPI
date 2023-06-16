@@ -165,7 +165,15 @@ namespace TKKPI
         public StringBuilder SETSQL2(string SYEARSMONTHS,string EYEARSMONTHS)
         {
             string FirstDay = SYEARSMONTHS + "01";
-            string LastDay = EYEARSMONTHS + "31";
+            string LastDay ="";
+
+            int YEAR = Convert.ToInt32(EYEARSMONTHS.Substring(0, 4));
+            int MONTH = Convert.ToInt32(EYEARSMONTHS.Substring(4, 2));
+
+            int MONTHLastDay = DateTime.DaysInMonth(YEAR, MONTH);
+
+            DateTime lastDayOfMonth = new DateTime(YEAR, MONTH, MONTHLastDay);
+            LastDay = lastDayOfMonth.ToString("yyyyMMdd");
 
             DateTime firstDate = DateTime.ParseExact(FirstDay, "yyyyMMdd", CultureInfo.InvariantCulture);
             DateTime lastDate = DateTime.ParseExact(LastDay, "yyyyMMdd", CultureInfo.InvariantCulture);
