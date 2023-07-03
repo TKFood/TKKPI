@@ -43,6 +43,9 @@
             this.dateTimePicker6 = new System.Windows.Forms.DateTimePicker();
             this.button6 = new System.Windows.Forms.Button();
             this.dateTimePicker7 = new System.Windows.Forms.DateTimePicker();
+            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
+            this.previewControl5 = new FastReport.Preview.PreviewControl();
+            this.previewControl6 = new FastReport.Preview.PreviewControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -66,9 +69,7 @@
             this.dateTimePicker4 = new System.Windows.Forms.DateTimePicker();
             this.button3 = new System.Windows.Forms.Button();
             this.previewControl3 = new FastReport.Preview.PreviewControl();
-            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
-            this.previewControl5 = new FastReport.Preview.PreviewControl();
-            this.previewControl6 = new FastReport.Preview.PreviewControl();
+            this.dateTimePicker8 = new System.Windows.Forms.DateTimePicker();
             this.tabControl1.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
@@ -82,6 +83,10 @@
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
+            this.splitContainer6.Panel1.SuspendLayout();
+            this.splitContainer6.Panel2.SuspendLayout();
+            this.splitContainer6.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -100,10 +105,6 @@
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
-            this.splitContainer6.Panel1.SuspendLayout();
-            this.splitContainer6.Panel2.SuspendLayout();
-            this.splitContainer6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -171,6 +172,7 @@
             this.tableLayoutPanel3.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.dateTimePicker5, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.button5, 3, 0);
+            this.tableLayoutPanel3.Controls.Add(this.dateTimePicker8, 2, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
@@ -196,7 +198,7 @@
             // dateTimePicker5
             // 
             this.dateTimePicker5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.dateTimePicker5.CustomFormat = "yyyy/MM";
+            this.dateTimePicker5.CustomFormat = "yyyy/MM/dd";
             this.dateTimePicker5.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker5.Location = new System.Drawing.Point(154, 13);
             this.dateTimePicker5.Margin = new System.Windows.Forms.Padding(4);
@@ -336,6 +338,50 @@
             this.dateTimePicker7.Name = "dateTimePicker7";
             this.dateTimePicker7.Size = new System.Drawing.Size(142, 27);
             this.dateTimePicker7.TabIndex = 25;
+            // 
+            // splitContainer6
+            // 
+            this.splitContainer6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer6.Name = "splitContainer6";
+            // 
+            // splitContainer6.Panel1
+            // 
+            this.splitContainer6.Panel1.Controls.Add(this.previewControl5);
+            // 
+            // splitContainer6.Panel2
+            // 
+            this.splitContainer6.Panel2.Controls.Add(this.previewControl6);
+            this.splitContainer6.Size = new System.Drawing.Size(976, 529);
+            this.splitContainer6.SplitterDistance = 387;
+            this.splitContainer6.TabIndex = 0;
+            // 
+            // previewControl5
+            // 
+            this.previewControl5.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.previewControl5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.previewControl5.Font = new System.Drawing.Font("宋体", 9F);
+            this.previewControl5.Location = new System.Drawing.Point(0, 0);
+            this.previewControl5.Margin = new System.Windows.Forms.Padding(4);
+            this.previewControl5.Name = "previewControl5";
+            this.previewControl5.PageOffset = new System.Drawing.Point(10, 10);
+            this.previewControl5.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.previewControl5.Size = new System.Drawing.Size(383, 525);
+            this.previewControl5.TabIndex = 12;
+            // 
+            // previewControl6
+            // 
+            this.previewControl6.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.previewControl6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.previewControl6.Font = new System.Drawing.Font("宋体", 9F);
+            this.previewControl6.Location = new System.Drawing.Point(0, 0);
+            this.previewControl6.Margin = new System.Windows.Forms.Padding(4);
+            this.previewControl6.Name = "previewControl6";
+            this.previewControl6.PageOffset = new System.Drawing.Point(10, 10);
+            this.previewControl6.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.previewControl6.Size = new System.Drawing.Size(581, 525);
+            this.previewControl6.TabIndex = 13;
             // 
             // tabPage1
             // 
@@ -691,49 +737,16 @@
             this.previewControl3.Size = new System.Drawing.Size(972, 552);
             this.previewControl3.TabIndex = 9;
             // 
-            // splitContainer6
+            // dateTimePicker8
             // 
-            this.splitContainer6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer6.Name = "splitContainer6";
-            // 
-            // splitContainer6.Panel1
-            // 
-            this.splitContainer6.Panel1.Controls.Add(this.previewControl5);
-            // 
-            // splitContainer6.Panel2
-            // 
-            this.splitContainer6.Panel2.Controls.Add(this.previewControl6);
-            this.splitContainer6.Size = new System.Drawing.Size(976, 529);
-            this.splitContainer6.SplitterDistance = 387;
-            this.splitContainer6.TabIndex = 0;
-            // 
-            // previewControl5
-            // 
-            this.previewControl5.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.previewControl5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewControl5.Font = new System.Drawing.Font("宋体", 9F);
-            this.previewControl5.Location = new System.Drawing.Point(0, 0);
-            this.previewControl5.Margin = new System.Windows.Forms.Padding(4);
-            this.previewControl5.Name = "previewControl5";
-            this.previewControl5.PageOffset = new System.Drawing.Point(10, 10);
-            this.previewControl5.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl5.Size = new System.Drawing.Size(383, 525);
-            this.previewControl5.TabIndex = 12;
-            // 
-            // previewControl6
-            // 
-            this.previewControl6.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.previewControl6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewControl6.Font = new System.Drawing.Font("宋体", 9F);
-            this.previewControl6.Location = new System.Drawing.Point(0, 0);
-            this.previewControl6.Margin = new System.Windows.Forms.Padding(4);
-            this.previewControl6.Name = "previewControl6";
-            this.previewControl6.PageOffset = new System.Drawing.Point(10, 10);
-            this.previewControl6.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl6.Size = new System.Drawing.Size(581, 525);
-            this.previewControl6.TabIndex = 13;
+            this.dateTimePicker8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dateTimePicker8.CustomFormat = "yyyy/MM/dd";
+            this.dateTimePicker8.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker8.Location = new System.Drawing.Point(304, 13);
+            this.dateTimePicker8.Margin = new System.Windows.Forms.Padding(4);
+            this.dateTimePicker8.Name = "dateTimePicker8";
+            this.dateTimePicker8.Size = new System.Drawing.Size(142, 27);
+            this.dateTimePicker8.TabIndex = 25;
             // 
             // frmREPORTVISITORS
             // 
@@ -760,6 +773,10 @@
             this.splitContainer5.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.splitContainer6.Panel1.ResumeLayout(false);
+            this.splitContainer6.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
+            this.splitContainer6.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -781,10 +798,6 @@
             this.splitContainer3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.splitContainer6.Panel1.ResumeLayout(false);
-            this.splitContainer6.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
-            this.splitContainer6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -832,5 +845,6 @@
         private System.Windows.Forms.SplitContainer splitContainer6;
         private FastReport.Preview.PreviewControl previewControl5;
         private FastReport.Preview.PreviewControl previewControl6;
+        private System.Windows.Forms.DateTimePicker dateTimePicker8;
     }
 }

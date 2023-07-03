@@ -49,9 +49,32 @@ namespace TKKPI
         public frmREPORTVISITORS()
         {
             InitializeComponent();
+
+            SETDATE();
         }
 
         #region FUNCTION
+        public void SETDATE()
+        {
+            DateTime today = DateTime.Today.AddDays(-1); // 當天日期-1
+
+            // 指定為星期一
+            DateTime monday = today;
+            while (monday.DayOfWeek != DayOfWeek.Monday)
+            {
+                monday = monday.AddDays(-1);
+            }
+
+            // 指定為星期日
+            DateTime sunday = today;
+            while (sunday.DayOfWeek != DayOfWeek.Sunday)
+            {
+                sunday = sunday.AddDays(-1);
+            }
+
+            dateTimePicker5.Value = monday;
+            dateTimePicker8.Value = sunday;
+        }
         public void SETFASTREPORT()
         {
             StringBuilder SQL1 = new StringBuilder();
@@ -673,8 +696,8 @@ namespace TKKPI
                                 ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
                                 FROM [TKMK].[dbo].[View_t_visitors]
                                 WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
-                                AND YEARS='{0}'
-                                AND MONTHS='{1}'
+                                AND CONVERT(NVARCHAR,Fdate1,112)>='{0}'
+                                AND CONVERT(NVARCHAR,Fdate1,112)<='{1}'
                                 GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
 
                                 UNION ALL
@@ -685,8 +708,8 @@ namespace TKKPI
                                 ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
                                 FROM [TKMK].[dbo].[View_t_visitors]
                                 WHERE  TT002 IN ('106701') 
-                                AND YEARS='{0}'
-                                AND MONTHS='{1}'
+                                AND CONVERT(NVARCHAR,Fdate1,112)>='{0}'
+                                AND CONVERT(NVARCHAR,Fdate1,112)<='{1}'
               
                                 GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
                                 ) AS TEMP
@@ -952,7 +975,7 @@ namespace TKKPI
         }
         private void button5_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT4(dateTimePicker5.Value.Year.ToString(), dateTimePicker5.Value.Month.ToString());
+            SETFASTREPORT4(dateTimePicker5.Value.ToString("yyyyMMdd"),dateTimePicker8.Value.ToString("yyyyMMdd"));
         }
 
         private void button6_Click(object sender, EventArgs e)
