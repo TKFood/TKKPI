@@ -56,21 +56,11 @@ namespace TKKPI
         #region FUNCTION
         public void SETDATE()
         {
-            DateTime today = DateTime.Today.AddDays(-1); // 當天日期-1
+            DateTime today = DateTime.Today;
+            int diff = (7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7;
 
-            // 指定為星期一
-            DateTime monday = today;
-            while (monday.DayOfWeek != DayOfWeek.Monday)
-            {
-                monday = monday.AddDays(-1);
-            }
-
-            // 指定為星期日
-            DateTime sunday = today;
-            while (sunday.DayOfWeek != DayOfWeek.Sunday)
-            {
-                sunday = sunday.AddDays(-1);
-            }
+            DateTime monday = today.AddDays(-1 * diff).AddDays(-7);
+            DateTime sunday = monday.AddDays(6);
 
             dateTimePicker5.Value = monday;
             dateTimePicker8.Value = sunday;
