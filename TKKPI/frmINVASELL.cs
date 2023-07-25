@@ -106,31 +106,30 @@ namespace TKKPI
                             DECLARE @SDAY nvarchar(10)
                             DECLARE @TOTALDAYS INT
                             SET @SDAY='{0}'
-                            SET @TOTALDAYS={1}
-
+                            SET @TOTALDAYS={1}                           
                            
                             SELECT LA001 AS '品號',INVMB.MB002 AS '品名',LA016 AS '批號'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,NUMS)  ),1),'.00','') AS '庫存量'
+                            ,CONVERT(INT,NUMS)   AS '庫存量'
                             ,有效日期
                             ,製造日期
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,總銷售數量)  ),1),'.00','') 總銷售數量
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,平均天銷售數量)  ),1),'.00','') 平均天銷售數量
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,預計銷售天)  ),1),'.00','') 預計銷售天
+                            ,CONVERT(INT,總銷售數量)   總銷售數量
+                            ,CONVERT(INT,平均天銷售數量)   平均天銷售數量
+                            ,CONVERT(INT,預計銷售天)   預計銷售天
                             ,預計完銷日
                             ,DATEDIFF (MONTH,製造日期,預計完銷日) AS '生產到完銷的月數'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30001'))) ),1),'.00','') AS '中山一店'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30002'))) ),1),'.00','') AS '概念二店'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30003'))) ),1),'.00','') AS '北港三店'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30004'))) ),1),'.00','') AS '站前四店'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30012'))) ),1),'.00','') AS '微風北車店'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30017'))) ),1),'.00','') AS '大潤發中崙店'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30001')))  AS '中山一店'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30002')))  AS '概念二店'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30003')))  AS '北港三店'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30004')))  AS '站前四店'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30012')))  AS '微風北車店'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30017')))  AS '大潤發中崙店'
 
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,ISNULL(MB047,0)) ),1),'.00','') AS '售價'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30001'))*ISNULL(MB051,0)) ),1),'.00','') AS '中山一店可銷貨金額'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30002'))*ISNULL(MB051,0)) ),1),'.00','') AS '概念二店可銷貨金額'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30003'))*ISNULL(MB051,0)) ),1),'.00','') AS '北港三店可銷貨金額'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30004'))*ISNULL(MB051,0)) ),1),'.00','') AS '站前四店可銷貨金額'
-                            ,Replace(Convert(Varchar(20),CONVERT(money,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30012'))*ISNULL(MB051,0)) ),1),'.00','')AS '微風北車店可銷貨金額'
+                            ,CONVERT(INT,ISNULL(MB047,0))  AS '售價'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30001'))*ISNULL(MB051,0))  AS '中山一店可銷貨金額'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30002'))*ISNULL(MB051,0))  AS '概念二店可銷貨金額'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30003'))*ISNULL(MB051,0))  AS '北港三店可銷貨金額'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30004'))*ISNULL(MB051,0))  AS '站前四店可銷貨金額'
+                            ,CONVERT(INT,(SELECT ISNULL(SUM(LA005*LA011),0) FROM [TK].dbo.INVLA LA WITH (NOLOCK) WHERE LA.LA001=TEMP2.LA001 AND LA.LA016=TEMP2.LA016 AND LA009 IN ('30012'))*ISNULL(MB051,0)) AS '微風北車店可銷貨金額'
                             ,@SDAY AS '銷售日起'
                             ,@TOTALDAYS  AS '銷售天數'
 
