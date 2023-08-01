@@ -358,8 +358,8 @@ namespace TKKPI
                 if(!string.IsNullOrEmpty(MAXID))
                 {
                     //SQLite的檔案要先copy到 F:\kldatabase.db
-                    string path = @"E:\kldatabase.db";
-                    SQLiteConnection = new SQLiteConnection("data source=" + path);
+                    string path = @"data source=F:\kldatabase.db";
+                    SQLiteConnection = new SQLiteConnection(path);
                     SQLiteConnection.Open();
 
                     SQLiteCommand cmd = SQLiteConnection.CreateCommand();
