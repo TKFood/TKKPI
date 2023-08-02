@@ -358,7 +358,8 @@ namespace TKKPI
                 if(!string.IsNullOrEmpty(MAXID))
                 {
                     //SQLite的檔案要先copy到 F:\kldatabase.db
-                    string path = @"data source=E:\kldatabase.db";
+                   // string path = @"data source=E:\kldatabase.db";
+                    string path = @"data source=X:\kldatabase.db";
                     //string path = @"data source=\\192.168.1.101\Users\Administrator\AppData\Roaming\CounterServerData\kldatabase.db";
 
                     //string filePath = @"\\192.168.1.101\Users\Administrator\AppData\Roaming\CounterServerData\kldatabase.db";
