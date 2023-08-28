@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/28/2023 13:54:24" ReportInfo.Modified="08/28/2023 14:08:02" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEMW8XO7+RAFDGZQwgGDvzY">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand=" &#13;&#10;SELECT  &#13;&#10;MB001 AS '品號'&#13;&#10;,MB002 AS '品名'&#13;&#10;,MB003 AS '規格'&#13;&#10;,MB004 AS '單位'&#13;&#10;,CREATE_DATE AS '新品建立日期'&#13;&#10;,TOPTG003 AS '第1天業務銷貨日'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(INT,SUMTH008)), 1), '.00', '') AS '累計-業務銷貨數量'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(INT,SUMTH037)), 1), '.00', '') AS '累計-業務銷貨金額'&#13;&#10;,TOPTI003 AS '第1天業務銷退日'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(INT,SUMTJ007)), 1), '.00', '') AS '累計-業務銷退數量'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(INT,SUMTJ033)), 1), '.00', '') AS '累計-業務銷退金額'&#13;&#10;,TOPTB001 AS '第1天POS銷售日'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(INT,SUMTB019)), 1), '.00', '') AS '累計-POS銷售數量'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(INT,SUMTB031)), 1), '.00', '') AS '累計-POS銷售金額'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(DECIMAL(16,4),PERCOSTS)), 1), '.00', '') AS '平均單位成本'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(INT,(SUMTH008-SUMTJ007+SUMTB019))), 1), '.00', '')  AS '累計-總銷售數量'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(INT,(SUMTH037-SUMTJ033+SUMTB031))), 1), '.00', '')  AS '累計-總銷售未稅金額'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(INT,(PERCOSTS*(SUMTH008-SUMTJ007+SUMTB019)))), 1), '.00', '')  AS '累計-總成本'&#13;&#10;,REPLACE(CONVERT(VARCHAR(20), CONVERT(MONEY,CONVERT(INT,(SUMTH037-SUMTJ033+SUMTB031-(PERCOSTS*(SUMTH008-SUMTJ007+SUMTB019))))), 1), '.00', '')  AS '累計-總毛利'&#13;&#10;,CONVERT(NVARCHAR,CONVERT(DECIMAL(16,2),(CASE WHEN (SUMTH037-SUMTJ033+SUMTB031-(PERCOSTS*(SUMTH008-SUMTJ007+SUMTB019)))&lt;&gt;0 AND (SUMTH037-SUMTJ007+SUMTB031)&lt;&gt;0  THEN (SUMTH037-SUMTJ033+SUMTB031-(PERCOSTS*(SUMTH008-SUMTJ007+SUMTB019)))/(SUMTH037+SUMTB031) ELSE  0 END )*100))+'%'  AS '累計-毛利率'&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT *&#13;&#10;,ISNULL(&#13;&#10;(SELECT CASE WHEN SUM(LA024)&lt;&gt;0 AND SUM(LA016)&lt;&gt;0 THEN SUM(LA024)/SUM(LA016) ELSE 0 END&#13;&#10;FROM [TK].dbo.SASLA&#13;&#10;WHERE LA005=MB001&#13;&#10;AND CONVERT(NVARCHAR,LA015,112)&gt;='20230101'&#13;&#10;AND CONVERT(NVARCHAR,LA015,112)&lt;='20231231')&#13;&#10;,0) AS PERCOSTS&#13;&#10;FROM (&#13;&#10;SELECT '20230101' SDATES,'20231231' AS EDATES,MB001,MB002,MB003,MB004,CREATE_DATE&#13;&#10;,ISNULL((SELECT TOP 1 ISNULL(TG003,'') FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG023='Y' AND TG003&gt;='20230101' AND TH004=MB001 ORDER BY TG003 ),'') AS TOPTG003&#13;&#10;,ISNULL((SELECT SUM((CASE WHEN TH009=MD002 THEN ((TH008+TH024)*MD004/MD003) ELSE (TH008+TH024) END)) FROM [TK].dbo.COPTG,[TK].dbo.COPTH LEFT JOIN [TK].dbo.INVMD ON MD001=TH004 WHERE TG001=TH001 AND TG002=TH002 AND TG023='Y' AND TG003&gt;='20230101' AND TH004=MB001),0) AS SUMTH008&#13;&#10;,ISNULL((SELECT SUM(TH037) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG023='Y' AND TG003&gt;='20230101' AND TH004=MB001),0) AS SUMTH037&#13;&#10;&#13;&#10;,ISNULL((SELECT TOP 1 ISNULL(TI003,'') FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND TI019='Y' AND TI003&gt;='20230101' AND TJ004=MB001 ORDER BY TI003 ),'') AS TOPTI003&#13;&#10;,ISNULL((SELECT SUM((CASE WHEN TJ008=MD002 THEN (TJ007*MD004/MD003) ELSE TJ007 END)) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ LEFT JOIN [TK].dbo.INVMD ON MD001=TJ004 WHERE TI001=TJ001 AND TI002=TJ002 AND TI019='Y' AND TI003&gt;='20230101' AND TJ004=MB001),0) AS SUMTJ007&#13;&#10;,ISNULL((SELECT SUM(TJ033) FROM [TK].dbo.COPTI,[TK].dbo.COPTJ WHERE TI001=TJ001 AND TI002=TJ002 AND TI019='Y' AND TI003&gt;='20230101' AND TJ004=MB001),0) AS SUMTJ033&#13;&#10;&#13;&#10;,ISNULL((SELECT TOP 1 ISNULL(TB001,'') FROM [TK].dbo.POSTB WHERE TB010=MB001 AND TB001&gt;='20230101' ORDER BY TB001),'') AS TOPTB001&#13;&#10;,ISNULL((SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB010=MB001 AND TB001&gt;='20230101'),0) AS SUMTB019&#13;&#10;,ISNULL((SELECT SUM(TB031) FROM [TK].dbo.POSTB WHERE TB010=MB001 AND TB001&gt;='20230101'),0) AS SUMTB031&#13;&#10;FROM [TK].dbo.INVMB&#13;&#10;WHERE 1=1&#13;&#10;AND MB001 LIKE '4%'&#13;&#10;AND MB002 NOT LIKE '%試吃%'&#13;&#10;AND MB002 NOT LIKE '%空%'&#13;&#10;AND ISNULL(MB002,'')&lt;&gt;''&#13;&#10;AND CREATE_DATE&gt;='20230101'&#13;&#10;) AS TEMP&#13;&#10;) AS TEMP2&#13;&#10;ORDER BY (SUMTH037+SUMTB031) DESC">
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="規格" DataType="System.String"/>
+        <Column Name="單位" DataType="System.String"/>
+        <Column Name="新品建立日期" DataType="System.String"/>
+        <Column Name="第1天業務銷貨日" DataType="System.String"/>
+        <Column Name="累計-業務銷貨數量" DataType="System.String"/>
+        <Column Name="累計-業務銷貨金額" DataType="System.String"/>
+        <Column Name="第1天業務銷退日" DataType="System.String"/>
+        <Column Name="累計-業務銷退數量" DataType="System.String"/>
+        <Column Name="累計-業務銷退金額" DataType="System.String"/>
+        <Column Name="第1天POS銷售日" DataType="System.String"/>
+        <Column Name="累計-POS銷售數量" DataType="System.String"/>
+        <Column Name="累計-POS銷售金額" DataType="System.String"/>
+        <Column Name="平均單位成本" DataType="System.String"/>
+        <Column Name="累計-總銷售數量" DataType="System.String"/>
+        <Column Name="累計-總銷售未稅金額" DataType="System.String"/>
+        <Column Name="累計-總成本" DataType="System.String"/>
+        <Column Name="累計-總毛利" DataType="System.String"/>
+        <Column Name="累計-毛利率" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="P1" DataType="System.String"/>
+    <Parameter Name="P2" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="700" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="2570.4" Height="18.9">
+      <TextObject Name="Text1" Width="463.05" Height="18.9" Text="新品銷售資料 日期:[P1]~[P2]"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="23.5" Width="2570.4" Height="18.9">
+      <TextObject Name="Text3" Width="141.75" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="141.75" Width="387.45" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="529.2" Width="255.15" Height="18.9" Border.Lines="All" Text="規格" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="784.35" Width="56.7" Height="18.9" Border.Lines="All" Text="單位" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="1568.7" Width="103.95" Height="18.9" Border.Lines="All" Text="第1天業務銷貨日" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="1672.65" Width="113.4" Height="18.9" Border.Lines="All" Text="累計-業務銷貨數量" VertAlign="Center"/>
+      <TextObject Name="Text17" Left="1786.05" Width="113.4" Height="18.9" Border.Lines="All" Text="累計-業務銷貨金額" VertAlign="Center"/>
+      <TextObject Name="Text19" Left="1899.45" Width="103.95" Height="18.9" Border.Lines="All" Text="第1天業務銷退日" VertAlign="Center"/>
+      <TextObject Name="Text21" Left="2003.4" Width="113.4" Height="18.9" Border.Lines="All" Text="累計-業務銷退數量" VertAlign="Center"/>
+      <TextObject Name="Text23" Left="2116.8" Width="113.4" Height="18.9" Border.Lines="All" Text="累計-業務銷退金額" VertAlign="Center"/>
+      <TextObject Name="Text25" Left="2230.2" Width="103.95" Height="18.9" Border.Lines="All" Text="第1天POS銷售日" VertAlign="Center"/>
+      <TextObject Name="Text27" Left="2334.15" Width="113.4" Height="18.9" Border.Lines="All" Text="累計-POS銷售數量" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="2447.55" Width="113.4" Height="18.9" Border.Lines="All" Text="累計-POS銷售金額" VertAlign="Center"/>
+      <TextObject Name="Text37" Left="1285.2" Width="94.5" Height="18.9" Border.Lines="All" Text="累計-總成本" VertAlign="Center"/>
+      <TextObject Name="Text39" Left="1379.7" Width="94.5" Height="18.9" Border.Lines="All" Text="累計-總毛利" VertAlign="Center"/>
+      <TextObject Name="Text41" Left="1474.2" Width="94.5" Height="18.9" Border.Lines="All" Text="累計-毛利率" VertAlign="Center"/>
+      <TextObject Name="Text33" Left="935.55" Width="103.95" Height="18.9" Border.Lines="All" Text="累計-總銷售數量" VertAlign="Center"/>
+      <TextObject Name="Text35" Left="1039.5" Width="151.2" Height="18.9" Border.Lines="All" Text="累計-總銷售未稅金額" VertAlign="Center"/>
+      <TextObject Name="Text31" Left="1190.7" Width="94.5" Height="18.9" Border.Lines="All" Text="平均單位成本" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="841.05" Width="94.5" Height="18.9" Border.Lines="All" Text="新品建立日期" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="47" Width="2570.4" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="141.75" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.品號]" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="141.75" Width="387.45" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="529.2" Width="255.15" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.規格]" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="784.35" Width="56.7" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.單位]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="1568.7" Width="103.95" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.第1天業務銷貨日]" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="1672.65" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-業務銷貨數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="1786.05" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-業務銷貨金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="1899.45" Width="103.95" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.第1天業務銷退日]" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="2003.4" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-業務銷退數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="2116.8" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-業務銷退金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="2230.2" Width="103.95" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.第1天POS銷售日]" VertAlign="Center"/>
+      <TextObject Name="Text26" Left="2334.15" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-POS銷售數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="2447.55" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-POS銷售金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text36" Left="1285.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-總成本]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text38" Left="1379.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-總毛利]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text40" Left="1474.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-毛利率]" Format="Percent" Format.UseLocale="true" VertAlign="Center"/>
+      <TextObject Name="Text30" Left="1190.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.平均單位成本]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text32" Left="935.55" Width="103.95" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-總銷售數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text34" Left="1039.5" Width="151.2" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.累計-總銷售未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="841.05" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" CanBreak="false" Text="[Table.新品建立日期]" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="70.49" Width="2570.4" Height="18.9"/>
+  </ReportPage>
+</Report>
