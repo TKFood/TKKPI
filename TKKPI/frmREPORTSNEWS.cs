@@ -156,7 +156,7 @@ namespace TKKPI
                             AND CREATE_DATE>='{0}'
                             ) AS TEMP
                             ) AS TEMP2
-                            ORDER BY (SUMTH037+SUMTB031) DESC
+                            ORDER BY (SUMTH037-SUMTJ033+SUMTB031) DESC,新品建立日期
                             ", SDAYS, EDAYS);
 
 
