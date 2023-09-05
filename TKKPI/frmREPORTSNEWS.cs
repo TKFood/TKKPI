@@ -91,7 +91,8 @@ namespace TKKPI
             TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
             table.SelectCommand = SQL1.ToString();
 
-            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            report1.SetParameterValue("P1", SDAYS);
+            report1.SetParameterValue("P2", EDAYS);
 
             report1.Preview = previewControl1;
             report1.Show();
