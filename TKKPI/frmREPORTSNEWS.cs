@@ -63,9 +63,9 @@ namespace TKKPI
 
             // 本月的最後一天
             DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-            dateTimePicker2.Value = lastDayOfMonth;
+            dateTimePicker2.Value = lastDayOfMonth; 
         }
-
+         
         public void SETFASTREPORT(string SDAYS,string EDAYS)
         {
             StringBuilder SQL1 = new StringBuilder();
