@@ -65,12 +65,13 @@ namespace TKKPI
             DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
             dateTimePicker2.Value = lastDayOfMonth; 
         }
-         
-        public void SETFASTREPORT(string SDAYS,string EDAYS)
+        
+    
+        public void SETFASTREPORT(string SDAYS,string EDAYS,string ADDYEARSs)
         {
             StringBuilder SQL1 = new StringBuilder();
 
-            SQL1 = SETSQL(SDAYS,EDAYS);
+            SQL1 = SETSQL(SDAYS,EDAYS, ADDYEARSs);
             Report report1 = new Report();
 
             report1.Load(@"REPORT\新品銷售資料.frx");
@@ -98,10 +99,10 @@ namespace TKKPI
             report1.Show();
         }
 
-        public StringBuilder SETSQL(string SDAYS, string EDAYS)
+        public StringBuilder SETSQL(string SDAYS, string EDAYS,string ADDYEARSs)
         {     
             StringBuilder SB = new StringBuilder();
-
+            string ADD_DAYS = ADDYEARSs + "0101";
 
             SB.AppendFormat(@"                               
                             SELECT  
@@ -154,11 +155,11 @@ namespace TKKPI
                             AND MB002 NOT LIKE '%試吃%'
                             AND MB002 NOT LIKE '%空%'
                             AND ISNULL(MB002,'')<>''
-                            AND CREATE_DATE>='{0}'
+                            AND CREATE_DATE>='{2}'
                             ) AS TEMP
                             ) AS TEMP2
                             ORDER BY (SUMTH037-SUMTJ033+SUMTB031) DESC,新品建立日期
-                            ", SDAYS, EDAYS);
+                            ", SDAYS, EDAYS, ADD_DAYS);
 
 
             return SB;
@@ -169,7 +170,7 @@ namespace TKKPI
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SETFASTREPORT(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), dateTimePicker3.Value.ToString("yyyy"));
         }
         #endregion
     }
