@@ -205,10 +205,10 @@ namespace TKKPI
                                     ,[NUMS] AS '購買件數'
                                     ,[ISCHECK] AS '是否檢查1'
                                     ,[CHECKNAME]  AS '檢查人1'
-                                    ,[CHECKTIME]  AS '檢查時間1'
+                                    ,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'
                                     ,[ISCHECK2]  AS '是否檢查2'
                                     ,[CHECKNAME2] AS '檢查時間2'
-                                    ,[CHECKTIME2] AS '是否檢查2'
+                                    ,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
                                     WHERE 1=1
                                     {0}
@@ -255,6 +255,8 @@ namespace TKKPI
         {
             string KEY1 = null;
             string KEY2 = null;
+            textBox2.Text = "";
+            textBox3.Text = "";
 
             if (dataGridView1.CurrentRow != null)
             {
@@ -264,6 +266,8 @@ namespace TKKPI
                     DataGridViewRow row = dataGridView1.Rows[rowindex];
                     KEY1 = row.Cells["發票"].Value.ToString();
                     KEY2 = row.Cells["購物車"].Value.ToString();
+                    textBox2.Text = row.Cells["登錄時間"].Value.ToString();
+                    textBox3.Text = row.Cells["通路"].Value.ToString();
 
                     if (!string.IsNullOrEmpty(KEY1) || !string.IsNullOrEmpty(KEY2))
                     {
@@ -395,6 +399,140 @@ namespace TKKPI
 
         }
 
+        public void UPDATE_TBLOTTERYCHECKPOS91_CHECK_NAMES(string NAMES, string ID, string KINDS)
+        {          
+
+            if (NAMES.Equals("張健洲"))
+            {
+                UPDATE_TBLOTTERYCHECKPOS91_CHECK1(NAMES, ID, KINDS);
+            }
+            else if (NAMES.Equals("謝佳貞"))
+            {
+                UPDATE_TBLOTTERYCHECKPOS91_CHECK2(NAMES, ID, KINDS);
+            }
+
+        }
+
+        public void UPDATE_TBLOTTERYCHECKPOS91_CHECK1(string NAMES,string ID,string KINDS)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+
+                sbSql.AppendFormat(@" 
+                                    UPDATE [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    SET [ISCHECK]='已檢查',[CHECKNAME]='{0}',[CHECKTIME]=GETDATE()
+                                    WHERE [ID]='{1}' AND [KINDS]='{2}'
+
+                                    "
+                                    , NAMES, ID, KINDS);
+                sbSql.AppendFormat(@" ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                    
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+        public void UPDATE_TBLOTTERYCHECKPOS91_CHECK2(string NAMES, string ID, string KINDS)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+
+                sbSql.AppendFormat(@" 
+                                    UPDATE [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    SET [ISCHECK2]='已檢查',[CHECKNAME2]='{0}',[CHECKTIME2]=GETDATE()
+                                    WHERE [ID]='{1}' AND [KINDS]='{2}'
+
+                                    "
+                                    , NAMES, ID, KINDS);
+                sbSql.AppendFormat(@" ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
+
+
         #endregion
 
         #region BUTTON
@@ -402,8 +540,14 @@ namespace TKKPI
         {
             Search();
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string NAMES = comboBox3.Text.ToString();
+            UPDATE_TBLOTTERYCHECKPOS91_CHECK_NAMES(NAMES,textBox2.Text,textBox3.Text);
+            Search();
+        }
         #endregion
 
-     
+
     }
 }
