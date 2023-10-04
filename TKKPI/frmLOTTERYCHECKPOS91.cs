@@ -644,7 +644,67 @@ namespace TKKPI
             }
         }
 
+        public void SETFASTREPORT()
+        {
+            StringBuilder SQL1 = new StringBuilder();
 
+            SQL1 = SETSQL();
+            Report report1 = new Report();
+            report1.Load(@"REPORT\登記人名冊.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            //report1.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            //report1.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
+            report1.Preview = previewControl1;
+            report1.Show();
+        }
+
+        public StringBuilder SETSQL()
+        {
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(@" 
+                            SELECT 
+                            [ID] AS '登錄時間'
+                            ,[KINDS] AS '通路' 
+                            ,[BILLPOS] AS '發票'
+                            ,[BILL91] AS '購物車'
+                            ,[NUMS] AS '購買件數'
+                            ,[ISCHECK] AS '是否檢查1'
+                            ,[CHECKNAME]  AS '檢查人1'
+                            ,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'
+                            ,[ISCHECK2]  AS '是否檢查2'
+                            ,[CHECKNAME2] AS '檢查時間2'
+                            ,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'
+                            ,CONVERT(NVARCHAR,CONVERT(DATETIME,SUBSTRING([ID],0,LEN([ID])-9)),112)
+
+                            FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                            WHERE 1=1
+                            AND CONVERT(NVARCHAR,CONVERT(DATETIME,SUBSTRING([ID],0,LEN([ID])-9)),112)='20231004'
+                            ORDER BY [KINDS],[ID]
+                             ");
+
+            talbename = "TEMPds1";
+
+            return SB;
+
+        }
 
         #endregion
 
@@ -661,7 +721,7 @@ namespace TKKPI
         }
         private void button3_Click(object sender, EventArgs e)
         {
-            //SETFASTREPORT();
+            SETFASTREPORT();
         }
         private void button4_Click(object sender, EventArgs e)
         {

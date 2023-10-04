@@ -499,7 +499,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel3.Controls.Add(this.button3, 4, 1);
+            this.tableLayoutPanel3.Controls.Add(this.button3, 1, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -515,9 +515,9 @@
             // 
             this.button3.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.button3.ForeColor = System.Drawing.Color.Blue;
-            this.button3.Location = new System.Drawing.Point(413, 43);
+            this.button3.Location = new System.Drawing.Point(123, 43);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(85, 34);
+            this.button3.Size = new System.Drawing.Size(114, 34);
             this.button3.TabIndex = 31;
             this.button3.Text = "查詢";
             this.button3.UseVisualStyleBackColor = true;

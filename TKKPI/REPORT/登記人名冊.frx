@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/04/2023 14:39:40" ReportInfo.Modified="10/04/2023 14:57:33" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUE+43J1hgOyMArNnaty3oXq">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;[ID] AS '登錄時間'&#13;&#10;,[KINDS] AS '通路' &#13;&#10;,[BILLPOS] AS '發票'&#13;&#10;,[BILL91] AS '購物車'&#13;&#10;,[NUMS] AS '購買件數'&#13;&#10;,[ISCHECK] AS '是否檢查1'&#13;&#10;,[CHECKNAME]  AS '檢查人1'&#13;&#10;,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'&#13;&#10;,[ISCHECK2]  AS '是否檢查2'&#13;&#10;,[CHECKNAME2] AS '檢查時間2'&#13;&#10;,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'&#13;&#10;,CONVERT(NVARCHAR,CONVERT(DATETIME,SUBSTRING([ID],0,LEN([ID])-9)),112)&#13;&#10;&#13;&#10;FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]&#13;&#10;WHERE 1=1&#13;&#10;AND CONVERT(NVARCHAR,CONVERT(DATETIME,SUBSTRING([ID],0,LEN([ID])-9)),112)='20231004'&#13;&#10;ORDER BY [KINDS],[ID]">
+        <Column Name="登錄時間" DataType="System.String"/>
+        <Column Name="通路" DataType="System.String"/>
+        <Column Name="發票" DataType="System.String"/>
+        <Column Name="購物車" DataType="System.String"/>
+        <Column Name="購買件數" DataType="System.Int32"/>
+        <Column Name="是否檢查1" DataType="System.String"/>
+        <Column Name="檢查人1" DataType="System.String"/>
+        <Column Name="檢查時間1" DataType="System.String"/>
+        <Column Name="是否檢查2" DataType="System.String"/>
+        <Column Name="檢查時間2" DataType="System.String"/>
+        <Column Name="是否檢查21" DataType="System.String"/>
+        <Column Name="Column1" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="37.8">
+      <TextObject Name="Text1" Width="718.2" Height="18.9" Text="登記名冊" VertAlign="Center"/>
+      <TextObject Name="Text3" Top="18.9" Width="198.45" Height="18.9" Border.Lines="All" Text="登錄時間" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="198.45" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="通路" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="292.95" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="發票" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="387.45" Top="18.9" Width="113.4" Height="18.9" Border.Lines="All" Text="購物車" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="500.85" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="購買件數" HorzAlign="Center" VertAlign="Center"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="42.4" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text2" Width="198.45" Height="18.9" Border.Lines="All" Text="[Table.登錄時間]" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="198.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.通路]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="292.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.發票]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="387.45" Width="113.4" Height="18.9" Border.Lines="All" Text="[Table.購物車]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="500.85" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.購買件數]" HorzAlign="Center" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="65.9" Width="1047.06" Height="18.9"/>
+  </ReportPage>
+</Report>
