@@ -50,11 +50,13 @@ namespace TKKPI
 
             comboBox1load();
             comboBox2load();
+            comboBox3load();
         }
 
         #region FUNCTION
         public void comboBox1load()
         {
+            ComboBox CBX = comboBox1;
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
             SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
@@ -76,15 +78,16 @@ namespace TKKPI
             dt.Columns.Add("NAMES", typeof(string));
             da.Fill(dt);
 
-            comboBox1.DataSource = dt.DefaultView;
-            comboBox1.ValueMember = "NAMES";
-            comboBox1.DisplayMember = "NAMES";
+            CBX.DataSource = dt.DefaultView;
+            CBX.ValueMember = "NAMES";
+            CBX.DisplayMember = "NAMES";
             sqlConn.Close();
 
-            comboBox1.Font = new Font("Arial", 10); // 使用 "Arial" 字體，字體大小為 12
+            CBX.Font = new Font("Arial", 10); // 使用 "Arial" 字體，字體大小為 12
         }
         public void comboBox2load()
         {
+            ComboBox CBX = comboBox2;
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
             SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
@@ -106,12 +109,44 @@ namespace TKKPI
             dt.Columns.Add("NAMES", typeof(string));
             da.Fill(dt);
 
-            comboBox2.DataSource = dt.DefaultView;
-            comboBox2.ValueMember = "NAMES";
-            comboBox2.DisplayMember = "NAMES";
+            CBX.DataSource = dt.DefaultView;
+            CBX.ValueMember = "NAMES";
+            CBX.DisplayMember = "NAMES";
             sqlConn.Close();
 
-            comboBox2.Font = new Font("Arial", 10); // 使用 "Arial" 字體，字體大小為 12
+            CBX.Font = new Font("Arial", 10); // 使用 "Arial" 字體，字體大小為 12
+        }
+
+        public void comboBox3load()
+        {
+            ComboBox CBX = comboBox3;
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT  [ID],[KINDS],[NAMES],[VALUE] FROM [TKKPI].[dbo].[TBPARA] WHERE [KINDS]='TBLOTTERYCHECKPOS91CHECKNAME' ORDER BY ID ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("NAMES", typeof(string));
+            da.Fill(dt);
+
+            CBX.DataSource = dt.DefaultView;
+            CBX.ValueMember = "NAMES";
+            CBX.DisplayMember = "NAMES";
+            sqlConn.Close();
+
+            CBX.Font = new Font("Arial", 10); // 使用 "Arial" 字體，字體大小為 12
         }
         public void Search()
         {
