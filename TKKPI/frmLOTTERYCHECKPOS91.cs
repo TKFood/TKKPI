@@ -363,6 +363,188 @@ namespace TKKPI
 
         }
 
+        public void Search3()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+            StringBuilder SQLQUERY1 = new StringBuilder();
+            StringBuilder SQLQUERY2 = new StringBuilder();
+
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+              
+
+                sbSql.Clear();
+                sbSql.AppendFormat(@" 
+                                    SELECT 
+                                     [ID] AS '登錄時間'
+                                    ,[KINDS] AS '通路' 
+                                    ,[BILLPOS] AS '發票'
+                                    ,[BILL91] AS '購物車'
+                                    ,[NUMS] AS '購買件數'
+                                    ,[ISCHECK] AS '是否檢查1'
+                                    ,[CHECKNAME]  AS '檢查人1'
+                                    ,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'
+                                    ,[ISCHECK2]  AS '是否檢查2'
+                                    ,[CHECKNAME2] AS '檢查時間2'
+                                    ,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    WHERE 1=1
+                                    AND [BILLPOS] IN 
+                                    (
+                                    SELECT 
+                                    [BILLPOS] 
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    WHERE ISNULL([BILLPOS],'')<>''
+                                    GROUP BY [BILLPOS]
+                                    HAVING COUNT([BILLPOS])>=2
+
+                                    )
+                                    ORDER BY [KINDS],[ID]
+                                    ");
+
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count == 0)
+                {
+                    dataGridView1.DataSource = null;
+                    dataGridView2.DataSource = null;
+                }
+                else
+                {
+                    dataGridView1.DataSource = ds.Tables["ds"];
+                    dataGridView1.AutoResizeColumns();
+
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+
+        public void Search4()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+            StringBuilder SQLQUERY1 = new StringBuilder();
+            StringBuilder SQLQUERY2 = new StringBuilder();
+
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+
+                sbSql.Clear();
+                sbSql.AppendFormat(@" 
+                                    SELECT 
+                                    [ID] AS '登錄時間'
+                                    ,[KINDS] AS '通路' 
+                                    ,[BILLPOS] AS '發票'
+                                    ,[BILL91] AS '購物車'
+                                    ,[NUMS] AS '購買件數'
+                                    ,[ISCHECK] AS '是否檢查1'
+                                    ,[CHECKNAME]  AS '檢查人1'
+                                    ,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'
+                                    ,[ISCHECK2]  AS '是否檢查2'
+                                    ,[CHECKNAME2] AS '檢查時間2'
+                                    ,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'
+                                    ,CONVERT(NVARCHAR,CONVERT(DATETIME,SUBSTRING([ID],0,LEN([ID])-9)),112)
+
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    WHERE 1=1
+                                    AND [BILL91] IN 
+                                    (
+                                    SELECT 
+                                    [BILL91] 
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    WHERE ISNULL([BILL91],'')<>''
+                                    GROUP BY [BILL91]
+                                    HAVING COUNT([BILL91])>=2
+
+                                    )
+                                    ORDER BY [KINDS],[ID]
+
+
+                                    ");
+
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count == 0)
+                {
+                    dataGridView1.DataSource = null;
+                    dataGridView2.DataSource = null;
+                }
+                else
+                {
+                    dataGridView1.DataSource = ds.Tables["ds"];
+                    dataGridView1.AutoResizeColumns();
+
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
            
@@ -726,6 +908,23 @@ namespace TKKPI
         private void button4_Click(object sender, EventArgs e)
         {
             Search2();
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Search3();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Search4();
+        }
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void button8_Click(object sender, EventArgs e)
+        {
+
         }
         #endregion
 
