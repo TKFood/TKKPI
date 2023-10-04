@@ -115,6 +115,9 @@ namespace TKKPI
         }
         public void Search()
         {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
             StringBuilder SQLQUERY1 = new StringBuilder();
             StringBuilder SQLQUERY2 = new StringBuilder();
 
@@ -195,11 +198,7 @@ namespace TKKPI
                 else
                 {
                     dataGridView1.DataSource = ds.Tables["ds"];
-                    dataGridView1.AutoResizeColumns();
-                    //rownum = ds.Tables[talbename].Rows.Count - 1;
-                    dataGridView1.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
-
-                    //dataGridView1.CurrentCell = dataGridView1[0, 2];
+                    dataGridView1.AutoResizeColumns();                 
 
                 }
 
@@ -217,7 +216,139 @@ namespace TKKPI
 
         }
 
-       
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            string KEY1 = null;
+            string KEY2 = null;
+
+            if (dataGridView1.CurrentRow != null)
+            {
+                int rowindex = dataGridView1.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView1.Rows[rowindex];
+                    KEY1 = row.Cells["發票"].Value.ToString();
+                    KEY2 = row.Cells["購物車"].Value.ToString();
+
+                    if (!string.IsNullOrEmpty(KEY1) || !string.IsNullOrEmpty(KEY2))
+                    {
+                        Search_POS_91(KEY1, KEY2);
+                    }
+                }
+                else
+                {
+
+                }
+            }
+
+        }
+
+        public void Search_POS_91(string KEY1,string KEY2)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+
+            StringBuilder SQLQUERY1 = new StringBuilder();
+            StringBuilder SQLQUERY2 = new StringBuilder();
+
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                if (!string.IsNullOrEmpty(KEY1) )
+                {
+                    SQLQUERY1.AppendFormat(@" AND TA014='{0}'  ", KEY1);
+                }               
+                else
+                {
+                    SQLQUERY1.AppendFormat(@" AND 1=0 ");
+                }
+                if (!string.IsNullOrEmpty(KEY2))
+                {
+                    SQLQUERY2.AppendFormat(@"  ", KEY2);
+                }              
+                else
+                {
+                    SQLQUERY2.AppendFormat(@" ");
+                }
+
+
+                sbSql.Clear();
+
+                if (!string.IsNullOrEmpty(KEY1) || !string.IsNullOrEmpty(KEY2))
+                {                   
+                    sbSql.AppendFormat(@" 
+                                    SELECT 
+                                    TA014 AS '發票號碼'
+                                    ,TB001 AS '交易日期'
+                                    ,TB002 AS '店號'
+                                    ,TB010 AS '品號'
+                                    ,MB002 AS '品名'
+                                    ,SUM(TB019)  AS '銷售數量'
+
+                                    FROM [TK].dbo.POSTA WITH(NOLOCK),[TK].dbo.POSTB  WITH(NOLOCK)
+                                    LEFT JOIN [TK].dbo.INVMB ON MB001=TB010
+                                    WHERE TA001=TB001 AND TA002=TB002 AND TA003=TB003 AND TA006=TB006
+                                    {0}
+                                   
+                                    GROUP BY TA014
+                                    ,TA041
+                                    ,TB001
+                                    ,TB002
+                                    ,TB010
+                                    ,MB002
+
+                                    ", SQLQUERY1.ToString(), SQLQUERY2.ToString());
+
+                }
+
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count == 0)
+                {
+                    dataGridView2.DataSource = null;
+                }
+                else
+                {
+                    dataGridView2.DataSource = ds.Tables["ds"];
+                    dataGridView2.AutoResizeColumns();
+                 
+
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+
         #endregion
 
         #region BUTTON
@@ -226,5 +357,7 @@ namespace TKKPI
             Search();
         }
         #endregion
+
+     
     }
 }
