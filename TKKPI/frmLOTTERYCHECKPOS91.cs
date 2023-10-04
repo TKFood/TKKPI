@@ -610,7 +610,7 @@ namespace TKKPI
                 }
                 if (!string.IsNullOrEmpty(KEY2))
                 {
-                    SQLQUERY2.AppendFormat(@" AND (TG020='{0}' OR TG029='{0}') ", KEY2);
+                    SQLQUERY2.AppendFormat(@" AND  TG029='{0}' ", KEY2);
                 }              
                 else
                 {
@@ -642,7 +642,7 @@ namespace TKKPI
 
                                     UNION ALL
                                     SELECT 
-                                    TG020 AS '發票號碼+購物車'
+                                    TG029 AS '發票號碼+購物車'
                                     ,TG003 AS '交易日期'
                                     ,TG007 AS '店號'
                                     ,TH004 AS '品號'
@@ -652,7 +652,7 @@ namespace TKKPI
                                     WHERE 1=1
                                     AND TG001=TH001 AND TG002=TH002
                                     {1}
-                                    GROUP BY  TG020,TG003,TG007,TH004,TH005
+                                    GROUP BY  TG029,TG003,TG007,TH004,TH005
 
                                     ", SQLQUERY1.ToString(), SQLQUERY2.ToString());
 
@@ -939,7 +939,7 @@ namespace TKKPI
                                     ,[BILLPOS]
                                     ,[BILL91]
                                     ,[NUMS]
-                                    ,(SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG020=[BILL91]) AS BILLPOSNUMS
+                                    ,(SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG029=[BILL91]) AS BILLPOSNUMS
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
                                     WHERE ISNULL([BILL91],'')<>''
                                     AND  [ISCHECK]='未檢查' AND [ISCHECK2]='未檢查'
