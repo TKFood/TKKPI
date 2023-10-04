@@ -888,6 +888,98 @@ namespace TKKPI
 
         }
 
+        public void UPDATE_TBLOTTERYCHECKPOS91_NUMS()
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+
+                sbSql.AppendFormat(@" 
+                                    UPDATE [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    SET [NUMS]=BILLPOSNUMS
+                                    FROM 
+                                    (
+                                    SELECT 
+                                    [ID]
+                                    ,[KINDS]
+                                    ,[BILLPOS]
+                                    ,[BILL91]
+                                    ,[NUMS]
+                                    ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WITH(NOLOCK) WHERE TB008=[BILLPOS]) AS BILLPOSNUMS
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    WHERE ISNULL([BILLPOS],'')<>''
+                                    AND  [ISCHECK]='未檢查' AND [ISCHECK2]='未檢查'
+                                    ) AS TEMP
+                                    WHERE [TBLOTTERYCHECKPOS91].[ID]=TEMP.[ID] AND [TBLOTTERYCHECKPOS91].[KINDS]=TEMP.[KINDS]
+                                    AND [TBLOTTERYCHECKPOS91].[NUMS]<>TEMP.BILLPOSNUMS
+
+                                    UPDATE [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    SET [NUMS]=BILLPOSNUMS
+                                    FROM 
+                                    (
+                                    SELECT 
+                                    [ID]
+                                    ,[KINDS]
+                                    ,[BILLPOS]
+                                    ,[BILL91]
+                                    ,[NUMS]
+                                    ,(SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG020=[BILL91]) AS BILLPOSNUMS
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    WHERE ISNULL([BILL91],'')<>''
+                                    AND  [ISCHECK]='未檢查' AND [ISCHECK2]='未檢查'
+                                    ) AS TEMP
+                                    WHERE [TBLOTTERYCHECKPOS91].[ID]=TEMP.[ID] AND [TBLOTTERYCHECKPOS91].[KINDS]=TEMP.[KINDS]
+                                    AND [TBLOTTERYCHECKPOS91].[NUMS]<>TEMP.BILLPOSNUMS
+
+                                    "
+                                     );
+
+                sbSql.AppendFormat(@" ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -920,7 +1012,10 @@ namespace TKKPI
         }
         private void button7_Click(object sender, EventArgs e)
         {
+            UPDATE_TBLOTTERYCHECKPOS91_NUMS();
 
+            Search();
+            MessageBox.Show("完成");
         }
         private void button8_Click(object sender, EventArgs e)
         {
