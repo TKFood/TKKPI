@@ -178,7 +178,7 @@ namespace TKKPI
                                     WHERE 1=1
                                     {0}
                                     {1}
-                                    ORDER BY [ID]
+                                    ORDER BY [KINDS],[ID]
                                     ", SQLQUERY1.ToString(), SQLQUERY2.ToString());
 
 
@@ -268,7 +268,7 @@ namespace TKKPI
 
                 if (!string.IsNullOrEmpty(KEY1) )
                 {
-                    SQLQUERY1.AppendFormat(@" AND TA014='{0}'  ", KEY1);
+                    SQLQUERY1.AppendFormat(@"   AND TB008='{0}'  ", KEY1);
                 }               
                 else
                 {
@@ -276,11 +276,11 @@ namespace TKKPI
                 }
                 if (!string.IsNullOrEmpty(KEY2))
                 {
-                    SQLQUERY2.AppendFormat(@"  ", KEY2);
+                    SQLQUERY2.AppendFormat(@" AND (TG020='{0}' OR TG029='{0}') ", KEY2);
                 }              
                 else
                 {
-                    SQLQUERY2.AppendFormat(@" ");
+                    SQLQUERY2.AppendFormat(@" AND 1=0 ");
                 }
 
 
@@ -290,24 +290,35 @@ namespace TKKPI
                 {                   
                     sbSql.AppendFormat(@" 
                                     SELECT 
-                                    TA014 AS '發票號碼'
+                                    TB008 AS '發票號碼+購物車'
                                     ,TB001 AS '交易日期'
                                     ,TB002 AS '店號'
                                     ,TB010 AS '品號'
                                     ,MB002 AS '品名'
                                     ,SUM(TB019)  AS '銷售數量'
-
-                                    FROM [TK].dbo.POSTA WITH(NOLOCK),[TK].dbo.POSTB  WITH(NOLOCK)
+                                    FROM[TK].dbo.POSTB  WITH(NOLOCK)
                                     LEFT JOIN [TK].dbo.INVMB ON MB001=TB010
-                                    WHERE TA001=TB001 AND TA002=TB002 AND TA003=TB003 AND TA006=TB006
+                                    WHERE 1=1
                                     {0}
-                                   
-                                    GROUP BY TA014
-                                    ,TA041
+                                    GROUP BY TB008
                                     ,TB001
                                     ,TB002
                                     ,TB010
                                     ,MB002
+
+                                    UNION ALL
+                                    SELECT 
+                                    TG020 AS '發票號碼+購物車'
+                                    ,TG003 AS '交易日期'
+                                    ,TG007 AS '店號'
+                                    ,TH004 AS '品號'
+                                    ,TH005  AS '品名'
+                                    ,SUM(TH008+TH024)  AS '銷售數量'
+                                    FROM [TK].dbo.COPTG,[TK].dbo.COPTH
+                                    WHERE 1=1
+                                    AND TG001=TH001 AND TG002=TH002
+                                    {1}
+                                    GROUP BY  TG020,TG003,TG007,TH004,TH005
 
                                     ", SQLQUERY1.ToString(), SQLQUERY2.ToString());
 
