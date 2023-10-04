@@ -173,6 +173,12 @@
     <Compile Include="FrmLogin.Designer.cs">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmLOTTERYCHECKPOS91.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLOTTERYCHECKPOS91.Designer.cs">
+      <DependentUpon>frmLOTTERYCHECKPOS91.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMARKETMONTHSET.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -357,6 +363,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLOTTERYCHECKPOS91.resx">
+      <DependentUpon>frmLOTTERYCHECKPOS91.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMARKETMONTHSET.resx">
       <DependentUpon>frmMARKETMONTHSET.cs</DependentUpon>
