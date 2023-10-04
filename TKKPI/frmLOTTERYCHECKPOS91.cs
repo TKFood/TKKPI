@@ -229,6 +229,7 @@ namespace TKKPI
                 if (ds.Tables["ds"].Rows.Count == 0)
                 {
                     dataGridView1.DataSource = null;
+                    dataGridView2.DataSource = null;
                 }
                 else
                 {
@@ -251,8 +252,120 @@ namespace TKKPI
 
         }
 
+        public void Search2()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+            StringBuilder SQLQUERY1 = new StringBuilder();
+            StringBuilder SQLQUERY2 = new StringBuilder();
+            StringBuilder SQLQUERY3 = new StringBuilder();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                if (!string.IsNullOrEmpty(comboBox1.Text.ToString()) && !comboBox1.Text.ToString().Equals("全部"))
+                {
+                    SQLQUERY1.AppendFormat(@"AND [ISCHECK] IN ('{0}') ", comboBox1.Text.ToString());
+                }
+                else if (comboBox1.Text.ToString().Equals("全部"))
+                {
+                    SQLQUERY1.AppendFormat(@" ");
+                }
+                else
+                {
+                    SQLQUERY1.AppendFormat(@" ");
+                }
+                if (!string.IsNullOrEmpty(comboBox2.Text.ToString()) && !comboBox2.Text.ToString().Equals("全部"))
+                {
+                    SQLQUERY2.AppendFormat(@"AND [ISCHECK2] IN ('{0}') ", comboBox2.Text.ToString());
+                }
+                else if (comboBox2.Text.ToString().Equals("全部"))
+                {
+                    SQLQUERY2.AppendFormat(@" ");
+                }
+                else
+                {
+                    SQLQUERY2.AppendFormat(@" ");
+                }
+                
+                //日期
+                SQLQUERY3.AppendFormat(@" 
+                                        AND CONVERT(NVARCHAR,CONVERT(DATETIME,SUBSTRING([ID],0,LEN([ID])-9)),112)>='{0}' 
+                                        AND CONVERT(NVARCHAR,CONVERT(DATETIME,SUBSTRING([ID],0,LEN([ID])-9)),112)<='{1}'
+                                        ",dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"));
+
+                sbSql.Clear();
+                sbSql.AppendFormat(@" 
+                                    SELECT 
+                                     [ID] AS '登錄時間'
+                                    ,[KINDS] AS '通路' 
+                                    ,[BILLPOS] AS '發票'
+                                    ,[BILL91] AS '購物車'
+                                    ,[NUMS] AS '購買件數'
+                                    ,[ISCHECK] AS '是否檢查1'
+                                    ,[CHECKNAME]  AS '檢查人1'
+                                    ,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'
+                                    ,[ISCHECK2]  AS '是否檢查2'
+                                    ,[CHECKNAME2] AS '檢查時間2'
+                                    ,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    WHERE 1=1
+                                    {0}
+                                    {1}
+                                    {2}
+                                    ORDER BY [KINDS],[ID]
+                                    ", SQLQUERY1.ToString(), SQLQUERY2.ToString(), SQLQUERY3.ToString());
+
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count == 0)
+                {
+                    dataGridView1.DataSource = null;
+                    dataGridView2.DataSource = null;
+                }
+                else
+                {
+                    dataGridView1.DataSource = ds.Tables["ds"];
+                    dataGridView1.AutoResizeColumns();
+
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+
+        }
+
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
+           
             string KEY1 = null;
             string KEY2 = null;
             textBox2.Text = "";
@@ -545,6 +658,14 @@ namespace TKKPI
             string NAMES = comboBox3.Text.ToString();
             UPDATE_TBLOTTERYCHECKPOS91_CHECK_NAMES(NAMES,textBox2.Text,textBox3.Text);
             Search();
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //SETFASTREPORT();
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Search2();
         }
         #endregion
 
