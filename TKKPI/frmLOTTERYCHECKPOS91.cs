@@ -61,7 +61,12 @@ namespace TKKPI
             comboBox2load();
             comboBox3load();
 
-            MessageBox.Show(parameter);
+            //MessageBox.Show(parameter);
+            if(parameter.Equals("210007"))
+            {
+                comboBox3.Text = "謝佳貞";
+            }
+           
         }
 
         #region FUNCTION
