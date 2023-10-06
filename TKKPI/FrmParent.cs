@@ -124,10 +124,23 @@ namespace TKKPI
                             form.Close();
                         }
 
-                        frmShow.MdiParent = this;
-                        frmShow.WindowState = FormWindowState.Maximized;
-                        //frmShow.ControlBox = false;
-                        frmShow.Show();
+
+                        if(type.Name.Equals("frmLOTTERYCHECKPOS91"))
+                        {
+                            frmShow = new frmLOTTERYCHECKPOS91(UserName);
+                            frmShow.MdiParent = this;
+                            frmShow.WindowState = FormWindowState.Maximized;
+                            //frmShow.ControlBox = false;
+                            frmShow.Show();
+                        }
+                        else
+                        {
+
+                            frmShow.MdiParent = this;
+                            frmShow.WindowState = FormWindowState.Maximized;
+                            //frmShow.ControlBox = false;
+                            frmShow.Show();
+                        }
                     }
                 }
             }

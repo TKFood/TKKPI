@@ -53,6 +53,17 @@ namespace TKKPI
             comboBox3load();
         }
 
+        public frmLOTTERYCHECKPOS91(string parameter)
+        {
+            InitializeComponent();
+
+            comboBox1load();
+            comboBox2load();
+            comboBox3load();
+
+            MessageBox.Show(parameter);
+        }
+
         #region FUNCTION
         public void comboBox1load()
         {
