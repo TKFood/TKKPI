@@ -967,8 +967,7 @@ namespace TKKPI
         public StringBuilder SETSQL2()
         {
             StringBuilder SB = new StringBuilder();
-
-
+             
             SB.AppendFormat(@" 
                             SELECT
                             [ID]
