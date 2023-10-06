@@ -1012,6 +1012,189 @@ namespace TKKPI
             }
         }
 
+        public void TBLOTTERYCHECKPOS91PRINTS_NEW()
+        {
+            DataTable DT = SERACH_TBLOTTERYCHECKPOS91();
+            if(DT!=null&& DT.Rows.Count>=1)
+            {
+                TBLOTTERYCHECKPOS91PRINTS_ADD(DT);
+            }
+        }
+
+        public DataTable SERACH_TBLOTTERYCHECKPOS91()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+            DataSet ds = new DataSet();
+
+            StringBuilder SQLQUERY1 = new StringBuilder();
+            StringBuilder SQLQUERY2 = new StringBuilder();
+
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+                
+
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@" 
+                                    SELECT  
+                                    (ISNULL([BILLPOS],'')+ISNULL([BILL91],'')) AS 'KEYS'
+                                    ,[ID]
+                                    ,[KINDS]
+                                    ,[BILLPOS]
+                                    ,[BILL91]
+                                    ,[NAMES]
+                                    ,[PHONES]
+                                    ,[EMAIL]
+                                    ,[IDCARD]
+                                    ,[NUMS]
+                                    ,[ISCHECK]
+                                    ,[CHECKNAME]
+                                    ,[CHECKTIME]
+                                    ,[ISCHECK2]
+                                    ,[CHECKNAME2]
+                                    ,[CHECKTIME2]
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+
+                                    ");
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, "ds");
+                sqlConn.Close();
+
+
+                if (ds.Tables["ds"].Rows.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return ds.Tables["ds"];       
+                }
+                
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+
+            }
+        }
+        public void TBLOTTERYCHECKPOS91PRINTS_ADD(DataTable DT)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.AppendFormat(@" DELETE  [TKKPI].[dbo].[TBLOTTERYCHECKPOS91PRINTS]");
+
+                foreach (DataRow dr in DT.Rows)
+                {
+                    int COUNTS = Convert.ToInt32(dr["NUMS"].ToString());
+                    string NAMES = dr["NAMES"].ToString();
+                    string PHONES = dr["PHONES"].ToString();
+                    string EMAIL = dr["EMAIL"].ToString();
+                    string IDCARD = dr["IDCARD"].ToString();
+
+                    if (COUNTS>=1)
+                    {
+                        for(int i=1;i<=COUNTS;i++)
+                        {
+                            string ID = dr["KEYS"].ToString() + "-" + i.ToString();
+                            sbSql.AppendFormat(@"                                    
+                                    INSERT INTO  [TKKPI].[dbo].[TBLOTTERYCHECKPOS91PRINTS]
+                                    (
+                                    [ID]
+                                    ,[NAMES]
+                                    ,[PHONES]
+                                    ,[EMAIL]
+                                    ,[IDCARD]
+                                    )
+                                    VALUES
+                                    (
+                                    '{0}'
+                                    ,'{1}'
+                                    ,'{2}'
+                                    ,'{3}'
+                                    ,'{4}'
+                                    )
+                                    "
+                                   , ID
+                                   , NAMES
+                                   , PHONES
+                                   , EMAIL
+                                   , IDCARD
+                                   );
+                        }
+                        
+                    }
+                   
+                  
+                }
+               
+
+                sbSql.AppendFormat(@" ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -1051,7 +1234,8 @@ namespace TKKPI
         }
         private void button8_Click(object sender, EventArgs e)
         {
-
+            TBLOTTERYCHECKPOS91PRINTS_NEW();
+            MessageBox.Show("完成");
         }
         #endregion
 
