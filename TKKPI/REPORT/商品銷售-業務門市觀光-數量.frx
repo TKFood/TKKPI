@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/11/2023 16:54:32" ReportInfo.Modified="10/11/2023 17:30:36" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUG7tOEfS+zAxOZe3PxpQWej">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="-- 20231011 查業務門市觀光 LA015&#13;&#10;&#13;&#10;SELECT KINDS AS '銷售別',LA005 AS '品號',YEARS AS '年度',MONTHS AS '月份',LA016 AS '銷售數量',MB002 AS '品名',MB003 AS '規格'&#13;&#10;FROM&#13;&#10;(&#13;&#10;SELECT '門市' KINDS,LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) YEARS,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2) MONTHS,SUM(LA016) LA016&#13;&#10;FROM [TK].dbo.SASLA&#13;&#10;WHERE 1=1&#13;&#10;AND CONVERT(NVARCHAR,LA015,112)&gt;='20220901'&#13;&#10;AND CONVERT(NVARCHAR,LA015,112)&lt;='20230930'&#13;&#10;AND LA007 IN ('106501','106502','106503','106504')&#13;&#10;GROUP BY LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) ,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2)&#13;&#10;UNION&#13;&#10;SELECT '觀光',LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) YEARS,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2) MONTHS,SUM(LA016) LA016&#13;&#10;FROM [TK].dbo.SASLA&#13;&#10;WHERE 1=1&#13;&#10;AND CONVERT(NVARCHAR,LA015,112)&gt;='20220901'&#13;&#10;AND CONVERT(NVARCHAR,LA015,112)&lt;='20230930'&#13;&#10;AND LA007 IN ('106701')&#13;&#10;GROUP BY LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) ,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2)&#13;&#10;UNION&#13;&#10;SELECT '業務',LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) YEARS,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2) MONTHS,SUM(LA016) LA016&#13;&#10;FROM [TK].dbo.SASLA&#13;&#10;WHERE 1=1&#13;&#10;AND CONVERT(NVARCHAR,LA015,112)&gt;='20220901'&#13;&#10;AND CONVERT(NVARCHAR,LA015,112)&lt;='20230930'&#13;&#10;AND LA007 LIKE '117%'&#13;&#10;GROUP BY LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) ,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2)&#13;&#10;) AS TEMP&#13;&#10;LEFT JOIN [TK].dbo.INVMB ON MB001=LA005&#13;&#10;WHERE (LA005 LIKE '4%' OR LA005 LIKE '5%')&#13;&#10;">
+        <Column Name="銷售別" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="年度" DataType="System.String"/>
+        <Column Name="月份" DataType="System.String"/>
+        <Column Name="銷售數量" DataType="System.Decimal"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="規格" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="1000" PaperHeight="5000">
+    <DataBand Name="Data1" Width="3704.4" Height="134.25">
+      <MatrixObject Name="Matrix1" Width="301.14" Height="72.76" Border.Lines="All" FixedRows="2" FixedColumns="4" DataSource="Table">
+        <MatrixColumns>
+          <Header Expression="[Table.年度]"/>
+          <Header Expression="[Table.月份]" Totals="false"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[Table.品號]"/>
+          <Header Expression="[Table.品名]" Totals="false"/>
+          <Header Expression="[Table.規格]" Totals="false"/>
+          <Header Expression="[Table.銷售別]" Totals="false"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[Table.銷售數量]"/>
+        </MatrixCells>
+        <TableColumn Name="Column1" Width="46.07" AutoSize="true"/>
+        <TableColumn Name="Column2" Width="46.07" AutoSize="true"/>
+        <TableColumn Name="Column3" Width="46.07" AutoSize="true"/>
+        <TableColumn Name="Column4" Width="58.43" AutoSize="true"/>
+        <TableColumn Name="Column5" Width="70.79" AutoSize="true"/>
+        <TableColumn Name="Column6" Width="33.71" AutoSize="true"/>
+        <TableRow Name="Row1" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell1" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center" RowSpan="2"/>
+          <TableCell Name="Cell2" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center" RowSpan="2"/>
+          <TableCell Name="Cell7" Border.Lines="All" Text="規格" HorzAlign="Center" VertAlign="Center" RowSpan="2"/>
+          <TableCell Name="Cell13" Border.Lines="All" Text="銷售別" HorzAlign="Center" VertAlign="Center" RowSpan="2"/>
+          <TableCell Name="Cell21" Border.Lines="All" Text="[年度]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell31" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center" RowSpan="2"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell3" Border.Lines="All"/>
+          <TableCell Name="Cell4" Border.Lines="All"/>
+          <TableCell Name="Cell8" Border.Lines="All"/>
+          <TableCell Name="Cell14" Border.Lines="All"/>
+          <TableCell Name="Cell22" Border.Lines="All" Text="[月份]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell32" Border.Lines="All"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell5" Border.Lines="All" Text="[品號]" VertAlign="Center"/>
+          <TableCell Name="Cell6" Border.Lines="All" Text="[品名]" VertAlign="Center"/>
+          <TableCell Name="Cell9" Border.Lines="All" Text="[規格]" VertAlign="Center"/>
+          <TableCell Name="Cell15" Border.Lines="All" Text="[銷售別]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell23" Border.Lines="All" Text="[銷售數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell33" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row4" Height="18.19" AutoSize="true">
+          <TableCell Name="Cell10" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center" ColSpan="4"/>
+          <TableCell Name="Cell11" Border.Lines="All"/>
+          <TableCell Name="Cell12" Border.Lines="All"/>
+          <TableCell Name="Cell16" Border.Lines="All"/>
+          <TableCell Name="Cell24" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell34" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+  </ReportPage>
+</Report>

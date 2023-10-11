@@ -48,30 +48,62 @@ namespace TKKPI
         public frmREPORTSALSA()
         {
             InitializeComponent();
+
+            comboBox4load();
         }
 
 
         #region FUNCTION
+        public void comboBox4load()
+        {
+            ComboBox CBX = comboBox4;
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
 
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT  [ID],[KINDS],[NAMES],[VALUE] FROM [TKKPI].[dbo].[TBPARA] WHERE [KINDS]='frmREPORTSALSA-REPORTS' ORDER BY ID ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("NAMES", typeof(string));
+            da.Fill(dt);
+
+            CBX.DataSource = dt.DefaultView;
+            CBX.ValueMember = "NAMES";
+            CBX.DisplayMember = "NAMES";
+            sqlConn.Close();
+
+            CBX.Font = new Font("Arial", 10); // 使用 "Arial" 字體，字體大小為 12
+        }
         public void SETFASTREPORT(string REPORTS)
         {
             StringBuilder SQL1 = new StringBuilder();
 
 
             Report report1 = new Report();
-            report1.Load(@"REPORT\商品銷售-業務門市觀光.frx");
-            SQL1 = SETSQL1();
+            //report1.Load(@"REPORT\商品銷售-業務門市觀光.frx");
+            //SQL1 = SETSQL1();
 
-            //if (REPORTS.Equals("登記人名冊"))
-            //{
-            //    report1.Load(@"REPORT\商品銷售-業務門市觀光.frx");
-            //    SQL1 = SETSQL1();
-            //}
-            //else if (REPORTS.Equals("抽獎券"))
-            //{
-            //    report1.Load(@"REPORT\抽獎券.frx");
-            //    SQL1 = SETSQL2();
-            //}
+            if (REPORTS.Equals("查業務門市觀光-數量"))
+            {
+                report1.Load(@"REPORT\商品銷售-業務門市觀光-數量.frx");
+                SQL1 = SETSQL1();
+            }
+            else if (REPORTS.Equals("查業務門市觀光-金額"))
+            {
+                report1.Load(@"REPORT\抽獎券.frx");
+                SQL1 = SETSQL2();
+            }
 
 
             //20210902密
