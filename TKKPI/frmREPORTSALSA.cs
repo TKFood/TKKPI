@@ -101,7 +101,7 @@ namespace TKKPI
             }
             else if (REPORTS.Equals("查業務門市觀光-金額"))
             {
-                report1.Load(@"REPORT\商品銷售-業務門市觀光-金額.frx");
+                report1.Load(@"REPORT\商品銷售-業務門市觀光-淨額.frx");
                 SQL1 = SETSQL2(SDAYS, EDAYS);
             }
 
@@ -174,14 +174,43 @@ namespace TKKPI
         }
 
         public StringBuilder SETSQL2(string SDAYS, string EDAYS)
-        {
+        {     
             StringBuilder SB = new StringBuilder();
+            SDAYS = SDAYS + "01";
+            EDAYS = EDAYS + "31";
 
-            SB.AppendFormat(@" 
-                         
-                          ");
+            SB.AppendFormat(@"                             
+                            SELECT KINDS AS '銷售別',LA005 AS '品號',YEARS AS '年度',MONTHS AS '月份',LA017 AS '銷售淨額',MB002 AS '品名',MB003 AS '規格'
+                            FROM
+                            (
+                            SELECT '門市' KINDS,LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) YEARS,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2) MONTHS,SUM(LA017-LA020-LA022-LA023) LA017
+                            FROM [TK].dbo.SASLA
+                            WHERE 1=1
+                            AND CONVERT(NVARCHAR,LA015,112)>='{0}'
+                            AND CONVERT(NVARCHAR,LA015,112)<='{1}'
+                            AND LA007 IN ('106501','106502','106503','106504')
+                            GROUP BY LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) ,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2)
+                            UNION
+                            SELECT '觀光',LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) YEARS,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2) MONTHS,SUM(LA017-LA020-LA022-LA023) LA017
+                            FROM [TK].dbo.SASLA
+                            WHERE 1=1
+                            AND CONVERT(NVARCHAR,LA015,112)>='{0}'
+                            AND CONVERT(NVARCHAR,LA015,112)<='{1}'
+                            AND LA007 IN ('106701')
+                            GROUP BY LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) ,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2)
+                            UNION
+                            SELECT '業務',LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) YEARS,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2) MONTHS,SUM(LA017-LA020-LA022-LA023) LA017
+                            FROM [TK].dbo.SASLA
+                            WHERE 1=1
+                            AND CONVERT(NVARCHAR,LA015,112)>='{0}'
+                            AND CONVERT(NVARCHAR,LA015,112)<='{1}'
+                            AND LA007 LIKE '117%'
+                            GROUP BY LA005,SUBSTRING(CONVERT(NVARCHAR,LA015,112),1,4) ,SUBSTRING(CONVERT(NVARCHAR,LA015,112),5,2)
+                            ) AS TEMP
+                            LEFT JOIN [TK].dbo.INVMB ON MB001=LA005
+                            WHERE (LA005 LIKE '4%' OR LA005 LIKE '5%')
 
-            talbename = "TEMPds1";
+                             ", SDAYS, EDAYS);
 
             return SB;
 
