@@ -252,7 +252,7 @@ namespace TKKPI
                                     ,[BILLPOS] AS '發票'
                                     ,[BILL91] AS '購物車'
                                     ,[NUMS] AS '購買件數'
-                                    ,[NAMES] AS ' 姓名'
+                                    ,[NAMES] AS '姓名'
                                     ,[PHONES] AS '聯絡電話'
                                     ,[EMAIL] AS '信箱'
                                     ,[IDCARD] AS '身分證後四碼'
@@ -937,25 +937,27 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
 
 
-            SB.AppendFormat(@" 
+            SB.AppendFormat(@"                             
                             SELECT 
                             [ID] AS '登錄時間'
                             ,[KINDS] AS '通路' 
                             ,[BILLPOS] AS '發票'
                             ,[BILL91] AS '購物車'
                             ,[NUMS] AS '購買件數'
+                            ,[NAMES] AS '姓名'
+                            ,[PHONES] AS '聯絡電話'
+                            ,[EMAIL] AS '信箱'
+                            ,[IDCARD] AS '身分證後四碼'
                             ,[ISCHECK] AS '是否檢查1'
                             ,[CHECKNAME]  AS '檢查人1'
                             ,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'
                             ,[ISCHECK2]  AS '是否檢查2'
                             ,[CHECKNAME2] AS '檢查時間2'
                             ,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'
-                            ,CONVERT(NVARCHAR,CONVERT(DATETIME,SUBSTRING([ID],0,LEN([ID])-9)),112)
-
                             FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
                             WHERE 1=1
-                            AND CONVERT(NVARCHAR,CONVERT(DATETIME,SUBSTRING([ID],0,LEN([ID])-9)),112)='20231004'
                             ORDER BY [KINDS],[ID]
+                         
                              ");
 
             talbename = "TEMPds1";
