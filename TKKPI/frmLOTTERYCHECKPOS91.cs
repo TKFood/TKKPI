@@ -973,7 +973,7 @@ namespace TKKPI
             SB.AppendFormat(@" 
                             SELECT
                             [ID]
-                            ,[NAMES]
+                            ,[NAMES] 
                             ,[PHONES]
                             ,[EMAIL]
                             ,[IDCARD]
