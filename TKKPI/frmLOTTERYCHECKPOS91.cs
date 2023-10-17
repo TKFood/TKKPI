@@ -977,7 +977,7 @@ namespace TKKPI
                             ,[PHONES]
                             ,[EMAIL]
                             ,[IDCARD]
-                            FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91PRINTS]
+                            FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91PRINTS] 
                           ");
 
             talbename = "TEMPds1";
