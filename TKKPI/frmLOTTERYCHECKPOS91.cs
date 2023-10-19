@@ -698,6 +698,7 @@ namespace TKKPI
                                     FROM[TK].dbo.POSTB  WITH(NOLOCK)
                                     LEFT JOIN [TK].dbo.INVMB ON MB001=TB010
                                     WHERE 1=1
+                                    AND TB010 IN (SELECT [MB001] FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91INVMB])
                                     {0}
                                     GROUP BY TB008
                                     ,TB001
@@ -716,6 +717,7 @@ namespace TKKPI
                                     FROM [TK].dbo.COPTG,[TK].dbo.COPTH
                                     WHERE 1=1
                                     AND TG001=TH001 AND TG002=TH002
+                                    AND TH004 IN (SELECT [MB001] FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91INVMB])
                                     {1}
                                     GROUP BY  TG029,TG003,TG007,TH004,TH005
 
@@ -1008,7 +1010,7 @@ namespace TKKPI
                 tran = sqlConn.BeginTransaction();
 
 
-                sbSql.AppendFormat(@" 
+                sbSql.AppendFormat(@"                                    
                                     UPDATE [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
                                     SET [NUMS]=BILLPOSNUMS
                                     FROM 
@@ -1019,10 +1021,11 @@ namespace TKKPI
                                     ,[BILLPOS]
                                     ,[BILL91]
                                     ,[NUMS]
-                                    ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WITH(NOLOCK) WHERE TB008=[BILLPOS]) AS BILLPOSNUMS
+                                    ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB WITH(NOLOCK) WHERE TB008=[BILLPOS] AND TB010 IN (SELECT [MB001] FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91INVMB]) ) AS BILLPOSNUMS
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
                                     WHERE ISNULL([BILLPOS],'')<>''
                                     AND  [ISCHECK]='未檢查' AND [ISCHECK2]='未檢查'
+
                                     ) AS TEMP
                                     WHERE [TBLOTTERYCHECKPOS91].[ID]=TEMP.[ID] AND [TBLOTTERYCHECKPOS91].[KINDS]=TEMP.[KINDS]
                                     AND [TBLOTTERYCHECKPOS91].[NUMS]<>TEMP.BILLPOSNUMS
@@ -1037,7 +1040,7 @@ namespace TKKPI
                                     ,[BILLPOS]
                                     ,[BILL91]
                                     ,[NUMS]
-                                    ,(SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG029=[BILL91]) AS BILLPOSNUMS
+                                    ,(SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG029=[BILL91] AND TH004 IN (SELECT [MB001] FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91INVMB]) ) AS BILLPOSNUMS
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
                                     WHERE ISNULL([BILL91],'')<>''
                                     AND  [ISCHECK]='未檢查' AND [ISCHECK2]='未檢查'
