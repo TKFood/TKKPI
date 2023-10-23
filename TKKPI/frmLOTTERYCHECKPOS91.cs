@@ -52,6 +52,7 @@ namespace TKKPI
             comboBox2load();
             comboBox3load();
             comboBox4load();
+            comboBox5load();
         }
 
         public frmLOTTERYCHECKPOS91(string parameter)
@@ -62,6 +63,7 @@ namespace TKKPI
             comboBox2load();
             comboBox3load();
             comboBox4load();
+            comboBox5load();
 
             //MessageBox.Show(parameter);
             if (parameter.Equals("210007"))
@@ -182,6 +184,38 @@ namespace TKKPI
 
             StringBuilder Sequel = new StringBuilder();
             Sequel.AppendFormat(@"SELECT  [ID],[KINDS],[NAMES],[VALUE] FROM [TKKPI].[dbo].[TBPARA] WHERE [KINDS]='TBLOTTERYCHECKPOS91-REPORT' ORDER BY ID ");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("NAMES", typeof(string));
+            da.Fill(dt);
+
+            CBX.DataSource = dt.DefaultView;
+            CBX.ValueMember = "NAMES";
+            CBX.DisplayMember = "NAMES";
+            sqlConn.Close();
+
+            CBX.Font = new Font("Arial", 10); // 使用 "Arial" 字體，字體大小為 12
+        }
+
+        public void comboBox5load()
+        {
+            ComboBox CBX = comboBox5;
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT  [ID],[KINDS],[NAMES],[VALUE] FROM [TKKPI].[dbo].[TBPARA] WHERE [KINDS]='TBLOTTERYCHECKPOS91-COMMENTS' ORDER BY ID ");
             SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
             DataTable dt = new DataTable();
             sqlConn.Open();
@@ -1306,6 +1340,11 @@ namespace TKKPI
             TBLOTTERYCHECKPOS91PRINTS_NEW();
             MessageBox.Show("完成");
         }
+        private void button9_Click(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
 

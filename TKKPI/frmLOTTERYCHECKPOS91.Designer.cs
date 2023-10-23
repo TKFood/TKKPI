@@ -68,6 +68,8 @@
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.button3 = new System.Windows.Forms.Button();
             this.previewControl1 = new FastReport.Preview.PreviewControl();
+            this.button9 = new System.Windows.Forms.Button();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -134,7 +136,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(970, 720);
-            this.splitContainer1.SplitterDistance = 177;
+            this.splitContainer1.SplitterDistance = 237;
             this.splitContainer1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -166,17 +168,21 @@
             this.tableLayoutPanel1.Controls.Add(this.button6, 5, 1);
             this.tableLayoutPanel1.Controls.Add(this.button7, 5, 2);
             this.tableLayoutPanel1.Controls.Add(this.button1, 5, 3);
-            this.tableLayoutPanel1.Controls.Add(this.button8, 7, 0);
+            this.tableLayoutPanel1.Controls.Add(this.button8, 6, 0);
+            this.tableLayoutPanel1.Controls.Add(this.comboBox5, 6, 4);
+            this.tableLayoutPanel1.Controls.Add(this.button9, 5, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowCount = 7;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(966, 173);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(966, 233);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
             // label3
@@ -193,7 +199,7 @@
             // 
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(123, 8);
+            this.comboBox1.Location = new System.Drawing.Point(123, 10);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(114, 24);
             this.comboBox1.TabIndex = 40;
@@ -212,7 +218,7 @@
             // 
             this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(123, 50);
+            this.comboBox2.Location = new System.Drawing.Point(123, 48);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(114, 24);
             this.comboBox2.TabIndex = 42;
@@ -342,7 +348,7 @@
             // 
             this.button8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.button8.ForeColor = System.Drawing.Color.MediumBlue;
-            this.button8.Location = new System.Drawing.Point(785, 3);
+            this.button8.Location = new System.Drawing.Point(646, 3);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(114, 34);
             this.button8.TabIndex = 49;
@@ -365,8 +371,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tabControl2);
-            this.splitContainer2.Size = new System.Drawing.Size(970, 539);
-            this.splitContainer2.SplitterDistance = 276;
+            this.splitContainer2.Size = new System.Drawing.Size(970, 479);
+            this.splitContainer2.SplitterDistance = 327;
             this.splitContainer2.TabIndex = 0;
             // 
             // splitContainer3
@@ -383,7 +389,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.tableLayoutPanel2);
-            this.splitContainer3.Size = new System.Drawing.Size(970, 276);
+            this.splitContainer3.Size = new System.Drawing.Size(970, 327);
             this.splitContainer3.SplitterDistance = 811;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -395,7 +401,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(807, 272);
+            this.dataGridView1.Size = new System.Drawing.Size(807, 323);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
@@ -421,14 +427,14 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(151, 272);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(151, 323);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // comboBox3
             // 
             this.comboBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(3, 50);
+            this.comboBox3.Location = new System.Drawing.Point(3, 48);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(114, 24);
             this.comboBox3.TabIndex = 45;
@@ -479,7 +485,7 @@
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(966, 255);
+            this.tabControl2.Size = new System.Drawing.Size(966, 144);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage3
@@ -488,7 +494,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 26);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(958, 225);
+            this.tabPage3.Size = new System.Drawing.Size(958, 114);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -501,7 +507,7 @@
             this.dataGridView2.Location = new System.Drawing.Point(3, 3);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowTemplate.Height = 24;
-            this.dataGridView2.Size = new System.Drawing.Size(952, 219);
+            this.dataGridView2.Size = new System.Drawing.Size(952, 108);
             this.dataGridView2.TabIndex = 1;
             // 
             // tabPage4
@@ -587,7 +593,7 @@
             this.comboBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel3.SetColumnSpan(this.comboBox4, 2);
             this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(85, 8);
+            this.comboBox4.Location = new System.Drawing.Point(85, 10);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(203, 24);
             this.comboBox4.TabIndex = 43;
@@ -616,6 +622,28 @@
             this.previewControl1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.previewControl1.Size = new System.Drawing.Size(966, 599);
             this.previewControl1.TabIndex = 10;
+            // 
+            // button9
+            // 
+            this.button9.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button9.ForeColor = System.Drawing.Color.Fuchsia;
+            this.button9.Location = new System.Drawing.Point(518, 163);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(122, 34);
+            this.button9.TabIndex = 50;
+            this.button9.Text = "備註";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.comboBox5, 3);
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(646, 168);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(373, 24);
+            this.comboBox5.TabIndex = 51;
             // 
             // frmLOTTERYCHECKPOS91
             // 
@@ -702,5 +730,7 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.ComboBox comboBox5;
     }
 }
