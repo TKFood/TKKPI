@@ -291,6 +291,7 @@ namespace TKKPI
                                     ,[EMAIL] AS '信箱'
                                     ,[IDCARD] AS '身分證後四碼'
                                     ,[ISCHECK] AS '是否檢查1'
+                                    ,[COMMENTS] AS '備註'
                                     ,[CHECKNAME]  AS '檢查人1'
                                     ,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'
                                     ,[ISCHECK2]  AS '是否檢查2'
@@ -405,6 +406,7 @@ namespace TKKPI
                                     ,[EMAIL] AS '信箱'
                                     ,[IDCARD] AS '身分證後四碼'
                                     ,[ISCHECK] AS '是否檢查1'
+                                    ,[COMMENTS] AS '備註'
                                     ,[CHECKNAME]  AS '檢查人1'
                                     ,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'
                                     ,[ISCHECK2]  AS '是否檢查2'
@@ -1298,6 +1300,64 @@ namespace TKKPI
             }
         }
 
+        public void UPDATE_TBLOTTERYCHECKPOS91_COMMENTS(string ID, string COMMENTS)
+        {
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+
+                sbSql.AppendFormat(@" 
+                                    UPDATE  [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    SET [COMMENTS]='{1}'
+                                    WHERE  [ID]='{0}'
+                                    "
+                                    , ID, COMMENTS);
+                sbSql.AppendFormat(@" ");
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -1342,7 +1402,10 @@ namespace TKKPI
         }
         private void button9_Click(object sender, EventArgs e)
         {
+            UPDATE_TBLOTTERYCHECKPOS91_COMMENTS(textBox2.Text,comboBox5.Text);
 
+            Search();
+            MessageBox.Show("完成");
         }
 
         #endregion
