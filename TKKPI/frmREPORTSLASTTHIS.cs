@@ -103,10 +103,12 @@ namespace TKKPI
                 report1.SetParameterValue("P2", THISYEARSMONTH);
                 SQL1 = SETSQL1(THISYEARSMONTH, LASTYEARSMONTH);
             }
-            else if (REPORTS.Equals("抽獎券"))
+            else if (REPORTS.Equals("國外差異分析"))
             {
-                //report1.Load(@"REPORT\抽獎券.frx");
-                //SQL1 = SETSQL2();
+                report1.Load(@"REPORT\國外差異分析.frx");
+                report1.SetParameterValue("P1", LASTYEARSMONTH);
+                report1.SetParameterValue("P2", THISYEARSMONTH);
+                SQL1 = SETSQL2(THISYEARSMONTH, LASTYEARSMONTH);
             }
 
 
@@ -158,6 +160,47 @@ namespace TKKPI
                             WHERE TG001=TH001 AND TG002=TH002
                             AND CONVERT(NVARCHAR,TG003,112) LIKE '{0}%'
                             AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
+                            AND TG023='Y'
+                            GROUP BY TG004
+                            ) AS TEMP
+                            LEFT JOIN [TK].dbo.COPMA ON MA001=LA006
+                            GROUP BY LA006,MA002
+                            ORDER BY LA006,MA002
+                         
+                             ", THISYEARSMONTH, LASTYEARSMONTH);
+
+            talbename = "TEMPds1";
+
+            return SB;
+
+        }
+
+        public StringBuilder SETSQL2(string THISYEARSMONTH, string LASTYEARSMONTH)
+        {
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(@"  
+                            SELECT LA006 AS '客代',MA002 AS '客戶'
+                            ,(SELECT ISNULL(SUM(LA017),0) FROM  [TK].dbo.SASLA WHERE SASLA.LA006=TEMP.LA006 AND  CONVERT(NVARCHAR,LA015,112) LIKE '{1}%') AS 'LASTYEARMONTHMONEY'
+                            ,(SELECT ISNULL(SUM(TH037),0) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND CONVERT(NVARCHAR,TG003,112) LIKE '{0}%' AND (TG004 LIKE '3%' OR TG004 LIKE 'B%') AND TG023='Y' AND TG004=TEMP.LA006) AS 'THISYEARMONTHMONEY'
+                            ,(SELECT TOP 1 TG003 FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND CONVERT(NVARCHAR,TG003,112) LIKE '{0}%' AND (TG004 LIKE '3%' OR TG004 LIKE 'B%') AND TG023='Y' ORDER BY TG003 DESC)  AS 'EDAYS'
+                            FROM 
+                            (
+                            SELECT LA006
+                            FROM [TK].dbo.SASLA
+                            LEFT JOIN [TK].dbo.COPMA ON MA001=LA006
+                            WHERE CONVERT(NVARCHAR,LA015,112) LIKE '{1}%'
+                            AND (LA006 LIKE '3%' OR LA006 LIKE 'B%')
+                            GROUP BY LA006
+                            UNION ALL
+                            SELECT TG004
+                            FROM [TK].dbo.COPTG
+                            LEFT JOIN [TK].dbo.COPMA ON TG004=MA001
+                            ,[TK].dbo.COPTH
+                            WHERE TG001=TH001 AND TG002=TH002
+                            AND CONVERT(NVARCHAR,TG003,112) LIKE '{0}%'
+                            AND (TG004 LIKE '32%' OR TG004 LIKE 'B%')
                             AND TG023='Y'
                             GROUP BY TG004
                             ) AS TEMP
