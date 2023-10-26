@@ -84,9 +84,14 @@ namespace TKKPI
             CBX.Font = new Font("Arial", 10); // 使用 "Arial" 字體，字體大小為 12
         }
 
-        public void SETFASTREPORT(string REPORTS)
+        public void SETFASTREPORT(string REPORTS,DateTime YEARMONTH)
         {
             StringBuilder SQL1 = new StringBuilder();
+
+            DateTime DTTHISYEARSMONTH = YEARMONTH;
+            DateTime DTLASTYEARSMONTH = YEARMONTH.AddMonths(-12);
+            string THISYEARSMONTH = DTTHISYEARSMONTH.ToString("yyyyMM");
+            string LASTYEARSMONTH= DTLASTYEARSMONTH.ToString("yyyyMM");
 
 
             Report report1 = new Report();
@@ -94,9 +99,9 @@ namespace TKKPI
             if (REPORTS.Equals("國內差異分析"))
             {
                 report1.Load(@"REPORT\國內差異分析.frx");
-                report1.SetParameterValue("P1", "AAA");
-                report1.SetParameterValue("P2", "BBB");
-                SQL1 = SETSQL1();
+                report1.SetParameterValue("P1", LASTYEARSMONTH);
+                report1.SetParameterValue("P2", THISYEARSMONTH);
+                SQL1 = SETSQL1(THISYEARSMONTH, LASTYEARSMONTH);
             }
             else if (REPORTS.Equals("抽獎券"))
             {
@@ -127,22 +132,22 @@ namespace TKKPI
             report1.Show();
         }
 
-        public StringBuilder SETSQL1()
+        public StringBuilder SETSQL1(string THISYEARSMONTH, string LASTYEARSMONTH)
         {
             StringBuilder SB = new StringBuilder();
 
 
             SB.AppendFormat(@"  
                             SELECT LA006 AS '客代',MA002 AS '客戶'
-                            ,(SELECT ISNULL(SUM(LA017),0) FROM  [TK].dbo.SASLA WHERE SASLA.LA006=TEMP.LA006 AND  CONVERT(NVARCHAR,LA015,112) LIKE '202210%') AS 'LASTYEARMONTHMONEY'
-                            ,(SELECT ISNULL(SUM(TH037),0) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND CONVERT(NVARCHAR,TG003,112) LIKE '202310%' AND (TG004 LIKE '2%' OR TG004 LIKE 'A%') AND TG023='Y' AND TG004=TEMP.LA006) AS 'THISYEARMONTHMONEY'
-                            ,(SELECT TOP 1 TG003 FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND CONVERT(NVARCHAR,TG003,112) LIKE '202310%' AND (TG004 LIKE '2%' OR TG004 LIKE 'A%') AND TG023='Y' ORDER BY TG003 DESC)  AS 'EDAYS'
+                            ,(SELECT ISNULL(SUM(LA017),0) FROM  [TK].dbo.SASLA WHERE SASLA.LA006=TEMP.LA006 AND  CONVERT(NVARCHAR,LA015,112) LIKE '{1}%') AS 'LASTYEARMONTHMONEY'
+                            ,(SELECT ISNULL(SUM(TH037),0) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND CONVERT(NVARCHAR,TG003,112) LIKE '{0}%' AND (TG004 LIKE '2%' OR TG004 LIKE 'A%') AND TG023='Y' AND TG004=TEMP.LA006) AS 'THISYEARMONTHMONEY'
+                            ,(SELECT TOP 1 TG003 FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND CONVERT(NVARCHAR,TG003,112) LIKE '{0}%' AND (TG004 LIKE '2%' OR TG004 LIKE 'A%') AND TG023='Y' ORDER BY TG003 DESC)  AS 'EDAYS'
                             FROM 
                             (
                             SELECT LA006
                             FROM [TK].dbo.SASLA
                             LEFT JOIN [TK].dbo.COPMA ON MA001=LA006
-                            WHERE CONVERT(NVARCHAR,LA015,112) LIKE '202210%'
+                            WHERE CONVERT(NVARCHAR,LA015,112) LIKE '{1}%'
                             AND (LA006 LIKE '2%' OR LA006 LIKE 'A%')
                             GROUP BY LA006
                             UNION ALL
@@ -151,7 +156,7 @@ namespace TKKPI
                             LEFT JOIN [TK].dbo.COPMA ON TG004=MA001
                             ,[TK].dbo.COPTH
                             WHERE TG001=TH001 AND TG002=TH002
-                            AND CONVERT(NVARCHAR,TG003,112) LIKE '202310%'
+                            AND CONVERT(NVARCHAR,TG003,112) LIKE '{0}%'
                             AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')
                             AND TG023='Y'
                             GROUP BY TG004
@@ -160,7 +165,7 @@ namespace TKKPI
                             GROUP BY LA006,MA002
                             ORDER BY LA006,MA002
                          
-                             ");
+                             ", THISYEARSMONTH, LASTYEARSMONTH);
 
             talbename = "TEMPds1";
 
@@ -174,7 +179,7 @@ namespace TKKPI
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT(comboBox1.Text.ToString());
+            SETFASTREPORT(comboBox1.Text.ToString(),dateTimePicker1.Value);
         }
         #endregion
 

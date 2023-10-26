@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/26/2023 13:55:56" ReportInfo.Modified="10/26/2023 14:15:20" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/26/2023 13:55:56" ReportInfo.Modified="10/26/2023 14:29:19" ReportInfo.CreatorVersion="2016.4.4.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -51,7 +51,7 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFNxiWN+ZO0JEYuulqqzwYe">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEq92bk00Yufp6QguN7TS8E">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT LA006 AS '客代',MA002 AS '客戶'&#13;&#10;,(SELECT ISNULL(SUM(LA017),0) FROM  [TK].dbo.SASLA WHERE SASLA.LA006=TEMP.LA006 AND  CONVERT(NVARCHAR,LA015,112) LIKE '202210%') AS 'LASTYEARMONTHMONEY'&#13;&#10;,(SELECT ISNULL(SUM(TH037),0) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND CONVERT(NVARCHAR,TG003,112) LIKE '202310%' AND (TG004 LIKE '2%' OR TG004 LIKE 'A%') AND TG023='Y' AND TG004=TEMP.LA006) AS 'THISYEARMONTHMONEY'&#13;&#10;,(SELECT TOP 1 TG003 FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND CONVERT(NVARCHAR,TG003,112) LIKE '202310%' AND (TG004 LIKE '2%' OR TG004 LIKE 'A%') AND TG023='Y' ORDER BY TG003 DESC)  AS 'EDAYS'&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT LA006&#13;&#10;FROM [TK].dbo.SASLA&#13;&#10;LEFT JOIN [TK].dbo.COPMA ON MA001=LA006&#13;&#10;WHERE CONVERT(NVARCHAR,LA015,112) LIKE '202210%'&#13;&#10;AND (LA006 LIKE '2%' OR LA006 LIKE 'A%')&#13;&#10;GROUP BY LA006&#13;&#10;UNION ALL&#13;&#10;SELECT TG004&#13;&#10;FROM [TK].dbo.COPTG&#13;&#10;LEFT JOIN [TK].dbo.COPMA ON TG004=MA001&#13;&#10;,[TK].dbo.COPTH&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND CONVERT(NVARCHAR,TG003,112) LIKE '202310%'&#13;&#10;AND (TG004 LIKE '2%' OR TG004 LIKE 'A%')&#13;&#10;AND TG023='Y'&#13;&#10;GROUP BY TG004&#13;&#10;) AS TEMP&#13;&#10;LEFT JOIN [TK].dbo.COPMA ON MA001=LA006&#13;&#10;GROUP BY LA006,MA002&#13;&#10;ORDER BY LA006,MA002">
         <Column Name="客代" DataType="System.String"/>
         <Column Name="客戶" DataType="System.String"/>
@@ -68,7 +68,7 @@ namespace FastReport
   <ReportPage Name="Page1" PaperHeight="1000">
     <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
       <TextObject Name="Text1" Width="94.5" Height="18.9" Text="國內差異分析"/>
-      <TextObject Name="Text10" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.EDAYS]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Top="18.9" Width="302.4" Height="18.9" Text="本月累計的銷貨最新日期:[Table.EDAYS]" VertAlign="Center"/>
     </ReportTitleBand>
     <PageHeaderBand Name="PageHeader1" Top="42.4" Width="718.2" Height="18.9">
       <TextObject Name="Text3" Width="94.5" Height="18.9" Border.Lines="All" Text="客代" HorzAlign="Center" VertAlign="Center"/>
