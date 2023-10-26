@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/26/2023 13:55:56" ReportInfo.Modified="10/26/2023 15:09:07" ReportInfo.CreatorVersion="2016.4.4.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Text12_AfterData(object sender, EventArgs e)
+    {
+     
+    }
+
+    private void Text12_BeforePrint(object sender, EventArgs e)
+    {
+    
+      Decimal CAL=((Decimal)Report.GetColumnValue(&quot;Table.THISYEARMONTHMONEY&quot;))-((Decimal)Report.GetColumnValue(&quot;Table.LASTYEARMONTHMONEY&quot;));
+      if(CAL&lt;0)
+      {
+        Text12.TextColor=Color.Red; 
+      }
+    }
+
+    private void Text12_AfterPrint(object sender, EventArgs e)
+    {
+    
+    }
+
+    private void Text15_BeforePrint(object sender, EventArgs e)
+    {
+      Decimal CAL=Report.GetTotalValue(&quot;TotalTHIS&quot;)-Report.GetTotalValue(&quot;TotalLAST&quot;);
+      if(CAL&lt;0)
+      {
+        Text15.TextColor=Color.Red; 
+      }
+    }
+
+    private void Text24_BeforePrint(object sender, EventArgs e)
+    {
+      Decimal CAL=Report.GetTotalValue(&quot;TotalTHISGROUP&quot;)-Report.GetTotalValue(&quot;TotalLASTGROUP&quot;);
+      if(CAL&lt;0)
+      {
+        Text24.TextColor=Color.Red; 
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGPyMmeTBW3FAAxa/CYnx9p">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT LA006 AS '客代',MA002 AS '客戶',LA005 AS '品號',MB002 AS '品名'&#13;&#10;,(SELECT ISNULL(SUM(LA017),0) FROM  [TK].dbo.SASLA WHERE SASLA.LA006=TEMP.LA006 AND SASLA.LA005=TEMP.LA005 AND  CONVERT(NVARCHAR,LA015,112) LIKE '202210%') AS 'LASTYEARMONTHMONEY'&#13;&#10;,(SELECT ISNULL(SUM(TH037),0) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG004=TEMP.LA006  AND COPTH.TH004=TEMP.LA005 AND CONVERT(NVARCHAR,TG003,112) LIKE '202310%' AND (TG004 LIKE '3%' OR TG004 LIKE 'B%') AND TG023='Y' ) AS 'THISYEARMONTHMONEY'&#13;&#10;,(SELECT TOP 1 TG003 FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND CONVERT(NVARCHAR,TG003,112) LIKE '202310%' AND (TG004 LIKE '3%' OR TG004 LIKE 'B%') AND TG023='Y' ORDER BY TG003 DESC)  AS 'EDAYS'&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT LA006,LA005&#13;&#10;FROM [TK].dbo.SASLA&#13;&#10;LEFT JOIN [TK].dbo.COPMA ON MA001=LA006&#13;&#10;WHERE CONVERT(NVARCHAR,LA015,112) LIKE '202210%'&#13;&#10;AND (LA006 LIKE '3%' OR LA006 LIKE 'B%')&#13;&#10;AND LA005 NOT LIKE '2%'&#13;&#10;GROUP BY LA006,LA005&#13;&#10;UNION ALL&#13;&#10;SELECT TG004,TH004&#13;&#10;FROM [TK].dbo.COPTG&#13;&#10;LEFT JOIN [TK].dbo.COPMA ON TG004=MA001&#13;&#10;,[TK].dbo.COPTH&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND CONVERT(NVARCHAR,TG003,112) LIKE '202310%'&#13;&#10;AND (TG004 LIKE '3%' OR TG004 LIKE 'B%')&#13;&#10;AND TG023='Y'&#13;&#10;GROUP BY TG004,TH004&#13;&#10;) AS TEMP&#13;&#10;LEFT JOIN [TK].dbo.COPMA ON MA001=LA006&#13;&#10;LEFT JOIN [TK].dbo.INVMB ON MB001=LA005&#13;&#10;GROUP BY LA006,MA002,LA005,MB002&#13;&#10;ORDER BY LA006,MA002,LA005,MB002">
+        <Column Name="客代" DataType="System.String"/>
+        <Column Name="客戶" DataType="System.String"/>
+        <Column Name="LASTYEARMONTHMONEY" DataType="System.Decimal"/>
+        <Column Name="THISYEARMONTHMONEY" DataType="System.Decimal"/>
+        <Column Name="EDAYS" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="P1" DataType="System.String"/>
+    <Parameter Name="P2" DataType="System.String"/>
+    <Total Name="TotalLAST" Expression="[Table.LASTYEARMONTHMONEY]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="TotalTHIS" Expression="[Table.THISYEARMONTHMONEY]" Evaluator="Data1" PrintOn="ReportSummary1"/>
+    <Total Name="TotalLASTGROUP" Expression="[Table.LASTYEARMONTHMONEY]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="TotalTHISGROUP" Expression="[Table.THISYEARMONTHMONEY]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="300" PaperHeight="2000">
+    <ReportTitleBand Name="ReportTitle1" Width="1058.4" Height="37.8">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="國外-產品差異"/>
+      <TextObject Name="Text10" Top="18.9" Width="302.4" Height="18.9" Text="本月累計的銷貨最新日期:[Table.EDAYS]" VertAlign="Center"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="42.4" Width="1058.4" Height="18.9">
+      <TextObject Name="Text3" Width="94.5" Height="18.9" Border.Lines="All" Text="客代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="94.5" Width="245.7" Height="18.9" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[P1]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[P2]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="954.45" Width="94.5" Height="18.9" Border.Lines="All" Text="差異" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="340.2" Width="160.65" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="500.85" Width="264.6" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="65.9" Width="1058.4" Condition="[Table.客代]">
+      <DataBand Name="Data1" Top="70.49" Width="1058.4" Height="18.9" DataSource="Table">
+        <TextObject Name="Text6" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.LASTYEARMONTHMONEY]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text8" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.THISYEARMONTHMONEY]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text12" Left="954.45" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" BeforePrintEvent="Text12_BeforePrint" AfterPrintEvent="Text12_AfterPrint" AfterDataEvent="Text12_AfterData" Text="[[Table.THISYEARMONTHMONEY]-[Table.LASTYEARMONTHMONEY]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text17" Left="340.2" Width="160.65" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text19" Left="500.85" Width="264.6" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+        <TextObject Name="Text2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.客代]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text4" Left="94.5" Width="245.7" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.客戶]" VertAlign="Center"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="93.99" Width="1058.4" Height="18.9">
+        <TextObject Name="Text21" Width="765.45" Height="18.9" Border.Lines="All" Text="小計" HorzAlign="Right" VertAlign="Center"/>
+        <TextObject Name="Text22" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[TotalLASTGROUP]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        <TextObject Name="Text23" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[TotalTHISGROUP]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        <TextObject Name="Text24" Left="954.45" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text24_BeforePrint" Text="[[TotalTHISGROUP]-[TotalLASTGROUP]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="117.49" Width="1058.4" Height="18.9">
+      <TextObject Name="Text16" Width="765.45" Height="18.9" Border.Lines="All" Text="合計" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[TotalLAST]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[TotalTHIS]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="954.45" Width="94.5" Height="18.9" Border.Lines="All" BeforePrintEvent="Text15_BeforePrint" Text="[[TotalTHIS]-[TotalLAST]]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="140.99" Width="1058.4" Height="18.9"/>
+  </ReportPage>
+</Report>
