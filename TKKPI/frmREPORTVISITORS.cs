@@ -748,6 +748,142 @@ namespace TKKPI
             report1.Show();
         }
 
+        public void SETFASTREPORT7(string SDAYS, string EDAYS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            StringBuilder SQL2 = new StringBuilder();
+
+
+            SQL1.AppendFormat(@" 
+                               
+                                SELECT TT002 AS '門代'
+                                ,STORESNAME AS '門店'
+                                ,YEARS AS '年'
+                                ,MONTHS AS '月'
+                                ,WEEKS AS '週'
+                                ,Fdate1 AS '日'
+                                ,DAYOFWEEK AS '星期'
+                                ,SUMNUMS AS '來客數'
+                                ,CONVERT(INT,SUMTT018) AS '銷售未稅總金額'
+                                ,COUNTSTA001 AS '結帳單量'
+                                ,CONVERT(INT,SUMSTB019) AS '結帳交易商品數'
+                                ,(CASE WHEN SUMNUMS>0 AND COUNTSTA001>0 THEN CONVERT(DECIMAL(16,2),((CONVERT(DECIMAL(16,4),COUNTSTA001)/CONVERT(DECIMAL(16,4),SUMNUMS)))) ELSE 0 END ) AS '每日結帳單量/來客數(提袋率)'
+                                ,(CASE WHEN SUMTT018>0 AND COUNTSTA001>0 THEN CONVERT(DECIMAL(16,0),SUMTT018/COUNTSTA001) ELSE 0 END ) AS '平均每單單價(客單價)'
+                                ,(CASE WHEN SUMSTB019>0 AND COUNTSTA001>0 THEN CONVERT(DECIMAL(16,2),SUMSTB019/COUNTSTA001) ELSE 0 END ) AS '每單平均商品數'
+
+                                FROM 
+                                (
+                                SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS SUMNUMS
+                                ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT018'
+                                ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT  WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
+                                ,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'
+                                ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
+                                FROM [TKMK].[dbo].[View_t_visitors]
+                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                                AND CONVERT(NVARCHAR,Fdate1,112)>='{0}'
+                                AND CONVERT(NVARCHAR,Fdate1,112)<='{1}'
+                                GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
+
+                                UNION ALL
+                                SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fout_data) AS SUMNUMS
+                                ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
+                                ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WITH(NOLOCK)  WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
+                                ,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'
+                                ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
+                                FROM [TKMK].[dbo].[View_t_visitors]
+                                WHERE  TT002 IN ('106701') 
+                                AND CONVERT(NVARCHAR,Fdate1,112)>='{0}'
+                                AND CONVERT(NVARCHAR,Fdate1,112)<='{1}'
+              
+                                GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
+                                ) AS TEMP
+                                ORDER BY TT002,Fdate1
+                                
+
+                                ", SDAYS, EDAYS);
+
+            SQL2.AppendFormat(@" 
+                               
+                                SELECT 門代,門店,SUM(來客數) 來客數,SUM(銷售未稅總金額) 銷售未稅總金額,SUM(結帳單量) 結帳單量,AVG(結帳交易商品數) 結帳交易商品數,AVG(提袋率) 提袋率,AVG(客單價) 客單價,AVG(每單平均商品數) 每單平均商品數
+                                FROM 
+                                (
+                                SELECT 
+                                TT002 AS '門代'
+                                ,STORESNAME AS '門店'
+                                ,YEARS AS '年'
+                                ,MONTHS AS '月'
+                                ,WEEKS AS '週'
+                                ,Fdate1 AS '日'
+                                ,DAYOFWEEK AS '星期'
+                                ,SUMNUMS AS '來客數'
+                                ,CONVERT(INT,SUMTT018) AS '銷售未稅總金額'
+                                ,COUNTSTA001 AS '結帳單量'
+                                ,CONVERT(INT,SUMSTB019) AS '結帳交易商品數'
+                                ,(CASE WHEN SUMNUMS>0 AND COUNTSTA001>0 THEN CONVERT(DECIMAL(16,2),((CONVERT(DECIMAL(16,4),COUNTSTA001)/CONVERT(DECIMAL(16,4),SUMNUMS)))) ELSE 0 END ) AS '提袋率'
+                                ,(CASE WHEN SUMTT018>0 AND COUNTSTA001>0 THEN CONVERT(DECIMAL(16,0),SUMTT018/COUNTSTA001) ELSE 0 END ) AS '客單價'
+                                ,(CASE WHEN SUMSTB019>0 AND COUNTSTA001>0 THEN CONVERT(DECIMAL(16,2),SUMSTB019/COUNTSTA001) ELSE 0 END ) AS '每單平均商品數'
+
+                                FROM 
+                                (
+                                SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS SUMNUMS
+                                ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT018'
+                                ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT  WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
+                                ,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'
+                                ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
+                                FROM [TKMK].[dbo].[View_t_visitors]
+                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                                AND CONVERT(NVARCHAR,Fdate1,112)>='{0}'
+                                AND CONVERT(NVARCHAR,Fdate1,112)<='{1}'
+                                GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
+
+                                UNION ALL
+                                SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fout_data) AS SUMNUMS
+                                ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
+                                ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WITH(NOLOCK)  WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
+                                ,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'
+                                ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
+                                FROM [TKMK].[dbo].[View_t_visitors]
+                                WHERE  TT002 IN ('106701') 
+                                AND CONVERT(NVARCHAR,Fdate1,112)>='{0}'
+                                AND CONVERT(NVARCHAR,Fdate1,112)<='{1}'
+              
+                                GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
+                                ) AS TEMP1
+                                ) AS TEMP
+                                GROUP BY 門代,門店
+                                ORDER BY 門代,門店
+                                
+
+                                ", SDAYS, EDAYS);
+
+
+            Report report1 = new Report();
+            report1.Load(@"REPORT\營銷-每日來客明細.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+            TableDataSource table1 = report1.GetDataSource("Table1") as TableDataSource;
+            table1.SelectCommand = SQL2.ToString();
+
+
+
+            report1.Preview = previewControl4;
+            report1.Show();
+        }
 
         public void UPDATEt_visitors()
         {
@@ -978,7 +1114,8 @@ namespace TKKPI
         }
         private void button5_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT4(dateTimePicker5.Value.ToString("yyyyMMdd"),dateTimePicker8.Value.ToString("yyyyMMdd"));
+            //SETFASTREPORT4(dateTimePicker5.Value.ToString("yyyyMMdd"),dateTimePicker8.Value.ToString("yyyyMMdd"));
+            SETFASTREPORT7(dateTimePicker5.Value.ToString("yyyyMMdd"), dateTimePicker8.Value.ToString("yyyyMMdd"));
         }
 
         private void button6_Click(object sender, EventArgs e)
