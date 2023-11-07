@@ -96,10 +96,11 @@ namespace TKKPI
             sqlConn = new SqlConnection(sqlsb.ConnectionString);
 
             report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+            report1.Dictionary.Connections[0].CommandTimeout = 120;
 
-             
             TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
             table.SelectCommand = SQL1.ToString();
+          
             TableDataSource table1 = report1.GetDataSource("Table1") as TableDataSource;
             table1.SelectCommand = SQL2.ToString();
             TableDataSource table2= report1.GetDataSource("Table2") as TableDataSource;
@@ -872,7 +873,7 @@ namespace TKKPI
             sqlConn = new SqlConnection(sqlsb.ConnectionString);
 
             report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
-
+            report1.Dictionary.Connections[0].CommandTimeout = 120;
 
             TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
             table.SelectCommand = SQL1.ToString();
