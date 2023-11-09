@@ -756,7 +756,16 @@ namespace TKKPI
                                     AND TH004 IN (SELECT [MB001] FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91INVMB])
                                     {1}
                                     GROUP BY  TG029,TG003,TG007,TH004,TH005
-
+                                    
+                                    UNION ALL
+                                    SELECT
+                                    [INVOICES]
+                                    ,[TB001]
+                                    ,[TB002]
+                                    ,[TB010]
+                                    ,[MB002]
+                                    ,[TB019]
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91TEMP]
                                     ", SQLQUERY1.ToString(), SQLQUERY2.ToString());
 
                 }
@@ -1084,6 +1093,22 @@ namespace TKKPI
                                     WHERE [TBLOTTERYCHECKPOS91].[ID]=TEMP.[ID] AND [TBLOTTERYCHECKPOS91].[KINDS]=TEMP.[KINDS]
                                     AND [TBLOTTERYCHECKPOS91].[NUMS]<>TEMP.BILLPOSNUMS
 
+
+                                    UPDATE [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    SET [NUMS]=[TB019]
+                                    FROM 
+                                    (
+                                    SELECT
+                                    [INVOICES]
+                                    ,[TB001]
+                                    ,[TB002]
+                                    ,[TB010]
+                                    ,[MB002]
+                                    ,[TB019]
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91TEMP]
+                                    ) AS TEMP
+                                    WHERE  [TBLOTTERYCHECKPOS91].[BILLPOS]=TEMP.[INVOICES]
+                                    AND [TBLOTTERYCHECKPOS91].[NUMS]<>TEMP.[TB019]
                                     "
                                      );
 
