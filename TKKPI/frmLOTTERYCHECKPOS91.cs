@@ -686,6 +686,7 @@ namespace TKKPI
 
             StringBuilder SQLQUERY1 = new StringBuilder();
             StringBuilder SQLQUERY2 = new StringBuilder();
+            StringBuilder SQLQUERY3 = new StringBuilder();
 
 
             try
@@ -717,7 +718,14 @@ namespace TKKPI
                 {
                     SQLQUERY2.AppendFormat(@" AND 1=0 ");
                 }
-
+                if (!string.IsNullOrEmpty(KEY1))
+                {
+                    SQLQUERY3.AppendFormat(@"   AND  [INVOICES]='{0}'  ", KEY1);
+                }
+                else
+                {
+                    SQLQUERY3.AppendFormat(@" AND 1=0 ");
+                }
 
                 sbSql.Clear();
 
@@ -766,7 +774,9 @@ namespace TKKPI
                                     ,[MB002]
                                     ,[TB019]
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91TEMP]
-                                    ", SQLQUERY1.ToString(), SQLQUERY2.ToString());
+                                    WHERE 1=1
+                                    {2}
+                                    ", SQLQUERY1.ToString(), SQLQUERY2.ToString(), SQLQUERY3.ToString());
 
                 }
 
