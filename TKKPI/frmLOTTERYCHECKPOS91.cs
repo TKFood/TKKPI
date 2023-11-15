@@ -301,7 +301,11 @@ namespace TKKPI
                                     WHERE 1=1
                                     {0}
                                     {1}
-                                    ORDER BY [KINDS],[ID]
+                                    ORDER BY [KINDS],
+                                    (CASE 
+                                    WHEN CHARINDEX('上午', [ID]) > 0 THEN CONVERT(DATETIME, LEFT([ID], CHARINDEX('上午', [ID]) - 1), 111)
+                                    WHEN CHARINDEX('下午', [ID]) > 0 THEN CONVERT(DATETIME, LEFT([ID], CHARINDEX('下午', [ID]) - 1), 111) + 12
+                                    END) 
                                     ", SQLQUERY1.ToString(), SQLQUERY2.ToString());
 
 
