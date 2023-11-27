@@ -302,10 +302,12 @@ namespace TKKPI
                                     {0}
                                     {1}
                                     ORDER BY [KINDS],
-                                    (CASE 
-                                    WHEN CHARINDEX('上午', [ID]) > 0 THEN CONVERT(DATETIME, LEFT([ID], CHARINDEX('上午', [ID]) - 1), 111)
-                                    WHEN CHARINDEX('下午', [ID]) > 0 THEN CONVERT(DATETIME, LEFT([ID], CHARINDEX('下午', [ID]) - 1), 111) + 12
-                                    END) 
+                                    CONVERT(DATETIME,( CASE 
+                                        WHEN CHARINDEX('上午', ID) > 0 THEN 
+                                            SUBSTRING(ID, 1, CHARINDEX('上午', ID) - 1)
+                                        WHEN CHARINDEX('下午', ID) > 0 THEN 
+                                            SUBSTRING(ID, 1, CHARINDEX('下午', ID) - 1)
+                                    END),111) ASC
                                     ", SQLQUERY1.ToString(), SQLQUERY2.ToString());
 
 
@@ -691,6 +693,7 @@ namespace TKKPI
             StringBuilder SQLQUERY1 = new StringBuilder();
             StringBuilder SQLQUERY2 = new StringBuilder();
             StringBuilder SQLQUERY3 = new StringBuilder();
+            StringBuilder SQLQUERY4 = new StringBuilder();
 
 
             try
@@ -729,6 +732,14 @@ namespace TKKPI
                 else
                 {
                     SQLQUERY3.AppendFormat(@" AND 1=0 ");
+                }
+                if (!string.IsNullOrEmpty(KEY1))
+                {
+                    SQLQUERY4.AppendFormat(@"   AND  [TG014]='{0}'  ", KEY1);
+                }
+                else
+                {
+                    SQLQUERY4.AppendFormat(@" AND 1=0 ");
                 }
 
                 sbSql.Clear();
@@ -780,7 +791,23 @@ namespace TKKPI
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91TEMP]
                                     WHERE 1=1
                                     {2}
-                                    ", SQLQUERY1.ToString(), SQLQUERY2.ToString(), SQLQUERY3.ToString());
+
+                                    UNION ALL
+                                    SELECT 
+                                    TG014 AS '發票號碼+購物車'
+                                    ,TG003 AS '交易日期'
+                                    ,TG007 AS '店號'
+                                    ,TH004 AS '品號'
+                                    ,TH005  AS '品名'
+                                    ,SUM(TH008+TH024)  AS '銷售數量'
+                                    FROM [TK].dbo.COPTG,[TK].dbo.COPTH
+                                    WHERE 1=1
+                                    AND TG001=TH001 AND TG002=TH002
+                                    AND TH004 IN (SELECT [MB001] FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91INVMB])
+                                    {3}
+                                    GROUP BY  TG014,TG003,TG007,TH004,TH005
+
+                                    ", SQLQUERY1.ToString(), SQLQUERY2.ToString(), SQLQUERY3.ToString(), SQLQUERY4.ToString());
 
                 }
 
@@ -1086,7 +1113,8 @@ namespace TKKPI
                                     AND  [ISCHECK]='未檢查' AND [ISCHECK2]='未檢查'
 
                                     ) AS TEMP
-                                    WHERE [TBLOTTERYCHECKPOS91].[ID]=TEMP.[ID] AND [TBLOTTERYCHECKPOS91].[KINDS]=TEMP.[KINDS]
+                                    WHERE TEMP.BILLPOSNUMS>=1
+                                    AND [TBLOTTERYCHECKPOS91].[ID]=TEMP.[ID] AND [TBLOTTERYCHECKPOS91].[KINDS]=TEMP.[KINDS]
                                     AND [TBLOTTERYCHECKPOS91].[NUMS]<>TEMP.BILLPOSNUMS
 
                                     UPDATE [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
@@ -1104,7 +1132,8 @@ namespace TKKPI
                                     WHERE ISNULL([BILL91],'')<>''
                                     AND  [ISCHECK]='未檢查' AND [ISCHECK2]='未檢查'
                                     ) AS TEMP
-                                    WHERE [TBLOTTERYCHECKPOS91].[ID]=TEMP.[ID] AND [TBLOTTERYCHECKPOS91].[KINDS]=TEMP.[KINDS]
+                                    WHERE TEMP.BILLPOSNUMS>=1
+                                    AND [TBLOTTERYCHECKPOS91].[ID]=TEMP.[ID] AND [TBLOTTERYCHECKPOS91].[KINDS]=TEMP.[KINDS]
                                     AND [TBLOTTERYCHECKPOS91].[NUMS]<>TEMP.BILLPOSNUMS
 
 
@@ -1121,8 +1150,29 @@ namespace TKKPI
                                     ,[TB019]
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91TEMP]
                                     ) AS TEMP
-                                    WHERE  [TBLOTTERYCHECKPOS91].[BILLPOS]=TEMP.[INVOICES]
+                                    WHERE  TEMP.[TB019]>=1
+                                    AND [TBLOTTERYCHECKPOS91].[BILLPOS]=TEMP.[INVOICES]
                                     AND [TBLOTTERYCHECKPOS91].[NUMS]<>TEMP.[TB019]
+
+                                    UPDATE [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    SET [NUMS]=BILLPOSNUMS
+                                    FROM 
+                                    (
+                                    SELECT 
+                                    [ID]
+                                    ,[KINDS]
+                                    ,[BILLPOS]
+                                    ,[BILL91]
+                                    ,[NUMS]
+                                    ,(SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TG014=[BILLPOS] AND TH004 IN (SELECT [MB001] FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91INVMB]) ) AS BILLPOSNUMS
+                                    FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
+                                    WHERE ISNULL([BILLPOS],'')<>''
+                                    AND  [ISCHECK]='未檢查' AND [ISCHECK2]='未檢查'
+                                    ) AS TEMP
+                                    WHERE TEMP.BILLPOSNUMS>=1
+                                    AND [TBLOTTERYCHECKPOS91].[ID]=TEMP.[ID] AND [TBLOTTERYCHECKPOS91].[KINDS]=TEMP.[KINDS]
+                                    AND [TBLOTTERYCHECKPOS91].[NUMS]<>TEMP.BILLPOSNUMS
+
                                     "
                                      );
 
@@ -1429,10 +1479,11 @@ namespace TKKPI
         }
         private void button7_Click(object sender, EventArgs e)
         {
-            UPDATE_TBLOTTERYCHECKPOS91_NUMS();
+            MessageBox.Show("不用 ");
+            //UPDATE_TBLOTTERYCHECKPOS91_NUMS();
 
-            Search();
-            MessageBox.Show("完成");
+            //Search();
+            //MessageBox.Show("完成");
         }
         private void button8_Click(object sender, EventArgs e)
         {
