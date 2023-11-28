@@ -1,24 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/06/2023 16:42:53" ReportInfo.Modified="10/17/2023 11:46:22" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/06/2023 16:42:53" ReportInfo.Modified="11/28/2023 09:21:21" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUE1BmV24CWvzsenKNaYf2Od">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;[ID]&#13;&#10;,[NAMES]&#13;&#10;,[PHONES]&#13;&#10;,[EMAIL]&#13;&#10;,[IDCARD]&#13;&#10;FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91PRINTS]">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUG17oCgD8/ti4ndjQPItYYp">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;SERNO&#13;&#10;,[ID]&#13;&#10;,[NAMES]&#13;&#10;,[PHONES]&#13;&#10;,[EMAIL]&#13;&#10;,[IDCARD]&#13;&#10;FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91PRINTS]">
         <Column Name="ID" DataType="System.String"/>
         <Column Name="NAMES" DataType="System.String"/>
         <Column Name="PHONES" DataType="System.String"/>
         <Column Name="EMAIL" DataType="System.String"/>
         <Column Name="IDCARD" DataType="System.String"/>
+        <Column Name="SERNO" DataType="System.String"/>
       </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
   <ReportPage Name="Page1" Columns.Count="2" Columns.Width="95" Columns.Positions="0,95">
     <DataBand Name="Data1" Width="359.1" Height="245.7" DataSource="Table">
-      <TextObject Name="Text1" Top="28.35" Width="274.05" Height="18.9" Text="抽獎號:[Table.ID]" Font="微軟正黑體, 12pt"/>
-      <TextObject Name="Text2" Top="47.25" Width="349.65" Height="18.9" Text="姓名:[Table.NAMES]" Font="微軟正黑體, 12pt"/>
-      <TextObject Name="Text3" Top="66.15" Width="349.65" Height="18.9" Text="電話:[Table.PHONES]" Font="微軟正黑體, 12pt"/>
-      <TextObject Name="Text4" Top="85.05" Width="349.65" Height="18.9" Text="信箱:[Table.EMAIL]" Font="微軟正黑體, 12pt"/>
-      <TextObject Name="Text5" Top="103.95" Width="359.1" Height="18.9" Text="身份證明後四碼:[Table.IDCARD]" Font="微軟正黑體, 12pt"/>
-      <TextObject Name="Text6" Left="236.25" Width="113.4" Height="18.9" Text="流水號:[Row#]" Font="微軟正黑體, 12pt"/>
+      <TextObject Name="Text1" Top="47.25" Width="274.05" Height="18.9" Text="抽獎號:[Table.ID]" Font="微軟正黑體, 12pt"/>
+      <TextObject Name="Text2" Top="66.15" Width="349.65" Height="18.9" Text="姓名:[Table.NAMES]" Font="微軟正黑體, 12pt"/>
+      <TextObject Name="Text3" Top="85.05" Width="349.65" Height="18.9" Text="電話:[Table.PHONES]" Font="微軟正黑體, 12pt"/>
+      <TextObject Name="Text4" Top="103.95" Width="349.65" Height="18.9" Text="信箱:[Table.EMAIL]" Font="微軟正黑體, 12pt"/>
+      <TextObject Name="Text5" Top="122.85" Width="359.1" Height="18.9" Text="身份證明後四碼:[Table.IDCARD]" Font="微軟正黑體, 12pt"/>
+      <TextObject Name="Text6" Left="151.2" Width="198.45" Height="18.9" Text="抽獎券流水號:[Row#]" Font="微軟正黑體, 12pt"/>
+      <TextObject Name="Text7" Top="28.35" Width="274.05" Height="18.9" Text="登記流水號:[Table.SERNO]" Font="微軟正黑體, 12pt"/>
     </DataBand>
   </ReportPage>
 </Report>

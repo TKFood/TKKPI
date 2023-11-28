@@ -1028,7 +1028,8 @@ namespace TKKPI
 
             SB.AppendFormat(@"                             
                             SELECT 
-                            [ID] AS '登錄時間'
+                            SERNO
+                            ,[ID] AS '登錄時間'
                             ,[KINDS] AS '通路' 
                             ,[BILLPOS] AS '發票'
                             ,[BILL91] AS '購物車'
@@ -1045,7 +1046,7 @@ namespace TKKPI
                             ,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'
                             FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
                             WHERE 1=1
-                            ORDER BY [KINDS],[ID]
+                            ORDER BY CONVERT(INT,SERNO),[ID]
                          
                              ");
 
@@ -1054,19 +1055,21 @@ namespace TKKPI
             return SB;
 
         }
-
+         
         public StringBuilder SETSQL2()
         {
             StringBuilder SB = new StringBuilder();
              
             SB.AppendFormat(@" 
                             SELECT
-                            [ID]
+                            SERNO                            
+                            ,[ID]
                             ,[NAMES] 
                             ,[PHONES]
                             ,[EMAIL]
                             ,[IDCARD]
                             FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91PRINTS] 
+                            ORDER BY CONVERT(INT,SERNO),[ID]
                           ");
 
             talbename = "TEMPds1";
@@ -1245,6 +1248,7 @@ namespace TKKPI
                 sbSql.AppendFormat(@" 
                                     SELECT  
                                     (ISNULL([BILLPOS],'')+ISNULL([BILL91],'')) AS 'KEYS'
+                                    ,[SERNO]
                                     ,[ID]
                                     ,[KINDS]
                                     ,[BILLPOS]
@@ -1261,7 +1265,7 @@ namespace TKKPI
                                     ,[CHECKNAME2]
                                     ,[CHECKTIME2]
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
-
+                                    WHERE [NUMS]>=1
                                     ");
 
                 adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
@@ -1318,6 +1322,7 @@ namespace TKKPI
                 foreach (DataRow dr in DT.Rows)
                 {
                     int COUNTS = Convert.ToInt32(dr["NUMS"].ToString());
+                    string SERNO = dr["SERNO"].ToString();
                     string NAMES = dr["NAMES"].ToString();
                     string PHONES = dr["PHONES"].ToString();
                     string EMAIL = dr["EMAIL"].ToString();
@@ -1331,7 +1336,8 @@ namespace TKKPI
                             sbSql.AppendFormat(@"                                    
                                     INSERT INTO  [TKKPI].[dbo].[TBLOTTERYCHECKPOS91PRINTS]
                                     (
-                                    [ID]
+                                    [SERNO]
+                                    ,[ID]
                                     ,[NAMES]
                                     ,[PHONES]
                                     ,[EMAIL]
@@ -1344,8 +1350,10 @@ namespace TKKPI
                                     ,'{2}'
                                     ,'{3}'
                                     ,'{4}'
+                                    ,'{5}'
                                     )
                                     "
+                                   , SERNO
                                    , ID
                                    , NAMES
                                    , PHONES
@@ -1363,7 +1371,7 @@ namespace TKKPI
                 sbSql.AppendFormat(@" ");
 
                 cmd.Connection = sqlConn;
-                cmd.CommandTimeout = 60;
+                cmd.CommandTimeout = 300;
                 cmd.CommandText = sbSql.ToString();
                 cmd.Transaction = tran;
                 result = cmd.ExecuteNonQuery();
