@@ -281,7 +281,8 @@ namespace TKKPI
                 sbSql.Clear();
                 sbSql.AppendFormat(@" 
                                     SELECT 
-                                     [ID] AS '登錄時間'
+                                    [SERNO]
+                                    ,[ID] AS '登錄時間'
                                     ,[KINDS] AS '通路' 
                                     ,[BILLPOS] AS '發票'
                                     ,[BILL91] AS '購物車'
@@ -301,13 +302,7 @@ namespace TKKPI
                                     WHERE 1=1
                                     {0}
                                     {1}
-                                    ORDER BY [KINDS],
-                                    CONVERT(DATETIME,( CASE 
-                                        WHEN CHARINDEX('上午', ID) > 0 THEN 
-                                            SUBSTRING(ID, 1, CHARINDEX('上午', ID) - 1)
-                                        WHEN CHARINDEX('下午', ID) > 0 THEN 
-                                            SUBSTRING(ID, 1, CHARINDEX('下午', ID) - 1)
-                                    END),111) ASC
+                                    ORDER BY  [SERNO]
                                     ", SQLQUERY1.ToString(), SQLQUERY2.ToString());
 
 
