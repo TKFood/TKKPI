@@ -484,7 +484,8 @@ namespace TKKPI
                 sbSql.Clear();
                 sbSql.AppendFormat(@" 
                                     SELECT 
-                                     [ID] AS '登錄時間'
+                                    [SERNO]
+                                    , [ID] AS '登錄時間'
                                     ,[KINDS] AS '通路' 
                                     ,[BILLPOS] AS '發票'
                                     ,[BILL91] AS '購物車'
@@ -511,7 +512,7 @@ namespace TKKPI
                                     HAVING COUNT([BILLPOS])>=2
 
                                     )
-                                    ORDER BY [KINDS],[ID]
+                                    ORDER BY [BILLPOS],[SERNO]
                                     ");
 
 
@@ -528,6 +529,8 @@ namespace TKKPI
                 {
                     dataGridView1.DataSource = null;
                     dataGridView2.DataSource = null;
+
+                    MessageBox.Show("沒有重覆發票");
                 }
                 else
                 {
@@ -577,7 +580,8 @@ namespace TKKPI
                 sbSql.Clear();
                 sbSql.AppendFormat(@" 
                                     SELECT 
-                                    [ID] AS '登錄時間'
+                                    [SERNO]
+                                    ,[ID] AS '登錄時間'
                                     ,[KINDS] AS '通路' 
                                     ,[BILLPOS] AS '發票'
                                     ,[BILL91] AS '購物車'
@@ -606,7 +610,7 @@ namespace TKKPI
                                     HAVING COUNT([BILL91])>=2
 
                                     )
-                                    ORDER BY [KINDS],[ID]
+                                    ORDER BY [BILL91],[SERNO]
 
 
                                     ");
@@ -625,6 +629,8 @@ namespace TKKPI
                 {
                     dataGridView1.DataSource = null;
                     dataGridView2.DataSource = null;
+
+                    MessageBox.Show("沒有重覆購物車");
                 }
                 else
                 {
