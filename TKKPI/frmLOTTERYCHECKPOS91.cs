@@ -755,6 +755,7 @@ namespace TKKPI
                                     ,TB010 AS '品號'
                                     ,MB002 AS '品名'
                                     ,SUM(TB019)  AS '銷售數量'
+                                    ,(CASE WHEN SUM(TB031+TB032)>0 AND SUM(TB019)>0 THEN (CONVERT(INT,SUM(TB031+TB032)/SUM(TB019))) ELSE 0 END) AS '平均銷售金額'
                                     FROM[TK].dbo.POSTB  WITH(NOLOCK)
                                     LEFT JOIN [TK].dbo.INVMB ON MB001=TB010
                                     WHERE 1=1
@@ -774,6 +775,7 @@ namespace TKKPI
                                     ,TH004 AS '品號'
                                     ,TH005  AS '品名'
                                     ,SUM(TH008+TH024)  AS '銷售數量'
+                                    ,(CASE WHEN SUM(TH037+TH038)>0 AND SUM(TH008+TH024)>0 THEN (CONVERT(INT,SUM(TH037+TH038)/SUM(TH008+TH024))) ELSE 0 END) AS '平均銷售金額'
                                     FROM [TK].dbo.COPTG,[TK].dbo.COPTH
                                     WHERE 1=1
                                     AND TG001=TH001 AND TG002=TH002
@@ -789,6 +791,7 @@ namespace TKKPI
                                     ,[TB010]
                                     ,[MB002]
                                     ,[TB019]
+                                    ,888 AS '平均銷售金額'
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91TEMP]
                                     WHERE 1=1
                                     {2}
@@ -801,6 +804,7 @@ namespace TKKPI
                                     ,TH004 AS '品號'
                                     ,TH005  AS '品名'
                                     ,SUM(TH008+TH024)  AS '銷售數量'
+                                    ,(CASE WHEN SUM(TH037+TH038)>0 AND SUM(TH008+TH024)>0 THEN (CONVERT(INT,SUM(TH037+TH038)/SUM(TH008+TH024))) ELSE 0 END) AS '平均銷售金額'
                                     FROM [TK].dbo.COPTG,[TK].dbo.COPTH
                                     WHERE 1=1
                                     AND TG001=TH001 AND TG002=TH002
