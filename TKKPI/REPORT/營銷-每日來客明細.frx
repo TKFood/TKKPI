@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="11/06/2023 10:26:14" ReportInfo.Modified="11/06/2023 11:07:38" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/06/2023 10:26:14" ReportInfo.Modified="12/25/2023 09:35:07" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEJ9xJGyfMKb8nTmM/lScaf">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGpu6iova31rcWPGPBwbKL/">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT TT002 AS '門代'&#13;&#10;,STORESNAME AS '門店'&#13;&#10;,YEARS AS '年'&#13;&#10;,MONTHS AS '月'&#13;&#10;,WEEKS AS '週'&#13;&#10;,Fdate1 AS '日'&#13;&#10;,DAYOFWEEK AS '星期'&#13;&#10;,SUMNUMS AS '來客數'&#13;&#10;,CONVERT(INT,SUMTT018) AS '銷售未稅總金額'&#13;&#10;,COUNTSTA001 AS '結帳單量'&#13;&#10;,CONVERT(INT,SUMSTB019) AS '結帳交易商品數'&#13;&#10;,(CASE WHEN SUMNUMS&gt;0 AND COUNTSTA001&gt;0 THEN CONVERT(DECIMAL(16,2),((CONVERT(DECIMAL(16,4),COUNTSTA001)/CONVERT(DECIMAL(16,4),SUMNUMS)))) ELSE 0 END ) AS '每日結帳單量/來客數(提袋率)'&#13;&#10;,(CASE WHEN SUMTT018&gt;0 AND COUNTSTA001&gt;0 THEN CONVERT(DECIMAL(16,0),SUMTT018/COUNTSTA001) ELSE 0 END ) AS '平均每單單價(客單價)'&#13;&#10;,(CASE WHEN SUMSTB019&gt;0 AND COUNTSTA001&gt;0 THEN CONVERT(DECIMAL(16,2),SUMSTB019/COUNTSTA001) ELSE 0 END ) AS '每單平均商品數'&#13;&#10;&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fin_data+Fout_data)/2 AS SUMNUMS&#13;&#10;,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT018'&#13;&#10;,(SELECT SUM(TT008) FROM [TK].dbo.POSTT  WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'&#13;&#10;,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'&#13;&#10;,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'&#13;&#10;FROM [TKMK].[dbo].[View_t_visitors]&#13;&#10;WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') &#13;&#10;AND CONVERT(NVARCHAR,Fdate1,112)&gt;='20231030'&#13;&#10;AND CONVERT(NVARCHAR,Fdate1,112)&lt;='20231105'&#13;&#10;GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK&#13;&#10;&#13;&#10;UNION ALL&#13;&#10;SELECT View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,SUM(Fout_data) AS SUMNUMS&#13;&#10;,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WITH(NOLOCK) WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'&#13;&#10;,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WITH(NOLOCK)  WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'&#13;&#10;,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'&#13;&#10;,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'&#13;&#10;FROM [TKMK].[dbo].[View_t_visitors]&#13;&#10;WHERE  TT002 IN ('106701') &#13;&#10;AND CONVERT(NVARCHAR,Fdate1,112)&gt;='20231030'&#13;&#10;AND CONVERT(NVARCHAR,Fdate1,112)&lt;='20231105'&#13;&#10;              &#13;&#10;GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK&#13;&#10;) AS TEMP&#13;&#10;ORDER BY TT002,Fdate1">
         <Column Name="門代" DataType="System.String"/>
         <Column Name="門店" DataType="System.String"/>
@@ -36,63 +36,59 @@
     <Total Name="Total1結帳單量" Expression="[Table.結帳單量]" Evaluator="Data1" PrintOn="GroupFooter1"/>
     <Total Name="avg每單平均商品數" TotalType="Avg" Expression="[Table.每單平均商品數]" Evaluator="Data1" PrintOn="GroupFooter1"/>
   </Dictionary>
-  <ReportPage Name="Page2">
-    <PageHeaderBand Name="PageHeader2" Width="718.2" Height="18.9">
-      <TextObject Name="Text31" Width="94.5" Height="18.9" Border.Lines="All" Text="門代" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text33" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="門店" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text35" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="來客數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text37" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="提袋率" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text39" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="客單價" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text41" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="結帳單量" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text43" Left="567" Width="94.5" Height="18.9" Border.Lines="All" Text="每單平均商品數" HorzAlign="Center" VertAlign="Center"/>
-    </PageHeaderBand>
-    <DataBand Name="Data2" Top="23.5" Width="718.2" Height="18.9" DataSource="Table1">
-      <TextObject Name="Text30" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.門代]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text32" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.門店]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text34" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.來客數]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text36" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.提袋率]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text38" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.客單價]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text40" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.結帳單量]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text42" Left="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.每單平均商品數]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-    </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="47" Width="718.2" Height="18.9"/>
-  </ReportPage>
   <ReportPage Name="Page1" Landscape="true" PaperWidth="400" PaperHeight="400">
-    <PageHeaderBand Name="PageHeader1" Width="1436.4" Height="37.8">
-      <TextObject Name="Text2" Left="9.45" Width="94.5" Height="37.8" Border.Lines="All" Text="門代" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text4" Left="387.45" Width="94.5" Height="37.8" Border.Lines="All" Text="日" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text8" Left="103.95" Width="94.5" Height="37.8" Border.Lines="All" Text="門店" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text10" Left="198.45" Width="94.5" Height="37.8" Border.Lines="All" Text="年" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text12" Left="292.95" Width="94.5" Height="37.8" Border.Lines="All" Text="月" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text6" Left="481.95" Width="94.5" Height="37.8" Border.Lines="All" Text="來客數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text14" Left="576.45" Width="94.5" Height="37.8" Border.Lines="All" Text="每日結帳單量/來客數(提袋率)" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text16" Left="670.95" Width="94.5" Height="37.8" Border.Lines="All" Text="平均每單單價(客單價)" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text18" Left="765.45" Width="94.5" Height="37.8" Border.Lines="All" Text="結帳單量" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text20" Left="859.95" Width="94.5" Height="37.8" Border.Lines="All" Text="每單平均商品數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text22" Left="954.45" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅總金額" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text24" Left="1048.95" Width="94.5" Height="37.8" Border.Lines="All" Text="結帳交易商品數" HorzAlign="Center" VertAlign="Center"/>
+    <PageHeaderBand Name="PageHeader1" Width="1436.4" Height="18.9">
+      <TextObject Name="Text51" Width="94.5" Height="18.9" Border.Lines="All" Text="門代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text52" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="門店" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text53" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="來客數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text54" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="提袋率" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text55" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="客單價" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text56" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="結帳單量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text57" Left="567" Width="94.5" Height="18.9" Border.Lines="All" Text="每單平均商品數" HorzAlign="Center" VertAlign="Center"/>
     </PageHeaderBand>
-    <GroupHeaderBand Name="GroupHeader1" Top="42.4" Width="1436.4" Condition="[Table.門代]" SortOrder="None">
-      <DataBand Name="Data1" Top="47" Width="1436.4" Height="18.9" DataSource="Table">
-        <TextObject Name="Text3" Left="387.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.日]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text7" Left="103.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門店]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text9" Left="198.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.年]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text11" Left="292.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.月]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text5" Left="481.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.來客數]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text13" Left="576.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.每日結帳單量/來客數(提袋率)]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-        <TextObject Name="Text15" Left="670.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.平均每單單價(客單價)]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-        <TextObject Name="Text17" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.結帳單量]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text19" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.每單平均商品數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-        <TextObject Name="Text21" Left="954.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.銷售未稅總金額]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text23" Left="1048.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.結帳交易商品數]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text1" Left="9.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門代]" HorzAlign="Center" VertAlign="Center"/>
+    <DataBand Name="Data3" Top="23.5" Width="1436.4" Height="18.9" DataSource="Table1">
+      <TextObject Name="Text44" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.門代]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text45" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.門店]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text46" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.來客數]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text47" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.提袋率]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text48" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.客單價]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text49" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.結帳單量]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text50" Left="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table1.每單平均商品數]" Format="Number" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <DataFooterBand Name="DataFooter1" Top="47" Width="1436.4" Height="18.9"/>
+    </DataBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="70.49" Width="1436.4" Height="37.8" Condition="[Table.門代]" SortOrder="None">
+      <TextObject Name="Text2" Width="94.5" Height="37.8" Border.Lines="All" Text="門代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="378" Width="94.5" Height="37.8" Border.Lines="All" Text="日" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="94.5" Width="94.5" Height="37.8" Border.Lines="All" Text="門店" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="189" Width="94.5" Height="37.8" Border.Lines="All" Text="年" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="283.5" Width="94.5" Height="37.8" Border.Lines="All" Text="月" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="472.5" Width="94.5" Height="37.8" Border.Lines="All" Text="來客數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="567" Width="94.5" Height="37.8" Border.Lines="All" Text="每日結帳單量/來客數(提袋率)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text16" Left="661.5" Width="94.5" Height="37.8" Border.Lines="All" Text="平均每單單價(客單價)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text18" Left="756" Width="94.5" Height="37.8" Border.Lines="All" Text="結帳單量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text20" Left="850.5" Width="94.5" Height="37.8" Border.Lines="All" Text="每單平均商品數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text22" Left="945" Width="94.5" Height="37.8" Border.Lines="All" Text="銷售未稅總金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text24" Left="1039.5" Width="94.5" Height="37.8" Border.Lines="All" Text="結帳交易商品數" HorzAlign="Center" VertAlign="Center"/>
+      <DataBand Name="Data1" Top="112.89" Width="1436.4" Height="18.9" DataSource="Table">
+        <TextObject Name="Text3" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.日]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text7" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門店]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text9" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.年]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text11" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.月]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text5" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.來客數]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text13" Left="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.每日結帳單量/來客數(提袋率)]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text15" Left="661.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.平均每單單價(客單價)]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text17" Left="756" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.結帳單量]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text19" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.每單平均商品數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="2" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text21" Left="945" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.銷售未稅總金額]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text23" Left="1039.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.結帳交易商品數]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text1" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門代]" HorzAlign="Center" VertAlign="Center"/>
       </DataBand>
-      <GroupFooterBand Name="GroupFooter1" Top="70.49" Width="1436.4" Height="18.9">
-        <TextObject Name="Text25" Left="481.95" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Orange" Text="[Total來客數]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text28" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Orange" Text="[Total1結帳單量]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text26" Left="576.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[avg提袋率]" Format="Percent" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text27" Left="670.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[avg客單價]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text29" Left="859.95" Width="94.5" Height="18.9" Border.Lines="All" Text="[avg每單平均商品數]" Format="Number" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center"/>
+      <GroupFooterBand Name="GroupFooter1" Top="136.39" Width="1436.4" Height="18.9">
+        <TextObject Name="Text25" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Orange" Text="[Total來客數]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text28" Left="756" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="Orange" Text="[Total1結帳單量]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text26" Left="567" Width="94.5" Height="18.9" Border.Lines="All" Text="[avg提袋率]" Format="Percent" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text27" Left="661.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[avg客單價]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text29" Left="850.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[avg每單平均商品數]" Format="Number" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center"/>
       </GroupFooterBand>
     </GroupHeaderBand>
   </ReportPage>
