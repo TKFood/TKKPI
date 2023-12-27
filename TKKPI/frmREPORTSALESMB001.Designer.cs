@@ -39,6 +39,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.previewControl4 = new FastReport.Preview.PreviewControl();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label24 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -117,6 +119,8 @@
             this.tableLayoutPanel4.Controls.Add(this.dateTimePicker2, 3, 1);
             this.tableLayoutPanel4.Controls.Add(this.label9, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.button4, 4, 1);
+            this.tableLayoutPanel4.Controls.Add(this.label24, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.comboBox1, 1, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -193,6 +197,25 @@
             this.previewControl4.Size = new System.Drawing.Size(966, 564);
             this.previewControl4.TabIndex = 17;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(123, 8);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(114, 24);
+            this.comboBox1.TabIndex = 43;
+            // 
+            // label24
+            // 
+            this.label24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(3, 12);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(114, 16);
+            this.label24.TabIndex = 44;
+            this.label24.Text = "分類";
+            // 
             // frmREPORTSALESMB001
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -228,5 +251,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button button4;
         private FastReport.Preview.PreviewControl previewControl4;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label24;
     }
 }

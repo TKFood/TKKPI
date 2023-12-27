@@ -47,15 +47,45 @@ namespace TKKPI
         public frmREPORTSALESMB001()
         {
             InitializeComponent();
+
+            comboBox1load();
+
         }
 
         #region FUNCTION
+        public void comboBox1load()
+        {
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
 
-        public void SETFASTREPORT(string SDAYS, string EDAYS)
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            StringBuilder Sequel = new StringBuilder();
+            Sequel.AppendFormat(@"SELECT [COMMENTS]  FROM [TK].[dbo].[Z_TB_SALESMB001] GROUP BY [COMMENTS]");
+            SqlDataAdapter da = new SqlDataAdapter(Sequel.ToString(), sqlConn);
+            DataTable dt = new DataTable();
+            sqlConn.Open();
+
+            dt.Columns.Add("COMMENTS", typeof(string));  
+            da.Fill(dt);
+            comboBox1.DataSource = dt.DefaultView;
+            comboBox1.ValueMember = "COMMENTS";
+            comboBox1.DisplayMember = "COMMENTS";
+            sqlConn.Close();
+
+        }
+
+        public void SETFASTREPORT(string SDAYS, string EDAYS,string COMMENTS)
         {
             StringBuilder SQL1 = new StringBuilder();
 
-            SQL1 = SETSQL(SDAYS, EDAYS);
+            SQL1 = SETSQL(SDAYS, EDAYS, COMMENTS);
 
 
             Report report1 = new Report();
@@ -85,7 +115,7 @@ namespace TKKPI
             report1.Show();
         }
 
-        public StringBuilder SETSQL(string SDAYS,string EDAYS)
+        public StringBuilder SETSQL(string SDAYS,string EDAYS,string COMMENTS)
         {
 
 
@@ -94,17 +124,17 @@ namespace TKKPI
 
             SB.AppendFormat(@"   
                             SELECT MB001 AS '品號',MB002 AS '品名'
-                            ,ISNULL((SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB010=MB001 AND TB002 LIKE '1065%' AND TB001>='20231201' AND TB001<='20231231'),0) AS '門市'
-                            ,ISNULL((SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB010=MB001 AND TB002 LIKE '1067%' AND TB001>='20231201' AND TB001<='20231231'),0) AS '觀光'
-                            ,ISNULL((SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TH004=MB001 AND TG023='Y' AND TG006 IN ('220056') AND TG003>='20231201' AND TG003<='20231231'),0) AS '電商'
-                            ,ISNULL((SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TH004=MB001 AND TG023='Y' AND TG006 IN ('200050') AND TG003>='20231201' AND TG003<='20231231'),0) AS '張協理'
+                            ,ISNULL((SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB010=MB001 AND TB002 LIKE '1065%' AND TB001>='{0}' AND TB001<='{1}'),0) AS '門市'
+                            ,ISNULL((SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB010=MB001 AND TB002 LIKE '1067%' AND TB001>='{0}' AND TB001<='{1}'),0) AS '觀光'
+                            ,ISNULL((SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TH004=MB001 AND TG023='Y' AND TG006 IN (SELECT [MV001] FROM [TK].[dbo].[Z_TB_SALESMB001_SETSALES] WHERE [COMMENTS] IN ('電商')) AND TG003>='{0}' AND TG003<='{1}'),0) AS '電商'
+                            ,ISNULL((SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TH004=MB001 AND TG023='Y' AND TG006 IN (SELECT [MV001] FROM [TK].[dbo].[Z_TB_SALESMB001_SETSALES] WHERE [COMMENTS] IN ('張釋予')) AND TG003>='{0}' AND TG003<='{1}'),0) AS '張協理'
                             ,ISNULL((SELECT SUM(LA011*LA005) FROM [TK].dbo.INVLA WHERE LA001=MB001),0) AS '目前庫存'
                             FROM [TK].dbo.INVMB
-                            WHERE MB001 IN (SELECT MB001 FROM [TK].[dbo].[Z_TB_SALESMB001] WHERE COMMENTS='2024春節' )
+                            WHERE MB001 IN (SELECT MB001 FROM [TK].[dbo].[Z_TB_SALESMB001] WHERE COMMENTS='{2}' )
 
 
 
-                            ", SDAYS, EDAYS);
+                            ", SDAYS, EDAYS, COMMENTS);
 
 
             return SB;
@@ -116,7 +146,7 @@ namespace TKKPI
         #region BUTTON
         private void button4_Click(object sender, EventArgs e)
         {
-            SETFASTREPORT(dateTimePicker1.Value.ToString("yyyyMMdd"),dateTimePicker2.Value.ToString("yyyyMMdd"));
+            SETFASTREPORT(dateTimePicker1.Value.ToString("yyyyMMdd"), dateTimePicker2.Value.ToString("yyyyMMdd"), comboBox1.Text.ToString());
         }
 
         #endregion
