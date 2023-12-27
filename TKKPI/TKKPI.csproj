@@ -263,6 +263,12 @@
     <Compile Include="frmREPORTSALESCOP.Designer.cs">
       <DependentUpon>frmREPORTSALESCOP.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmREPORTSALESMB001.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmREPORTSALESMB001.Designer.cs">
+      <DependentUpon>frmREPORTSALESMB001.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmREPORTSALSA.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -420,6 +426,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTSALESCOP.resx">
       <DependentUpon>frmREPORTSALESCOP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmREPORTSALESMB001.resx">
+      <DependentUpon>frmREPORTSALESMB001.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmREPORTSALSA.resx">
       <DependentUpon>frmREPORTSALSA.cs</DependentUpon>

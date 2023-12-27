@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/27/2023 15:28:52" ReportInfo.Modified="12/27/2023 15:34:27" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUElz2ik1ZawlTBoL1B2d6d4">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT MB001 AS '品號',MB002 AS '品名'&#13;&#10;,ISNULL((SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB010=MB001 AND TB002 LIKE '1065%' AND TB001&gt;='20231201' AND TB001&lt;='20231231'),0) AS '門市'&#13;&#10;,ISNULL((SELECT SUM(TB019) FROM [TK].dbo.POSTB WHERE TB010=MB001 AND TB002 LIKE '1067%' AND TB001&gt;='20231201' AND TB001&lt;='20231231'),0) AS '觀光'&#13;&#10;,ISNULL((SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TH004=MB001 AND TG023='Y' AND TG006 IN ('220056') AND TG003&gt;='20231201' AND TG003&lt;='20231231'),0) AS '電商'&#13;&#10;,ISNULL((SELECT SUM(TH008+TH024) FROM [TK].dbo.COPTG,[TK].dbo.COPTH WHERE TG001=TH001 AND TG002=TH002 AND TH004=MB001 AND TG023='Y' AND TG006 IN ('200050') AND TG003&gt;='20231201' AND TG003&lt;='20231231'),0) AS '張協理'&#13;&#10;,ISNULL((SELECT SUM(LA011*LA005) FROM [TK].dbo.INVLA WHERE LA001=MB001),0) AS '目前庫存'&#13;&#10;FROM [TK].dbo.INVMB&#13;&#10;WHERE MB001 IN (SELECT MB001 FROM [TK].[dbo].[Z_TB_SALESMB001] WHERE COMMENTS='2024春節' )&#13;&#10;">
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="門市" DataType="System.Decimal"/>
+        <Column Name="觀光" DataType="System.Decimal"/>
+        <Column Name="電商" DataType="System.Decimal"/>
+        <Column Name="張協理" DataType="System.Decimal"/>
+        <Column Name="目前庫存" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text1" Width="94.5" Height="18.9" Text="禮盒銷售"/>
+    </ReportTitleBand>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="23.5" Width="1047.06" Height="18.9">
+      <TextObject Name="Text3" Width="122.85" Height="18.9" Border.Lines="All" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text5" Left="122.85" Width="406.35" Height="18.9" Border.Lines="All" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text7" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" Text="觀光" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="718.2" Width="94.5" Height="18.9" Border.Lines="All" Text="電商" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="812.7" Width="94.5" Height="18.9" Border.Lines="All" Text="張協理" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Left="907.2" Width="94.5" Height="18.9" Border.Lines="All" Text="目前庫存" HorzAlign="Center" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="47" Width="1047.06" Height="18.9" CanGrow="true" DataSource="Table">
+      <TextObject Name="Text2" Width="122.85" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品號]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="122.85" Width="406.35" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.品名]" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="529.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.門市]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text8" Left="623.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.觀光]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text10" Left="718.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.電商]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="812.7" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.張協理]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text14" Left="907.2" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.目前庫存]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+    </DataBand>
+  </ReportPage>
+</Report>

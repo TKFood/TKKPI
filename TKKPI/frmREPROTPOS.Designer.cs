@@ -131,13 +131,13 @@
             this.splitContainer16 = new System.Windows.Forms.SplitContainer();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.button11 = new System.Windows.Forms.Button();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
+            this.button11 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
@@ -1650,18 +1650,6 @@
             this.tableLayoutPanel10.Size = new System.Drawing.Size(559, 339);
             this.tableLayoutPanel10.TabIndex = 14;
             // 
-            // button11
-            // 
-            this.button11.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button11.ForeColor = System.Drawing.Color.Blue;
-            this.button11.Location = new System.Drawing.Point(283, 163);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(114, 34);
-            this.button11.TabIndex = 41;
-            this.button11.Text = "新增";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
-            // 
             // textBox7
             // 
             this.textBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -1720,6 +1708,18 @@
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(288, 27);
             this.textBox9.TabIndex = 45;
+            // 
+            // button11
+            // 
+            this.button11.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button11.ForeColor = System.Drawing.Color.Blue;
+            this.button11.Location = new System.Drawing.Point(283, 163);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(114, 34);
+            this.button11.TabIndex = 41;
+            this.button11.Text = "新增";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // frmREPROTPOS
             // 
