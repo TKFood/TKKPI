@@ -91,19 +91,19 @@ namespace TKKPI
 
 
             Report report1 = new Report();
-            report1.Load(@"REPORT\商品銷售-業務門市觀光-數量V2.frx");
-            SQL1 = SETSQL3(SDAYS, EDAYS);
+            //report1.Load(@"REPORT\商品銷售-業務門市觀光-數量V2.frx");
+            //SQL1 = SETSQL3(SDAYS, EDAYS);
 
-            //if (REPORTS.Equals("查業務門市觀光-數量"))
-            //{
-            //    report1.Load(@"REPORT\商品銷售-業務門市觀光-數量.frx");
-            //    SQL1 = SETSQL1(SDAYS, EDAYS);
-            //}
-            //else if (REPORTS.Equals("查業務門市觀光-金額"))
-            //{
-            //    report1.Load(@"REPORT\商品銷售-業務門市觀光-淨額.frx");
-            //    SQL1 = SETSQL2(SDAYS, EDAYS);
-            //}
+            if (REPORTS.Equals("查業務門市觀光-數量"))
+            {
+                report1.Load(@"REPORT\商品銷售-業務門市觀光-數量V2.frx");
+                SQL1 = SETSQL3(SDAYS, EDAYS);
+            }
+            else if (REPORTS.Equals("查業務門市觀光-金額"))
+            {
+                report1.Load(@"REPORT\商品銷售-業務門市觀光-淨額V2.frx");
+                SQL1 = SETSQL3(SDAYS, EDAYS);
+            }
 
 
             //20210902密

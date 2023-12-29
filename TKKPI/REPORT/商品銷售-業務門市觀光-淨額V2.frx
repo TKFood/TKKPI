@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/29/2023 10:34:39" ReportInfo.Modified="12/29/2023 10:55:53" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/29/2023 10:34:39" ReportInfo.Modified="12/29/2023 10:55:20" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHFhu6UMmZDoUv2yg1n7SUu">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEyymicuSazp/0jJ210oq20">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20231229 查pos+業務銷貨marix&#13;&#10;&#13;&#10;SELECT *&#13;&#10;FROM(&#13;&#10;SELECT '業務' AS 'KINDS',SUBSTRING(TG003,1,4) AS 'YEARS',SUBSTRING(TG003,5,2) AS 'MONTHS',TH004,MB002,MB004,SUM(LA011) LA011,SUM(TH037) TH037&#13;&#10;FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB&#13;&#10;WHERE 1=1&#13;&#10;AND TG001=TH001 AND TG002=TH002 &#13;&#10;AND LA006=TH001 AND LA007=TH002 AND LA008=TH003&#13;&#10;AND TH004=MB001&#13;&#10;AND (TH004 LIKE '4%' OR  TH004 LIKE '5%')&#13;&#10;AND TG003&gt;='20231101' AND TG003&lt;='20231231'&#13;&#10;GROUP BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TH004,MB002,MB004&#13;&#10;UNION ALL&#13;&#10;SELECT '門市' AS 'KINDS',SUBSTRING(TB001,1,4) AS 'YEARS',SUBSTRING(TB001,5,2) AS 'MONTHS',TB010,MB002,MB004,SUM(TB019) LA011,SUM(TB031) TH037&#13;&#10;FROM [TK].dbo.POSTB,[TK].dbo.INVMB&#13;&#10;WHERE 1=1&#13;&#10;AND TB010=MB001&#13;&#10;AND (TB010 LIKE '4%' OR  TB010 LIKE '5%')&#13;&#10;AND TB002 LIKE '1065%'&#13;&#10;AND TB001&gt;='20231101' AND TB001&lt;='20231231'&#13;&#10;GROUP BY SUBSTRING(TB001,1,4),SUBSTRING(TB001,5,2),TB010,MB002,MB004&#13;&#10;UNION ALL&#13;&#10;SELECT '觀光' AS 'KINDS',SUBSTRING(TB001,1,4) AS 'YEARS',SUBSTRING(TB001,5,2) AS 'MONTHS',TB010,MB002,MB004,SUM(TB019) LA011,SUM(TB031) TH037&#13;&#10;FROM [TK].dbo.POSTB,[TK].dbo.INVMB&#13;&#10;WHERE 1=1&#13;&#10;AND TB010=MB001&#13;&#10;AND (TB010 LIKE '4%' OR  TB010 LIKE '5%')&#13;&#10;AND TB002 LIKE '1067%'&#13;&#10;AND TB001&gt;='20231101' AND TB001&lt;='20231231'&#13;&#10;GROUP BY SUBSTRING(TB001,1,4),SUBSTRING(TB001,5,2),TB010,MB002,MB004&#13;&#10;) AS TEMP">
         <Column Name="KINDS" DataType="System.String"/>
         <Column Name="YEARS" DataType="System.String"/>
@@ -28,7 +28,7 @@
           <Header Expression="[Table.KINDS]" Totals="false"/>
         </MatrixRows>
         <MatrixCells>
-          <Cell Expression="[Table.LA011]"/>
+          <Cell Expression="[Table.TH037]"/>
         </MatrixCells>
         <TableColumn Name="Column1" Width="52.31" AutoSize="true"/>
         <TableColumn Name="Column2" Width="52.31" AutoSize="true"/>
@@ -57,7 +57,7 @@
           <TableCell Name="Cell6" Border.Lines="All" Text="[MB002]" VertAlign="Center"/>
           <TableCell Name="Cell9" Border.Lines="All" Text="[MB004]" VertAlign="Center"/>
           <TableCell Name="Cell15" Border.Lines="All" Text="[KINDS]" VertAlign="Center"/>
-          <TableCell Name="Cell23" Border.Lines="All" Text="[LA011]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell23" Border.Lines="All" Text="[TH037]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
           <TableCell Name="Cell28" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
         </TableRow>
         <TableRow Name="Row4" Height="18.19" AutoSize="true">
