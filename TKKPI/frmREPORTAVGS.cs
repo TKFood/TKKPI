@@ -98,7 +98,7 @@ namespace TKKPI
                             ,SUM(TT008) AS '成交筆數',SUM(TT018)/SUM(TT008) AS '平均客單價' ,SUM(TT018)  AS '銷售總金額'
                             ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='{0}' AND TT001<='{1}' ORDER BY TT001)  AS '查詢起日'
                             ,(SELECT TOP 1 TT001 FROM [TK].dbo.POSTT WHERE TT001>='{0}' AND TT001<='{1}' ORDER BY TT001 DESC) AS '查詢迄日'
-                            ,(SELECT ISNULL(SUM(Fin_data+Fout_data)/2,0) FROM [TKMK].[dbo].[View_t_visitors] WHERE TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') AND [View_t_visitors].TT002=POSTT.TT002 AND CONVERT(NVARCHAR,Fdate1,112) LIKE SUBSTRING(TT001,1,6)+'%') AS '門市來客數'
+                            ,(SELECT ISNULL(SUM(Fin_data+Fout_data)/2,0) FROM [TKMK].[dbo].[View_t_visitors] WHERE TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') AND [View_t_visitors].TT002=POSTT.TT002 AND CONVERT(NVARCHAR,Fdate1,112) LIKE SUBSTRING(TT001,1,6)+'%') AS '門市來客數'
                             ,(SELECT ISNULL(SUM(Fin_data),0) FROM [TKMK].[dbo].[View_t_visitors] WHERE TT002 IN ('106701') AND [View_t_visitors].TT002=POSTT.TT002 AND CONVERT(NVARCHAR,Fdate1,112) LIKE SUBSTRING(TT001,1,6)+'%') AS '觀光銷售來客數'
                             FROM [TK].dbo.POSTT,[TK].dbo.WSCMA
                             WHERE TT002=MA001

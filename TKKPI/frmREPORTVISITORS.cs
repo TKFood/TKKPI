@@ -159,7 +159,7 @@ namespace TKKPI
                             ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
                             ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
                             FROM [TKMK].[dbo].[View_t_visitors]
-                            WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                            WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
                             AND YEARS='{0}'
                             GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,WEEKS,Fdate1,DAYOFWEEK
    
@@ -200,7 +200,7 @@ namespace TKKPI
                             ,(SELECT ISNULL(SUM(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS= Right('00' + Cast([View_t_visitors].HOURS as varchar),2)) AS 'SUMTA026'
                             ,(SELECT ISNULL(COUNT(TA026),0) FROM [TK].[dbo].[POSTA] WITH(NOLOCK)  WHERE [POSTA].TA002=[View_t_visitors].TT002 AND [POSTA].TA004=[View_t_visitors].[Fdate1] AND [POSTA].HHS=Right('00' + Cast([View_t_visitors].HOURS as varchar),2)) AS 'COUNTSTA026'
                             FROM [TKMK].[dbo].[View_t_visitors]
-                            WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                            WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
                             AND YEARS='{0}'
                             GROUP BY  TT002,STORESNAME,YEARS,MONTHS,[Fdate1],HOURS
 
@@ -277,7 +277,7 @@ namespace TKKPI
                             ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
                             ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
                             FROM [TKMK].[dbo].[View_t_visitors]
-                            WHERE  View_t_visitors.TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                            WHERE  View_t_visitors.TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
                             AND YEARS='{0}'
                             GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK,DATEPART(WEEKDAY,Fdate1)
  
@@ -319,7 +319,7 @@ namespace TKKPI
                             ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
                             ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
                             FROM [TKMK].[dbo].[View_t_visitors]
-                            WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                            WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
                             AND YEARS='{0}'
                             GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
    
@@ -621,7 +621,7 @@ namespace TKKPI
                                 ,(SELECT SUM(TT018) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT011'
                                 ,(SELECT SUM(TT008) FROM [TK].dbo.POSTT WHERE View_t_visitors.TT002=POSTT.TT002 AND View_t_visitors.Fdate1=POSTT.TT001) AS 'SUMTT008'
                                 FROM [TKMK].[dbo].[View_t_visitors]
-                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
                                  AND YEARS='{0}'
                                 AND MONTHS='{1}'
                                 GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
@@ -699,7 +699,7 @@ namespace TKKPI
                                 ,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'
                                 ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
                                 FROM [TKMK].[dbo].[View_t_visitors]
-                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
                                 AND CONVERT(NVARCHAR,Fdate1,112)>='{0}'
                                 AND CONVERT(NVARCHAR,Fdate1,112)<='{1}'
                                 GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
@@ -779,7 +779,7 @@ namespace TKKPI
                                 ,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'
                                 ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
                                 FROM [TKMK].[dbo].[View_t_visitors]
-                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
                                 AND CONVERT(NVARCHAR,Fdate1,112)>='{0}'
                                 AND CONVERT(NVARCHAR,Fdate1,112)<='{1}'
                                 GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
@@ -831,7 +831,7 @@ namespace TKKPI
                                 ,(SELECT COUNT(TA001) FROM [TK].dbo.POSTA WITH(NOLOCK)  WHERE  TA002=View_t_visitors.TT002 AND TA004=View_t_visitors.Fdate1) AS 'COUNTSTA001'
                                 ,(SELECT SUM(TB019) FROM [TK].dbo.POSTB  WITH(NOLOCK) WHERE  TB002=View_t_visitors.TT002 AND TB004=View_t_visitors.Fdate1 AND TB010 NOT LIKE '1%'  AND TB010 NOT LIKE '2%'  AND TB010 NOT LIKE '3%') AS 'SUMSTB019'
                                 FROM [TKMK].[dbo].[View_t_visitors]
-                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704') 
+                                WHERE  TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
                                 AND CONVERT(NVARCHAR,Fdate1,112)>='{0}'
                                 AND CONVERT(NVARCHAR,Fdate1,112)<='{1}'
                                 GROUP BY View_t_visitors.TT002,STORESNAME,YEARS,MONTHS,WEEKS,Fdate1,DAYOFWEEK
@@ -962,7 +962,7 @@ namespace TKKPI
                                 FROM [TK].dbo.POSTA WITH(NOLOCK)
                                 LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002
                                 WHERE 1=1
-                                AND TA002 IN ('106501','106502','106503','106504','106701','106702')
+                                AND TA002 IN ('106501','106502','106503','106504','106701','106702','106704','106705')
                                 AND  TA004>='{0}' AND TA004<='{1}'
                                 ORDER BY TA002,TA004,TA005,TA006
 
@@ -1057,7 +1057,7 @@ namespace TKKPI
                                 FROM [TK].dbo.POSTA WITH(NOLOCK)
                                 LEFT JOIN [TK].dbo.WSCMA ON MA001=TA002
                                 WHERE 1=1
-                                AND TA002 IN ('106501','106502','106503','106504','106701','106702')
+                                AND TA002 IN ('106501','106502','106503','106504','106701','106702','106704','106705')
                                 AND  TA004>='{0}' AND TA004<='{1}'
                                 ) AS  TEMP 
                                 GROUP BY 門市代號,門市

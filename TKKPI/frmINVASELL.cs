@@ -303,8 +303,8 @@ namespace TKKPI
 
                             FROM (
                             SELECT LA001,MB002,SUM(LA005*LA011) AS 'NUMS'
-                            ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB002 IN ('106702','106704') AND TB010=LA001 AND TB001>=@SDAY) AS '總銷售數量'
-                            ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB002 IN ('106702','106704') AND TB010=LA001 AND TB001>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
+                            ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB002 IN ('106702','106704','106705') AND TB010=LA001 AND TB001>=@SDAY) AS '總銷售數量'
+                            ,(SELECT ISNULL(SUM(TB019),0) FROM [TK].dbo.POSTB WITH (NOLOCK) WHERE TB002 IN ('106702','106704','106705') AND TB010=LA001 AND TB001>=@SDAY)/@TOTALDAYS AS '平均天銷售數量'
                             FROM [TK].dbo.INVLA WITH (NOLOCK) ,[TK].dbo.INVMB WITH (NOLOCK) 
                             WHERE LA009 IN ('21002','30018')
                             AND LA001=MB001

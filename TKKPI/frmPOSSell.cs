@@ -157,7 +157,7 @@ namespace TKKPI
                 STR.Append(@"  FROM [TK].dbo.POSTP WITH (NOLOCK)");
                 STR.Append(@"  LEFT JOIN [TK].dbo.INVMB  WITH (NOLOCK) ON TP004=MB001");
                 STR.AppendFormat(@"  WHERE   SUBSTRING(TP001,1,6)='{0}'", dateTimePicker1.Value.ToString("yyyyMM"));
-                STR.Append(@"  AND TP002='106702'");
+                STR.Append(@"  AND TP002 IN ('106702','106704','106705')");
                 STR.Append(@"  ) AS TEMP");
                 STR.Append(@"  GROUP BY 年月,TH004,TH005,MB003,MB004");
                 STR.Append(@"  ORDER BY SUM(NUM) DESC");
