@@ -500,6 +500,8 @@ namespace TKKPI
                                     ,[ISCHECK2]  AS '是否檢查2'
                                     ,[CHECKNAME2] AS '檢查時間2'
                                     ,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'
+                                    ,CASE  WHEN CHARINDEX('下午', [ID]) > 0 THEN      CONVERT(DATETIME, REPLACE([ID], '下午', '') + ' PM', 120)  WHEN CHARINDEX('上午', [ID]) > 0 THEN      CONVERT(DATETIME, REPLACE([ID], '上午', '') + ' AM', 120) END
+
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
                                     WHERE 1=1
                                     AND [BILLPOS] IN 
@@ -561,7 +563,7 @@ namespace TKKPI
             StringBuilder SQLQUERY1 = new StringBuilder();
             StringBuilder SQLQUERY2 = new StringBuilder();
 
-
+          
             try
             {
                 //20210902密
@@ -596,7 +598,7 @@ namespace TKKPI
                                     ,[ISCHECK2]  AS '是否檢查2'
                                     ,[CHECKNAME2] AS '檢查時間2'
                                     ,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'
-                                    ,CONVERT(NVARCHAR,CONVERT(DATETIME,SUBSTRING([ID],0,LEN([ID])-9)),112)
+                                    ,CASE  WHEN CHARINDEX('下午', [ID]) > 0 THEN      CONVERT(DATETIME, REPLACE([ID], '下午', '') + ' PM', 120)  WHEN CHARINDEX('上午', [ID]) > 0 THEN      CONVERT(DATETIME, REPLACE([ID], '上午', '') + ' AM', 120) END
 
                                     FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]
                                     WHERE 1=1
