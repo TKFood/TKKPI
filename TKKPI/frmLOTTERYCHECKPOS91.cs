@@ -287,12 +287,14 @@ namespace TKKPI
                                     ,[BILLPOS] AS '發票'
                                     ,[BILL91] AS '購物車'
                                     ,[NUMS] AS '購買件數'
+                                    ,[COMMENTS] AS '備註'
+
                                     ,[NAMES] AS '姓名'
                                     ,[PHONES] AS '聯絡電話'
                                     ,[EMAIL] AS '信箱'
                                     ,[IDCARD] AS '身分證後四碼'
                                     ,[ISCHECK] AS '是否檢查1'
-                                    ,[COMMENTS] AS '備註'
+                                    
                                     ,[CHECKNAME]  AS '檢查人1'
                                     ,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'
                                     ,[ISCHECK2]  AS '是否檢查2'
@@ -490,6 +492,8 @@ namespace TKKPI
                                     ,[BILLPOS] AS '發票'
                                     ,[BILL91] AS '購物車'
                                     ,[NUMS] AS '購買件數'
+                                    ,[COMMENTS] AS '備註'
+
                                     ,[NAMES] AS ' 姓名'
                                     ,[PHONES] AS '聯絡電話'
                                     ,[EMAIL] AS '信箱'
@@ -588,6 +592,8 @@ namespace TKKPI
                                     ,[BILLPOS] AS '發票'
                                     ,[BILL91] AS '購物車'
                                     ,[NUMS] AS '購買件數'
+                                    ,[COMMENTS] AS '備註'
+
                                     ,[NAMES] AS ' 姓名'
                                     ,[PHONES] AS '聯絡電話'
                                     ,[EMAIL] AS '信箱'
