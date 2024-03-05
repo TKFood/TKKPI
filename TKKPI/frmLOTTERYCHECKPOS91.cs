@@ -995,8 +995,7 @@ namespace TKKPI
         public void SETFASTREPORT(string REPORTS)
         {
             StringBuilder SQL1 = new StringBuilder();
-
-           
+                       
             Report report1 = new Report();
 
             if(REPORTS.Equals("登記人名冊"))

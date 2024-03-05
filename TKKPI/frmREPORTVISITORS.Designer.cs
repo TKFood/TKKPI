@@ -148,7 +148,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.previewControl1);
             this.splitContainer1.Size = new System.Drawing.Size(970, 666);
-            this.splitContainer1.SplitterDistance = 161;
+            this.splitContainer1.SplitterDistance = 114;
             this.splitContainer1.TabIndex = 0;
             // 
             // tableLayoutPanel4
@@ -181,7 +181,7 @@
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(966, 157);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(966, 110);
             this.tableLayoutPanel4.TabIndex = 14;
             // 
             // label7
@@ -241,7 +241,7 @@
             this.previewControl1.Name = "previewControl1";
             this.previewControl1.PageOffset = new System.Drawing.Point(10, 10);
             this.previewControl1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl1.Size = new System.Drawing.Size(966, 497);
+            this.previewControl1.Size = new System.Drawing.Size(966, 544);
             this.previewControl1.TabIndex = 7;
             // 
             // tabPage3
