@@ -997,7 +997,7 @@ namespace TKKPI
             StringBuilder SQL1 = new StringBuilder();
                        
             Report report1 = new Report();
-
+               
             if(REPORTS.Equals("登記人名冊"))
             {
                 report1.Load(@"REPORT\登記人名冊.frx");
