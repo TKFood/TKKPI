@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/04/2023 14:39:40" ReportInfo.Modified="11/28/2023 09:16:08" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/04/2023 14:39:40" ReportInfo.Modified="03/18/2024 14:38:09" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEv5/57FoDfKXD84PWx0Ii4">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFhRQopPl/Mfav/IaqL4Dn7">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT &#13;&#10;[SERNO]&#13;&#10;,[ID] AS '登錄時間'&#13;&#10;,[KINDS] AS '通路' &#13;&#10;,[BILLPOS] AS '發票'&#13;&#10;,[BILL91] AS '購物車'&#13;&#10;,[NUMS] AS '購買件數'&#13;&#10;,[NAMES] AS '姓名'&#13;&#10;,[PHONES] AS '聯絡電話'&#13;&#10;,[EMAIL] AS '信箱'&#13;&#10;,[IDCARD] AS '身分證後四碼'&#13;&#10;,[ISCHECK] AS '是否檢查1'&#13;&#10;,[CHECKNAME]  AS '檢查人1'&#13;&#10;,CONVERT(NVARCHAR,[CHECKTIME], 120)   AS '檢查時間1'&#13;&#10;,[ISCHECK2]  AS '是否檢查2'&#13;&#10;,[CHECKNAME2] AS '檢查時間2'&#13;&#10;,CONVERT(NVARCHAR,[CHECKTIME2], 120)  AS '是否檢查2'&#13;&#10;FROM [TKKPI].[dbo].[TBLOTTERYCHECKPOS91]&#13;&#10;WHERE 1=1&#13;&#10;&#13;&#10;ORDER BY [KINDS],[ID]">
         <Column Name="登錄時間" DataType="System.String"/>
         <Column Name="通路" DataType="System.String"/>
@@ -22,9 +22,9 @@
       </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
-  <ReportPage Name="Page1" Landscape="true" PaperWidth="400" PaperHeight="210">
-    <ReportTitleBand Name="ReportTitle1" Width="1436.4" Height="37.8">
-      <TextObject Name="Text1" Width="1285.2" Height="18.9" Text="登記名冊" VertAlign="Center"/>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="300" PaperHeight="210">
+    <ReportTitleBand Name="ReportTitle1" Width="1058.4" Height="37.8">
+      <TextObject Name="Text1" Width="1048.95" Height="18.9" Text="登記名冊" VertAlign="Center"/>
       <TextObject Name="Text3" Left="94.5" Top="18.9" Width="189" Height="18.9" Border.Lines="All" Text="登錄時間" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text5" Left="283.5" Top="18.9" Width="75.6" Height="18.9" Border.Lines="All" Text="通路" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text7" Left="359.1" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="發票" HorzAlign="Center" VertAlign="Center"/>
@@ -33,10 +33,9 @@
       <TextObject Name="Text13" Left="642.6" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="姓名" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text15" Left="737.1" Top="18.9" Width="113.4" Height="18.9" Border.Lines="All" Text="身份證明後四碼" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text17" Left="850.5" Top="18.9" Width="198.45" Height="18.9" Border.Lines="All" Text="聯絡電話" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text19" Left="1048.95" Top="18.9" Width="236.25" Height="18.9" Border.Lines="All" Text="信箱" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text21" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="SERNO" Format="Currency" Format.UseLocale="true" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text21" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="登記流水號" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </ReportTitleBand>
-    <DataBand Name="Data1" Top="42.4" Width="1436.4" Height="18.9" CanGrow="true" DataSource="Table">
+    <DataBand Name="Data1" Top="42.4" Width="1058.4" Height="18.9" CanGrow="true" DataSource="Table">
       <TextObject Name="Text2" Left="94.5" Width="189" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" Text="[Table.登錄時間]" VertAlign="Center"/>
       <TextObject Name="Text4" Left="283.5" Width="75.6" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" Text="[Table.通路]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text6" Left="359.1" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" Text="[Table.發票]" HorzAlign="Center" VertAlign="Center"/>
@@ -45,9 +44,8 @@
       <TextObject Name="Text12" Left="642.6" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" Text="[Table.姓名]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text14" Left="737.1" Width="113.4" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" Text="[Table.身分證後四碼]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text16" Left="850.5" Width="198.45" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" Text="[Table.聯絡電話]" VertAlign="Center"/>
-      <TextObject Name="Text18" Left="1048.95" Width="236.25" Height="18.9" Border.Lines="All" CanGrow="true" CanShrink="true" GrowToBottom="true" Text="[Table.信箱]" VertAlign="Center"/>
       <TextObject Name="Text20" Width="94.5" Height="18.9" Border.Lines="All" CanGrow="true" GrowToBottom="true" Text="[Table.SERNO]" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="65.9" Width="1436.4" Height="18.9"/>
+    <PageFooterBand Name="PageFooter1" Top="65.9" Width="1058.4" Height="18.9"/>
   </ReportPage>
 </Report>
