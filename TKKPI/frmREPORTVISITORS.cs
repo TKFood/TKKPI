@@ -913,6 +913,7 @@ namespace TKKPI
                                     SET [TT002]= [t_STORESNAME].[TT002],[STORESNAME]=[t_STORESNAME].[STORESNAME]
                                     FROM [TKMK].[dbo].[t_STORESNAME]
                                     WHERE [t_STORESNAME].[Fdevice_sn]=[t_visitors].[Fdevice_sn]
+                                    AND [t_STORESNAME].[ISUSED]='Y'
                                     AND ISNULL([t_visitors].[TT002],'')=''
 
                                     ");
