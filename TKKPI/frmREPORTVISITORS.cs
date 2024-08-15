@@ -349,14 +349,17 @@ namespace TKKPI
         public void ADDTKMKt_visitors()
         {
             SQLiteConnection SQLiteConnection = new SQLiteConnection();
-            string MAXID = null;
-           
+            //string MAXID = null;
+            string MAX_Fdate = null;
+
+
 
             try
             {
-                MAXID = FINDTKMKt_visitorsMAXID();
+                //MAXID = FINDTKMKt_visitorsMAXID();
+                MAX_Fdate = FIND_TKMKt_visitorsMAX_Fdate();
 
-                if(!string.IsNullOrEmpty(MAXID))
+                if (!string.IsNullOrEmpty(MAX_Fdate))
                 {
                     //SQLite的檔案要先copy到 F:\kldatabase.db
                    // string path = @"data source=E:\kldatabase.db";
@@ -382,8 +385,8 @@ namespace TKKPI
                     sbSql.AppendFormat(@"  
                                         SELECT *
                                         FROM t_visitors
-                                        WHERE ID>'{0}'
-                                     ", MAXID);
+                                        WHERE Fdate>='{0}'
+                                     ", MAX_Fdate);
 
                     cmd.CommandText = sbSql.ToString();
 
@@ -482,6 +485,68 @@ namespace TKKPI
             }
 
             return MAXID;
+        }
+
+        public string FIND_TKMKt_visitorsMAX_Fdate()
+        {
+            string Fdate = null;
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                SqlDataAdapter adapter1 = new SqlDataAdapter();
+                SqlCommandBuilder sqlCmdBuilder1 = new SqlCommandBuilder();
+                DataSet ds1 = new DataSet();
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+                sbSql.AppendFormat(@"  
+                                    SELECT 
+                                    CONVERT(VARCHAR, MAX([Fdate]), 120) AS [Fdate]
+                                    FROM  [TKMK].[dbo].[t_visitors]
+                                    ");
+
+                adapter1 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder1 = new SqlCommandBuilder(adapter1);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter1.Fill(ds1, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds1.Tables["TEMPds1"].Rows.Count >= 1)
+                {
+                    Fdate = ds1.Tables["TEMPds1"].Rows[0]["Fdate"].ToString();
+                }
+                else
+                {
+
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+
+            return Fdate;
         }
 
         public void ADDTOTKMKt_visitors(DataTable dtt_visitors)
