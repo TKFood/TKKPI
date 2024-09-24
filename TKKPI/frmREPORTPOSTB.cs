@@ -54,24 +54,35 @@ namespace TKKPI
         #region FUNCTION
         public void SETDATE()
         {
-            DateTime today = DateTime.Today.AddDays(-1); // 當天日期-1
+            DateTime NOW = DateTime.Today;            
 
-            // 指定為星期一
-            DateTime monday = today;
-            while (monday.DayOfWeek != DayOfWeek.Monday)
+            if(NOW.DayOfWeek == DayOfWeek.Monday)
             {
-                monday = monday.AddDays(-1);
+                DateTime today = DateTime.Today.AddDays(-1); // 當天日期-1
+                                                             // 指定為星期一
+                DateTime monday = today;
+                while (monday.DayOfWeek != DayOfWeek.Monday)
+                {
+                    monday = monday.AddDays(-1);
+                }
+
+                // 指定為星期日
+                DateTime sunday = today;
+                while (sunday.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    sunday = sunday.AddDays(-1);
+                }
+
+                dateTimePicker1.Value = monday;
+                dateTimePicker2.Value = sunday;
+            }
+            else
+            {
+                dateTimePicker1.Value = NOW;
+                dateTimePicker2.Value = NOW;
             }
 
-            // 指定為星期日
-            DateTime sunday = today;
-            while (sunday.DayOfWeek != DayOfWeek.Sunday)
-            {
-                sunday = sunday.AddDays(-1);
-            }
-
-            dateTimePicker1.Value = monday;
-            dateTimePicker2.Value = sunday;
+           
         }
 
         public void SETFASTREPORT(string SDAYS, string EDAYS)
@@ -112,11 +123,12 @@ namespace TKKPI
             StringBuilder SB = new StringBuilder();
          
             SB.AppendFormat(@"                               
-                            SELECT *
+                           SELECT *
                             ,(CASE WHEN 未稅金額>0 AND 成本>0 THEN (未稅金額-成本)/未稅金額 ELSE 0 END) AS '毛利率'
+                            ,CONVERT(INT,(CASE WHEN 含稅金額>0 AND 銷售數量>0 THEN 含稅金額/銷售數量 ELSE 0 END) ) AS '含稅單價'
                             FROM
                             (
-                            SELECT TB002 AS '門市代' ,MA002 AS '門市',TB010 AS '品號',MB002 AS '品名',SUM(TB019)  AS '銷售數量' ,SUM(TB031)  AS '未稅金額'
+                            SELECT TB002 AS '門市代' ,MA002 AS '門市',TB010 AS '品號',MB002 AS '品名',SUM(TB019)  AS '銷售數量' ,SUM(TB031)  AS '未稅金額',SUM(TB031+TB032) AS '含稅金額'
                             ,(SELECT SUM(LA013) FROM [TK].dbo.INVLA WHERE LA004>='{0}' AND LA004<='{1}' AND TB002=LA006 AND TB010=LA001) AS  '成本'
                             FROM [TK].dbo.POSTB,[TK].dbo.WSCMA,[TK].dbo.INVMB
                             WHERE 1=1
