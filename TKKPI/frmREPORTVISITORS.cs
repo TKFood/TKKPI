@@ -29,6 +29,8 @@ namespace TKKPI
 {
     public partial class frmREPORTVISITORS : Form
     {
+        int TIMEOUT = 240;
+
         SqlConnection sqlConn = new SqlConnection();
         SqlCommand sqlComm = new SqlCommand();
         string connectionString;
@@ -96,12 +98,12 @@ namespace TKKPI
             sqlConn = new SqlConnection(sqlsb.ConnectionString);
 
             report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
-            report1.Dictionary.Connections[0].CommandTimeout = 120;
+            report1.Dictionary.Connections[0].CommandTimeout = TIMEOUT;
 
             TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
             table.SelectCommand = SQL1.ToString();
           
-            TableDataSource table1 = report1.GetDataSource("Table1") as TableDataSource;
+            TableDataSource table1 = report1.GetDataSource("Table1") as TableDataSource;            
             table1.SelectCommand = SQL2.ToString();
             TableDataSource table2= report1.GetDataSource("Table2") as TableDataSource;
             table2.SelectCommand = SQL3.ToString();
