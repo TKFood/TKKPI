@@ -81,8 +81,7 @@ namespace TKKPI
                 dateTimePicker1.Value = NOW;
                 dateTimePicker2.Value = NOW;
             }
-
-           
+                       
         }
 
         public void SETFASTREPORT(string SDAYS, string EDAYS)
