@@ -120,17 +120,22 @@ namespace TKKPI
 
                 if (ds.Tables[talbename].Rows.Count == 0)
                 {
-                    dataGridView2.DataSource = null;
+                    dataGridView1.DataSource = null;
                 }
                 else
                 {
-                    dataGridView2.DataSource = ds.Tables[talbename];
-                    dataGridView2.AutoResizeColumns();
+                    dataGridView1.DataSource = ds.Tables[talbename];
+                    dataGridView1.AutoResizeColumns();
                     //rownum = ds.Tables[talbename].Rows.Count - 1;
-                    dataGridView2.CurrentCell = dataGridView2.Rows[rownum].Cells[0];
+                    dataGridView1.CurrentCell = dataGridView1.Rows[rownum].Cells[0];
 
-                    //dataGridView1.CurrentCell = dataGridView1[0, 2];
-
+                    dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                    dataGridView1.DefaultCellStyle.Font = new Font("Tahoma", 10);
+                    dataGridView1.Columns["類型"].Width = 100;
+                    dataGridView1.Columns["活動名稱"].Width = 240;
+                    dataGridView1.Columns["開始日"].Width = 100;
+                    dataGridView1.Columns["結束日"].Width = 100;
+                    dataGridView1.Columns["活動代號"].Width = 200;
                 }
 
 
