@@ -341,6 +341,12 @@
     <Compile Include="frmRESALES.Designer.cs">
       <DependentUpon>frmRESALES.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmRPOETPOSMA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRPOETPOSMA.Designer.cs">
+      <DependentUpon>frmRPOETPOSMA.cs</DependentUpon>
+    </Compile>
     <Compile Include="PleaseWait.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -465,6 +471,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmRESALES.resx">
       <DependentUpon>frmRESALES.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRPOETPOSMA.resx">
+      <DependentUpon>frmRPOETPOSMA.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PleaseWait.resx">
       <DependentUpon>PleaseWait.cs</DependentUpon>
