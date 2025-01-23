@@ -184,6 +184,8 @@ namespace TKKPI
 
                     SEARCH_POS_SET(TB036);
                     SEARCH_POS_POSTB(TB036);
+                    SEARCH_POSTB_ME001(TB036);
+                    SEARCH_POSTB_ME001_DAILY(TB036);
 
                 }
                 else
@@ -352,6 +354,171 @@ namespace TKKPI
                     dataGridView3.Columns["銷售數量"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊
                     dataGridView3.Columns["未稅金額"].DefaultCellStyle.Format = "N0"; // 格式化為千分位，無小數位
                     dataGridView3.Columns["未稅金額"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊 
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+        public void SEARCH_POSTB_ME001(string TB036)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                talbename = "TEMPds1";
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"
+                                    SELECT 
+                                    ME001 AS '門市ID',
+                                    ME002 AS '門市',
+                                    TB010  AS '品號',
+                                    MB002 AS '品名', 
+                                    SUM(TB019) AS '銷售數量', 
+                                    SUM(TB031)  AS '銷售未稅金額'
+                                    FROM [TK].dbo.POSTB,[TK].dbo.INVMB,[TK].dbo.CMSME
+                                    WHERE TB010=MB001
+                                    AND ME001=TB002
+                                    AND TB036='{0}'
+                                    GROUP BY ME001,ME002,TB010,MB002
+                                    ORDER BY ME001,ME002,TB010,MB002
+
+                                    ", TB036);
+
+
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, talbename);
+                sqlConn.Close();
+
+
+                if (ds.Tables[talbename].Rows.Count == 0)
+                {
+                    dataGridView4.DataSource = null;
+                }
+                else
+                {
+                    dataGridView4.DataSource = ds.Tables[talbename];
+                    dataGridView4.AutoResizeColumns();
+                    //rownum = ds.Tables[talbename].Rows.Count - 1;
+                    dataGridView4.CurrentCell = dataGridView4.Rows[rownum].Cells[0];
+
+                    dataGridView4.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                    dataGridView4.DefaultCellStyle.Font = new Font("Tahoma", 10);
+                    dataGridView4.Columns["銷售數量"].DefaultCellStyle.Format = "N0"; // 格式化為千分位，無小數位
+                    dataGridView4.Columns["銷售數量"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊
+                    dataGridView4.Columns["銷售未稅金額"].DefaultCellStyle.Format = "N0"; // 格式化為千分位，無小數位
+                    dataGridView4.Columns["銷售未稅金額"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊 
+                }
+
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+        public void SEARCH_POSTB_ME001_DAILY(string TB036)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+
+            DataSet ds = new DataSet();
+
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                talbename = "TEMPds1";
+                sbSql.Clear();
+
+                sbSql.AppendFormat(@"                                    
+                                    SELECT 
+                                    ME001 AS '門市ID',
+                                    ME002 AS '門市',
+                                    TB001 AS '日期',
+                                    TB010  AS '品號',
+                                    MB002 AS '品名', 
+                                    SUM(TB019) AS '銷售數量', 
+                                    SUM(TB031)  AS '銷售未稅金額'
+                                    FROM [TK].dbo.POSTB,[TK].dbo.INVMB,[TK].dbo.CMSME
+                                    WHERE TB010=MB001
+                                    AND ME001=TB002
+                                    AND TB036='{0}'
+                                    GROUP BY ME001,ME002,TB001,TB010,MB002
+                                    ORDER BY ME001,ME002,TB001,TB010,MB002
+
+                                    ", TB036);
+
+
+
+                adapter = new SqlDataAdapter(sbSql.ToString(), sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                ds.Clear();
+                adapter.Fill(ds, talbename);
+                sqlConn.Close();
+
+
+                if (ds.Tables[talbename].Rows.Count == 0)
+                {
+                    dataGridView5.DataSource = null;
+                }
+                else
+                {
+                    dataGridView5.DataSource = ds.Tables[talbename];
+                    dataGridView5.AutoResizeColumns();
+                    //rownum = ds.Tables[talbename].Rows.Count - 1;
+                    dataGridView5.CurrentCell = dataGridView5.Rows[rownum].Cells[0];
+
+                    dataGridView5.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                    dataGridView5.DefaultCellStyle.Font = new Font("Tahoma", 10);
+                    dataGridView5.Columns["銷售數量"].DefaultCellStyle.Format = "N0"; // 格式化為千分位，無小數位
+                    dataGridView5.Columns["銷售數量"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊
+                    dataGridView5.Columns["銷售未稅金額"].DefaultCellStyle.Format = "N0"; // 格式化為千分位，無小數位
+                    dataGridView5.Columns["銷售未稅金額"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊 
                 }
 
 
