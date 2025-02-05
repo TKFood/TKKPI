@@ -951,7 +951,66 @@ namespace TKKPI
             report1.Preview = previewControl4;
             report1.Show();
         }
+        public void SETFASTREPORT8(string SDAYS, string EDAYS, string SETMONEYS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            StringBuilder SQL2 = new StringBuilder();
 
+            SQL1.AppendFormat(@"   
+                                --TA026<0 是含銷退
+                            
+                                SELECT 
+                                '{0}'+'~'+'{1}'  AS '日期',
+                                TA002 AS '門市代',
+                                ME002 AS '門市',
+                                COUNT(TA002) AS '總消費筆數',
+                                SUM(TA026) AS '總銷售額(未稅)',
+                                (
+                                SELECT COUNT(TA002)
+                                FROM [TK].dbo.POSTA TA2
+                                WHERE 1=1
+                                AND TA2.TA002=POSTA.TA002
+                                AND TA2.TA001>='{0}' AND TA2.TA001<='{1}'
+                                AND TA026>={2}
+                                ) AS '單筆消費滿額的筆數'
+                                FROM [TK].dbo.POSTA,[TK].dbo.CMSME
+                                WHERE 1=1
+                                AND TA002=ME001                                
+                                AND TA001>='{0}' AND TA001<='{1}'
+                                GROUP BY TA002,ME002
+                                ORDER BY TA002,ME002
+
+                                ", SDAYS, EDAYS, SETMONEYS);
+            
+
+
+            Report report1 = new Report();
+            report1.Load(@"REPORT\銷售筆數表.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+            report1.Dictionary.Connections[0].CommandTimeout = 120;
+
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL1.ToString();
+
+            report1.SetParameterValue("P1", SETMONEYS);
+
+
+
+            report1.Preview = previewControl7;
+            report1.Show();
+        }
         public void UPDATEt_visitors()
         {
 
@@ -1154,6 +1213,7 @@ namespace TKKPI
             TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
             table.SelectCommand = SQL1.ToString();
 
+           
 
 
             report1.Preview = previewControl6;
@@ -1190,6 +1250,10 @@ namespace TKKPI
         {
             SETFASTREPORT5(dateTimePicker6.Value.ToString("yyyyMMdd"), dateTimePicker7.Value.ToString("yyyyMMdd"));
             SETFASTREPORT6(dateTimePicker6.Value.ToString("yyyyMMdd"), dateTimePicker7.Value.ToString("yyyyMMdd"));
+        }
+        private void button7_Click(object sender, EventArgs e)
+        {
+            SETFASTREPORT8(dateTimePicker9.Value.ToString("yyyyMMdd"), dateTimePicker10.Value.ToString("yyyyMMdd"),textBox1.Text);
         }
         #endregion
 
