@@ -871,7 +871,11 @@ namespace TKKPI
 
             SQL2.AppendFormat(@" 
                                
-                                SELECT 門代,門店,SUM(來客數) 來客數,SUM(銷售未稅總金額) 銷售未稅總金額,SUM(結帳單量) 結帳單量,AVG(結帳交易商品數) 結帳交易商品數,AVG(提袋率) 提袋率,AVG(客單價) 客單價,AVG(每單平均商品數) 每單平均商品數
+                               SELECT 門代,門店,SUM(來客數) 來客數,SUM(銷售未稅總金額) 銷售未稅總金額,SUM(結帳單量) 結帳單量,SUM(結帳交易商品數) 結帳交易商品數
+                                ,(SUM(結帳單量) * 1.0 / NULLIF(SUM(來客數), 0)) AS 提袋率
+                                ,(SUM(結帳交易商品數) * 1.0 / NULLIF(SUM(結帳單量), 0)) AS 結帳交易商品數
+                                ,(SUM(銷售未稅總金額) * 1.0 / NULLIF(SUM(結帳單量), 0)) AS 客單價
+                                ,(SUM(結帳交易商品數) * 1.0 / NULLIF(SUM(結帳單量), 0)) AS 每單平均商品數
                                 FROM 
                                 (
                                 SELECT 
