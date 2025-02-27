@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/27/2025 11:37:37" ReportInfo.Modified="02/27/2025 13:17:25" ReportInfo.CreatorVersion="2016.4.4.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+  
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGSJSGsyu2/YxxoIp+ejdIx">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT *&#13;&#10;FROM &#13;&#10;(&#13;&#10;SELECT &#13;&#10;'1銷貨' KINDS,MA002,SUM(TH037) SUMTH037,SUM(TH038) SUMTH038,SUM(TH037+TH038) SUMMONEYS&#13;&#10;FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.COPMA&#13;&#10;WHERE TG001=TH001 AND TG002=TH002&#13;&#10;AND TG004=MA001&#13;&#10;AND TG023='Y'&#13;&#10;AND TG006 IN (&#13;&#10;	SELECT [MV001]      &#13;&#10;	FROM [TK].[dbo].[Z_SALES_DAILY_REPORTS]&#13;&#10;	WHERE [NATIONS]='國內'&#13;&#10;)&#13;&#10;AND TG003 LIKE '202502%'&#13;&#10;GROUP BY MA002&#13;&#10;UNION ALL&#13;&#10;SELECT &#13;&#10;'2銷退' KINDS,MA002,TJ033*-1,TJ034*-1,(TJ033+TJ034)*-1&#13;&#10;FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.COPMA&#13;&#10;WHERE TI001=TJ001 AND TI002=TJ002&#13;&#10;AND TI004=MA001&#13;&#10;AND TI019='Y'&#13;&#10;AND TI006     IN (&#13;&#10;	SELECT [MV001]      &#13;&#10;	FROM [TK].[dbo].[Z_SALES_DAILY_REPORTS]&#13;&#10;	WHERE [NATIONS]='國內'&#13;&#10;)&#13;&#10;AND TI003 LIKE '202502%'     &#13;&#10;) AS TEMP">
+        <Column Name="KINDS" DataType="System.String"/>
+        <Column Name="MA002" DataType="System.String"/>
+        <Column Name="SUMTH037" DataType="System.Decimal"/>
+        <Column Name="SUMTH038" DataType="System.Decimal"/>
+        <Column Name="SUMMONEYS" DataType="System.Decimal"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="P1" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="1000" PaperHeight="1000">
+    <ReportTitleBand Name="ReportTitle1" Width="3704.4" Height="18.9">
+      <TextObject Name="Text1" Left="9.45" Width="434.7" Height="18.9" Text="查詢月份:[P1]"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="23.5" Width="3704.4" Height="75.6">
+      <MatrixObject Name="Matrix1" Left="9.45" Top="9.45" Width="427.68" Height="52.88" FixedRows="1" FixedColumns="1" AutoSize="false" DataSource="Table">
+        <MatrixColumns>
+          <Header Expression="[Table.KINDS]"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[Table.MA002]"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[Table.SUMMONEYS]"/>
+        </MatrixCells>
+        <TableColumn Name="Column1" Width="266.51"/>
+        <TableColumn Name="Column2" Width="83.36"/>
+        <TableColumn Name="Column3" Width="77.81"/>
+        <TableRow Name="Row1" Height="18.19">
+          <TableCell Name="Cell1" Border.Lines="All" Text="客戶" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell2" Border.Lines="All" Text="[KINDS]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell5" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="16.5">
+          <TableCell Name="Cell3" Border.Lines="All" Text="[MA002]" VertAlign="Center"/>
+          <TableCell Name="Cell4" Border.Lines="All" Text="[SUMMONEYS]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell6" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="18.19">
+          <TableCell Name="Cell7" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell8" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell9" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+  </ReportPage>
+</Report>
