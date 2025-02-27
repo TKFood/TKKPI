@@ -98,12 +98,27 @@ namespace TKKPI
         public void SETFASTREPORT(string REPORT,string YYMM)
         {
             StringBuilder SQL1 = new StringBuilder();
-            Report report1 = new Report();
+            Report report1 = new Report();           
 
-            report1.Load(@"REPORT\業務-月報-客戶.frx");
-            report1.SetParameterValue("P1", YYMM);
+            if (REPORT.Equals("業務-月報-客戶"))
+            {
+                report1.Load(@"REPORT\業務-月報-客戶.frx");
+                report1.SetParameterValue("P1", YYMM);
+                SQL1 = SETSQL1(YYMM);
+            }
+            else if(REPORT.Equals("業務-月報-商品"))
+            {
+                report1.Load(@"REPORT\業務-月報-商品.frx");
+                report1.SetParameterValue("P1", YYMM);
+                SQL1 = SETSQL2(YYMM);
+            }
+            else if (REPORT.Equals("業務-月報-客戶-商品"))
+            {
+                report1.Load(@"REPORT\業務-月報-客戶-商品.frx");
+                report1.SetParameterValue("P1", YYMM);
+                SQL1 = SETSQL3(YYMM);
+            }
 
-            SQL1 = SETSQL1(YYMM);
 
             //20210902密
             Class1 TKID = new Class1();//用new 建立類別實體
@@ -171,6 +186,100 @@ namespace TKKPI
 
         }
 
+        public StringBuilder SETSQL2(string YYMM)
+        {
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(@"                             
+                            SELECT *
+                            FROM(
+                            SELECT 
+                            '1銷貨' KINDS,TH004,MB002,SUM(TH008+TH024) SUMNUMS,SUM(TH037) SUMTH037,SUM(TH038) SUMTH038,SUM(TH037+TH038) SUMMONEYS
+                            FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.COPMA,[TK].dbo.INVMB
+                            WHERE TG001=TH001 AND TG002=TH002
+                            AND TG004=MA001
+                            AND TH004=MB001
+                            AND TG023='Y'
+                            AND TG006 IN (
+	                            SELECT [MV001]      
+	                            FROM [TK].[dbo].[Z_SALES_DAILY_REPORTS]
+	                            WHERE [NATIONS]='國內'
+                            )
+                            AND TG003 LIKE '{0}%'
+                            GROUP BY TH004,MB002
+                            UNION ALL
+                            SELECT 
+                            '2銷退' KINDS,TJ004,MB002,SUM(TJ007)*-1,SUM(TJ033)*-1,SUM(TJ034)*-1,SUM(TJ033+TJ034)*-1
+                            FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.COPMA,[TK].dbo.INVMB
+                            WHERE TI001=TJ001 AND TI002=TJ002
+                            AND TI004=MA001
+                            AND TJ004=MB001
+                            AND TI019='Y'
+                            AND TI006     IN (
+	                            SELECT [MV001]      
+	                            FROM [TK].[dbo].[Z_SALES_DAILY_REPORTS]
+	                            WHERE [NATIONS]='國內'
+                            )
+                            AND TI003 LIKE '{0}%'
+                            GROUP BY TJ004,MB002
+                            ) AS TEMP
+                         
+                             ", YYMM);
+
+            talbename = "TEMPds1";
+
+            return SB;
+
+        }
+
+        public StringBuilder SETSQL3(string YYMM)
+        {
+            StringBuilder SB = new StringBuilder();
+
+
+            SB.AppendFormat(@"  
+                            SELECT *
+                            FROM(
+                            SELECT 
+                            '1銷貨' KINDS,MA002,TH004,MB002,SUM(TH008+TH024) SUMNUMS,SUM(TH037) SUMTH037,SUM(TH038) SUMTH038,SUM(TH037+TH038) SUMMONEYS
+                            FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.COPMA,[TK].dbo.INVMB
+                            WHERE TG001=TH001 AND TG002=TH002
+                            AND TG004=MA001
+                            AND TH004=MB001
+                            AND TG023='Y'
+                            AND TG006 IN (
+	                            SELECT [MV001]      
+	                            FROM [TK].[dbo].[Z_SALES_DAILY_REPORTS]
+	                            WHERE [NATIONS]='國內'
+                            )
+                            AND TG003 LIKE '{0}%'
+                            GROUP BY MA002,TH004,MB002
+                            UNION ALL
+                            SELECT 
+                            '2銷退' KINDS,MA002,TJ004,MB002,SUM(TJ007)*-1,SUM(TJ033)*-1,SUM(TJ034)*-1,SUM(TJ033+TJ034)*-1
+                            FROM [TK].dbo.COPTI,[TK].dbo.COPTJ,[TK].dbo.COPMA,[TK].dbo.INVMB
+                            WHERE TI001=TJ001 AND TI002=TJ002
+                            AND TI004=MA001
+                            AND TJ004=MB001
+                            AND TI019='Y'
+                            AND TI006     IN (
+	                            SELECT [MV001]      
+	                            FROM [TK].[dbo].[Z_SALES_DAILY_REPORTS]
+	                            WHERE [NATIONS]='國內'
+                            )
+                            AND TI003 LIKE '{0}%'
+                            GROUP BY MA002,TJ004,MB002
+
+                            ) AS TEMP
+                         
+                             ", YYMM);
+
+            talbename = "TEMPds1";
+
+            return SB;
+
+        }
         #endregion
 
         #region BUTTON
