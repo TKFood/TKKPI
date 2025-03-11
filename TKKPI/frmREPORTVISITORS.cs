@@ -964,28 +964,34 @@ namespace TKKPI
                                 --TA026<0 是含銷退
                             
                                 SELECT 
-                                '{0}'+'~'+'{1}'  AS '日期',
-                                TA002 AS '門市代',
-                                ME002 AS '門市',
-                                COUNT(TA002) AS '總消費筆數',
-                                SUM(TA026) AS '總銷售額(未稅)',
+                                *
+                                ,(CASE WHEN 單筆消費滿額的筆數>0 AND 總消費筆數>0 THEN CONVERT(DECIMAL,單筆消費滿額的筆數)/ CONVERT(DECIMAL,總消費筆數) ELSE 0 END ) AS 'PCTS'
+                                FROM 
                                 (
-                                SELECT COUNT(TA002)
-                                FROM [TK].dbo.POSTA TA2
-                                WHERE 1=1
-                                AND TA2.TA002=POSTA.TA002
-                                AND TA2.TA001>='{0}' AND TA2.TA001<='{1}'
-                                AND TA026>={2}
-                                ) AS '單筆消費滿額的筆數'
-                                FROM [TK].dbo.POSTA,[TK].dbo.CMSME
-                                WHERE 1=1
-                                AND TA002=ME001                                
-                                AND TA001>='{0}' AND TA001<='{1}'
-                                GROUP BY TA002,ME002
-                                ORDER BY TA002,ME002
+	                                SELECT 
+	                                '{0}'+'~'+'{1}'  AS '日期',
+	                                TA002 AS '門市代',
+	                                ME002 AS '門市',
+	                                COUNT(TA002) AS '總消費筆數',
+	                                SUM(TA026) AS '總銷售額(未稅)',
+	                                (
+	                                SELECT COUNT(TA002)
+	                                FROM [TK].dbo.POSTA TA2
+	                                WHERE 1=1
+	                                AND TA2.TA002=POSTA.TA002
+	                                AND TA2.TA001>='{0}' AND TA2.TA001<='{1}'
+	                                AND TA026>={2}
+	                                ) AS '單筆消費滿額的筆數'
+	                                FROM [TK].dbo.POSTA,[TK].dbo.CMSME
+	                                WHERE 1=1
+	                                AND TA002=ME001                                
+	                                AND TA001>='{0}' AND TA001<='{1}'
+	                                GROUP BY TA002,ME002
+                                ) AS TEMP
+                                ORDER BY 門市代,門市
 
                                 ", SDAYS, EDAYS, SETMONEYS);
-            
+             
 
 
             Report report1 = new Report();
