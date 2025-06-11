@@ -277,11 +277,12 @@ namespace TKKPI
 
         }
 
-        public void SETFASTREPORT4(string DATES_TODAY,string DATES_LASTMONTHDAY,string DATES_START,string DATES_END,string DATES_LASTMONDAY, string DATES_LASTSUNDAY)
+        public void SETFASTREPORT4(string DATES_TODAY,string DATES_LASTMONTHDAY,string DATES_START,string DATES_END,string DATES_LASTMONDAY, string DATES_LASTSUNDAY,string DATES_CARS_START,string DATES_CARS_END)
         {
             StringBuilder SQL4 = new StringBuilder();
             StringBuilder SQL5 = new StringBuilder();
             StringBuilder SQL6 = new StringBuilder();
+            StringBuilder SQL7 = new StringBuilder();
 
             //訂單未出貨金額
             SQL4 = SETSQL4(DATES_TODAY, DATES_LASTMONTHDAY);
@@ -289,6 +290,8 @@ namespace TKKPI
             SQL5 = SETSQL5(DATES_START, DATES_END);
             //各門市上週銷售
             SQL6 = SETSQL6(DATES_LASTMONDAY, DATES_LASTSUNDAY);
+            //觀光業績及車次明細表
+            SQL7 = SETSQL7(DATES_CARS_START, DATES_CARS_END);
 
             Report report4 = new Report(); 
             report4.Load(@"REPORT\每週週報表.frx");
@@ -316,6 +319,9 @@ namespace TKKPI
             //各門市上週銷售
             TableDataSource table2 = report4.GetDataSource("Table2") as TableDataSource;
             table2.SelectCommand = SQL6.ToString();
+            //觀光業績及車次明
+            TableDataSource table3 = report4.GetDataSource("Table3") as TableDataSource;
+            table3.SelectCommand = SQL7.ToString();
 
             report4.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
             report4.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
@@ -424,6 +430,39 @@ namespace TKKPI
             return SB;
 
         }
+
+        public StringBuilder SETSQL7(string DATES_LDATES_CARS_START, string DATES_CARS_END)
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(@"                             
+                            SELECT 
+                            [INDATES] AS '日期',[YEARS] AS '年',[WEEKS] AS '週',[TOTALMONEYS] AS 銷售組當日業績,[GROUPMONEYS] AS '團客業績',([TOTALMONEYS]-[GROUPMONEYS]) AS '散客業績',[CARNUM] AS '遊覽車次',[CARAVGMONEYS] AS '每車平均業績'
+                            FROM [TKMK].[dbo].[TBFACTORYINCOME]
+                            WHERE [INDATES]>='{0}' AND [INDATES]<='{1}'
+                            UNION ALL
+                            -- 總計
+                            SELECT 
+                              '總計',
+                              '',
+                              '',
+                              SUM([TOTALMONEYS]),
+                              SUM([GROUPMONEYS]),
+                              SUM([TOTALMONEYS] - [GROUPMONEYS]),
+                              SUM([CARNUM]),
+                              CASE 
+                                WHEN SUM([CARNUM]) = 0 THEN 0 
+                                ELSE SUM([GROUPMONEYS]) / SUM([CARNUM]) 
+                              END
+                            FROM [TKMK].[dbo].[TBFACTORYINCOME]
+                            WHERE [INDATES] >= '{0}' AND [INDATES] <= '{1}'
+ 
+                            ", DATES_LDATES_CARS_START, DATES_CARS_END);
+
+
+            return SB;
+
+        }
         public void ADDTKMK_TBFACTORYINCOME(string SDATES, string EDATES)
         {
             SqlCommand cmd = new SqlCommand();
@@ -526,16 +565,20 @@ namespace TKKPI
             string DATES_END = dateTimePicker8.Value.ToString("yyyyMM") + "31";
             string DATES_LASTMONDAY = dateTimePicker9.Value.ToString("yyyyMMdd");
             string DATES_LASTSUNDAY = dateTimePicker10.Value.ToString("yyyyMMdd");
+            string DATES_CARS_START = dateTimePicker11.Value.ToString("yyyyMMdd");
+            string DATES_CARS_END = dateTimePicker12.Value.ToString("yyyyMMdd");
 
-            SETFASTREPORT4(DATES_TODAY, DATES_LASTMONTHDAY, DATES_START, DATES_END, DATES_LASTMONDAY, DATES_LASTSUNDAY);
+            ADDTKMK_TBFACTORYINCOME(DATES_CARS_START, DATES_CARS_END);
+
+            SETFASTREPORT4(DATES_TODAY, DATES_LASTMONTHDAY, DATES_START, DATES_END, DATES_LASTMONDAY, DATES_LASTSUNDAY, DATES_CARS_START, DATES_CARS_END);
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            string DATES_CAS_START = dateTimePicker11.Value.ToString("yyyyMMdd");
-            string DATES_CAS_END = dateTimePicker12.Value.ToString("yyyyMMdd");
+            string DATES_CARS_START = dateTimePicker11.Value.ToString("yyyyMMdd");
+            string DATES_CARS_END = dateTimePicker12.Value.ToString("yyyyMMdd");
 
-            ADDTKMK_TBFACTORYINCOME(DATES_CAS_START, DATES_CAS_END);
+            ADDTKMK_TBFACTORYINCOME(DATES_CARS_START, DATES_CARS_END);
         }
         #endregion
 
