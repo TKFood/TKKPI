@@ -275,15 +275,20 @@ namespace TKKPI
 
         }
 
-        public void SETFASTREPORT4(string DATES_TODAY,string DATES_LASTMONTHDAY,string DATES_START,string DATES_END)
+        public void SETFASTREPORT4(string DATES_TODAY,string DATES_LASTMONTHDAY,string DATES_START,string DATES_END,string DATES_LASTMONDAY, string DATES_LASTSUNDAY)
         {
             StringBuilder SQL4 = new StringBuilder();
             StringBuilder SQL5 = new StringBuilder();
+            StringBuilder SQL6 = new StringBuilder();
 
+            //訂單未出貨金額
             SQL4 = SETSQL4(DATES_TODAY, DATES_LASTMONTHDAY);
+            //未出訂單業績統計
             SQL5 = SETSQL5(DATES_START, DATES_END);
+            //各門市上週銷售
+            SQL6 = SETSQL6(DATES_LASTMONDAY, DATES_LASTSUNDAY);
 
-            Report report4 = new Report();
+            Report report4 = new Report(); 
             report4.Load(@"REPORT\每週週報表.frx");
 
             //20210902密
@@ -306,6 +311,9 @@ namespace TKKPI
             //未出訂單業績統計
             TableDataSource table1 = report4.GetDataSource("Table1") as TableDataSource;
             table1.SelectCommand = SQL5.ToString();
+            //各門市上週銷售
+            TableDataSource table2 = report4.GetDataSource("Table2") as TableDataSource;
+            table2.SelectCommand = SQL6.ToString();
 
             report4.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
             report4.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
@@ -381,7 +389,39 @@ namespace TKKPI
             return SB;
 
         }
+        public StringBuilder SETSQL6(string DATES_LASTMONDAY, string DATES_LASTSUNDAY)
+        {
+            StringBuilder SB = new StringBuilder();
 
+            SB.AppendFormat(@" 
+                            SELECT *
+                            ,(CASE WHEN 未稅金額>0 AND 成本>0 THEN (未稅金額-成本)/未稅金額 ELSE 0 END) AS '毛利率'
+                            ,CONVERT(INT,(CASE WHEN 含稅金額>0 AND 銷售數量>0 THEN 含稅金額/銷售數量 ELSE 0 END) ) AS '含稅單價'
+                            FROM
+                            (
+                            SELECT TB002 AS '門市代' ,MA002 AS '門市',TB010 AS '品號',MB002 AS '品名',SUM(TB019)  AS '銷售數量' ,SUM(TB031)  AS '未稅金額',SUM(TB031+TB032) AS '含稅金額'
+                            ,(SELECT SUM(LA013) FROM [TK].dbo.INVLA WHERE LA004>='{0}' AND LA004<='{1}' AND TB002=LA006 AND TB010=LA001) AS  '成本'
+                            FROM [TK].dbo.POSTB,[TK].dbo.WSCMA,[TK].dbo.INVMB
+                            WHERE 1=1
+                            AND MA001=TB002
+                            AND TB010=MB001
+                            AND TB002 IN (SELECT  [TT002] FROM [TKKPI].[dbo].[SALESTORES])
+                            AND (TB010 LIKE '4%' OR TB010 LIKE '5%')
+                            AND TB010 NOT LIKE '499%'
+                            AND TB010 NOT LIKE '599%'
+                            AND TB010 NOT LIKE '506%'
+                            AND TB001>='{0}' AND TB001<='{1}'
+                            GROUP BY TB002,MA002,TB010,MB002
+                            HAVING SUM(TB031)<>0
+                            ) AS TEMP
+                            ORDER BY 門市代,未稅金額 DESC  
+ 
+                            ", DATES_LASTMONDAY, DATES_LASTSUNDAY);
+
+
+            return SB;
+
+        }
         #endregion
 
         #region BUTTON
@@ -403,8 +443,10 @@ namespace TKKPI
             string DATES_LASTMONTHDAY = dateTimePicker6.Value.ToString("yyyyMMdd");
             string DATES_START = dateTimePicker7.Value.ToString("yyyyMM") + "01";
             string DATES_END = dateTimePicker8.Value.ToString("yyyyMM") + "31";
+            string DATES_LASTMONDAY = dateTimePicker9.Value.ToString("yyyyMMdd");
+            string DATES_LASTSUNDAY = dateTimePicker10.Value.ToString("yyyyMMdd");
 
-            SETFASTREPORT4(DATES_TODAY, DATES_LASTMONTHDAY, DATES_START, DATES_END);
+            SETFASTREPORT4(DATES_TODAY, DATES_LASTMONTHDAY, DATES_START, DATES_END, DATES_LASTMONDAY, DATES_LASTSUNDAY);
         }
 
         #endregion
