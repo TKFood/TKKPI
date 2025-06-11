@@ -69,6 +69,11 @@
             this.dateTimePicker9 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker10 = new System.Windows.Forms.DateTimePicker();
             this.label10 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.dateTimePicker11 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker12 = new System.Windows.Forms.DateTimePicker();
+            this.label12 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -516,11 +521,16 @@
             this.tableLayoutPanel3.Controls.Add(this.dateTimePicker7, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.dateTimePicker8, 3, 1);
             this.tableLayoutPanel3.Controls.Add(this.label6, 2, 1);
-            this.tableLayoutPanel3.Controls.Add(this.button3, 4, 3);
             this.tableLayoutPanel3.Controls.Add(this.label9, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.dateTimePicker9, 1, 2);
             this.tableLayoutPanel3.Controls.Add(this.dateTimePicker10, 3, 2);
             this.tableLayoutPanel3.Controls.Add(this.label10, 2, 2);
+            this.tableLayoutPanel3.Controls.Add(this.button3, 4, 4);
+            this.tableLayoutPanel3.Controls.Add(this.button5, 4, 3);
+            this.tableLayoutPanel3.Controls.Add(this.label11, 0, 3);
+            this.tableLayoutPanel3.Controls.Add(this.dateTimePicker11, 1, 3);
+            this.tableLayoutPanel3.Controls.Add(this.dateTimePicker12, 3, 3);
+            this.tableLayoutPanel3.Controls.Add(this.label12, 2, 3);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
@@ -583,7 +593,7 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(504, 124);
+            this.button3.Location = new System.Drawing.Point(504, 164);
             this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(142, 32);
@@ -697,6 +707,64 @@
             this.label10.Text = "~";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // button5
+            // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.button5.Location = new System.Drawing.Point(504, 124);
+            this.button5.Margin = new System.Windows.Forms.Padding(4);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(142, 32);
+            this.button5.TabIndex = 35;
+            this.button5.Text = "轉入資料";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(4, 132);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(142, 16);
+            this.label11.TabIndex = 36;
+            this.label11.Text = "團客來車記錄";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // dateTimePicker11
+            // 
+            this.dateTimePicker11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dateTimePicker11.CustomFormat = "yyyy/MM/dd";
+            this.dateTimePicker11.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker11.Location = new System.Drawing.Point(154, 126);
+            this.dateTimePicker11.Margin = new System.Windows.Forms.Padding(4);
+            this.dateTimePicker11.Name = "dateTimePicker11";
+            this.dateTimePicker11.Size = new System.Drawing.Size(142, 27);
+            this.dateTimePicker11.TabIndex = 37;
+            // 
+            // dateTimePicker12
+            // 
+            this.dateTimePicker12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dateTimePicker12.CustomFormat = "yyyy/MM/dd";
+            this.dateTimePicker12.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker12.Location = new System.Drawing.Point(354, 126);
+            this.dateTimePicker12.Margin = new System.Windows.Forms.Padding(4);
+            this.dateTimePicker12.Name = "dateTimePicker12";
+            this.dateTimePicker12.Size = new System.Drawing.Size(142, 27);
+            this.dateTimePicker12.TabIndex = 38;
+            // 
+            // label12
+            // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(304, 132);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(42, 16);
+            this.label12.TabIndex = 39;
+            this.label12.Text = "~";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // frmREMEETING
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -783,5 +851,10 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker9;
         private System.Windows.Forms.DateTimePicker dateTimePicker10;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DateTimePicker dateTimePicker11;
+        private System.Windows.Forms.DateTimePicker dateTimePicker12;
+        private System.Windows.Forms.Label label12;
     }
 }

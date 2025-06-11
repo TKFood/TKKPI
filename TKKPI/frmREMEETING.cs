@@ -92,6 +92,8 @@ namespace TKKPI
 
             dateTimePicker9.Value = lastMonday;
             dateTimePicker10.Value = oneWeekAgo;
+            dateTimePicker11.Value = lastMonday;
+            dateTimePicker12.Value = oneWeekAgo;
 
 
         }
@@ -422,6 +424,85 @@ namespace TKKPI
             return SB;
 
         }
+        public void ADDTKMK_TBFACTORYINCOME(string SDATES, string EDATES)
+        {
+            SqlCommand cmd = new SqlCommand();
+            SqlTransaction tran;
+            int result;
+            try
+            {
+
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+
+                sbSql.Clear();
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+
+                sbSql.AppendFormat(@" 
+                                    DELETE [TKMK].[dbo].[TBFACTORYINCOME]
+                                    WHERE INDATES>='{0}' AND INDATES<='{1}'
+
+                                    INSERT INTO [TKMK].[dbo].[TBFACTORYINCOME]
+                                    ([INDATES],[YEARS],[WEEKS],[TOTALMONEYS],[GROUPMONEYS],[VISITORMONEYS],[CARNUM],[CARAVGMONEYS])
+
+                                    SELECT INDATES,YEARS,WEEKS,CONVERT(INT,TOTALMONEYS) TOTALMONEYS,CONVERT(INT,GROUPMONEYS)  GROUPMONEYS,CONVERT(INT,VISITORMONEYS)  VISITORMONEYS,CARNUM
+                                    ,CASE WHEN CARNUM>0 THEN CONVERT(INT,ROUND(GROUPMONEYS/CARNUM,0))  ELSE 0 END AS 'CARAVGMONEYS'
+                                    FROM (
+                                    SELECT 
+                                    TA001 AS 'INDATES'
+                                    ,DATEPART(YEAR, [TA001]) AS YEARS
+                                    ,DATEPART(Week, [TA001]) AS WEEKS
+                                    ,SUM(TA026) AS 'TOTALMONEYS'
+                                    ,(SELECT ROUND(ISNULL(SUM([SALESMMONEYS]),0),0) FROM [TKMK].[dbo].[GROUPSALES] WHERE  [STATUS]='完成接團' AND CONVERT(nvarchar,[CREATEDATES],112)=TA001) AS 'GROUPMONEYS'
+                                    ,(SUM(TA026)-(SELECT ROUND(ISNULL(SUM([SALESMMONEYS]),0),0) FROM [TKMK].[dbo].[GROUPSALES] WHERE  [STATUS]='完成接團' AND CONVERT(nvarchar,[CREATEDATES],112)=TA001)) AS 'VISITORMONEYS'
+                                    ,(SELECT ISNULL(SUM(CARNUM),0) FROM [TKMK].[dbo].[GROUPSALES] WHERE  [STATUS]='完成接團' AND CONVERT(nvarchar,[CREATEDATES],112)=TA001) AS 'CARNUM'
+                                    FROM [TK].dbo.POSTA
+                                    WHERE TA002 IN (SELECT  [TA002]  FROM [TKMK].[dbo].[TB_POS_TA002])
+                                    AND TA001>='{0}' AND TA001<='{1}'
+                                    GROUP BY TA001
+                                    ) AS TEMP
+                                    ORDER BY INDATES
+                                    ", SDATES, EDATES);
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易  
+                    MessageBox.Show("完成");
+
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -449,8 +530,15 @@ namespace TKKPI
             SETFASTREPORT4(DATES_TODAY, DATES_LASTMONTHDAY, DATES_START, DATES_END, DATES_LASTMONDAY, DATES_LASTSUNDAY);
         }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string DATES_CAS_START = dateTimePicker11.Value.ToString("yyyyMMdd");
+            string DATES_CAS_END = dateTimePicker12.Value.ToString("yyyyMMdd");
+
+            ADDTKMK_TBFACTORYINCOME(DATES_CAS_START, DATES_CAS_END);
+        }
         #endregion
 
-      
+
     }
 }
