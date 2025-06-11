@@ -653,6 +653,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmREMEETING";
             this.Text = "frmREMEETING";
+            this.Load += new System.EventHandler(this.frmREMEETING_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
