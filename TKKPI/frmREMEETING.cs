@@ -76,6 +76,24 @@ namespace TKKPI
             dateTimePicker8.Value = endYear;
 
 
+            DateTime today = DateTime.Today; // 當天日期
+            // 先退回到上週的某一天（今天 - 7 天），再從那天往回推到週一
+            DateTime lastMonday = today.AddDays(-7);
+            while (lastMonday.DayOfWeek != DayOfWeek.Monday)
+            {
+                lastMonday = lastMonday.AddDays(-1);
+            }
+
+            DateTime oneWeekAgo = DateTime.Today.AddDays(-7);
+            while (oneWeekAgo.DayOfWeek != DayOfWeek.Sunday)
+            {
+                oneWeekAgo = oneWeekAgo.AddDays(1);
+            }           
+
+            dateTimePicker9.Value = lastMonday;
+            dateTimePicker10.Value = oneWeekAgo;
+
+
         }
         public void SETFASTREPORT()
         {
