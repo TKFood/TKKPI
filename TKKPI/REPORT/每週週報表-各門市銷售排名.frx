@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/11/2025 14:26:01" ReportInfo.Modified="06/16/2025 11:41:54" ReportInfo.CreatorVersion="2016.4.4.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFRgsMkfLjJz/NoDzhDz1In">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10; SELECT *&#13;&#10;,(CASE WHEN 未稅金額&gt;0 AND 成本&gt;0 THEN (未稅金額-成本)/未稅金額 ELSE 0 END) AS '毛利率'&#13;&#10;,CONVERT(INT,(CASE WHEN 含稅金額&gt;0 AND 銷售數量&gt;0 THEN 含稅金額/銷售數量 ELSE 0 END) ) AS '含稅單價'&#13;&#10;FROM&#13;&#10;(&#13;&#10;SELECT TB002 AS '門市代' ,MA002 AS '門市',TB010 AS '品號',MB002 AS '品名',SUM(TB019)  AS '銷售數量' ,SUM(TB031)  AS '未稅金額',SUM(TB031+TB032) AS '含稅金額'&#13;&#10;,(SELECT SUM(LA013) FROM [TK].dbo.INVLA WHERE LA004&gt;='20250602' AND LA004&lt;='20250608' AND TB002=LA006 AND TB010=LA001) AS  '成本'&#13;&#10;FROM [TK].dbo.POSTB,[TK].dbo.WSCMA,[TK].dbo.INVMB&#13;&#10;WHERE 1=1&#13;&#10;AND MA001=TB002&#13;&#10;AND TB010=MB001&#13;&#10;AND TB002 IN (SELECT  [TT002] FROM [TKKPI].[dbo].[SALESTORES])&#13;&#10;AND (TB010 LIKE '4%' OR TB010 LIKE '5%')&#13;&#10;AND TB010 NOT LIKE '499%'&#13;&#10;AND TB010 NOT LIKE '599%'&#13;&#10;AND TB010 NOT LIKE '506%'&#13;&#10;AND TB001&gt;='20250602' AND TB001&lt;='20250608'&#13;&#10;GROUP BY TB002,MA002,TB010,MB002&#13;&#10;HAVING SUM(TB031)&lt;&gt;0&#13;&#10;) AS TEMP&#13;&#10;ORDER BY 門市代,未稅金額 DESC">
+        <Column Name="門市代" DataType="System.String"/>
+        <Column Name="門市" DataType="System.String"/>
+        <Column Name="品號" DataType="System.String"/>
+        <Column Name="品名" DataType="System.String"/>
+        <Column Name="銷售數量" DataType="System.Decimal"/>
+        <Column Name="未稅金額" DataType="System.Decimal"/>
+        <Column Name="含稅金額" DataType="System.Decimal"/>
+        <Column Name="成本" DataType="System.Decimal"/>
+        <Column Name="毛利率" DataType="System.Decimal"/>
+        <Column Name="含稅單價" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="P1" DataType="System.String"/>
+    <Parameter Name="P2" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page4" Landscape="true" PaperWidth="297" PaperHeight="3000">
+    <PageHeaderBand Name="PageHeader1" Width="1047.06" Height="18.9">
+      <TextObject Name="Text26" Width="151.2" Height="18.9" Border.Lines="All" Text="各門市銷售排名及毛利" HorzAlign="Center" VertAlign="Center"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="23.5" Width="1047.06" Height="18.9" Condition="[Table.門市代]" SortOrder="None">
+      <TextObject Name="Text27" Width="94.5" Height="18.9" Border.Lines="All" Fill.Color="LightGreen" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text28" Left="94.5" Width="151.2" Height="18.9" Border.Lines="All" Fill.Color="LightGreen" Text="品號" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text29" Left="245.7" Width="302.4" Height="18.9" Border.Lines="All" Fill.Color="LightGreen" Text="品名" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text30" Left="548.1" Width="75.6" Height="18.9" Border.Lines="All" Fill.Color="LightGreen" Text="銷售數量" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text31" Left="623.7" Width="75.6" Height="18.9" Border.Lines="All" Text="未稅金額" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text32" Left="699.3" Width="75.6" Height="18.9" Border.Lines="All" Text="毛利率" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text33" Left="774.9" Width="75.6" Height="18.9" Border.Lines="All" Text="成本" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text34" Left="850.5" Width="75.6" Height="18.9" Border.Lines="All" Text="含稅金額" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text35" Left="926.1" Width="66.15" Height="18.9" Border.Lines="All" Text="含稅單價" HorzAlign="Center" VertAlign="Center"/>
+      <DataBand Name="Data2" Top="47" Width="1047.06" Height="18.9" DataSource="Table">
+        <TextObject Name="Text37" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.門市]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text38" Left="94.5" Width="151.2" Height="18.9" Border.Lines="All" Text="[Table.品號]" VertAlign="Center"/>
+        <TextObject Name="Text39" Left="245.7" Width="302.4" Height="18.9" Border.Lines="All" Text="[Table.品名]" VertAlign="Center"/>
+        <TextObject Name="Text40" Left="548.1" Width="75.6" Height="18.9" Border.Lines="All" Fill.Color="LightGreen" Text="[Table.銷售數量]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text42" Left="623.7" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table.未稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text43" Left="699.3" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table.毛利率]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text45" Left="774.9" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table.成本]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text48" Left="850.5" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table.含稅金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text50" Left="926.1" Width="66.15" Height="18.9" Border.Lines="All" Text="[Table.含稅單價]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="70.49" Width="1047.06"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="75.09" Width="1047.06" Height="28.35">
+      <TextObject Name="Text47" Width="160.65" Height="18.9" Text="續下頁" VertAlign="Center"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/11/2025 14:26:01" ReportInfo.Modified="06/16/2025 11:38:43" ReportInfo.CreatorVersion="2016.4.4.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUHAHcFlW9fjllk67tGxLP+v">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT &#13;&#10;[INDATES] AS '日期',[YEARS] AS '年',[WEEKS] AS '週',[TOTALMONEYS] AS 銷售組當日業績,[GROUPMONEYS] AS '團客業績',([TOTALMONEYS]-[GROUPMONEYS]) AS '散客業績',[CARNUM] AS '遊覽車次',[CARAVGMONEYS] AS '每車平均業績'&#13;&#10;FROM [TKMK].[dbo].[TBFACTORYINCOME]&#13;&#10;WHERE [INDATES]&gt;='20250602' AND [INDATES]&lt;='20250608'&#13;&#10;UNION ALL&#13;&#10;-- 總計&#13;&#10;SELECT &#13;&#10;  '總計',&#13;&#10;  '',&#13;&#10;  '',&#13;&#10;  SUM([TOTALMONEYS]),&#13;&#10;  SUM([GROUPMONEYS]),&#13;&#10;  SUM([TOTALMONEYS] - [GROUPMONEYS]),&#13;&#10;  SUM([CARNUM]),&#13;&#10;  CASE &#13;&#10;    WHEN SUM([CARNUM]) = 0 THEN 0 &#13;&#10;    ELSE SUM([GROUPMONEYS]) / SUM([CARNUM]) &#13;&#10;  END&#13;&#10;FROM [TKMK].[dbo].[TBFACTORYINCOME]&#13;&#10;WHERE [INDATES] &gt;= '20250602' AND [INDATES] &lt;= '20250608'">
+        <Column Name="日期" DataType="System.String"/>
+        <Column Name="年" DataType="System.String"/>
+        <Column Name="週" DataType="System.String"/>
+        <Column Name="銷售組當日業績" DataType="System.Int32"/>
+        <Column Name="團客業績" DataType="System.Int32"/>
+        <Column Name="散客業績" DataType="System.Int32"/>
+        <Column Name="遊覽車次" DataType="System.Int32"/>
+        <Column Name="每車平均業績" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="P1" DataType="System.String"/>
+    <Parameter Name="P2" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page3" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ColumnHeaderBand Name="ColumnHeader3" Width="1047.06" Height="37.8">
+      <TextObject Name="Text52" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text53" Left="94.5" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="團客業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text54" Left="189" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="散客業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text55" Left="283.5" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="遊覽車次" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text56" Left="378" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="每車平均業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text57" Left="472.5" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="銷售組當日業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text51" Width="189" Height="18.9" Border.Lines="All" Text="觀光業績及車次明細表" VertAlign="Center"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data4" Top="42.4" Width="1047.06" Height="18.9" DataSource="Table">
+      <TextObject Name="Text41" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.日期]" VertAlign="Center"/>
+      <TextObject Name="Text44" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.團客業績]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text49" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.散客業績]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text59" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.遊覽車次]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text61" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.每車平均業績]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text63" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.銷售組當日業績]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter2" Top="65.9" Width="1047.06" Height="28.35"/>
+  </ReportPage>
+</Report>

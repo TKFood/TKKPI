@@ -279,190 +279,63 @@ namespace TKKPI
 
         public void SETFASTREPORT4(string DATES_TODAY,string DATES_LASTMONTHDAY,string DATES_START,string DATES_END,string DATES_LASTMONDAY, string DATES_LASTSUNDAY,string DATES_CARS_START,string DATES_CARS_END)
         {
-            StringBuilder SQL4 = new StringBuilder();
-            StringBuilder SQL5 = new StringBuilder();
-            StringBuilder SQL6 = new StringBuilder();
-            StringBuilder SQL7 = new StringBuilder();
+            //StringBuilder SQL4 = new StringBuilder();
+            //StringBuilder SQL5 = new StringBuilder();
+            //StringBuilder SQL6 = new StringBuilder();
+            //StringBuilder SQL7 = new StringBuilder();
 
-            //訂單未出貨金額
-            SQL4 = SETSQL4(DATES_TODAY, DATES_LASTMONTHDAY);
-            //未出訂單業績統計
-            SQL5 = SETSQL5(DATES_START, DATES_END);
-            //各門市上週銷售
-            SQL6 = SETSQL6(DATES_LASTMONDAY, DATES_LASTSUNDAY);
-            //觀光業績及車次明細表
-            SQL7 = SETSQL7(DATES_CARS_START, DATES_CARS_END);
+            ////訂單未出貨金額
+            //SQL4 = SETSQL4(DATES_TODAY, DATES_LASTMONTHDAY);
+            ////未出訂單業績統計
+            //SQL5 = SETSQL5(DATES_START, DATES_END);
+            ////各門市上週銷售
+            //SQL6 = SETSQL6(DATES_LASTMONDAY, DATES_LASTSUNDAY);
+            ////觀光業績及車次明細表
+            //SQL7 = SETSQL7(DATES_CARS_START, DATES_CARS_END);
 
-            Report report4 = new Report(); 
-            report4.Load(@"REPORT\每週週報表.frx");
+            //Report report4 = new Report(); 
+            //report4.Load(@"REPORT\每週週報表.frx");
 
-            //20210902密
-            Class1 TKID = new Class1();//用new 建立類別實體
-            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+            ////20210902密
+            //Class1 TKID = new Class1();//用new 建立類別實體
+            //SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
 
-            //資料庫使用者密碼解密
-            sqlsb.Password = TKID.Decryption(sqlsb.Password);
-            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+            ////資料庫使用者密碼解密
+            //sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            //sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
 
-            String connectionString;
-            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+            //String connectionString;
+            //sqlConn = new SqlConnection(sqlsb.ConnectionString);
 
-            report4.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
-            report4.Dictionary.Connections[0].CommandTimeout = SQLTIMEOUT;
+            //report4.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+            //report4.Dictionary.Connections[0].CommandTimeout = SQLTIMEOUT;
 
-            //訂單未出貨金額
-            TableDataSource table = report4.GetDataSource("Table") as TableDataSource;
-            table.SelectCommand = SQL4.ToString();
-            //未出訂單業績統計
-            TableDataSource table1 = report4.GetDataSource("Table1") as TableDataSource;
-            table1.SelectCommand = SQL5.ToString();
-            //各門市上週銷售
-            TableDataSource table2 = report4.GetDataSource("Table2") as TableDataSource;
-            table2.SelectCommand = SQL6.ToString();
-            //觀光業績及車次明
-            TableDataSource table3 = report4.GetDataSource("Table3") as TableDataSource;
-            table3.SelectCommand = SQL7.ToString();
+            ////訂單未出貨金額
+            //TableDataSource table = report4.GetDataSource("Table") as TableDataSource;
+            //table.SelectCommand = SQL4.ToString();
+            ////未出訂單業績統計
+            //TableDataSource table1 = report4.GetDataSource("Table1") as TableDataSource;
+            //table1.SelectCommand = SQL5.ToString();
+            ////各門市上週銷售
+            //TableDataSource table2 = report4.GetDataSource("Table2") as TableDataSource;
+            //table2.SelectCommand = SQL6.ToString();
+            ////觀光業績及車次明
+            //TableDataSource table3 = report4.GetDataSource("Table3") as TableDataSource;
+            //table3.SelectCommand = SQL7.ToString();
 
-            report4.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
-            report4.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
+            //report4.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            //report4.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
 
-            report4.Preview = previewControl4;
-            report4.Show();
+            //report4.Preview = previewControl4;
+            //report4.Show();
         }
 
-        public StringBuilder SETSQL4(string DATES_TODAY, string DATES_LASTMONTHDAY)
-        {
-            StringBuilder SB = new StringBuilder();
+       
 
-            SB.AppendFormat(@"                
-                            SELECT 
-                            部門,業務員,單別,單名,交易幣別,SUM(金額) 金額,CONVERT(INT,SUM(未出金額)) 未出金額
-                            ,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額))  WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30  WHEN 交易幣別 IN ('HKD') THEN CONVERT(INT,SUM(未出金額))*4 END AS '本幣金額'
-                            FROM (
-	                            SELECT MV004 AS '部門',MV002 AS '業務員',TC001 AS '單別',MQ002  AS '單名',TC008 AS '交易幣別',  (TD012) AS '金額' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'
-	                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV,[TK].dbo.CMSMQ
-	                            WHERE TC001 = TD001 AND TC002 = TD002
-	                            AND TC006=MV001
-	                            AND TC001=MQ001
-	                            AND TC027='Y'
-	                            AND TD013 >= '{0}' AND TD013 <= '{1}'
-	                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N'
-                            ) AS TEMP
-                            GROUP BY 部門,業務員,交易幣別,單別,單名
-                            ORDER BY 單別,單名,業務員
+      
+      
 
-                            ", DATES_TODAY, DATES_LASTMONTHDAY);
-
-
-            return SB;
-
-        }
-
-        public StringBuilder SETSQL5(string DATES_START, string DATES_END)
-        {
-            StringBuilder SB = new StringBuilder();
-
-            SB.AppendFormat(@" 
-                            DECLARE @DAY1 NVARCHAR(8)
-                            DECLARE @DAY2 NVARCHAR(8)
-                            SET @DAY1 = '{0}'
-                            SET @DAY2 = '{1}'
-    
-                            SELECT 
-                            類別,年月,部門,業務員,ISNULL(SUM(未出金額),0) AS '未出金額'   
-                            ,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額)) ELSE (CASE WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  ELSE ( CASE WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30 END ) END ) END AS '本幣金額'
-                            FROM
-                            ( 
-	                            SELECT '實際訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月',MV004 AS '部門',MV002 AS '業務員', (TD012) AS '金額',TC008 AS '交易幣別' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'
-	                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV
-	                            WHERE TC001 = TD001 AND TC002 = TD002
-	                            AND TC006=MV001
-                                
-	                            AND TD013>=@DAY1 AND TD013<=@DAY2 AND TC001  IN ('A221', 'A222', 'A225', 'A226') AND TD016='N' 
-	                            UNION ALL
-	                            SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月',MV004 AS '部門',MV002 AS '業務員', (TD012) AS '金額' ,TC008 AS '交易幣別',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'
-	                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV
-	                            WHERE TC001 = TD001 AND TC002 = TD002
-	                            AND TC006=MV001
-                                
-	                            AND TD013>=@DAY1 AND TD013<=@DAY2 AND TC001 NOT IN ('A221', 'A222', 'A225', 'A226') AND TD016='N' 
- 
-                            ) AS TEMP
-                            GROUP BY  年月,部門,業務員,類別,交易幣別
-                            ORDER BY   年月,部門,業務員,類別
-
-                            ", DATES_START, DATES_END);
-
-
-            return SB;
-
-        }
-        public StringBuilder SETSQL6(string DATES_LASTMONDAY, string DATES_LASTSUNDAY)
-        {
-            StringBuilder SB = new StringBuilder();
-
-            SB.AppendFormat(@" 
-                            SELECT *
-                            ,(CASE WHEN 未稅金額>0 AND 成本>0 THEN (未稅金額-成本)/未稅金額 ELSE 0 END) AS '毛利率'
-                            ,CONVERT(INT,(CASE WHEN 含稅金額>0 AND 銷售數量>0 THEN 含稅金額/銷售數量 ELSE 0 END) ) AS '含稅單價'
-                            FROM
-                            (
-                            SELECT TB002 AS '門市代' ,MA002 AS '門市',TB010 AS '品號',MB002 AS '品名',SUM(TB019)  AS '銷售數量' ,SUM(TB031)  AS '未稅金額',SUM(TB031+TB032) AS '含稅金額'
-                            ,(SELECT SUM(LA013) FROM [TK].dbo.INVLA WHERE LA004>='{0}' AND LA004<='{1}' AND TB002=LA006 AND TB010=LA001) AS  '成本'
-                            FROM [TK].dbo.POSTB,[TK].dbo.WSCMA,[TK].dbo.INVMB
-                            WHERE 1=1
-                            AND MA001=TB002
-                            AND TB010=MB001
-                            AND TB002 IN (SELECT  [TT002] FROM [TKKPI].[dbo].[SALESTORES])
-                            AND (TB010 LIKE '4%' OR TB010 LIKE '5%')
-                            AND TB010 NOT LIKE '499%'
-                            AND TB010 NOT LIKE '599%'
-                            AND TB010 NOT LIKE '506%'
-                            AND TB001>='{0}' AND TB001<='{1}'
-                            GROUP BY TB002,MA002,TB010,MB002
-                            HAVING SUM(TB031)<>0
-                            ) AS TEMP
-                            ORDER BY 門市代,未稅金額 DESC  
- 
-                            ", DATES_LASTMONDAY, DATES_LASTSUNDAY);
-
-
-            return SB;
-
-        }
-
-        public StringBuilder SETSQL7(string DATES_LDATES_CARS_START, string DATES_CARS_END)
-        {
-            StringBuilder SB = new StringBuilder();
-
-            SB.AppendFormat(@"                             
-                            SELECT 
-                            [INDATES] AS '日期',[YEARS] AS '年',[WEEKS] AS '週',[TOTALMONEYS] AS 銷售組當日業績,[GROUPMONEYS] AS '團客業績',([TOTALMONEYS]-[GROUPMONEYS]) AS '散客業績',[CARNUM] AS '遊覽車次',[CARAVGMONEYS] AS '每車平均業績'
-                            FROM [TKMK].[dbo].[TBFACTORYINCOME]
-                            WHERE [INDATES]>='{0}' AND [INDATES]<='{1}'
-                            UNION ALL
-                            -- 總計
-                            SELECT 
-                              '總計',
-                              '',
-                              '',
-                              SUM([TOTALMONEYS]),
-                              SUM([GROUPMONEYS]),
-                              SUM([TOTALMONEYS] - [GROUPMONEYS]),
-                              SUM([CARNUM]),
-                              CASE 
-                                WHEN SUM([CARNUM]) = 0 THEN 0 
-                                ELSE SUM([GROUPMONEYS]) / SUM([CARNUM]) 
-                              END
-                            FROM [TKMK].[dbo].[TBFACTORYINCOME]
-                            WHERE [INDATES] >= '{0}' AND [INDATES] <= '{1}'
- 
-                            ", DATES_LDATES_CARS_START, DATES_CARS_END);
-
-
-            return SB;
-
-        }
+       
         public void ADDTKMK_TBFACTORYINCOME(string SDATES, string EDATES)
         {
             SqlCommand cmd = new SqlCommand();
@@ -542,6 +415,186 @@ namespace TKKPI
                 sqlConn.Close();
             }
         }
+
+
+        public void SETFASTREPORT5(string DATES_TODAY, string DATES_LASTMONTHDAY)
+        {
+            StringBuilder SQL= new StringBuilder();
+            //訂單未出貨金額
+            SQL = SETSQL5(DATES_TODAY, DATES_LASTMONTHDAY);
+           
+            Report report4 = new Report();
+            report4.Load(@"REPORT\每週週報表-訂單未出金額.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report4.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+            report4.Dictionary.Connections[0].CommandTimeout = SQLTIMEOUT;
+
+            //訂單未出貨金額
+            TableDataSource table = report4.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL.ToString();           
+
+            report4.SetParameterValue("P1", dateTimePicker1.Value.ToString("yyyyMMdd"));
+            report4.SetParameterValue("P2", dateTimePicker2.Value.ToString("yyyyMMdd"));
+
+            report4.Preview = previewControl4;
+            report4.Show();
+        }
+
+        public StringBuilder SETSQL5(string DATES_TODAY, string DATES_LASTMONTHDAY)
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(@"                
+                            SELECT 
+                            部門,業務員,單別,單名,交易幣別,SUM(金額) 金額,CONVERT(INT,SUM(未出金額)) 未出金額
+                            ,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額))  WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30  WHEN 交易幣別 IN ('HKD') THEN CONVERT(INT,SUM(未出金額))*4 END AS '本幣金額'
+                            FROM (
+	                            SELECT MV004 AS '部門',MV002 AS '業務員',TC001 AS '單別',MQ002  AS '單名',TC008 AS '交易幣別',  (TD012) AS '金額' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'
+	                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV,[TK].dbo.CMSMQ
+	                            WHERE TC001 = TD001 AND TC002 = TD002
+	                            AND TC006=MV001
+	                            AND TC001=MQ001
+	                            AND TC027='Y'
+	                            AND TD013 >= '{0}' AND TD013 <= '{1}'
+	                            AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N'
+                            ) AS TEMP
+                            GROUP BY 部門,業務員,交易幣別,單別,單名
+                            ORDER BY 單別,單名,業務員
+
+                            ", DATES_TODAY, DATES_LASTMONTHDAY);
+
+
+            return SB;
+
+        }
+        public void SETFASTREPORT6(string DATES_START, string DATES_END)
+        {
+
+        }
+
+        public StringBuilder SETSQL6(string DATES_START, string DATES_END)
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(@" 
+                            DECLARE @DAY1 NVARCHAR(8)
+                            DECLARE @DAY2 NVARCHAR(8)
+                            SET @DAY1 = '{0}'
+                            SET @DAY2 = '{1}'
+    
+                            SELECT 
+                            類別,年月,部門,業務員,ISNULL(SUM(未出金額),0) AS '未出金額'   
+                            ,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額)) ELSE (CASE WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  ELSE ( CASE WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30 END ) END ) END AS '本幣金額'
+                            FROM
+                            ( 
+	                            SELECT '實際訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月',MV004 AS '部門',MV002 AS '業務員', (TD012) AS '金額',TC008 AS '交易幣別' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'
+	                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV
+	                            WHERE TC001 = TD001 AND TC002 = TD002
+	                            AND TC006=MV001
+                                
+	                            AND TD013>=@DAY1 AND TD013<=@DAY2 AND TC001  IN ('A221', 'A222', 'A225', 'A226') AND TD016='N' 
+	                            UNION ALL
+	                            SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月',MV004 AS '部門',MV002 AS '業務員', (TD012) AS '金額' ,TC008 AS '交易幣別',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'
+	                            FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV
+	                            WHERE TC001 = TD001 AND TC002 = TD002
+	                            AND TC006=MV001
+                                
+	                            AND TD013>=@DAY1 AND TD013<=@DAY2 AND TC001 NOT IN ('A221', 'A222', 'A225', 'A226') AND TD016='N' 
+ 
+                            ) AS TEMP
+                            GROUP BY  年月,部門,業務員,類別,交易幣別
+                            ORDER BY   年月,部門,業務員,類別
+
+                            ", DATES_START, DATES_END);
+
+
+            return SB;
+
+        }
+        public void SETFASTREPORT7(string DATES_CARS_START, string DATES_CARS_END)
+        {
+
+        }
+        public StringBuilder SETSQL7(string DATES_LDATES_CARS_START, string DATES_CARS_END)
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(@"                             
+                            SELECT 
+                            [INDATES] AS '日期',[YEARS] AS '年',[WEEKS] AS '週',[TOTALMONEYS] AS 銷售組當日業績,[GROUPMONEYS] AS '團客業績',([TOTALMONEYS]-[GROUPMONEYS]) AS '散客業績',[CARNUM] AS '遊覽車次',[CARAVGMONEYS] AS '每車平均業績'
+                            FROM [TKMK].[dbo].[TBFACTORYINCOME]
+                            WHERE [INDATES]>='{0}' AND [INDATES]<='{1}'
+                            UNION ALL
+                            -- 總計
+                            SELECT 
+                              '總計',
+                              '',
+                              '',
+                              SUM([TOTALMONEYS]),
+                              SUM([GROUPMONEYS]),
+                              SUM([TOTALMONEYS] - [GROUPMONEYS]),
+                              SUM([CARNUM]),
+                              CASE 
+                                WHEN SUM([CARNUM]) = 0 THEN 0 
+                                ELSE SUM([GROUPMONEYS]) / SUM([CARNUM]) 
+                              END
+                            FROM [TKMK].[dbo].[TBFACTORYINCOME]
+                            WHERE [INDATES] >= '{0}' AND [INDATES] <= '{1}'
+ 
+                            ", DATES_LDATES_CARS_START, DATES_CARS_END);
+
+
+            return SB;
+
+        }
+        public void SETFASTREPORT8(string DATES_LASTMONDAY, string DATES_LASTSUNDAY)
+        {
+
+        }
+        public StringBuilder SETSQL8(string DATES_LASTMONDAY, string DATES_LASTSUNDAY)
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(@" 
+                            SELECT *
+                            ,(CASE WHEN 未稅金額>0 AND 成本>0 THEN (未稅金額-成本)/未稅金額 ELSE 0 END) AS '毛利率'
+                            ,CONVERT(INT,(CASE WHEN 含稅金額>0 AND 銷售數量>0 THEN 含稅金額/銷售數量 ELSE 0 END) ) AS '含稅單價'
+                            FROM
+                            (
+                            SELECT TB002 AS '門市代' ,MA002 AS '門市',TB010 AS '品號',MB002 AS '品名',SUM(TB019)  AS '銷售數量' ,SUM(TB031)  AS '未稅金額',SUM(TB031+TB032) AS '含稅金額'
+                            ,(SELECT SUM(LA013) FROM [TK].dbo.INVLA WHERE LA004>='{0}' AND LA004<='{1}' AND TB002=LA006 AND TB010=LA001) AS  '成本'
+                            FROM [TK].dbo.POSTB,[TK].dbo.WSCMA,[TK].dbo.INVMB
+                            WHERE 1=1
+                            AND MA001=TB002
+                            AND TB010=MB001
+                            AND TB002 IN (SELECT  [TT002] FROM [TKKPI].[dbo].[SALESTORES])
+                            AND (TB010 LIKE '4%' OR TB010 LIKE '5%')
+                            AND TB010 NOT LIKE '499%'
+                            AND TB010 NOT LIKE '599%'
+                            AND TB010 NOT LIKE '506%'
+                            AND TB001>='{0}' AND TB001<='{1}'
+                            GROUP BY TB002,MA002,TB010,MB002
+                            HAVING SUM(TB031)<>0
+                            ) AS TEMP
+                            ORDER BY 門市代,未稅金額 DESC  
+ 
+                            ", DATES_LASTMONDAY, DATES_LASTSUNDAY);
+
+
+            return SB;
+
+        }
         #endregion
 
         #region BUTTON
@@ -570,7 +623,16 @@ namespace TKKPI
 
             ADDTKMK_TBFACTORYINCOME(DATES_CARS_START, DATES_CARS_END);
 
-            SETFASTREPORT4(DATES_TODAY, DATES_LASTMONTHDAY, DATES_START, DATES_END, DATES_LASTMONDAY, DATES_LASTSUNDAY, DATES_CARS_START, DATES_CARS_END);
+            //SETFASTREPORT4(DATES_TODAY, DATES_LASTMONTHDAY, DATES_START, DATES_END, DATES_LASTMONDAY, DATES_LASTSUNDAY, DATES_CARS_START, DATES_CARS_END);
+
+            //每週週報表-訂單未出金額
+            SETFASTREPORT5(DATES_TODAY, DATES_LASTMONTHDAY);
+            //每週週報表-訂單預估金額
+            SETFASTREPORT6(DATES_START, DATES_END);
+            //每週週報表-觀光業務及車次
+            SETFASTREPORT7(DATES_CARS_START, DATES_CARS_END);
+            //每週週報表-各門市銷售排名
+            SETFASTREPORT8(DATES_LASTMONDAY, DATES_LASTSUNDAY);
         }
 
         private void button5_Click(object sender, EventArgs e)

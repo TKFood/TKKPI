@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="06/11/2025 14:26:01" ReportInfo.Modified="06/11/2025 16:34:43" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/11/2025 14:26:01" ReportInfo.Modified="06/16/2025 11:27:27" ReportInfo.CreatorVersion="2016.4.4.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUEouWS3Ea4lcTo2SgSOpXEb">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUGYY0xJ8c+tgVeS9zOWSVwt">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;部門,業務員,單別,單名,交易幣別,SUM(金額) 金額,CONVERT(INT,SUM(未出金額)) 未出金額&#13;&#10;,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額))  WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30  WHEN 交易幣別 IN ('HKD') THEN CONVERT(INT,SUM(未出金額))*4 END AS '本幣金額'&#13;&#10;FROM (&#13;&#10;	SELECT MV004 AS '部門',MV002 AS '業務員',TC001 AS '單別',MQ002  AS '單名',TC008 AS '交易幣別',  (TD012) AS '金額' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'&#13;&#10;	FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV,[TK].dbo.CMSMQ&#13;&#10;	WHERE TC001 = TD001 AND TC002 = TD002&#13;&#10;	AND TC006=MV001&#13;&#10;	AND TC001=MQ001&#13;&#10;	AND TC027='Y'&#13;&#10;	AND TD013 &gt;= '20250611' AND TD013 &lt;= '20250630'&#13;&#10;	AND TC001 IN('A221', 'A222', 'A225', 'A226') AND TD016 = 'N'&#13;&#10;) AS TEMP&#13;&#10;GROUP BY 部門,業務員,交易幣別,單別,單名&#13;&#10;ORDER BY 單別,單名,業務員">
         <Column Name="部門" DataType="System.String"/>
         <Column Name="業務員" DataType="System.String"/>
@@ -76,7 +76,7 @@ namespace FastReport
     <Parameter Name="P2" DataType="System.String"/>
     <Total Name="Total本幣金額" Expression="[Table.本幣金額]" Evaluator="Data1"/>
   </Dictionary>
-  <ReportPage Name="s" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
     <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="18.9">
       <TextObject Name="Text1" Width="94.5" Height="18.9" Text="每週週報表" VertAlign="Center"/>
     </ReportTitleBand>
@@ -159,19 +159,17 @@ namespace FastReport
       <TextObject Name="Text46" Width="160.65" Height="18.9" Text="續下頁" VertAlign="Center"/>
     </ColumnFooterBand>
   </ReportPage>
-  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
-    <PageHeaderBand Name="PageHeader2" Width="1047.06" Height="18.9" Border.Lines="All">
+  <ReportPage Name="Page3" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <ColumnHeaderBand Name="ColumnHeader3" Width="1047.06" Height="37.8">
+      <TextObject Name="Text52" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text53" Left="94.5" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="團客業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text54" Left="189" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="散客業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text55" Left="283.5" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="遊覽車次" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text56" Left="378" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="每車平均業績" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text57" Left="472.5" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="銷售組當日業績" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text51" Width="189" Height="18.9" Border.Lines="All" Text="觀光業績及車次明細表" VertAlign="Center"/>
-    </PageHeaderBand>
-    <ColumnHeaderBand Name="ColumnHeader3" Top="23.5" Width="1047.06" Height="18.9">
-      <TextObject Name="Text52" Width="94.5" Height="18.9" Border.Lines="All" Text="日期" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text53" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="團客業績" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text54" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="散客業績" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text55" Left="283.5" Width="94.5" Height="18.9" Border.Lines="All" Text="遊覽車次" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text56" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="每車平均業績" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text57" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="銷售組當日業績" HorzAlign="Center" VertAlign="Center"/>
     </ColumnHeaderBand>
-    <DataBand Name="Data4" Top="47" Width="1047.06" Height="18.9" DataSource="Table3">
+    <DataBand Name="Data4" Top="42.4" Width="1047.06" Height="18.9" DataSource="Table3">
       <TextObject Name="Text41" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.日期]" VertAlign="Center"/>
       <TextObject Name="Text44" Left="94.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.團客業績]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
       <TextObject Name="Text49" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.散客業績]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
@@ -179,9 +177,9 @@ namespace FastReport
       <TextObject Name="Text61" Left="378" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.每車平均業績]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
       <TextObject Name="Text63" Left="472.5" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table3.銷售組當日業績]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter2" Top="70.49" Width="1047.06" Height="18.9"/>
+    <PageFooterBand Name="PageFooter2" Top="65.9" Width="1047.06" Height="28.35"/>
   </ReportPage>
-  <ReportPage Name="Page3" Landscape="true" PaperWidth="297" PaperHeight="3000">
+  <ReportPage Name="Page4" Landscape="true" PaperWidth="297" PaperHeight="3000">
     <PageHeaderBand Name="PageHeader1" Width="1047.06" Height="18.9">
       <TextObject Name="Text26" Width="151.2" Height="18.9" Border.Lines="All" Text="各門市銷售排名及毛利" HorzAlign="Center" VertAlign="Center"/>
     </PageHeaderBand>

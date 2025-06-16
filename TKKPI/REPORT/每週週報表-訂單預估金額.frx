@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/11/2025 14:26:01" ReportInfo.Modified="06/16/2025 11:38:06" ReportInfo.CreatorVersion="2016.4.4.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {       
+    private void Cell14_BeforePrint(object sender, EventArgs e)
+    {   
+      if(String.IsNullOrEmpty(Cell14.Text))
+      {
+        Cell14.Text=&quot;0&quot;;
+      }
+      
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFtR3thD1exmcCfkUrhZWR+">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;DECLARE @DAY1 NVARCHAR(8)&#13;&#10;DECLARE @DAY2 NVARCHAR(8)&#13;&#10;SET @DAY1 = '20250701'&#13;&#10;SET @DAY2 = '20250931'&#13;&#10;    &#13;&#10;SELECT &#13;&#10;類別,年月,部門,業務員,ISNULL(SUM(未出金額),0) AS '未出金額'   &#13;&#10;,CASE WHEN 交易幣別 IN ('NTD') THEN CONVERT(INT,SUM(未出金額)) ELSE (CASE WHEN 交易幣別 IN ('RMB') THEN CONVERT(INT,SUM(未出金額))*4  ELSE ( CASE WHEN 交易幣別 IN ('USD') THEN CONVERT(INT,SUM(未出金額))*30 END ) END ) END AS '本幣金額'&#13;&#10;FROM&#13;&#10;( &#13;&#10;	SELECT '實際訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月',MV004 AS '部門',MV002 AS '業務員', (TD012) AS '金額',TC008 AS '交易幣別' ,TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'&#13;&#10;	FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV&#13;&#10;	WHERE TC001 = TD001 AND TC002 = TD002&#13;&#10;	AND TC006=MV001&#13;&#10;                                &#13;&#10;	AND TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001  IN ('A221', 'A222', 'A225', 'A226') AND TD016='N' &#13;&#10;	UNION ALL&#13;&#10;	SELECT '預計訂單' AS 類別,SUBSTRING(TD013,1,6) AS '年月',MV004 AS '部門',MV002 AS '業務員', (TD012) AS '金額' ,TC008 AS '交易幣別',TC016 AS '稅別',(CASE WHEN TC016 IN ('1') THEN ((TD008-TD009)*TD011*TD026)/1.05 ELSE ((TD008-TD009)*TD011*TD026) END) AS '未出金額'&#13;&#10;	FROM[TK].dbo.COPTC,[TK].dbo.COPTD,[TK].dbo.CMSMV&#13;&#10;	WHERE TC001 = TD001 AND TC002 = TD002&#13;&#10;	AND TC006=MV001&#13;&#10;                                &#13;&#10;	AND TD013&gt;=@DAY1 AND TD013&lt;=@DAY2 AND TC001 NOT IN ('A221', 'A222', 'A225', 'A226') AND TD016='N' &#13;&#10; &#13;&#10;) AS TEMP&#13;&#10;GROUP BY  年月,部門,業務員,類別,交易幣別&#13;&#10;ORDER BY   年月,部門,業務員,類別">
+        <Column Name="部門" DataType="System.String"/>
+        <Column Name="業務員" DataType="System.String"/>
+        <Column Name="未出金額" DataType="System.Int32"/>
+        <Column Name="本幣金額" DataType="System.Int32"/>
+        <Column Name="類別" DataType="System.String"/>
+        <Column Name="年月" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="P1" DataType="System.String"/>
+    <Parameter Name="P2" DataType="System.String"/>
+    <Total Name="Total本幣金額" Expression="[Table.本幣金額]"/>
+  </Dictionary>
+  <ReportPage Name="Page2" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
+    <DataBand Name="Data3" Width="1047.06" Height="54.57">
+      <MatrixObject Name="Matrix1" Width="425.17" Height="54.57" BeforePrintEvent="Matrix1_BeforePrint" FixedRows="1" FixedColumns="3" AutoSize="false" DataSource="Table">
+        <MatrixColumns>
+          <Header Expression="[Table.年月]"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[Table.部門]"/>
+          <Header Expression="[Table.業務員]" Totals="false"/>
+          <Header Expression="[Table.類別]" Totals="false"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[Table.本幣金額]"/>
+        </MatrixCells>
+        <TableColumn Name="Column1" Width="70.64"/>
+        <TableColumn Name="Column2" Width="83"/>
+        <TableColumn Name="Column3" Width="89.54"/>
+        <TableColumn Name="Column4" Width="95.36"/>
+        <TableColumn Name="Column5" Width="86.63"/>
+        <TableRow Name="Row1" Height="18.19">
+          <TableCell Name="Cell1" Border.Lines="All" Text="部門" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell2" Border.Lines="All" Text="業務員" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell7" Border.Lines="All" Text="類別" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell13" Border.Lines="All" Text="[年月]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell21" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="18.19">
+          <TableCell Name="Cell3" Border.Lines="All" Text="[部門]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell4" Border.Lines="All" Text="[業務員]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell8" Border.Lines="All" Text="[類別]" HorzAlign="Center" VertAlign="Center"/>
+          <TableCell Name="Cell14" Border.Lines="All" BeforePrintEvent="Cell14_BeforePrint" Text="[本幣金額]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell22" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="18.19">
+          <TableCell Name="Cell5" Border.Lines="All" Text="合計" HorzAlign="Center" VertAlign="Center" ColSpan="3"/>
+          <TableCell Name="Cell6" VertAlign="Center"/>
+          <TableCell Name="Cell9" VertAlign="Center"/>
+          <TableCell Name="Cell15" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+          <TableCell Name="Cell23" Border.Lines="All" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+  </ReportPage>
+</Report>
