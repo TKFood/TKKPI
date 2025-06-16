@@ -550,7 +550,33 @@ namespace TKKPI
         }
         public void SETFASTREPORT7(string DATES_CARS_START, string DATES_CARS_END)
         {
+            StringBuilder SQL = new StringBuilder();
 
+            SQL = SETSQL7(DATES_CARS_START, DATES_CARS_END);
+
+            Report report4 = new Report();
+            report4.Load(@"REPORT\每週週報表-觀光業務及車次.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report4.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+            report4.Dictionary.Connections[0].CommandTimeout = SQLTIMEOUT;
+
+            //訂單未出貨金額
+            TableDataSource table = report4.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL.ToString();
+
+            report4.Preview = previewControl6;
+            report4.Show();
         }
         public StringBuilder SETSQL7(string DATES_LDATES_CARS_START, string DATES_CARS_END)
         {
@@ -586,7 +612,33 @@ namespace TKKPI
         }
         public void SETFASTREPORT8(string DATES_LASTMONDAY, string DATES_LASTSUNDAY)
         {
+            StringBuilder SQL = new StringBuilder();
+       
+            SQL = SETSQL8(DATES_LASTMONDAY, DATES_LASTSUNDAY);
 
+            Report report4 = new Report();
+            report4.Load(@"REPORT\每週週報表-各門市銷售排名.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report4.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+            report4.Dictionary.Connections[0].CommandTimeout = SQLTIMEOUT;
+
+            //訂單未出貨金額
+            TableDataSource table = report4.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL.ToString();
+
+            report4.Preview = previewControl7;
+            report4.Show();
         }
         public StringBuilder SETSQL8(string DATES_LASTMONDAY, string DATES_LASTSUNDAY)
         {
