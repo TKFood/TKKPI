@@ -480,7 +480,33 @@ namespace TKKPI
         }
         public void SETFASTREPORT6(string DATES_START, string DATES_END)
         {
+            StringBuilder SQL = new StringBuilder();
+            //訂單未出貨金額
+            SQL = SETSQL6(DATES_START, DATES_END);
 
+            Report report4 = new Report();
+            report4.Load(@"REPORT\每週週報表-訂單預估金額.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report4.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+            report4.Dictionary.Connections[0].CommandTimeout = SQLTIMEOUT;
+
+            //訂單未出貨金額
+            TableDataSource table = report4.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL.ToString();
+
+            report4.Preview = previewControl5;
+            report4.Show();
         }
 
         public StringBuilder SETSQL6(string DATES_START, string DATES_END)
