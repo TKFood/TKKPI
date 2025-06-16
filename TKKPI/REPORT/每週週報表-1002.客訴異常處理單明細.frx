@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="05/28/2025 13:57:34" ReportInfo.Modified="06/16/2025 14:20:38" ReportInfo.CreatorVersion="2016.4.4.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8UCRz3pFThovAyioQZrmSGyLpZuMiVUEbjT9s5BjO1weTRB0lSkmrANKsmPIiGxxqCe98y1MRhb4s7i4p794bbbXTln8ZELqSNTC5TIGXx5grZI8pem6fQVi/PW28P5w36y21WsUki3ePXeXKuDagVFRIH17+vb2YrDgyALoJjn8SwXahRO6wXxrysH1DDORiQ==">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="--20250528 查客訴單明細&#13;&#10;&#13;&#10;SELECT &#13;&#10;DOC_NBR AS '客訴單號'&#13;&#10;,CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=&quot;QCFrm002Abns&quot;]/@fieldValue)[1]', 'nvarchar(max)')+' '+CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=&quot;QCFrm002Abns&quot;]/@customValue)[1]', 'nvarchar(max)') AS '原因'&#13;&#10;,CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=&quot;QCFrm002RDate&quot;]/@fieldValue)[1]', 'nvarchar(max)') AS '受理日期'&#13;&#10;,CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=&quot;QCFrm002CUST&quot;]/@fieldValue)[1]', 'nvarchar(max)') AS '客戶'&#13;&#10;,CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=&quot;QCFrm002PRD&quot;]/@fieldValue)[1]', 'nvarchar(max)') AS '產品'&#13;&#10;,CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=&quot;QCFrm002ED&quot;]/@fieldValue)[1]', 'nvarchar(max)') AS '有效日'&#13;&#10;,CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=&quot;QCFrm002MD&quot;]/@fieldValue)[1]', 'nvarchar(max)') AS '製造日'&#13;&#10;,CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=&quot;QCFrm002Abn&quot;]/@fieldValue)[1]', 'nvarchar(max)') AS '客訴原因詳述'&#13;&#10;,CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=&quot;QCFrm002Process&quot;]/@fieldValue)[1]', 'nvarchar(max)') AS '回覆內容'&#13;&#10;&#13;&#10;, TB_WKF_FORM.FORM_NAME&#13;&#10;, (SELECT TOP 1 NAME FROM[UOF].dbo.TB_EB_USER WHERE TB_EB_USER.USER_GUID = TB_WKF_TASK.USER_GUID) AS 'NAMES'&#13;&#10;,CURRENT_DOC&#13;&#10;FROM[UOF].dbo.TB_WKF_TASK,[UOF].dbo.TB_WKF_FORM,[UOF].dbo.TB_WKF_FORM_VERSION&#13;&#10;WHERE 1 = 1&#13;&#10;AND TB_WKF_TASK.FORM_VERSION_ID = TB_WKF_FORM_VERSION.FORM_VERSION_ID&#13;&#10;AND TB_WKF_FORM.FORM_ID = TB_WKF_FORM_VERSION.FORM_ID&#13;&#10;AND TB_WKF_FORM.FORM_NAME IN('1002.客訴異常處理單')&#13;&#10;AND ISNULL(TB_WKF_TASK.TASK_RESULT,'') NOT IN ('2')&#13;&#10;AND CONVERT(NVARCHAR,TB_WKF_TASK.BEGIN_TIME,112)&gt;='20250501' AND TB_WKF_TASK.BEGIN_TIME&lt;='20250531'&#13;&#10;">
+        <Column Name="客訴單號" DataType="System.String"/>
+        <Column Name="原因" DataType="System.String"/>
+        <Column Name="受理日期" DataType="System.String"/>
+        <Column Name="客戶" DataType="System.String"/>
+        <Column Name="產品" DataType="System.String"/>
+        <Column Name="有效日" DataType="System.String"/>
+        <Column Name="製造日" DataType="System.String"/>
+        <Column Name="客訴原因詳述" DataType="System.String"/>
+        <Column Name="回覆內容" DataType="System.String"/>
+        <Column Name="FORM_NAME" DataType="System.String"/>
+        <Column Name="NAMES" DataType="System.String"/>
+        <Column Name="CURRENT_DOC" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperHeight="1000">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="18.9">
+      <TextObject Name="Text1" Width="463.05" Height="18.9" Text="1002.客訴異常處理單"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="23.5" Width="718.2" Height="302.4" CanGrow="true" DataSource="Table">
+      <TableObject Name="Table1" Width="463.06" Height="302.4" Border.Lines="All">
+        <TableColumn Name="Column1" Width="94.51"/>
+        <TableColumn Name="Column2" Width="368.55"/>
+        <TableRow Name="Row1" Height="28.35">
+          <TableCell Name="Cell26" Border.Lines="All" Text="客訴單號" VertAlign="Center"/>
+          <TableCell Name="Cell2" Border.Lines="All" Fill.Color="LightGreen" Text="[Table.客訴單號]" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="28.35">
+          <TableCell Name="Cell27" Border.Lines="All" Text="原因" VertAlign="Center"/>
+          <TableCell Name="Cell7" Border.Lines="All" Text="[Table.產品]&#13;&#10;[Table.原因]" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="28.35">
+          <TableCell Name="Cell28" Border.Lines="All" Text="受理日期" VertAlign="Center"/>
+          <TableCell Name="Cell12" Border.Lines="All" Text="[Table.受理日期]" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row4" Height="28.35">
+          <TableCell Name="Cell29" Border.Lines="All" Text="客戶" VertAlign="Center"/>
+          <TableCell Name="Cell17" Border.Lines="All" Text="[Table.客戶]" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row5" Height="28.35">
+          <TableCell Name="Cell30" Border.Lines="All" Text="產品" VertAlign="Center"/>
+          <TableCell Name="Cell22" Border.Lines="All" Text="[Table.產品]" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row6" Height="28.35">
+          <TableCell Name="Cell31" Border.Lines="All" Text="有效日" VertAlign="Center"/>
+          <TableCell Name="Cell32" Border.Lines="All" Text="[Table.有效日]" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row7" Height="28.35">
+          <TableCell Name="Cell33" Border.Lines="All" Text="製造日" VertAlign="Center"/>
+          <TableCell Name="Cell34" Border.Lines="All" Text="[Table.製造日]" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row8" Height="47.25">
+          <TableCell Name="Cell35" Border.Lines="All" Text="客訴原因詳述" VertAlign="Center"/>
+          <TableCell Name="Cell36" Border.Lines="All" Text="[Table.客訴原因詳述]" VertAlign="Center"/>
+        </TableRow>
+        <TableRow Name="Row9" Height="56.7">
+          <TableCell Name="Cell37" Border.Lines="All" Text="回覆內容" VertAlign="Center"/>
+          <TableCell Name="Cell38" Border.Lines="All" Text="[Table.回覆內容]" VertAlign="Center"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+  </ReportPage>
+</Report>

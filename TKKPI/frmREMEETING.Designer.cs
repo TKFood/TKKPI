@@ -82,6 +82,12 @@
             this.previewControl5 = new FastReport.Preview.PreviewControl();
             this.previewControl6 = new FastReport.Preview.PreviewControl();
             this.previewControl7 = new FastReport.Preview.PreviewControl();
+            this.dateTimePicker13 = new System.Windows.Forms.DateTimePicker();
+            this.label13 = new System.Windows.Forms.Label();
+            this.dateTimePicker14 = new System.Windows.Forms.DateTimePicker();
+            this.label14 = new System.Windows.Forms.Label();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.previewControl8 = new FastReport.Preview.PreviewControl();
             this.tabControl1.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
@@ -112,6 +118,7 @@
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.tabPage8.SuspendLayout();
+            this.tabPage9.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -153,7 +160,7 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.tabControl2);
             this.splitContainer4.Size = new System.Drawing.Size(976, 595);
-            this.splitContainer4.SplitterDistance = 200;
+            this.splitContainer4.SplitterDistance = 252;
             this.splitContainer4.TabIndex = 0;
             // 
             // tableLayoutPanel3
@@ -190,17 +197,23 @@
             this.tableLayoutPanel3.Controls.Add(this.dateTimePicker11, 1, 3);
             this.tableLayoutPanel3.Controls.Add(this.dateTimePicker12, 3, 3);
             this.tableLayoutPanel3.Controls.Add(this.label12, 2, 3);
+            this.tableLayoutPanel3.Controls.Add(this.dateTimePicker13, 1, 4);
+            this.tableLayoutPanel3.Controls.Add(this.label13, 2, 4);
+            this.tableLayoutPanel3.Controls.Add(this.dateTimePicker14, 3, 4);
+            this.tableLayoutPanel3.Controls.Add(this.label14, 0, 4);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 5;
+            this.tableLayoutPanel3.RowCount = 7;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(972, 196);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(972, 248);
             this.tableLayoutPanel3.TabIndex = 13;
             // 
             // label3
@@ -771,11 +784,12 @@
             this.tabControl2.Controls.Add(this.tabPage6);
             this.tabControl2.Controls.Add(this.tabPage7);
             this.tabControl2.Controls.Add(this.tabPage8);
+            this.tabControl2.Controls.Add(this.tabPage9);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(972, 387);
+            this.tabControl2.Size = new System.Drawing.Size(972, 335);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage5
@@ -784,7 +798,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 26);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(964, 357);
+            this.tabPage5.Size = new System.Drawing.Size(964, 305);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "tabPage5";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -795,7 +809,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 26);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(964, 357);
+            this.tabPage6.Size = new System.Drawing.Size(964, 305);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "tabPage6";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -810,7 +824,7 @@
             this.previewControl4.Name = "previewControl4";
             this.previewControl4.PageOffset = new System.Drawing.Point(10, 10);
             this.previewControl4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl4.Size = new System.Drawing.Size(958, 351);
+            this.previewControl4.Size = new System.Drawing.Size(958, 299);
             this.previewControl4.TabIndex = 7;
             // 
             // tabPage7
@@ -818,7 +832,7 @@
             this.tabPage7.Controls.Add(this.previewControl6);
             this.tabPage7.Location = new System.Drawing.Point(4, 26);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(964, 357);
+            this.tabPage7.Size = new System.Drawing.Size(964, 305);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -828,7 +842,7 @@
             this.tabPage8.Controls.Add(this.previewControl7);
             this.tabPage8.Location = new System.Drawing.Point(4, 26);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(964, 357);
+            this.tabPage8.Size = new System.Drawing.Size(964, 305);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "tabPage8";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -843,7 +857,7 @@
             this.previewControl5.Name = "previewControl5";
             this.previewControl5.PageOffset = new System.Drawing.Point(10, 10);
             this.previewControl5.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl5.Size = new System.Drawing.Size(958, 351);
+            this.previewControl5.Size = new System.Drawing.Size(958, 299);
             this.previewControl5.TabIndex = 8;
             // 
             // previewControl6
@@ -856,7 +870,7 @@
             this.previewControl6.Name = "previewControl6";
             this.previewControl6.PageOffset = new System.Drawing.Point(10, 10);
             this.previewControl6.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl6.Size = new System.Drawing.Size(964, 357);
+            this.previewControl6.Size = new System.Drawing.Size(964, 305);
             this.previewControl6.TabIndex = 8;
             // 
             // previewControl7
@@ -869,8 +883,77 @@
             this.previewControl7.Name = "previewControl7";
             this.previewControl7.PageOffset = new System.Drawing.Point(10, 10);
             this.previewControl7.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.previewControl7.Size = new System.Drawing.Size(964, 357);
+            this.previewControl7.Size = new System.Drawing.Size(964, 305);
             this.previewControl7.TabIndex = 8;
+            // 
+            // dateTimePicker13
+            // 
+            this.dateTimePicker13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dateTimePicker13.CustomFormat = "yyyy/MM/dd";
+            this.dateTimePicker13.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker13.Location = new System.Drawing.Point(154, 166);
+            this.dateTimePicker13.Margin = new System.Windows.Forms.Padding(4);
+            this.dateTimePicker13.Name = "dateTimePicker13";
+            this.dateTimePicker13.Size = new System.Drawing.Size(142, 27);
+            this.dateTimePicker13.TabIndex = 40;
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(304, 172);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(42, 16);
+            this.label13.TabIndex = 41;
+            this.label13.Text = "~";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // dateTimePicker14
+            // 
+            this.dateTimePicker14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dateTimePicker14.CustomFormat = "yyyy/MM/dd";
+            this.dateTimePicker14.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker14.Location = new System.Drawing.Point(354, 166);
+            this.dateTimePicker14.Margin = new System.Windows.Forms.Padding(4);
+            this.dateTimePicker14.Name = "dateTimePicker14";
+            this.dateTimePicker14.Size = new System.Drawing.Size(142, 27);
+            this.dateTimePicker14.TabIndex = 42;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(4, 172);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(142, 16);
+            this.label14.TabIndex = 43;
+            this.label14.Text = "QC日期";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.previewControl8);
+            this.tabPage9.Location = new System.Drawing.Point(4, 26);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Size = new System.Drawing.Size(964, 305);
+            this.tabPage9.TabIndex = 4;
+            this.tabPage9.Text = "tabPage9";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // previewControl8
+            // 
+            this.previewControl8.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.previewControl8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.previewControl8.Font = new System.Drawing.Font("宋体", 9F);
+            this.previewControl8.Location = new System.Drawing.Point(0, 0);
+            this.previewControl8.Margin = new System.Windows.Forms.Padding(4);
+            this.previewControl8.Name = "previewControl8";
+            this.previewControl8.PageOffset = new System.Drawing.Point(10, 10);
+            this.previewControl8.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.previewControl8.Size = new System.Drawing.Size(964, 305);
+            this.previewControl8.TabIndex = 9;
             // 
             // frmREMEETING
             // 
@@ -916,6 +999,7 @@
             this.tabPage6.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
+            this.tabPage9.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -976,5 +1060,11 @@
         private FastReport.Preview.PreviewControl previewControl5;
         private FastReport.Preview.PreviewControl previewControl6;
         private FastReport.Preview.PreviewControl previewControl7;
+        private System.Windows.Forms.DateTimePicker dateTimePicker13;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.DateTimePicker dateTimePicker14;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TabPage tabPage9;
+        private FastReport.Preview.PreviewControl previewControl8;
     }
 }

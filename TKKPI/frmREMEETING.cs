@@ -94,6 +94,8 @@ namespace TKKPI
             dateTimePicker10.Value = oneWeekAgo;
             dateTimePicker11.Value = lastMonday;
             dateTimePicker12.Value = oneWeekAgo;
+            dateTimePicker13.Value = lastMonday;
+            dateTimePicker14.Value = oneWeekAgo;
 
 
         }
@@ -673,6 +675,75 @@ namespace TKKPI
             return SB;
 
         }
+
+        public void SETFASTREPORT9(string DATES_QC_LASTMONDAY, string DATES_QC_LASTSUNDAY)
+        {
+
+            StringBuilder SQL = new StringBuilder();
+
+            SQL = SETSQL9(DATES_QC_LASTMONDAY, DATES_QC_LASTSUNDAY);
+
+            Report report4 = new Report();
+            report4.Load(@"REPORT\每週週報表-1002.客訴異常處理單明細.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbUOF"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report4.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+            report4.Dictionary.Connections[0].CommandTimeout = SQLTIMEOUT;
+
+            //訂單未出貨金額
+            TableDataSource table = report4.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = SQL.ToString();
+
+            report4.Preview = previewControl8;
+            report4.Show();
+        }
+        public StringBuilder SETSQL9(string DATES_QC_LASTMONDAY, string DATES_QC_LASTSUNDAY)
+        {
+            StringBuilder SB = new StringBuilder();
+
+            SB.AppendFormat(@" 
+                            --20250528 查客訴單明細
+                            SELECT 
+                            DOC_NBR AS '客訴單號'
+                            ,CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=""QCFrm002Abns""]/@fieldValue)[1]', 'nvarchar(max)')+' '+CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=""QCFrm002Abns""]/@customValue)[1]', 'nvarchar(max)') AS '原因'
+                            , CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=""QCFrm002RDate""]/@fieldValue)[1]', 'nvarchar(max)') AS '受理日期'
+                            , CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=""QCFrm002CUST""]/@fieldValue)[1]', 'nvarchar(max)') AS '客戶'
+                            , CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=""QCFrm002PRD""]/@fieldValue)[1]', 'nvarchar(max)') AS '產品'
+                            , CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=""QCFrm002ED""]/@fieldValue)[1]', 'nvarchar(max)') AS '有效日'
+                            , CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=""QCFrm002MD""]/@fieldValue)[1]', 'nvarchar(max)') AS '製造日'
+                            , CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=""QCFrm002Abn""]/@fieldValue)[1]', 'nvarchar(max)') AS '客訴原因詳述'
+                            , CURRENT_DOC.value('(Form/FormFieldValue/FieldItem[@fieldId=""QCFrm002Process""]/@fieldValue)[1]', 'nvarchar(max)') AS '回覆內容'
+
+                            , TB_WKF_FORM.FORM_NAME
+                            , (SELECT TOP 1 NAME FROM[UOF].dbo.TB_EB_USER WHERE TB_EB_USER.USER_GUID = TB_WKF_TASK.USER_GUID) AS 'NAMES'
+                            ,CURRENT_DOC
+                            FROM[UOF].dbo.TB_WKF_TASK,[UOF].dbo.TB_WKF_FORM,[UOF].dbo.TB_WKF_FORM_VERSION
+                            WHERE 1 = 1
+                            AND TB_WKF_TASK.FORM_VERSION_ID = TB_WKF_FORM_VERSION.FORM_VERSION_ID
+                            AND TB_WKF_FORM.FORM_ID = TB_WKF_FORM_VERSION.FORM_ID
+                            AND TB_WKF_FORM.FORM_NAME IN('1002.客訴異常處理單')
+                            AND ISNULL(TB_WKF_TASK.TASK_RESULT,'') NOT IN('2')
+                            AND CONVERT(NVARCHAR, TB_WKF_TASK.BEGIN_TIME,112)>='{0}' AND TB_WKF_TASK.BEGIN_TIME<='{1}'
+                            ORDER BY DOC_NBR
+ 
+                            ", DATES_QC_LASTMONDAY, DATES_QC_LASTSUNDAY);
+
+
+            return SB;
+
+        }
+
+       
         #endregion
 
         #region BUTTON
@@ -698,6 +769,8 @@ namespace TKKPI
             string DATES_LASTSUNDAY = dateTimePicker10.Value.ToString("yyyyMMdd");
             string DATES_CARS_START = dateTimePicker11.Value.ToString("yyyyMMdd");
             string DATES_CARS_END = dateTimePicker12.Value.ToString("yyyyMMdd");
+            string DATES_QC_LASTMONDAY = dateTimePicker13.Value.ToString("yyyyMMdd");
+            string DATES_QC_LASTSUNDAY = dateTimePicker14.Value.ToString("yyyyMMdd");
 
             ADDTKMK_TBFACTORYINCOME(DATES_CARS_START, DATES_CARS_END);
 
@@ -711,6 +784,8 @@ namespace TKKPI
             SETFASTREPORT7(DATES_CARS_START, DATES_CARS_END);
             //每週週報表-各門市銷售排名
             SETFASTREPORT8(DATES_LASTMONDAY, DATES_LASTSUNDAY);
+            //客訴記錄-1002
+            SETFASTREPORT9(DATES_QC_LASTMONDAY, DATES_QC_LASTSUNDAY);
         }
 
         private void button5_Click(object sender, EventArgs e)
