@@ -973,14 +973,14 @@ namespace TKKPI
 	                                TA002 AS '門市代',
 	                                ME002 AS '門市',
 	                                COUNT(TA002) AS '總消費筆數',
-	                                SUM(TA026) AS '總銷售額(未稅)',
+	                                SUM(TA024) AS '總銷售額(含稅)', 
 	                                (
 	                                SELECT COUNT(TA002)
 	                                FROM [TK].dbo.POSTA TA2
 	                                WHERE 1=1
 	                                AND TA2.TA002=POSTA.TA002
 	                                AND TA2.TA001>='{0}' AND TA2.TA001<='{1}'
-	                                AND TA026>={2}
+	                                AND TA024>={2}
 	                                ) AS '單筆消費滿額的筆數'
 	                                FROM [TK].dbo.POSTA,[TK].dbo.CMSME
 	                                WHERE 1=1
@@ -989,7 +989,7 @@ namespace TKKPI
 	                                GROUP BY TA002,ME002
                                 ) AS TEMP
                                 ORDER BY 門市代,門市
-
+ 
                                 ", SDAYS, EDAYS, SETMONEYS);
              
 

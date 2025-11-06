@@ -1,37 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="02/05/2025 16:36:52" ReportInfo.Modified="03/11/2025 11:02:52" ReportInfo.CreatorVersion="2016.4.4.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/05/2025 16:36:52" ReportInfo.Modified="11/06/2025 15:12:19" ReportInfo.CreatorVersion="2016.4.4.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUFklgi1M4SHQMYrRVcm1qBv">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;*&#13;&#10;,(CASE WHEN 單筆消費滿額的筆數&gt;0 AND 總消費筆數&gt;0 THEN CONVERT(DECIMAL,單筆消費滿額的筆數)/ CONVERT(DECIMAL,總消費筆數) ELSE 0 END ) AS 'PCTS'&#13;&#10;FROM &#13;&#10;(&#13;&#10;	SELECT &#13;&#10;	'{0}'+'~'+'{1}'  AS '日期',&#13;&#10;	TA002 AS '門市代',&#13;&#10;	ME002 AS '門市',&#13;&#10;	COUNT(TA002) AS '總消費筆數',&#13;&#10;	SUM(TA026) AS '總銷售額(未稅)',&#13;&#10;	(&#13;&#10;	SELECT COUNT(TA002)&#13;&#10;	FROM [TK].dbo.POSTA TA2&#13;&#10;	WHERE 1=1&#13;&#10;	AND TA2.TA002=POSTA.TA002&#13;&#10;	AND TA2.TA001&gt;='20250101' AND TA2.TA001&lt;='20250131'&#13;&#10;	AND TA026&gt;=600&#13;&#10;	) AS '單筆消費滿額的筆數'&#13;&#10;	FROM [TK].dbo.POSTA,[TK].dbo.CMSME&#13;&#10;	WHERE 1=1&#13;&#10;	AND TA002=ME001                                &#13;&#10;	AND TA001&gt;='20250101' AND TA001&lt;='20250131'&#13;&#10;	GROUP BY TA002,ME002&#13;&#10;) AS TEMP&#13;&#10;ORDER BY 門市代,門市">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNjHuzu89K+RQ2LIBVx1fpgNkNJhwC4eetn2/Uy0fMrO7zDUE5AmRb+0bcYI+lxqpN+i5gA3VDGcwlcfm6L9ZMsLrZ3U+wEDtHCQtd9vw2XUF/5q7Pb/srKLOB4WLgLtuF">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;*&#13;&#10;,(CASE WHEN 單筆消費滿額的筆數&gt;0 AND 總消費筆數&gt;0 THEN CONVERT(DECIMAL,單筆消費滿額的筆數)/ CONVERT(DECIMAL,總消費筆數) ELSE 0 END ) AS 'PCTS'&#13;&#10;FROM &#13;&#10;(&#13;&#10;	SELECT &#13;&#10;	'20251001'+'~'+'20251102'  AS '日期',&#13;&#10;	TA002 AS '門市代',&#13;&#10;	ME002 AS '門市',&#13;&#10;	COUNT(TA002) AS '總消費筆數',&#13;&#10;	SUM(TA024) AS '總銷售額(含稅)',&#13;&#10;	(&#13;&#10;	SELECT COUNT(TA002)&#13;&#10;	FROM [TK].dbo.POSTA TA2&#13;&#10;	WHERE 1=1&#13;&#10;	AND TA2.TA002=POSTA.TA002&#13;&#10;	AND TA001&gt;='20251001' AND TA001&lt;='20251102'&#13;&#10;	AND TA024&gt;=699&#13;&#10;	) AS '單筆消費滿額的筆數'&#13;&#10;	FROM [TK].dbo.POSTA,[TK].dbo.CMSME&#13;&#10;	WHERE 1=1&#13;&#10;	AND TA002=ME001                                &#13;&#10;	AND TA001&gt;='20251001' AND TA001&lt;='20251102'&#13;&#10;	GROUP BY TA002,ME002&#13;&#10;) AS TEMP&#13;&#10;ORDER BY 門市代,門市">
         <Column Name="日期" DataType="System.String"/>
         <Column Name="門市代" DataType="System.String"/>
         <Column Name="門市" DataType="System.String"/>
         <Column Name="總消費筆數" DataType="System.Int32"/>
-        <Column Name="總銷售額(未稅)" DataType="System.Decimal"/>
         <Column Name="單筆消費滿額的筆數" DataType="System.Int32"/>
         <Column Name="PCTS" DataType="System.Decimal"/>
+        <Column Name="總銷售額(含稅)" DataType="System.Decimal"/>
       </TableDataSource>
     </MsSqlDataConnection>
     <Parameter Name="P1" DataType="System.Int32" Expression="888"/>
   </Dictionary>
   <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9">
-    <ColumnHeaderBand Name="ColumnHeader1" Width="1047.06" Height="18.9">
-      <TextObject Name="Text2" Width="141.75" Height="18.9" Border.Lines="All" Text="日期" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text4" Left="141.75" Width="75.6" Height="18.9" Border.Lines="All" Text="門市代" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text6" Left="217.35" Width="151.2" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text8" Left="368.55" Width="94.5" Height="18.9" Border.Lines="All" Text="總消費筆數" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text10" Left="463.05" Width="122.85" Height="18.9" Border.Lines="All" Text="總銷售額(未稅)" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text12" Left="585.9" Width="179.55" Height="18.9" Border.Lines="All" Text="單筆消費滿額的筆數-[P1]元" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text14" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="佔比" HorzAlign="Center" VertAlign="Center"/>
+    <ColumnHeaderBand Name="ColumnHeader1" Width="1047.06" Height="37.8">
+      <TextObject Name="Text2" Top="18.9" Width="141.75" Height="18.9" Border.Lines="All" Text="日期" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text4" Left="141.75" Top="18.9" Width="75.6" Height="18.9" Border.Lines="All" Text="門市代" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text6" Left="217.35" Top="18.9" Width="151.2" Height="18.9" Border.Lines="All" Text="門市" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text8" Left="368.55" Top="18.9" Width="94.5" Height="18.9" Border.Lines="All" Text="總消費筆數" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="463.05" Top="18.9" Width="103.95" Height="18.9" Border.Lines="All" Text="總銷售額(含稅)" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text12" Left="567" Top="18.9" Width="226.8" Height="18.9" Border.Lines="All" Text="單筆消費滿額(含稅)的筆數-[P1]元" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text14" Left="793.8" Top="18.9" Width="245.7" Height="18.9" Border.Lines="All" Text="單筆消費滿額(含稅)的筆數-[P1]元 的佔比" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text15" Width="141.75" Height="18.9" Text="此報表的金額是含稅" HorzAlign="Center" VertAlign="Center"/>
     </ColumnHeaderBand>
-    <DataBand Name="Data1" Top="23.5" Width="1047.06" Height="18.9" DataSource="Table">
+    <DataBand Name="Data1" Top="42.4" Width="1047.06" Height="18.9" DataSource="Table">
       <TextObject Name="Text1" Width="141.75" Height="18.9" Border.Lines="All" Text="[Table.日期]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text3" Left="141.75" Width="75.6" Height="18.9" Border.Lines="All" Text="[Table.門市代]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text5" Left="217.35" Width="151.2" Height="18.9" Border.Lines="All" Text="[Table.門市]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text7" Left="368.55" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.總消費筆數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
-      <TextObject Name="Text9" Left="463.05" Width="122.85" Height="18.9" Border.Lines="All" Text="[Table.總銷售額(未稅)]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text11" Left="585.9" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.單筆消費滿額的筆數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text13" Left="765.45" Width="94.5" Height="18.9" Border.Lines="All" Text="[Table.PCTS]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text9" Left="463.05" Width="103.95" Height="18.9" Border.Lines="All" Text="[Table.總銷售額(含稅)]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="567" Width="226.8" Height="18.9" Border.Lines="All" Text="[Table.單筆消費滿額的筆數]" Format="Number" Format.UseLocale="false" Format.DecimalDigits="0" Format.DecimalSeparator="." Format.GroupSeparator="," Format.NegativePattern="1" HorzAlign="Right" VertAlign="Center"/>
+      <TextObject Name="Text13" Left="793.8" Width="245.7" Height="18.9" Border.Lines="All" Text="[Table.PCTS]" Format="Percent" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
   </ReportPage>
 </Report>
