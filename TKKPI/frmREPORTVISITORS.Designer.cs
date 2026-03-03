@@ -125,9 +125,9 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage2);
@@ -252,7 +252,7 @@
             // 
             this.previewControl1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.previewControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewControl1.Font = new System.Drawing.Font("宋体", 9F);
+            this.previewControl1.Font = new System.Drawing.Font("SimSun", 9F);
             this.previewControl1.Location = new System.Drawing.Point(0, 0);
             this.previewControl1.Margin = new System.Windows.Forms.Padding(4);
             this.previewControl1.Name = "previewControl1";
@@ -361,7 +361,7 @@
             // 
             this.previewControl3.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.previewControl3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewControl3.Font = new System.Drawing.Font("宋体", 9F);
+            this.previewControl3.Font = new System.Drawing.Font("SimSun", 9F);
             this.previewControl3.Location = new System.Drawing.Point(0, 0);
             this.previewControl3.Margin = new System.Windows.Forms.Padding(4);
             this.previewControl3.Name = "previewControl3";
@@ -482,7 +482,7 @@
             // 
             this.previewControl4.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.previewControl4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewControl4.Font = new System.Drawing.Font("宋体", 9F);
+            this.previewControl4.Font = new System.Drawing.Font("SimSun", 9F);
             this.previewControl4.Location = new System.Drawing.Point(0, 0);
             this.previewControl4.Margin = new System.Windows.Forms.Padding(4);
             this.previewControl4.Name = "previewControl4";
@@ -626,7 +626,7 @@
             // 
             this.previewControl7.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.previewControl7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewControl7.Font = new System.Drawing.Font("宋体", 9F);
+            this.previewControl7.Font = new System.Drawing.Font("SimSun", 9F);
             this.previewControl7.Location = new System.Drawing.Point(0, 0);
             this.previewControl7.Margin = new System.Windows.Forms.Padding(4);
             this.previewControl7.Name = "previewControl7";
@@ -765,7 +765,7 @@
             // 
             this.previewControl5.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.previewControl5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewControl5.Font = new System.Drawing.Font("宋体", 9F);
+            this.previewControl5.Font = new System.Drawing.Font("SimSun", 9F);
             this.previewControl5.Location = new System.Drawing.Point(0, 0);
             this.previewControl5.Margin = new System.Windows.Forms.Padding(4);
             this.previewControl5.Name = "previewControl5";
@@ -778,7 +778,7 @@
             // 
             this.previewControl6.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.previewControl6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewControl6.Font = new System.Drawing.Font("宋体", 9F);
+            this.previewControl6.Font = new System.Drawing.Font("SimSun", 9F);
             this.previewControl6.Location = new System.Drawing.Point(0, 0);
             this.previewControl6.Margin = new System.Windows.Forms.Padding(4);
             this.previewControl6.Name = "previewControl6";
@@ -900,7 +900,7 @@
             // 
             this.previewControl2.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.previewControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewControl2.Font = new System.Drawing.Font("宋体", 9F);
+            this.previewControl2.Font = new System.Drawing.Font("SimSun", 9F);
             this.previewControl2.Location = new System.Drawing.Point(0, 0);
             this.previewControl2.Margin = new System.Windows.Forms.Padding(4);
             this.previewControl2.Name = "previewControl2";
@@ -915,7 +915,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 702);
             this.Controls.Add(this.tabControl1);
-            this.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmREPORTVISITORS";
             this.Text = "frmREPORTVISITORS";
