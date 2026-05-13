@@ -973,18 +973,13 @@ namespace TKKPI
 	                                TA002 AS '門市代',
 	                                ME002 AS '門市',
 	                                COUNT(TA002) AS '總消費筆數',
-	                                SUM(TA024) AS '總銷售額(含稅)', 
-	                                (
-	                                SELECT COUNT(TA002)
-	                                FROM [TK].dbo.POSTA TA2
-	                                WHERE 1=1
-	                                AND TA2.TA002=POSTA.TA002
-	                                AND TA2.TA001>='{0}' AND TA2.TA001<='{1}'
-	                                AND TA024>={2}
-	                                ) AS '單筆消費滿額的筆數'
+	                                SUM(TA026) AS '總銷售額(含稅)', 
+	                                SUM(CASE WHEN POSTA.TA026 >= {2} THEN 1 ELSE 0 END) AS '單筆消費滿額的筆數'
 	                                FROM [TK].dbo.POSTA,[TK].dbo.CMSME
 	                                WHERE 1=1
-	                                AND TA002=ME001                                
+	                                AND TA002=ME001 
+                                    AND POSTA.TA026 >=0
+                                    AND TA038 NOT IN ('4' )                              
 	                                AND TA001>='{0}' AND TA001<='{1}'
 	                                GROUP BY TA002,ME002
                                 ) AS TEMP
