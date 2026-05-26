@@ -820,6 +820,7 @@ namespace TKKPI
         {
             StringBuilder SQL1 = new StringBuilder();
             StringBuilder SQL2 = new StringBuilder();
+            StringBuilder SQL3 = new StringBuilder();
 
             SQL1.AppendFormat(@" 
                                
@@ -927,6 +928,25 @@ namespace TKKPI
 
                                 ", SDAYS, EDAYS);
 
+            SQL3.AppendFormat(@"
+                                SELECT 
+                                    MIN(TA001) 起日,
+                                    MAX(TA001) 迄日,
+                                    TA002 門市ID,
+                                    ME002 門市,  
+                                    COUNT(TA001) AS '總交易筆數',
+                                    -- 核心修正：不符合條件就不給值 (預設為 NULL)，這樣 COUNT 才會準
+                                    COUNT(CASE WHEN (TA008 LIKE '68%' OR TA008 LIKE '69%') THEN 1 END) AS '團客交易筆數',
+                                    COUNT(TA001)-COUNT(CASE WHEN (TA008 LIKE '68%' OR TA008 LIKE '69%') THEN 1 END) AS '散客交易筆數'
+                                FROM [TK].dbo.POSTA WITH(NOLOCK)
+                                INNER JOIN [TK].dbo.CMSME ON ME001=TA002
+                                WHERE TA038 IN ('1','2','3')
+                                    AND TA002 IN ('106701','106702')
+                                    AND TA001 >= '{0}' AND TA001 <= '{1}'
+                                GROUP BY TA002,ME002
+                                ORDER BY TA002,ME002
+                                ", SDAYS, EDAYS);
+
 
             Report report1 = new Report();
             report1.Load(@"REPORT\營銷-每日來客明細.frx");
@@ -949,6 +969,8 @@ namespace TKKPI
             table.SelectCommand = SQL1.ToString();
             TableDataSource table1 = report1.GetDataSource("Table1") as TableDataSource;
             table1.SelectCommand = SQL2.ToString();
+            TableDataSource table2 = report1.GetDataSource("Table2") as TableDataSource;
+            table2.SelectCommand = SQL3.ToString();
 
 
 
