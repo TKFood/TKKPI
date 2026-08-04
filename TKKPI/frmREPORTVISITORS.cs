@@ -1524,7 +1524,8 @@ namespace TKKPI
                                     END
                                 ) AS NUMS
                             FROM [TKMK].[dbo].[View_t_visitors] WITH(NOLOCK)
-                            WHERE YEARS = @YEARS AND MONTHS = @MONTHS
+                            WHERE YEARS = @YEARS 
+                              AND MONTHS = @MONTHS
                               AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
                             GROUP BY TT002, STORESNAME, YEARS, MONTHS, Fdate1, HOURS
                         ),
@@ -1611,6 +1612,144 @@ namespace TKKPI
             }
         }
 
+        public void ADD_Visitors_Month_Days(string YEARS, string MONTHS)
+        {
+            string SDATES = YEARS + "0101";
+            string EDATES = YEARS + "1231";
+            try
+            {
+                // 20210902 密碼解密
+                Class1 TKID = new Class1();
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                using (SqlConnection sqlConn = new SqlConnection(sqlsb.ConnectionString))
+                {
+                    StringBuilder SQLEXE = new StringBuilder();
+                    SQLEXE.AppendFormat(@"
+                    DELETE FROM [TKMK].[dbo].[Visitors_Month_Days] 
+                    WHERE [年度] = @YEARS AND [月份] = @MONTHS;
+
+                    WITH Visitors_Daily AS (
+                        SELECT 
+                            TT002,
+                            STORESNAME,
+                            YEARS,
+                            MONTHS,
+                            WEEKS,
+                            Fdate1,
+                            DAYOFWEEK,
+                            DATEPART(WEEKDAY, Fdate1) AS WEEKDAY_ORIG,
+                            SUM(
+                                CASE 
+                                    WHEN TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
+                                        THEN (Fin_data + Fout_data) / 2.0
+                                    WHEN TT002 = '106701' 
+                                        THEN Fout_data
+                                    ELSE 0
+                                END
+                            ) AS NUMS
+                        FROM [TKMK].[dbo].[View_t_visitors] WITH(NOLOCK)
+                        WHERE YEARS = @YEARS
+                          AND MONTHS = @MONTHS
+                          AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                        GROUP BY TT002, STORESNAME, YEARS, MONTHS, WEEKS, Fdate1, DAYOFWEEK
+                    ),
+
+                    POSTT_Daily AS (
+                        SELECT 
+                            TT002,
+                            TT001 AS Fdate1,
+                            SUM(ISNULL(TT018, 0)) AS SUMTT011,
+                            SUM(ISNULL(TT008, 0)) AS SUMTT008
+                        FROM [TK].[dbo].[POSTT] WITH(NOLOCK)
+                        WHERE TT001 >= @SDATES AND TT001 <= @EDATES
+                          AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                        GROUP BY TT002, TT001
+                    )
+
+                    -- 🔥 修正 1：補上 INSERT INTO 陳述式
+                    INSERT INTO [TKMK].[dbo].[Visitors_Month_Days]
+                    (
+                        [代號],
+                        [門市],
+                        [年度],
+                        [月份],
+                        [週數],
+                        [星期],
+                        [總來客數],
+                        [銷售總金額POS機],
+                        [成交筆數],
+                        [每週來客數],
+                        [提袋率],
+                        [平均客單價]
+                    )
+                    SELECT 
+                        V.TT002 AS 代號,
+                        V.STORESNAME AS 門市,
+                        V.YEARS AS 年度,
+                        V.MONTHS AS 月份,
+    
+                        COUNT(DISTINCT V.WEEKS) AS 週數,
+                        V.DAYOFWEEK AS 星期,
+    
+                        SUM(V.NUMS) AS 總來客數,
+                        ISNULL(SUM(P.SUMTT011), 0) AS 銷售總金額POS機,
+                        ISNULL(SUM(P.SUMTT008), 0) AS 成交筆數,
+    
+                        -- 每週平均人流
+                        ROUND(SUM(V.NUMS) * 1.0 / NULLIF(COUNT(DISTINCT V.WEEKS), 0), 2) AS 每週來客數,
+    
+                        -- 🔥 修正 2：乘以 1.0 確保轉為小數計算，並做 ROUND 四捨五入
+                        ROUND(ISNULL(SUM(P.SUMTT008), 0) * 1.0 / NULLIF(SUM(V.NUMS), 0), 4) AS 提袋率,
+    
+                        -- 🔥 修正 2：乘以 1.0 避免整數相除
+                        ROUND(ISNULL(SUM(P.SUMTT011), 0) * 1.0 / NULLIF(SUM(P.SUMTT008), 0), 2) AS 平均客單價
+
+                    FROM Visitors_Daily V
+                    LEFT JOIN POSTT_Daily P 
+                           ON V.TT002 = P.TT002 
+                          AND V.Fdate1 = P.Fdate1
+
+                    GROUP BY 
+                        V.TT002, 
+                        V.STORESNAME, 
+                        V.YEARS, 
+                        V.MONTHS, 
+                        V.DAYOFWEEK, 
+                        -- 🔥 修正 3：統一 GROUP BY 的 CASE WHEN 寫法
+                        CASE WHEN V.WEEKDAY_ORIG = 1 THEN 99 ELSE V.WEEKDAY_ORIG END
+                    ORDER BY 
+                        V.TT002, 
+                        V.STORESNAME, 
+                        V.YEARS, 
+                        V.MONTHS, 
+                        CASE WHEN V.WEEKDAY_ORIG = 1 THEN 99 ELSE V.WEEKDAY_ORIG END, 
+                        V.DAYOFWEEK;    
+                    ");
+
+                    using (SqlCommand cmd = new SqlCommand(SQLEXE.ToString(), sqlConn))
+                    {
+                        cmd.CommandTimeout = 300;
+                        cmd.CommandType = CommandType.Text;
+
+                        cmd.Parameters.AddWithValue("@YEARS", YEARS);
+                        cmd.Parameters.AddWithValue("@MONTHS", MONTHS);
+                        cmd.Parameters.AddWithValue("@SDATES", SDATES);
+                        cmd.Parameters.AddWithValue("@EDATES", EDATES);
+
+                        sqlConn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -1653,7 +1792,7 @@ namespace TKKPI
             ADD_Visitors_Monthly(YEARS);
             ADD_Visitors_Weeks(YEARS);
             ADD_Visitors_Month_Hours(YEARS, MONTHS);
-
+            ADD_Visitors_Month_Days(YEARS, MONTHS);
             MessageBox.Show("完成");
         }
         #endregion
