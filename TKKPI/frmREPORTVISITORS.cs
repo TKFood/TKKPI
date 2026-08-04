@@ -1247,6 +1247,122 @@ namespace TKKPI
             report1.Show();
         }
 
+        public void ADD_Visitors_Monthly(string YEARS)
+        {
+            string SDATES = YEARS + "0101";
+            string EDATES = YEARS + "1231";
+            try
+            {
+                //20210902密
+                Class1 TKID = new Class1();//用new 建立類別實體
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+                //資料庫使用者密碼解密
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+                String connectionString;
+                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+                StringBuilder SQLEXE=new StringBuilder();
+                SQLEXE.AppendFormat(@"
+                DELETE   [TKMK].[dbo].[Visitors_Monthly] WHERE [年度]=@YEARS;
+
+                WITH 
+                -- 預先統計人流量 (按門市、年份、月份彙總)
+                Visitors_Monthly_CTE AS (
+                    SELECT 
+                        TT002,
+                        STORESNAME,
+                        YEARS,
+                        MONTHS,
+                        SUM(
+                            CASE 
+                                WHEN TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
+                                    THEN (Fin_data + Fout_data) / 2.0
+                                WHEN TT002 = '106701' 
+                                    THEN Fout_data
+                                ELSE 0
+                            END
+                        ) AS SUMNUMS
+                    FROM [TKMK].[dbo].[View_t_visitors] WITH(NOLOCK)
+                    WHERE YEARS = @YEARS
+                      AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                    GROUP BY TT002, STORESNAME, YEARS, MONTHS
+                ),
+
+                -- 預先統計 POS 銷售額 (按門市、年份、月份彙總)
+                POSTT_Monthly_CTE AS (
+                    SELECT 
+                        TT002,
+                        LEFT(TT001, 4) AS YEARS,
+                        CAST(SUBSTRING(TT001, 5, 2) AS INT) AS MONTHS_INT,
+                        SUM(TT008) AS REALSUMTT008, -- 總成交筆數
+                        SUM(TT018) AS REALSUMTT018  -- 總銷售金額
+                    FROM [TK].dbo.POSTT WITH(NOLOCK)
+                    WHERE TT001 >= @SDATES
+                      AND TT001 <= @EDATES
+                      AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                    GROUP BY TT002, LEFT(TT001, 4), CAST(SUBSTRING(TT001, 5, 2) AS INT)
+                )
+
+                -- 執行寫入
+                INSERT INTO [TKMK].[dbo].[Visitors_Monthly]
+                (
+                    [代號],
+                    [門市],
+                    [年度],
+                    [月份],
+                    [來客數],
+                    [銷售總金額POS機],
+                    [成交筆數],
+                    [提袋率],
+                    [平均客單價],
+                    [實際的成交筆數],
+                    [實際的銷售總金額POS機],
+                    [實際的平均客單價]
+                )
+                SELECT 
+                    V.TT002 AS 代號,
+                    V.STORESNAME AS 門市,
+                    V.YEARS AS 年度,
+                    V.MONTHS AS 月份,
+                    ISNULL(V.SUMNUMS, 0) AS 來客數,
+                    ISNULL(P.REALSUMTT018, 0) AS 銷售總金額POS機,
+                    ISNULL(P.REALSUMTT008, 0) AS 成交筆數,
+    
+                    -- 平均與比例計算（乘上 1.0 確保轉為浮點數計算）
+                    ISNULL(P.REALSUMTT008, 0) * 1.0 / NULLIF(V.SUMNUMS, 0) AS 提袋率,
+                    ISNULL(P.REALSUMTT018, 0) * 1.0 / NULLIF(P.REALSUMTT008, 0) AS 平均客單價,
+    
+                    ISNULL(P.REALSUMTT008, 0) AS 實際的成交筆數,
+                    ISNULL(P.REALSUMTT018, 0) AS 實際的銷售總金額POS機,
+                    ISNULL(P.REALSUMTT018, 0) * 1.0 / NULLIF(P.REALSUMTT008, 0) AS 實際的平均客單價
+
+                FROM Visitors_Monthly_CTE V
+                LEFT JOIN POSTT_Monthly_CTE P 
+                       ON V.TT002 = P.TT002 
+                      AND V.YEARS = P.YEARS 
+                      AND CAST(V.MONTHS AS INT) = P.MONTHS_INT;
+
+                ");
+
+                using (SqlCommand cmd = new SqlCommand(SQLEXE.ToString(), sqlConn))
+                {
+                    cmd.CommandTimeout = 300;
+                    cmd.CommandType = CommandType.Text; // ✅ 關鍵修改：改為 CommandType.Text
+
+                    cmd.Parameters.AddWithValue("@YEARS", YEARS);
+                    cmd.Parameters.AddWithValue("@SDATES", SDATES);
+                    cmd.Parameters.AddWithValue("@EDATES", EDATES);
+
+                    sqlConn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
         #endregion
 
@@ -1287,7 +1403,9 @@ namespace TKKPI
             string YEARS=dateTimePicker11.Value.Year.ToString();
             string MONTHS = dateTimePicker11.Value.Month.ToString();
 
-            MessageBox.Show(YEARS+" "+MONTHS);
+            ADD_Visitors_Monthly(YEARS);
+            
+            MessageBox.Show("完成");
         }
         #endregion
 
