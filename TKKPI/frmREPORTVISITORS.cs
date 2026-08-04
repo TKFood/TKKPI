@@ -1282,6 +1282,13 @@ namespace TKKPI
         {
             SETFASTREPORT8(dateTimePicker9.Value.ToString("yyyyMMdd"), dateTimePicker10.Value.ToString("yyyyMMdd"),textBox1.Text);
         }
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string YEARS=dateTimePicker11.Value.Year.ToString();
+            string MONTHS = dateTimePicker11.Value.Month.ToString();
+
+            MessageBox.Show(YEARS+" "+MONTHS);
+        }
         #endregion
 
 
