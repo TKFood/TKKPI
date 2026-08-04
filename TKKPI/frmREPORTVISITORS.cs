@@ -1363,6 +1363,125 @@ namespace TKKPI
                 MessageBox.Show(ex.Message);
             }
         }
+        public void ADD_Visitors_Weeks(string YEARS)
+        {
+            string SDATES = YEARS + "0101";
+            string EDATES = YEARS + "1231";
+            try
+            {
+                // 20210902 密碼解密
+                Class1 TKID = new Class1();
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                using (SqlConnection sqlConn = new SqlConnection(sqlsb.ConnectionString))
+                {
+                    StringBuilder SQLEXE = new StringBuilder();
+                    SQLEXE.AppendFormat(@"
+                    DELETE FROM [TKMK].[dbo].[Visitors_Weeks] WHERE [年度] = @YEARS;
+
+                    -- 1. CTE 宣告必須放在最前面（DELETE 後面加分號 ';'）
+                    WITH Visitors_Daily AS (
+                        SELECT 
+                            TT002,
+                            STORESNAME,
+                            YEARS,
+                            WEEKS,
+                            Fdate1,
+                            SUM(
+                                CASE 
+                                    WHEN TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
+                                        THEN (Fin_data + Fout_data) / 2.0
+                                    WHEN TT002 = '106701' 
+                                        THEN Fout_data
+                                    ELSE 0
+                                END
+                            ) AS NUMS
+                        FROM [TKMK].[dbo].[View_t_visitors] WITH(NOLOCK)
+                        WHERE YEARS = @YEARS
+                          AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+  
+                          -- 🔥 核心邏輯：若最新週 > 1 則排除最新週；若最新週 = 1 則保留第 1 週
+                          AND CONVERT(INT, WEEKS) < (
+                              SELECT 
+                                  CASE 
+                                      WHEN MAX(CONVERT(INT, WEEKS)) > 1 THEN MAX(CONVERT(INT, WEEKS))
+                                      ELSE 2
+                                  END
+                              FROM [TKMK].[dbo].[View_t_visitors] WITH(NOLOCK)
+                              WHERE YEARS = @YEARS
+                          )
+
+                        GROUP BY TT002, STORESNAME, YEARS, WEEKS, Fdate1
+                    ),
+
+                    POSTT_Daily AS (
+                        SELECT 
+                            TT002,
+                            TT001 AS Fdate,
+                            SUM(TT018) AS SUMTT011,
+                            SUM(TT008) AS SUMTT008
+                        FROM [TK].dbo.POSTT WITH(NOLOCK)
+                        WHERE TT001 >= @SDATES AND TT001 <= @EDATES
+                          AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                        GROUP BY TT002, TT001
+                    )
+
+                    -- 2. INSERT INTO 必須移動到這裡（CTE 與 SELECT 中間）
+                    INSERT INTO [TKMK].[dbo].[Visitors_Weeks]
+                    (
+                        [代號],
+                        [門市],
+                        [年度],
+                        [週次],
+                        [來客數],
+                        [銷售總金額POS機],
+                        [成交筆數],
+                        [提袋率],
+                        [平均客單價]
+                    )
+                    SELECT 
+                        V.TT002 AS 代號,
+                        V.STORESNAME AS 門市,
+                        V.YEARS AS 年度,
+                        V.WEEKS AS 週次,
+                        SUM(V.NUMS) AS 來客數,
+                        ISNULL(SUM(P.SUMTT011), 0) AS 銷售總金額POS機,
+                        ISNULL(SUM(P.SUMTT008), 0) AS 成交筆數,
+
+                        -- 乘以 1.0 確保轉為浮點數計算，避免小數點被捨去
+                        ISNULL(SUM(P.SUMTT008), 0) * 1.0 / NULLIF(SUM(V.NUMS), 0) AS 提袋率,
+                        ISNULL(SUM(P.SUMTT011), 0) * 1.0 / NULLIF(SUM(P.SUMTT008), 0) AS 平均客單價
+
+                    FROM Visitors_Daily V
+                    LEFT JOIN POSTT_Daily P 
+                           ON V.TT002 = P.TT002 
+                          AND V.Fdate1 = P.Fdate
+
+                    GROUP BY V.TT002, V.STORESNAME, V.YEARS, V.WEEKS
+                    ORDER BY V.TT002, V.STORESNAME, V.YEARS, CONVERT(INT, V.WEEKS);
+                    ");
+
+                    using (SqlCommand cmd = new SqlCommand(SQLEXE.ToString(), sqlConn))
+                    {
+                        cmd.CommandTimeout = 300;
+                        cmd.CommandType = CommandType.Text;
+
+                        cmd.Parameters.AddWithValue("@YEARS", YEARS);
+                        cmd.Parameters.AddWithValue("@SDATES", SDATES);
+                        cmd.Parameters.AddWithValue("@EDATES", EDATES);
+
+                        sqlConn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
         #endregion
 
@@ -1404,7 +1523,8 @@ namespace TKKPI
             string MONTHS = dateTimePicker11.Value.Month.ToString();
 
             ADD_Visitors_Monthly(YEARS);
-            
+            ADD_Visitors_Weeks(YEARS);
+
             MessageBox.Show("完成");
         }
         #endregion
