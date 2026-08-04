@@ -1683,7 +1683,8 @@ namespace TKKPI
                         [成交筆數],
                         [每週來客數],
                         [提袋率],
-                        [平均客單價]
+                        [平均客單價],
+                        [WEEKDAY]
                     )
                     SELECT 
                         V.TT002 AS 代號,
@@ -1705,7 +1706,8 @@ namespace TKKPI
                         ROUND(ISNULL(SUM(P.SUMTT008), 0) * 1.0 / NULLIF(SUM(V.NUMS), 0), 4) AS 提袋率,
     
                         -- 🔥 修正 2：乘以 1.0 避免整數相除
-                        ROUND(ISNULL(SUM(P.SUMTT011), 0) * 1.0 / NULLIF(SUM(P.SUMTT008), 0), 2) AS 平均客單價
+                        ROUND(ISNULL(SUM(P.SUMTT011), 0) * 1.0 / NULLIF(SUM(P.SUMTT008), 0), 2) AS 平均客單價,
+                        CASE WHEN V.WEEKDAY_ORIG = 1 THEN 99 ELSE V.WEEKDAY_ORIG END AS WEEKDAY
 
                     FROM Visitors_Daily V
                     LEFT JOIN POSTT_Daily P 
