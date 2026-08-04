@@ -1363,6 +1363,7 @@ namespace TKKPI
                 MessageBox.Show(ex.Message);
             }
         }
+
         public void ADD_Visitors_Weeks(string YEARS)
         {
             string SDATES = YEARS + "0101";
@@ -1483,6 +1484,133 @@ namespace TKKPI
             }
         }
 
+        public void ADD_Visitors_Month_Hours(string YEARS,string MONTHS)
+        {
+            string SDATES = YEARS + "0101";
+            string EDATES = YEARS + "1231";
+            try
+            {
+                // 20210902 密碼解密
+                Class1 TKID = new Class1();
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+                sqlsb.Password = TKID.Decryption(sqlsb.Password);
+                sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+                using (SqlConnection sqlConn = new SqlConnection(sqlsb.ConnectionString))
+                {
+                    StringBuilder SQLEXE = new StringBuilder();
+                    SQLEXE.AppendFormat(@"
+                        DELETE [TKMK].[dbo].[Visitors_Month_Hours] WHERE [年度]=@YEARS AND [月份]=@MONTHS;
+
+                        WITH 
+                        -- 1. 預先按「門市 + 日期 + 時段」加總人流量，並處理月份總天數（舊版語法相容）
+                        Visitors_Hourly AS (
+                            SELECT 
+                                TT002,
+                                STORESNAME,
+                                YEARS,
+                                MONTHS,
+                                Fdate1,
+                                HOURS,
+                                -- 相容舊版 SQL Server 的「該月總天數」計算
+                                DAY(DATEADD(month, DATEDIFF(month, 0, CONVERT(DATETIME, CONVERT(NVARCHAR(4), YEARS) + '/' + CONVERT(NVARCHAR(4), MONTHS) + '/1')) + 1, -1)) AS DAYSS,
+                                SUM(
+                                    CASE 
+                                        WHEN TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
+                                            THEN (Fin_data + Fout_data) / 2.0
+                                        WHEN TT002 = '106701' 
+                                            THEN Fout_data
+                                        ELSE 0
+                                    END
+                                ) AS NUMS
+                            FROM [TKMK].[dbo].[View_t_visitors] WITH(NOLOCK)
+                            WHERE YEARS = @YEARS AND MONTHS = @MONTHS
+                              AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                            GROUP BY TT002, STORESNAME, YEARS, MONTHS, Fdate1, HOURS
+                        ),
+
+                        -- 2. 預先按「門市 + 日期 + 時段」加總 POS 交易資料 (一次取出 SUM 與 COUNT)
+                        POSTA_Hourly AS (
+                            SELECT 
+                                TA002 AS TT002,
+                                TA004 AS Fdate1,
+                                HHS,
+                                SUM(ISNULL(TA026, 0)) AS SUMTA026,
+                                COUNT(TA026) AS COUNTSTA026
+                            FROM [TK].[dbo].[POSTA] WITH(NOLOCK)
+                            WHERE TA004 >= @SDATES AND TA004 <= @EDATES
+                              AND TA002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                            GROUP BY TA002, TA004, HHS
+                        )
+
+                        INSERT INTO [TKMK].[dbo].[Visitors_Month_Hours]
+                        (
+                        [代號]
+                        ,[門市]
+                        ,[年度]
+                        ,[月份]
+                        ,[時段]
+                        ,[天數]
+                        ,[來客數]
+                        ,[銷售總金額POS機]
+                        ,[成交筆數]
+                        ,[提袋率]
+                        ,[平均客單價]
+                        )
+
+                        -- 3. 主查詢：按門市、年月、小時進行最終彙總與指標計算
+                        SELECT 
+                            V.TT002 代號,
+                            V.STORESNAME 門市,
+                            V.YEARS 年度,
+                            V.MONTHS 月份,
+                            V.HOURS 時段,
+                            V.DAYSS 天數,
+                            SUM(V.NUMS) AS 來客數,
+                            ISNULL(SUM(P.SUMTA026), 0) AS 銷售總金額POS機,
+                            ISNULL(SUM(P.COUNTSTA026), 0) AS 成交筆數,
+    
+                            -- 提袋率/轉化率 (PCTS) 計算 (使用 NULLIF 防範除以 0)
+                            ROUND(
+                                ISNULL(SUM(P.COUNTSTA026), 0) * 1.0 / NULLIF(SUM(V.NUMS), 0), 
+                                4
+                            ) AS 提袋率,
+    
+                            -- 平均客單價 (AVGTA026) 計算 (使用 NULLIF 防範除以 0)
+                            (CASE WHEN ISNULL(SUM(P.COUNTSTA026), 0)>0 THEN  (ISNULL(SUM(P.SUMTA026), 0) / NULLIF(SUM(P.COUNTSTA026), 0)) ELSE 0 END ) AS 平均客單價
+
+                        FROM Visitors_Hourly V
+                        LEFT JOIN POSTA_Hourly P 
+                               ON V.TT002 = P.TT002 
+                              AND V.Fdate1 = P.Fdate1 
+                              AND RIGHT('00' + CAST(V.HOURS AS VARCHAR), 2) = P.HHS
+
+                        GROUP BY V.TT002, V.STORESNAME, V.YEARS, V.MONTHS, V.HOURS, V.DAYSS
+                        ORDER BY V.TT002, V.STORESNAME, V.YEARS, V.MONTHS, CONVERT(INT, V.HOURS);
+
+                    ");
+
+                    using (SqlCommand cmd = new SqlCommand(SQLEXE.ToString(), sqlConn))
+                    {
+                        cmd.CommandTimeout = 300;
+                        cmd.CommandType = CommandType.Text;
+
+                        cmd.Parameters.AddWithValue("@YEARS", YEARS);
+                        cmd.Parameters.AddWithValue("@MONTHS", MONTHS);
+                        cmd.Parameters.AddWithValue("@SDATES", SDATES);
+                        cmd.Parameters.AddWithValue("@EDATES", EDATES);
+
+                        sqlConn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -1524,6 +1652,7 @@ namespace TKKPI
 
             ADD_Visitors_Monthly(YEARS);
             ADD_Visitors_Weeks(YEARS);
+            ADD_Visitors_Month_Hours(YEARS, MONTHS);
 
             MessageBox.Show("完成");
         }
