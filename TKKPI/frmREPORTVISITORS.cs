@@ -65,9 +65,11 @@ namespace TKKPI
 
             DateTime monday = today.AddDays(-1 * diff).AddDays(-7);
             DateTime sunday = monday.AddDays(6);
+            DateTime LASTMONTHS = today.AddMonths(-1);
 
             dateTimePicker5.Value = monday;
             dateTimePicker8.Value = sunday;
+            dateTimePicker11.Value = LASTMONTHS;
         }
         public void SETFASTREPORT()
         {
@@ -1775,10 +1777,70 @@ namespace TKKPI
             report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
 
 
+            //年報表
             TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
             table.SelectCommand = REPORT_SQL(YEARS, MONTHS);
-
-
+            //月報表
+            TableDataSource table1 = report1.GetDataSource("table1") as TableDataSource;
+            table1.SelectCommand = REPORT_SQL1(YEARS, MONTHS);
+            //跟上月相比
+            TableDataSource table2 = report1.GetDataSource("Table2") as TableDataSource;
+            table2.SelectCommand = REPORT_SQL2(YEARS, MONTHS);
+            //去年同月報表
+            TableDataSource table3 = report1.GetDataSource("Table3") as TableDataSource;
+            table3.SelectCommand = REPORT_SQL3(YEARS, MONTHS);
+            //各店月報表
+            TableDataSource table4 = report1.GetDataSource("Table4") as TableDataSource;
+            table4.SelectCommand = REPORT_SQL4(YEARS, MONTHS,"106501");
+            TableDataSource table5 = report1.GetDataSource("Table5") as TableDataSource;
+            table5.SelectCommand = REPORT_SQL4(YEARS, MONTHS, "106502");
+            TableDataSource table6 = report1.GetDataSource("Table6") as TableDataSource; 
+            table6.SelectCommand = REPORT_SQL4(YEARS, MONTHS, "106503");
+            TableDataSource table7 = report1.GetDataSource("Table7") as TableDataSource;
+            table7.SelectCommand = REPORT_SQL4(YEARS, MONTHS, "106504");
+            TableDataSource table8 = report1.GetDataSource("Table8") as TableDataSource;
+            table8.SelectCommand = REPORT_SQL4(YEARS, MONTHS, "106701");
+            TableDataSource table9 = report1.GetDataSource("Table9") as TableDataSource;
+            table9.SelectCommand = REPORT_SQL4(YEARS, MONTHS, "106702");
+            //各店週報表
+            TableDataSource table10 = report1.GetDataSource("Table10") as TableDataSource;
+            table10.SelectCommand = REPORT_SQL10(YEARS, MONTHS,"106501");
+            TableDataSource table11 = report1.GetDataSource("Table11") as TableDataSource;
+            table11.SelectCommand = REPORT_SQL10(YEARS, MONTHS, "106502");
+            TableDataSource table12 = report1.GetDataSource("Table12") as TableDataSource;
+            table12.SelectCommand = REPORT_SQL10(YEARS, MONTHS, "106503");
+            TableDataSource table13 = report1.GetDataSource("Table13") as TableDataSource;
+            table13.SelectCommand = REPORT_SQL10(YEARS, MONTHS, "106504");
+            TableDataSource table14 = report1.GetDataSource("Table14") as TableDataSource;
+            table14.SelectCommand = REPORT_SQL10(YEARS, MONTHS, "106701");
+            TableDataSource table15 = report1.GetDataSource("Table15") as TableDataSource;
+            table15.SelectCommand = REPORT_SQL10(YEARS, MONTHS, "106702");
+            //各店時段報表
+            TableDataSource table16 = report1.GetDataSource("Table16") as TableDataSource;
+            table16.SelectCommand = REPORT_SQL16(YEARS, MONTHS, "106501");
+            TableDataSource table17 = report1.GetDataSource("Table17") as TableDataSource;
+            table17.SelectCommand = REPORT_SQL16(YEARS, MONTHS, "106502");
+            TableDataSource table18 = report1.GetDataSource("Table18") as TableDataSource;
+            table18.SelectCommand = REPORT_SQL16(YEARS, MONTHS, "106503");
+            TableDataSource table19 = report1.GetDataSource("Table19") as TableDataSource;
+            table19.SelectCommand = REPORT_SQL16(YEARS, MONTHS, "106504");
+            TableDataSource table20 = report1.GetDataSource("Table20") as TableDataSource;
+            table20.SelectCommand = REPORT_SQL16(YEARS, MONTHS, "106701");
+            TableDataSource table21 = report1.GetDataSource("Table21") as TableDataSource;
+            table21.SelectCommand = REPORT_SQL16(YEARS, MONTHS, "106702");
+            //各店星期報表
+            TableDataSource table22 = report1.GetDataSource("Table22") as TableDataSource;
+            table22.SelectCommand = REPORT_SQL22(YEARS, MONTHS,"106501");
+            TableDataSource table23 = report1.GetDataSource("Table23") as TableDataSource;
+            table23.SelectCommand = REPORT_SQL22(YEARS, MONTHS, "106502");
+            TableDataSource table24 = report1.GetDataSource("Table24") as TableDataSource;
+            table24.SelectCommand = REPORT_SQL22(YEARS, MONTHS, "106503");
+            TableDataSource table25 = report1.GetDataSource("Table25") as TableDataSource;
+            table25.SelectCommand = REPORT_SQL22(YEARS, MONTHS, "106504");
+            TableDataSource table26 = report1.GetDataSource("Table26") as TableDataSource;
+            table26.SelectCommand = REPORT_SQL22(YEARS, MONTHS, "106701");
+            TableDataSource table27 = report1.GetDataSource("Table27") as TableDataSource;
+            table27.SelectCommand = REPORT_SQL22(YEARS, MONTHS, "106702");
 
             report1.Preview = previewControl8;
             report1.Show();
@@ -1813,7 +1875,654 @@ namespace TKKPI
             return SQL1.ToString();
         }
 
+        public string REPORT_SQL1(string YEARS, string MONTHS)
+        {    
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                SELECT 
+                                [代號]
+                                ,[門市]
+                                ,[年度]
+                                ,[月份]
+                                ,[來客數]
+                                ,[銷售總金額POS機]
+                                ,[成交筆數]
+                                ,[提袋率]
+                                ,[平均客單價]
+                                ,[實際的成交筆數]
+                                ,[實際的銷售總金額POS機]
+                                ,[實際的平均客單價]
+                                FROM [TKMK].[dbo].[Visitors_Monthly]
+                                WHERE [年度]='{0}' AND [月份]='{1}'
+                                ORDER BY [代號]
+                
+                                ", YEARS, MONTHS);
 
+            return SQL1.ToString();
+        }
+        public string REPORT_SQL2(string YEARS, string MONTHS)
+        {
+            string LAST_YEARS= (Convert.ToInt32(YEARS) - 1).ToString();
+            string LAST_MONTHS = (Convert.ToInt32(MONTHS) - 1).ToString();
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                --20260804 來客數月份差異
+
+                                DECLARE @YEARS NVARCHAR(4) = '{0}';       -- 本月年度
+                                DECLARE @MONTHS NVARCHAR(2) = '{1}';         -- 本月月份
+
+                                DECLARE @LAST_YEARS NVARCHAR(4) = '{2}';  -- 上月年度
+                                DECLARE @LAST_MONTHS NVARCHAR(2) = '{3}';    -- 上月月份
+
+                                WITH LatestData AS (
+                                    SELECT 
+                                        [代號],
+                                        [門市],
+                                        [年度],
+                                        [月份],
+                                        CAST([月份] AS INT) AS MM,
+                                        ISNULL([來客數], 0) AS [來客數],
+                                        ISNULL([銷售總金額POS機], 0) AS [銷售金額],
+                                        ISNULL([成交筆數], 0) AS [成交筆數],
+                                        ISNULL([提袋率], 0) AS [提袋率],
+                                        ISNULL([平均客單價], 0) AS [平均客單價]
+                                    FROM [TKMK].[dbo].[Visitors_Monthly]
+                                    WHERE [年度] = @YEARS 
+                                      AND [月份] = @MONTHS
+                                ),
+                                PreviousData AS (
+                                    SELECT 
+                                        [代號],
+                                        ISNULL([來客數], 0) AS [來客數],
+                                        ISNULL([銷售總金額POS機], 0) AS [銷售金額],
+                                        ISNULL([成交筆數], 0) AS [成交筆數],
+                                        ISNULL([提袋率], 0) AS [提袋率],
+                                        ISNULL([平均客單價], 0) AS [平均客單價]
+                                    FROM [TKMK].[dbo].[Visitors_Monthly]
+                                    WHERE [年度] = @LAST_YEARS 
+                                      AND [月份] = @LAST_MONTHS
+                                )
+
+                                -- 1. 本月資料列
+                                SELECT 
+                                    L.[代號],
+                                    L.[門市],
+                                    L.[年度],
+                                    L.[月份],
+                                    L.MM,
+                                    '1_本月' AS [類別],
+                                    L.[來客數],
+                                    L.[銷售金額] AS [銷售總金額POS機],
+                                    L.[成交筆數],
+                                    ROUND(L.[提袋率], 4) AS [提袋率],
+                                    ROUND(L.[平均客單價], 2) AS [平均客單價]
+                                FROM LatestData L
+
+                                UNION ALL
+
+                                -- 2. 上月資料列
+                                SELECT 
+                                    L.[代號],
+                                    L.[門市],
+                                    L.[年度],
+                                    @LAST_MONTHS,
+                                    L.MM,
+                                    '2_上月' AS [類別],
+                                    ISNULL(P.[來客數], 0) AS [來客數],
+                                    ISNULL(P.[銷售金額], 0) AS [銷售總金額POS機],
+                                    ISNULL(P.[成交筆數], 0) AS [成交筆數],
+                                    ROUND(ISNULL(P.[提袋率], 0), 4) AS [提袋率],
+                                    ROUND(ISNULL(P.[平均客單價], 0), 2) AS [平均客單價]
+                                FROM LatestData L
+                                LEFT JOIN PreviousData P ON L.[代號] = P.[代號]
+
+                                UNION ALL
+
+                                -- 3. 差異數小計列 (直接相減 - 看指標增減點數/金額)
+                                SELECT 
+                                    L.[代號],
+                                    L.[門市],
+                                    L.[年度],
+                                    L.[月份],
+                                    L.MM,
+                                    '3_差異數' AS [類別],
+                                    (L.[來客數] - ISNULL(P.[來客數], 0)) AS [來客數],
+                                    (L.[銷售金額] - ISNULL(P.[銷售金額], 0)) AS [銷售總金額POS機],
+                                    (L.[成交筆數] - ISNULL(P.[成交筆數], 0)) AS [成交筆數],
+                                    -- 提袋率增減點數 (本月提袋率 - 上月提袋率)
+                                    ROUND(L.[提袋率] - ISNULL(P.[提袋率], 0), 4) AS [提袋率],
+                                    -- 平均客單價增減金額 (本月客單價 - 上月客單價)
+                                    ROUND(L.[平均客單價] - ISNULL(P.[平均客單價], 0), 2) AS [平均客單價]
+                                FROM LatestData L
+                                LEFT JOIN PreviousData P ON L.[代號] = P.[代號]
+
+                                ORDER BY 
+                                    L.[代號],
+                                    L.MM,
+                                    [類別];
+
+   
+                
+                                ", YEARS,MONTHS, LAST_YEARS, LAST_MONTHS);
+
+            return SQL1.ToString();
+        }
+        public string REPORT_SQL3(string YEARS, string MONTHS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                -- 宣告參數
+                                DECLARE @YEARS VARCHAR(4) = '{0}';
+                                DECLARE @MONTHS INT = {1};
+
+                                -- 計算前一年年度
+                                DECLARE @PREV_YEARS VARCHAR(4) = CAST(CAST(@YEARS AS INT) - 1 AS VARCHAR(4));
+
+                                WITH 
+                                -- 1. 抓取今年與去年的基礎資料
+                                Base_Data AS (
+                                    SELECT 
+                                        [代號],
+                                        [門市],
+                                        CAST([年度] AS VARCHAR(10)) AS [年度],
+                                        CAST([月份] AS INT) AS [月份數值],
+                                        CAST([月份] AS VARCHAR(10)) AS [月份],
+                                        [來客數],
+                                        [銷售總金額POS機],
+                                        [成交筆數],
+                                        [提袋率],
+                                        [平均客單價]
+                                    FROM [TKMK].[dbo].[Visitors_Monthly] WITH(NOLOCK)
+                                    WHERE [年度] IN (@YEARS, @PREV_YEARS)
+                                      AND CAST([月份] AS INT) = @MONTHS
+                                )
+
+                                -- 2. 上下串接：今年數據 + 去年數據 + 兩者差異
+                                SELECT 
+                                    CAST([代號] AS VARCHAR(20)) AS [代號],
+                                    CAST([門市] AS VARCHAR(50)) AS [門市],
+                                    CAST([年度] + '年' + [月份] + '月' AS VARCHAR(50)) AS [統計期間],
+                                    1 AS [排序序號],
+                                    [來客數],
+                                    [銷售總金額POS機],
+                                    [成交筆數],
+                                    ROUND([提袋率], 4) AS [提袋率],
+                                    ROUND([平均客單價], 2) AS [平均客單價]
+                                FROM Base_Data
+                                WHERE [年度] = @YEARS
+
+                                UNION ALL
+
+                                SELECT 
+                                    CAST([代號] AS VARCHAR(20)),
+                                    CAST([門市] AS VARCHAR(50)),
+                                    CAST([年度] + '年' + [月份] + '月' AS VARCHAR(50)),
+                                    2 AS [排序序號],
+                                    [來客數],
+                                    [銷售總金額POS機],
+                                    [成交筆數],
+                                    ROUND([提袋率], 4),
+                                    ROUND([平均客單價], 2)
+                                FROM Base_Data
+                                WHERE [年度] = @PREV_YEARS
+
+                                UNION ALL
+
+                                -- 3. 計算差異列 (今年 - 去年)
+                                SELECT 
+                                    CAST(Curr.[代號] AS VARCHAR(20)),
+                                    CAST(Curr.[門市] AS VARCHAR(50)),
+                                    CAST('差異 (YoY)' AS VARCHAR(50)),
+                                    3 AS [排序序號],
+    
+                                    (Curr.[來客數] - ISNULL(Prev.[來客數], 0)),
+                                    (Curr.[銷售總金額POS機] - ISNULL(Prev.[銷售總金額POS機], 0)),
+                                    (Curr.[成交筆數] - ISNULL(Prev.[成交筆數], 0)),
+                                    ROUND(Curr.[提袋率] - ISNULL(Prev.[提袋率], 0), 4),
+                                    ROUND(Curr.[平均客單價] - ISNULL(Prev.[平均客單價], 0), 2)
+
+                                FROM Base_Data Curr
+                                LEFT JOIN Base_Data Prev 
+                                       ON Curr.[代號] = Prev.[代號] 
+                                      AND Prev.[年度] = @PREV_YEARS
+                                WHERE Curr.[年度] = @YEARS
+
+                                -- 按門市排序，確保每個門市的「今年、去年、差異」緊連在一起
+                                ORDER BY [代號], [排序序號];
+                                ", YEARS,MONTHS);
+
+            return SQL1.ToString();
+        }
+        public string REPORT_SQL4(string YEARS, string MONTHS, string STORE_ID)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                SELECT 
+                                [代號]
+                                ,[門市]
+                                ,[年度]
+                                ,[月份]
+                                ,[來客數]
+                                ,[銷售總金額POS機]
+                                ,[成交筆數]
+                                ,[提袋率]
+                                ,[平均客單價]
+                                ,[實際的成交筆數]
+                                ,[實際的銷售總金額POS機]
+                                ,[實際的平均客單價]
+                                FROM [TKMK].[dbo].[Visitors_Monthly]
+                                WHERE [年度]='{0}'  AND [月份]<='{1}'
+                                AND [代號]='{2}'
+                                ORDER BY [代號],[月份]                
+                                ", YEARS, MONTHS, STORE_ID);
+
+            return SQL1.ToString();
+        }
+        public string REPORT_SQL5(string YEARS, string MONTHS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                SELECT 
+                                [代號]
+                                ,[門市]
+                                ,[年度]
+                                ,[月份]
+                                ,[來客數]
+                                ,[銷售總金額POS機]
+                                ,[成交筆數]
+                                ,[提袋率]
+                                ,[平均客單價]
+                                ,[實際的成交筆數]
+                                ,[實際的銷售總金額POS機]
+                                ,[實際的平均客單價]
+                                FROM [TKMK].[dbo].[Visitors_Monthly]
+                                WHERE [年度]='{0}'  AND [月份]<='{1}'
+                                AND [代號]='106502'
+                                ORDER BY [代號],[月份]                
+                                ", YEARS, MONTHS);
+            return SQL1.ToString();
+        }
+        public string REPORT_SQL6(string YEARS, string MONTHS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                SELECT 
+                                [代號]
+                                ,[門市]
+                                ,[年度]
+                                ,[月份]
+                                ,[來客數]
+                                ,[銷售總金額POS機]
+                                ,[成交筆數]
+                                ,[提袋率]
+                                ,[平均客單價]
+                                ,[實際的成交筆數]
+                                ,[實際的銷售總金額POS機]
+                                ,[實際的平均客單價]
+                                FROM [TKMK].[dbo].[Visitors_Monthly]
+                                WHERE [年度]='{0}'  AND [月份]<='{1}'
+                                AND [代號]='106503'
+                                ORDER BY [代號],[月份]                
+                                ", YEARS, MONTHS);
+            return SQL1.ToString();
+        }
+        public string REPORT_SQL7(string YEARS, string MONTHS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                SELECT 
+                                [代號]
+                                ,[門市]
+                                ,[年度]
+                                ,[月份]
+                                ,[來客數]
+                                ,[銷售總金額POS機]
+                                ,[成交筆數]
+                                ,[提袋率]
+                                ,[平均客單價]
+                                ,[實際的成交筆數]
+                                ,[實際的銷售總金額POS機]
+                                ,[實際的平均客單價]
+                                FROM [TKMK].[dbo].[Visitors_Monthly]
+                                WHERE [年度]='{0}'  AND [月份]<='{1}'
+                                AND [代號]='106504'
+                                ORDER BY [代號],[月份]                
+                                ", YEARS, MONTHS);
+            return SQL1.ToString();
+        }
+        public string REPORT_SQL8(string YEARS, string MONTHS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                SELECT 
+                                [代號]
+                                ,[門市]
+                                ,[年度]
+                                ,[月份]
+                                ,[來客數]
+                                ,[銷售總金額POS機]
+                                ,[成交筆數]
+                                ,[提袋率]
+                                ,[平均客單價]
+                                ,[實際的成交筆數]
+                                ,[實際的銷售總金額POS機]
+                                ,[實際的平均客單價]
+                                FROM [TKMK].[dbo].[Visitors_Monthly]
+                                WHERE [年度]='{0}'  AND [月份]<='{1}'
+                                AND [代號]='106701'
+                                ORDER BY [代號],[月份]                
+                                ", YEARS, MONTHS);
+
+            return SQL1.ToString();
+        }
+        public string REPORT_SQL9(string YEARS, string MONTHS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                SELECT 
+                                [代號]
+                                ,[門市]
+                                ,[年度]
+                                ,[月份]
+                                ,[來客數]
+                                ,[銷售總金額POS機]
+                                ,[成交筆數]
+                                ,[提袋率]
+                                ,[平均客單價]
+                                ,[實際的成交筆數]
+                                ,[實際的銷售總金額POS機]
+                                ,[實際的平均客單價]
+                                FROM [TKMK].[dbo].[Visitors_Monthly]
+                                WHERE [年度]='{0}'  AND [月份]<='{1}'
+                                AND [代號]='106702'
+                                ORDER BY [代號],[月份]                
+                                ", YEARS, MONTHS);
+            return SQL1.ToString();
+        }
+        public string REPORT_SQL10(string YEARS, string MONTHS,string STOREID)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                --20260804  來客數週次
+                                DECLARE @YEARS NVARCHAR(4) = '{0}';       -- 本月年度
+
+                                SELECT 
+                                    [代號],
+                                    [門市],
+                                    [年度],
+                                    [週次],
+                                    [來客數],
+                                    [銷售總金額POS機],
+                                    [成交筆數],
+                                    [提袋率],
+                                    [平均客單價]
+                                FROM 
+                                (
+                                    -- 1. 各門市每週明細
+                                    SELECT 
+                                        CAST([代號] AS VARCHAR(20)) AS [代號],
+                                        [門市],
+                                        CAST([年度] AS VARCHAR(10)) AS [年度],
+                                        CAST([週次] AS VARCHAR(10)) AS [週次],
+                                        CAST([來客數] AS FLOAT)         AS [來客數],
+                                        CAST([銷售總金額POS機] AS FLOAT) AS [銷售總金額POS機],
+                                        CAST([成交筆數] AS FLOAT)       AS [成交筆數],
+                                        CAST([提袋率] AS FLOAT)         AS [提袋率],
+                                        CAST([平均客單價] AS FLOAT)     AS [平均客單價],
+                                        0 AS [SortOrder]
+                                    FROM [TKMK].[dbo].[Visitors_Weeks]
+                                    WHERE [年度] =@YEARS
+
+                                    UNION ALL
+
+                                    -- 2. 近4週平均值
+                                    SELECT 
+                                        CAST([代號] AS VARCHAR(20)) AS [代號],
+                                        [門市],
+                                        @YEARS AS [年度],
+                                        '近4週平均' AS [週次],
+                                        AVG(CAST([來客數] AS FLOAT))         AS [來客數],
+                                        AVG(CAST([銷售總金額POS機] AS FLOAT)) AS [銷售總金額POS機],
+                                        AVG(CAST([成交筆數] AS FLOAT))       AS [成交筆數],
+                                        AVG(CAST([提袋率] AS FLOAT))         AS [提袋率],
+                                        AVG(CAST([平均客單價] AS FLOAT))     AS [平均客單價],
+                                        1 AS [SortOrder] -- 排在全部平均的上或下，這裡設為 1
+                                    FROM (
+                                        SELECT *,
+                                               ROW_NUMBER() OVER (PARTITION BY [門市] ORDER BY [週次] DESC) AS [RowSeq]
+                                        FROM [TKMK].[dbo].[Visitors_Weeks]
+                                        WHERE [年度] =@YEARS
+                                    ) AS Last4Weeks
+                                    WHERE [RowSeq] <= 4
+                                    GROUP BY [代號], [門市]
+
+                                    UNION ALL
+
+                                    -- 3. 各門市全年度平均值
+                                    SELECT 
+                                        CAST([代號] AS VARCHAR(20)) AS [代號],
+                                        [門市],
+                                        @YEARS AS [年度],
+                                        '全門市平均' AS [週次],
+                                        AVG(CAST([來客數] AS FLOAT))         AS [來客數],
+                                        AVG(CAST([銷售總金額POS機] AS FLOAT)) AS [銷售總金額POS機],
+                                        AVG(CAST([成交筆數] AS FLOAT))       AS [成交筆數],
+                                        AVG(CAST([提袋率] AS FLOAT))         AS [提袋率],
+                                        AVG(CAST([平均客單價] AS FLOAT))     AS [平均客單價],
+                                        2 AS [SortOrder] -- 排在近4週平均下方
+                                    FROM [TKMK].[dbo].[Visitors_Weeks]
+                                    WHERE [年度] = @YEARS
+                                    GROUP BY [代號], [門市]
+                                ) AS T
+                                WHERE [代號]='{1}'
+                                ORDER BY 
+                                    [代號],
+                                    [門市], 
+                                    [SortOrder], 
+                                    CASE 
+                                        WHEN ISNUMERIC([週次]) = 1 THEN CAST([週次] AS INT) 
+                                        ELSE 999 
+                                    END;
+                
+                                ", YEARS, STOREID);
+
+            return SQL1.ToString();
+        }
+        
+        public string REPORT_SQL16(string YEARS, string MONTHS,string STOREID)
+        {
+            string SDATES = YEARS + "0101";
+            string EDATES = YEARS + "1231";
+
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                DECLARE @YEARS NVARCHAR(4) = '{0}';       -- 本月年度
+                                DECLARE @MONTHS NVARCHAR(4) = '{1}';       -- 本月月份
+                                DECLARE @SDATES NVARCHAR(8) = '{2}';         -- @SDATES
+                                DECLARE @EDATES NVARCHAR(8) = '{3}';         -- @EDATES
+                                WITH 
+                                -- 1. 預先按「門市 + 日期 + 時段」加總人流量，並處理月份總天數（舊版語法相容）
+                                Visitors_Hourly AS (
+                                    SELECT 
+                                        TT002,
+                                        STORESNAME,
+                                        YEARS,
+                                        MONTHS,
+                                        Fdate1,
+                                        HOURS,
+                                        -- 相容舊版 SQL Server 的「該月總天數」計算
+                                        DAY(DATEADD(month, DATEDIFF(month, 0, CONVERT(DATETIME, CONVERT(NVARCHAR(4), YEARS) + '/' + CONVERT(NVARCHAR(4), MONTHS) + '/1')) + 1, -1)) AS DAYSS,
+                                        SUM(
+                                            CASE 
+                                                WHEN TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
+                                                    THEN (Fin_data + Fout_data) / 2.0
+                                                WHEN TT002 = '106701' 
+                                                    THEN Fout_data
+                                                ELSE 0
+                                            END
+                                        ) AS NUMS
+                                    FROM [TKMK].[dbo].[View_t_visitors] WITH(NOLOCK)
+                                    WHERE YEARS = @YEARS AND MONTHS=@MONTHS
+                                      AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                                    GROUP BY TT002, STORESNAME, YEARS, MONTHS, Fdate1, HOURS
+                                ),
+
+                                -- 2. 預先按「門市 + 日期 + 時段」加總 POS 交易資料 (一次取出 SUM 與 COUNT)
+                                POSTA_Hourly AS (
+                                    SELECT 
+                                        TA002 AS TT002,
+                                        TA004 AS Fdate1,
+                                        HHS,
+                                        SUM(ISNULL(TA026, 0)) AS SUMTA026,
+                                        COUNT(TA026) AS COUNTSTA026
+                                    FROM [TK].[dbo].[POSTA] WITH(NOLOCK)
+                                    WHERE TA004 >= @SDATES
+                                        AND TA004 <=@EDATES
+                                      AND TA002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                                    GROUP BY TA002, TA004, HHS
+                                )
+
+                                -- 3. 主查詢：按門市、年月、小時進行最終彙總與指標計算
+                                SELECT 
+                                    V.TT002 代號,
+                                    V.STORESNAME 門市,
+                                    V.YEARS 年度,
+                                    V.MONTHS 月份,
+                                    V.HOURS 時段,
+                                    V.DAYSS 天數,
+                                    SUM(V.NUMS) AS 來客數,
+                                    ISNULL(SUM(P.SUMTA026), 0) AS 銷售總金額POS機,
+                                    ISNULL(SUM(P.COUNTSTA026), 0) AS 成交筆數,
+    
+                                    -- 提袋率/轉化率 (PCTS) 計算 (使用 NULLIF 防範除以 0)
+                                    ROUND(
+                                        ISNULL(SUM(P.COUNTSTA026), 0) * 1.0 / NULLIF(SUM(V.NUMS), 0), 
+                                        4
+                                    ) AS 提袋率,
+    
+                                    -- 平均客單價 (AVGTA026) 計算 (使用 NULLIF 防範除以 0)
+                                    (CASE WHEN ISNULL(SUM(P.COUNTSTA026), 0)>0 THEN  (ISNULL(SUM(P.SUMTA026), 0) / NULLIF(SUM(P.COUNTSTA026), 0)) ELSE 0 END ) AS 平均客單價
+
+                                FROM Visitors_Hourly V
+                                LEFT JOIN POSTA_Hourly P 
+                                       ON V.TT002 = P.TT002 
+                                      AND V.Fdate1 = P.Fdate1 
+                                      AND RIGHT('00' + CAST(V.HOURS AS VARCHAR), 2) = P.HHS
+                                WHERE  V.TT002='{4}'
+                                GROUP BY V.TT002, V.STORESNAME, V.YEARS, V.MONTHS, V.HOURS, V.DAYSS
+                                ORDER BY V.TT002, V.STORESNAME, V.YEARS, V.MONTHS, CONVERT(INT, V.HOURS);
+
+                
+                                ", YEARS,MONTHS,SDATES,EDATES, STOREID);
+
+            return SQL1.ToString();
+        }
+       
+        public string REPORT_SQL22(string YEARS, string MONTHS,string STOREID)
+        {
+            string SDATES = YEARS + "0101";
+            string EDATES = YEARS + "1231";
+            StringBuilder SQL1 = new StringBuilder();
+            SQL1.AppendFormat(@"
+                                DECLARE @YEARS NVARCHAR(4) = '{0}';       -- 本月年度
+                                DECLARE @MONTHS NVARCHAR(4) = '{1}';       -- 本月月份
+                                DECLARE @SDATES NVARCHAR(8) = '{2}';         -- @SDATES
+                                DECLARE @EDATES NVARCHAR(8) = '{3}';         -- @EDATES
+
+                                WITH 
+                                -- 1. 預先按「門市 + 日期」加總每日人流量，並擷取星期幾
+                                Visitors_Daily AS (
+                                    SELECT 
+                                        TT002 ,
+                                        STORESNAME ,
+                                        YEARS ,
+                                        MONTHS ,
+                                        WEEKS ,
+                                        Fdate1 ,
+                                        DAYOFWEEK,
+                                        DATEPART(WEEKDAY, Fdate1) AS WEEKDAY_ORIG,
+                                        SUM(
+                                            CASE 
+                                                WHEN TT002 IN ('106501','106502','106503','106504','106513','106702','106703','106704','106705') 
+                                                    THEN (Fin_data + Fout_data) / 2.0
+                                                WHEN TT002 = '106701' 
+                                                    THEN Fout_data
+                                                ELSE 0
+                                            END
+                                        ) AS NUMS
+                                    FROM [TKMK].[dbo].[View_t_visitors] WITH(NOLOCK)
+                                    WHERE YEARS = @YEARS
+                                      AND MONTHS = @MONTHS
+                                      AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                                    GROUP BY TT002, STORESNAME, YEARS, MONTHS, WEEKS, Fdate1, DAYOFWEEK
+                                ),
+
+                                -- 2. 預先按「門市 + 日期」加總 POS 銷售資料 (一次算出 TT018 與 TT008)
+                                POSTT_Daily AS (
+                                    SELECT 
+                                        TT002,
+                                        TT001 AS Fdate1,
+                                        SUM(ISNULL(TT018, 0)) AS SUMTT011,
+                                        SUM(ISNULL(TT008, 0)) AS SUMTT008
+                                    FROM [TK].[dbo].[POSTT] WITH(NOLOCK)
+                                    WHERE TT001 >= @SDATES
+                                        AND TT001 <= @EDATES
+                                      AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
+                                    GROUP BY TT002, TT001
+                                )
+
+                                -- 3. 主查詢：按「星期幾」進行統計彙總
+                                SELECT 
+                                    V.TT002 代號,
+                                    V.STORESNAME 門市,
+                                    V.YEARS 年度,
+                                    V.MONTHS 月份,
+    
+                                    -- 不重複週數（代表該月出現過幾次這個星期幾）
+                                    COUNT(DISTINCT V.WEEKS) AS 週數,
+                                    V.DAYOFWEEK 星期,
+    
+                                    SUM(V.NUMS) AS 來客數,
+                                    ISNULL(SUM(P.SUMTT011), 0) AS 銷售總金額POS機,
+                                    ISNULL(SUM(P.SUMTT008), 0) AS 成交筆數,
+    
+                                    -- 每週平均人流 (NUMSAVGS)：總人流 / 不重複週數
+                                    SUM(V.NUMS) / NULLIF(COUNT(DISTINCT V.WEEKS), 0) AS 每週來客數,
+    
+                                    -- 提袋率 (PCTS)：交易筆數 / 總人流
+                                    ISNULL(SUM(P.SUMTT008), 0) / NULLIF(SUM(V.NUMS), 0) AS 提袋率,
+    
+                                    -- 客單價 (AVGTT011)：總金額 / 交易筆數
+                                    ISNULL(SUM(P.SUMTT011), 0) / NULLIF(SUM(P.SUMTT008), 0) AS 平均客單價,
+    
+                                    -- 將星期日 (WEEKDAY=1) 移至最後面 (99) 的排序邏輯
+                                    CASE WHEN V.WEEKDAY_ORIG = 1 THEN 99 ELSE V.WEEKDAY_ORIG END AS WEEKDAY
+
+                                FROM Visitors_Daily V
+                                LEFT JOIN POSTT_Daily P 
+                                       ON V.TT002 = P.TT002 
+                                      AND V.Fdate1 = P.Fdate1
+                                WHERE V.TT002='{4}'
+                                GROUP BY 
+                                    V.TT002, 
+                                    V.STORESNAME, 
+                                    V.YEARS, 
+                                    V.MONTHS, 
+                                    V.DAYOFWEEK, 
+                                    CASE WHEN V.WEEKDAY_ORIG = 1 THEN 99 ELSE V.WEEKDAY_ORIG END
+                                ORDER BY 
+                                    V.TT002, 
+                                    V.STORESNAME, 
+                                    V.YEARS, 
+                                    V.MONTHS, 
+                                    WEEKDAY, 
+                                    V.DAYOFWEEK;
+                
+                                 ", YEARS, MONTHS, SDATES, EDATES, STOREID);
+
+            return SQL1.ToString();
+        }
+        
         #endregion
 
         #region BUTTON

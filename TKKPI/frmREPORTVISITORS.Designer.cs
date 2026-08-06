@@ -431,10 +431,10 @@
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel7.Controls.Add(this.button9, 3, 0);
             this.tableLayoutPanel7.Controls.Add(this.label8, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.dateTimePicker11, 1, 0);
-            this.tableLayoutPanel7.Controls.Add(this.button8, 2, 0);
+            this.tableLayoutPanel7.Controls.Add(this.button9, 2, 0);
+            this.tableLayoutPanel7.Controls.Add(this.button8, 4, 0);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(4);
@@ -471,7 +471,7 @@
             // button8
             // 
             this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button8.Location = new System.Drawing.Point(304, 5);
+            this.button8.Location = new System.Drawing.Point(604, 5);
             this.button8.Margin = new System.Windows.Forms.Padding(4);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(142, 43);
@@ -1037,7 +1037,7 @@
             // button9
             // 
             this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button9.Location = new System.Drawing.Point(454, 5);
+            this.button9.Location = new System.Drawing.Point(304, 5);
             this.button9.Margin = new System.Windows.Forms.Padding(4);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(142, 43);
