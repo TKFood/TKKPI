@@ -25,6 +25,7 @@ using FastReport.Data;
 using TKITDLL;
 using System.Data.SQLite;
 using System.Web;
+using NPOI.OpenXmlFormats.Dml;
 
 namespace TKKPI
 {
@@ -1774,14 +1775,44 @@ namespace TKKPI
             report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
 
 
-            //TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
-            //table.SelectCommand = SQL1.ToString();
+            TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            table.SelectCommand = REPORT_SQL(YEARS, MONTHS);
 
 
 
             report1.Preview = previewControl8;
             report1.Show();
         }
+
+        //年報表
+        public string REPORT_SQL(string YEARS,string MONTHS)
+        {
+            StringBuilder SQL1 = new StringBuilder();
+
+            SQL1.AppendFormat(@"
+                                SELECT 
+                                [代號]
+                                ,[門市]
+                                ,[年度]
+                                ,[月份]
+                                ,[來客數]
+                                ,[銷售總金額POS機]
+                                ,[成交筆數]
+                                ,[提袋率]
+                                ,[平均客單價]
+                                ,[實際的成交筆數]
+                                ,[實際的銷售總金額POS機]
+                                ,[實際的平均客單價]
+                                FROM [TKMK].[dbo].[Visitors_Monthly]
+                                WHERE [年度]='{0}'  AND [月份]<='{1}'
+                                ORDER BY [代號],[月份]
+
+
+                                ", YEARS, MONTHS);
+
+            return SQL1.ToString();
+        }
+
 
         #endregion
 
