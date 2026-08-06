@@ -24,6 +24,7 @@ using FastReport;
 using FastReport.Data;
 using TKITDLL;
 using System.Data.SQLite;
+using System.Web;
 
 namespace TKKPI
 {
@@ -1754,6 +1755,34 @@ namespace TKKPI
             }
         }
 
+        public void SETFASTREPORT9(string YEARS, string MONTHS)
+        {
+            Report report1 = new Report();
+            report1.Load(@"REPORT\營銷來客報表v3.frx");
+
+            //20210902密
+            Class1 TKID = new Class1();//用new 建立類別實體
+            SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
+
+            //資料庫使用者密碼解密
+            sqlsb.Password = TKID.Decryption(sqlsb.Password);
+            sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
+
+            String connectionString;
+            sqlConn = new SqlConnection(sqlsb.ConnectionString);
+
+            report1.Dictionary.Connections[0].ConnectionString = sqlsb.ConnectionString;
+
+
+            //TableDataSource table = report1.GetDataSource("Table") as TableDataSource;
+            //table.SelectCommand = SQL1.ToString();
+
+
+
+            report1.Preview = previewControl8;
+            report1.Show();
+        }
+
         #endregion
 
         #region BUTTON
@@ -1799,6 +1828,13 @@ namespace TKKPI
             ADD_Visitors_Month_Days(YEARS, MONTHS);
 
             MessageBox.Show("完成");
+        }
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string YEARS = dateTimePicker11.Value.Year.ToString();
+            string MONTHS = dateTimePicker11.Value.Month.ToString();
+
+            SETFASTREPORT9(YEARS, MONTHS);
         }
         #endregion
 
