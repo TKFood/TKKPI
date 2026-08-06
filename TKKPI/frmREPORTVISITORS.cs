@@ -1247,7 +1247,7 @@ namespace TKKPI
             report1.Show();
         }
 
-        public void ADD_Visitors_Monthly(string YEARS)
+        public void ADD_Visitors_Monthly(string YEARS,string MONTHS)
         {
             string SDATES = YEARS + "0101";
             string EDATES = YEARS + "1231";
@@ -1285,6 +1285,7 @@ namespace TKKPI
                         ) AS SUMNUMS
                     FROM [TKMK].[dbo].[View_t_visitors] WITH(NOLOCK)
                     WHERE YEARS = @YEARS
+                        AND MONTHS<=@MONTHS
                       AND TT002 IN ('106501','106502','106503','106504','106513','106701','106702','106703','106704','106705')
                     GROUP BY TT002, STORESNAME, YEARS, MONTHS
                 ),
@@ -1351,6 +1352,7 @@ namespace TKKPI
                     cmd.CommandType = CommandType.Text; // ✅ 關鍵修改：改為 CommandType.Text
 
                     cmd.Parameters.AddWithValue("@YEARS", YEARS);
+                    cmd.Parameters.AddWithValue("@MONTHS", MONTHS);
                     cmd.Parameters.AddWithValue("@SDATES", SDATES);
                     cmd.Parameters.AddWithValue("@EDATES", EDATES);
 
@@ -1791,10 +1793,11 @@ namespace TKKPI
             string YEARS=dateTimePicker11.Value.Year.ToString();
             string MONTHS = dateTimePicker11.Value.Month.ToString();
 
-            ADD_Visitors_Monthly(YEARS);
+            ADD_Visitors_Monthly(YEARS, MONTHS);
             ADD_Visitors_Weeks(YEARS);
             ADD_Visitors_Month_Hours(YEARS, MONTHS);
             ADD_Visitors_Month_Days(YEARS, MONTHS);
+
             MessageBox.Show("完成");
         }
         #endregion

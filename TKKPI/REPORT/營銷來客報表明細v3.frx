@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/05/2026 13:57:46" ReportInfo.Modified="08/05/2026 13:59:09" ReportInfo.CreatorVersion="2017.4.1.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqHwzMSgwTFaHpjtG3vsOj8Zy6q+uhwpDsytgWqwZQZyEQUQyQ022aWUGqU90pHzzNS8V+op55d8q+MyIM1gh0M9zlGOgK4zWs8Nahyki0xHW6v1SoNjLsQ40hUEIevZodc4nZn1VMr9PyrOeyOFQcW49yN37Wommt8wACdM4FKHAeO5qqwIh8UI3n9QTXxqWw6E0VObm3gKn/sFBTJGVRtg==">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="&#13;&#10;SELECT &#13;&#10;[代號]&#13;&#10;,[門市]&#13;&#10;,[年度]&#13;&#10;,[月份]&#13;&#10;,[來客數]&#13;&#10;,[銷售總金額POS機]&#13;&#10;,[成交筆數]&#13;&#10;,[提袋率]&#13;&#10;,[平均客單價]&#13;&#10;,[實際的成交筆數]&#13;&#10;,[實際的銷售總金額POS機]&#13;&#10;,[實際的平均客單價]&#13;&#10;FROM [TKMK].[dbo].[Visitors_Monthly]&#13;&#10;WHERE [年度]='2026'  AND [月份]&lt;='7'&#13;&#10;AND [代號]='106501'&#13;&#10;ORDER BY [代號],[月份]&#13;&#10;">
+        <Column Name="代號" DataType="System.String"/>
+        <Column Name="門市" DataType="System.String"/>
+        <Column Name="年度" DataType="System.Int32"/>
+        <Column Name="月份" DataType="System.Int32"/>
+        <Column Name="來客數" DataType="System.Int32"/>
+        <Column Name="銷售總金額POS機" DataType="System.Int32"/>
+        <Column Name="成交筆數" DataType="System.Int32"/>
+        <Column Name="提袋率" DataType="System.Decimal"/>
+        <Column Name="平均客單價" DataType="System.Int32"/>
+        <Column Name="實際的成交筆數" DataType="System.Int32"/>
+        <Column Name="實際的銷售總金額POS機" DataType="System.Int32"/>
+        <Column Name="實際的平均客單價" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="43.13" Width="718.2" Height="28.35"/>
+    <DataBand Name="Data1" Top="76.82" Width="718.2" Height="75.6"/>
+    <PageFooterBand Name="PageFooter1" Top="157.75" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>
