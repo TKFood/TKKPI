@@ -1939,7 +1939,7 @@ namespace TKKPI
                                         ISNULL([提袋率], 0) AS [提袋率],
                                         ISNULL([平均客單價], 0) AS [平均客單價]
                                     FROM [TKMK].[dbo].[Visitors_Monthly]
-                                    WHERE [年度] = @LAST_YEARS 
+                                    WHERE [年度] = @YEARS 
                                       AND [月份] = @LAST_MONTHS
                                 )
 
