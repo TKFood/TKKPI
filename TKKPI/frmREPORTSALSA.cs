@@ -104,6 +104,16 @@ namespace TKKPI
                 report1.Load(@"REPORT\商品銷售-業務門市觀光-淨額V2.frx");
                 SQL1 = SETSQL3(SDAYS, EDAYS);
             }
+            else if (REPORTS.Equals("查業務-數量"))
+            {
+                report1.Load(@"REPORT\商品銷售-業務門市觀光-數量V2.frx");
+                SQL1 = SETSQL4(SDAYS, EDAYS);
+            }
+            else if (REPORTS.Equals("查業務-金額"))
+            {
+                report1.Load(@"REPORT\商品銷售-業務門市觀光-淨額V2.frx");
+                SQL1 = SETSQL4(SDAYS, EDAYS);
+            }
 
 
             //20210902密
@@ -252,6 +262,32 @@ namespace TKKPI
                             AND TB002 LIKE '1067%'
                             AND TB001>='{0}' AND TB001<='{1}'
                             GROUP BY SUBSTRING(TB001,1,4),SUBSTRING(TB001,5,2),TB010,MB002,MB004
+                            ) AS TEMP
+
+                             ", SDAYS, EDAYS);
+
+            return SB;
+
+        }
+
+        public StringBuilder SETSQL4(string SDAYS, string EDAYS)
+        {
+            StringBuilder SB = new StringBuilder();
+            SDAYS = SDAYS + "01";
+            EDAYS = EDAYS + "31";
+
+            SB.AppendFormat(@"   
+                            SELECT *
+                            FROM(
+                                SELECT '業務' AS 'KINDS',SUBSTRING(TG003,1,4) AS 'YEARS',SUBSTRING(TG003,5,2) AS 'MONTHS',TH004,MB002,MB004,SUM(LA011) LA011,SUM(TH037) TH037
+                                FROM [TK].dbo.COPTG,[TK].dbo.COPTH,[TK].dbo.INVLA,[TK].dbo.INVMB
+                                WHERE 1=1
+                                AND TG001=TH001 AND TG002=TH002 
+                                AND LA006=TH001 AND LA007=TH002 AND LA008=TH003
+                                AND TH004=MB001
+                                AND (TH004 LIKE '4%' OR  TH004 LIKE '5%')
+                                AND TG003>='{0}' AND TG003<='{1}'
+                                GROUP BY SUBSTRING(TG003,1,4),SUBSTRING(TG003,5,2),TH004,MB002,MB004                           
                             ) AS TEMP
 
                              ", SDAYS, EDAYS);
