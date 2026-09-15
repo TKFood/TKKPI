@@ -54,7 +54,9 @@ namespace TKKPI
         #region FUNCTION
         public void SETDATE()
         {
+
             dateTimePicker1.Value = DateTime.Now;
+            dateTimePicker2.Value = DateTime.Now;
         }
 
         public void SearchPOS(string SYEARS)
@@ -533,6 +535,263 @@ namespace TKKPI
             }
         }
 
+        public void SearchPOS_DG6(string sYears)
+        {
+            // 檢查輸入參數
+            if (string.IsNullOrWhiteSpace(sYears)) return;
+
+            try
+            {
+                // 取得連線字串並解密
+                var connectionString = ConfigurationManager.ConnectionStrings["dbconn"]?.ConnectionString;
+                if (string.IsNullOrEmpty(connectionString)) return;
+
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(connectionString);
+                Class1 tkid = new Class1();
+                sqlsb.Password = tkid.Decryption(sqlsb.Password);
+                sqlsb.UserID = tkid.Decryption(sqlsb.UserID);
+
+                // 使用參數化查詢，避免 SQL 注入
+                string sql = @"
+                                SELECT 
+                                    '滿額折價' AS [類型],
+                                    MM004 AS [活動名稱],
+                                    MM005 AS [開始日],
+                                    MM006 AS [結束日],
+                                    MM003 AS [活動代號]
+                                FROM [TK].dbo.POSMM
+                                WHERE MM015 = 'Y'
+                                  AND MM005 LIKE @SYEARS + '%'
+                                ORDER BY [類型], [活動代號]";
+
+                DataTable dataTable = new DataTable();
+
+                // 使用 using 確保 Connection 與 Adapter 離開區塊後自動釋放資源
+                using (SqlConnection conn = new SqlConnection(sqlsb.ConnectionString))
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    cmd.Parameters.AddWithValue("@SYEARS", sYears);
+
+                    // Fill 會自動 Handle Open/Close，但明確指定較清晰
+                    adapter.Fill(dataTable);
+                }
+
+                // UI 資料繫結與樣式調整
+                if (dataTable.Rows.Count == 0)
+                {
+                    dataGridView6.DataSource = null;
+                }
+                else
+                {
+                    dataGridView6.DataSource = dataTable;
+                    dataGridView6.AutoResizeColumns();
+
+                    // 安全性設置 CurrentCell (確保 rownum 位於有效範圍內)
+                    if (rownum >= 0 && rownum < dataGridView6.Rows.Count)
+                    {
+                        dataGridView6.CurrentCell = dataGridView6.Rows[rownum].Cells[0];
+                    }
+
+                    // 設定 DataGridView 欄位樣式
+                    dataGridView6.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                    dataGridView6.DefaultCellStyle.Font = new Font("Tahoma", 10);
+
+                    if (dataGridView6.Columns["類型"] != null) dataGridView6.Columns["類型"].Width = 100;
+                    if (dataGridView6.Columns["活動名稱"] != null) dataGridView6.Columns["活動名稱"].Width = 240;
+                    if (dataGridView6.Columns["開始日"] != null) dataGridView6.Columns["開始日"].Width = 100;
+                    if (dataGridView6.Columns["結束日"] != null) dataGridView6.Columns["結束日"].Width = 100;
+                    if (dataGridView6.Columns["活動代號"] != null) dataGridView6.Columns["活動代號"].Width = 200;
+                }
+            }
+            catch (Exception ex)
+            {
+                // 記錄 Exception 或跳出提示通知使用者
+                //MessageBox.Show($"查詢失敗：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void dataGridView6_SelectionChanged(object sender, EventArgs e)
+        {
+            string TA034 = null;
+            dataGridView7.DataSource = null;
+            dataGridView8.DataSource = null;
+
+            if (dataGridView6.CurrentRow != null)
+            {
+                int rowindex = dataGridView6.CurrentRow.Index;
+                if (rowindex >= 0)
+                {
+                    DataGridViewRow row = dataGridView6.Rows[rowindex];
+                    TA034 = row.Cells["活動代號"].Value.ToString();
+
+                    SEARCH_DG7(TA034);
+                    SEARCH_DG8(TA034);
+                }
+                else
+                {
+
+
+                }
+            }
+        }
+
+        public void SEARCH_DG7(string TA034)
+        {
+            // 檢查輸入參數
+            if (string.IsNullOrWhiteSpace(TA034)) return;
+
+            try
+            {
+                // 取得連線字串並解密
+                var connectionString = ConfigurationManager.ConnectionStrings["dbconn"]?.ConnectionString;
+                if (string.IsNullOrEmpty(connectionString)) return;
+
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(connectionString);
+                Class1 tkid = new Class1();
+                sqlsb.Password = tkid.Decryption(sqlsb.Password);
+                sqlsb.UserID = tkid.Decryption(sqlsb.UserID);
+
+                // 使用參數化查詢，避免 SQL 注入
+                string sql = @"
+                               SELECT 
+                                TA002 AS '門市代號'
+                                ,ME002 AS '門市'
+                                ,COUNT(TA014) AS '交易筆數'
+                                ,SUM(TA033) AS '交易金額'
+                                ,SUM(TA025) AS '折扣金額'
+
+                                FROM [TK].dbo.POSTA WITH(NOLOCK)
+                                INNER JOIN [TK].dbo.CMSME ON ME001=TA002
+                                WHERE TA034=@TA034
+                                GROUP BY TA002,ME002
+                                ORDER BY  TA002
+                                ";
+
+                DataTable dataTable = new DataTable();
+
+                // 使用 using 確保 Connection 與 Adapter 離開區塊後自動釋放資源
+                using (SqlConnection conn = new SqlConnection(sqlsb.ConnectionString))
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    cmd.Parameters.AddWithValue("@TA034", TA034);
+
+                    // Fill 會自動 Handle Open/Close，但明確指定較清晰
+                    adapter.Fill(dataTable);
+                }
+
+                // UI 資料繫結與樣式調整
+                if (dataTable.Rows.Count == 0)
+                {
+                    dataGridView7.DataSource = null;
+                }
+                else
+                {
+                    dataGridView7.DataSource = dataTable;
+                    dataGridView7.AutoResizeColumns();
+
+                    // 安全性設置 CurrentCell (確保 rownum 位於有效範圍內)
+                    if (rownum >= 0 && rownum < dataGridView7.Rows.Count)
+                    {
+                        dataGridView7.CurrentCell = dataGridView7.Rows[rownum].Cells[0];
+                    }
+
+                    // 設定 DataGridView 欄位樣式
+                    dataGridView7.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                    dataGridView7.DefaultCellStyle.Font = new Font("Tahoma", 10);
+
+                    dataGridView7.Columns["交易筆數"].DefaultCellStyle.Format = "N0"; // 格式化為千分位，無小數位
+                    dataGridView7.Columns["交易筆數"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊 
+                    dataGridView7.Columns["交易金額"].DefaultCellStyle.Format = "N0"; // 格式化為千分位，無小數位
+                    dataGridView7.Columns["交易金額"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊 
+                    dataGridView7.Columns["折扣金額"].DefaultCellStyle.Format = "N0"; // 格式化為千分位，無小數位
+                    dataGridView7.Columns["折扣金額"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊 
+                }
+            }
+            catch (Exception ex)
+            {
+                // 記錄 Exception 或跳出提示通知使用者
+                //MessageBox.Show($"查詢失敗：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        public void SEARCH_DG8(string TA034)
+        {
+            // 檢查輸入參數
+            if (string.IsNullOrWhiteSpace(TA034)) return;
+
+            try
+            {
+                // 取得連線字串並解密
+                var connectionString = ConfigurationManager.ConnectionStrings["dbconn"]?.ConnectionString;
+                if (string.IsNullOrEmpty(connectionString)) return;
+
+                SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(connectionString);
+                Class1 tkid = new Class1();
+                sqlsb.Password = tkid.Decryption(sqlsb.Password);
+                sqlsb.UserID = tkid.Decryption(sqlsb.UserID);
+
+                // 使用參數化查詢，避免 SQL 注入
+                string sql = @"
+                               SELECT 
+                            TA002 AS '門市代號'
+                            ,ME002 AS '門市'
+                            ,TA001 AS '交易日期'
+                            ,TA014 AS '發票'
+                            ,TA033 AS '交易金額'
+                            ,TA025 AS '折扣金額'
+
+                            FROM [TK].dbo.POSTA WITH(NOLOCK)
+                            INNER JOIN [TK].dbo.CMSME ON ME001=TA002
+                            WHERE TA034=@TA034
+                            ORDER BY  TA002,TA001
+                                ";
+
+                DataTable dataTable = new DataTable();
+
+                // 使用 using 確保 Connection 與 Adapter 離開區塊後自動釋放資源
+                using (SqlConnection conn = new SqlConnection(sqlsb.ConnectionString))
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    cmd.Parameters.AddWithValue("@TA034", TA034);
+
+                    // Fill 會自動 Handle Open/Close，但明確指定較清晰
+                    adapter.Fill(dataTable);
+                }
+
+                // UI 資料繫結與樣式調整
+                if (dataTable.Rows.Count == 0)
+                {
+                    dataGridView8.DataSource = null;
+                }
+                else
+                {
+                    dataGridView8.DataSource = dataTable;
+                    dataGridView8.AutoResizeColumns();
+
+                    // 安全性設置 CurrentCell (確保 rownum 位於有效範圍內)
+                    if (rownum >= 0 && rownum < dataGridView8.Rows.Count)
+                    {
+                        dataGridView8.CurrentCell = dataGridView8.Rows[rownum].Cells[0];
+                    }
+
+                    // 設定 DataGridView 欄位樣式
+                    dataGridView8.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9);
+                    dataGridView8.DefaultCellStyle.Font = new Font("Tahoma", 10);
+
+                    dataGridView8.Columns["交易金額"].DefaultCellStyle.Format = "N0"; // 格式化為千分位，無小數位
+                    dataGridView8.Columns["交易金額"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊 
+                    dataGridView8.Columns["折扣金額"].DefaultCellStyle.Format = "N0"; // 格式化為千分位，無小數位
+                    dataGridView8.Columns["折扣金額"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // 右對齊 
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                // 記錄 Exception 或跳出提示通知使用者
+                //MessageBox.Show($"查詢失敗：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         #endregion
 
         #region BUTTON
@@ -541,9 +800,15 @@ namespace TKKPI
             SearchPOS(dateTimePicker1.Value.ToString("yyyy"));
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string YEARS = dateTimePicker2.Value.ToString("yyyy");
+            SearchPOS_DG6(YEARS);
+        }
+
 
         #endregion
 
-       
+      
     }
 }
