@@ -1068,69 +1068,49 @@ namespace TKKPI
         }
         public void UPDATEt_visitors()
         {
+            StringBuilder sbSql = new StringBuilder();
 
             try
             {
-                //20210902密
-                Class1 TKID = new Class1();//用new 建立類別實體
+                Class1 TKID = new Class1();
                 SqlConnectionStringBuilder sqlsb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString);
 
-                //資料庫使用者密碼解密
                 sqlsb.Password = TKID.Decryption(sqlsb.Password);
                 sqlsb.UserID = TKID.Decryption(sqlsb.UserID);
 
-                String connectionString;
-                sqlConn = new SqlConnection(sqlsb.ConnectionString);
+                using (SqlConnection sqlConn = new SqlConnection(sqlsb.ConnectionString))
+                {
+                    sqlConn.Open();
 
-
-                sqlConn.Close();
-                sqlConn.Open();
-                tran = sqlConn.BeginTransaction();
-
-                sbSql.Clear();
-
-                sbSql.AppendFormat(@"
-                                     UPDATE [TKMK].[dbo].[t_visitors]
-                                    SET [TT002]= [t_STORESNAME].[TT002],[STORESNAME]=[t_STORESNAME].[STORESNAME]
-                                    FROM [TKMK].[dbo].[t_STORESNAME]
-                                    WHERE [t_STORESNAME].[Fdevice_sn]=[t_visitors].[Fdevice_sn]
-                                    AND [t_STORESNAME].[ISUSED]='Y'
-                                    AND ISNULL([t_visitors].[TT002],'')=''
-
+                    sbSql.AppendFormat(@"
+                                        UPDATE [TKMK].[dbo].[t_visitors]
+                                        SET [TT002] = [t_STORESNAME].[TT002], 
+                                            [STORESNAME] = [t_STORESNAME].[STORESNAME]
+                                        FROM [TKMK].[dbo].[t_visitors]
+                                        INNER JOIN [TKMK].[dbo].[t_STORESNAME] 
+                                            ON [t_STORESNAME].[Fdevice_sn] = [t_visitors].[Fdevice_sn]
+                                        WHERE [t_STORESNAME].[ISUSED] = 'Y'
+                                          AND ISNULL([t_visitors].[TT002], '') = ''
                                     ");
 
+                    using (SqlCommand cmd = sqlConn.CreateCommand())
+                    {
+                        cmd.Connection = sqlConn;
+                        cmd.CommandTimeout = 60;
+                        cmd.CommandText = sbSql.ToString();
 
+                        // 單一 UPDATE 語法不需要手動宣告 Transaction，ADO.NET 會自動處理
+                        int result = cmd.ExecuteNonQuery();
 
-                cmd.Connection = sqlConn;
-                cmd.CommandTimeout = 60;
-                cmd.CommandText = sbSql.ToString();
-                cmd.Transaction = tran;
-                result = cmd.ExecuteNonQuery();
-
-                if (result == 0)
-                {
-                    tran.Rollback();    //交易取消
-
-
+                        // 💡 可以用這行看看這次實際更新了幾筆
+                        // Console.WriteLine($"本次更新筆數: {result}");
+                    }
                 }
-                else
-                {
-                    tran.Commit();      //執行交易                    
-
-                }
-
             }
-            catch
+            catch (Exception ex)
             {
-
+                MessageBox.Show("UPDATE 執行錯誤: " + ex.Message);
             }
-
-            finally
-            {
-                sqlConn.Close();
-            }
-
-
         }
 
         public void SETFASTREPORT5(string SDATE, string EDATE)
