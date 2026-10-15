@@ -74,16 +74,33 @@ namespace TKKPI
                 .Where(d => d.IsReady && d.DriveType == DriveType.Fixed)
                 .ToList();
 
-            foreach (var drive in drives)
+            int dDriveIndex = -1; // 用來記錄 D 槽在下拉選單中的索引位置
+
+            for (int i = 0; i < drives.Count; i++)
             {
+                var drive = drives[i];
                 long freeSpaceGb = drive.TotalFreeSpace / 1024 / 1024 / 1024;
+
                 // 顯示例如 "C:\ (可用: 120 GB)"
                 comboBoxDrives.Items.Add($"{drive.Name} (可用: {freeSpaceGb} GB)");
+
+                // 檢查這個磁碟是不是 D 槽 (不分大小寫)
+                if (drive.Name.StartsWith("D", StringComparison.OrdinalIgnoreCase))
+                {
+                    dDriveIndex = i;
+                }
             }
 
-            if (comboBoxDrives.Items.Count > 0)
+            // 決定預設選取哪一個
+            if (dDriveIndex != -1)
             {
-                comboBoxDrives.SelectedIndex = 0; // 預設選擇第一個
+                // 如果有找到 D 槽，就預設選 D 槽
+                comboBoxDrives.SelectedIndex = dDriveIndex;
+            }
+            else if (comboBoxDrives.Items.Count > 0)
+            {
+                // 如果沒有 D 槽，才退而求其次預設選擇第一個
+                comboBoxDrives.SelectedIndex = 0;
             }
         }
         public void SETDATE()
