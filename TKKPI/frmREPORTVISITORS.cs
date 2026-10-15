@@ -405,9 +405,8 @@ namespace TKKPI
                                             SELECT * 
                                             FROM t_visitors 
                                             WHERE 1=1 
-                                            AND (Fin_data >= 1 OR Fout_data >= 1) 
-                                            AND Fdevice_sn='C532018A'
-                                            AND [Fdate] >= '2026-10-11'
+                                            AND (Fin_data >= 1 OR Fout_data >= 1)                                            
+                                            AND [Fdate] >= '{0}'
                                         ", MAX_Fdate);
 
                             cmd.CommandText = sbSql.ToString();
