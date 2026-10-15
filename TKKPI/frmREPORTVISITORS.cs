@@ -54,10 +54,38 @@ namespace TKKPI
         {
             InitializeComponent();
 
-            SETDATE();
+            
         }
 
+        private void frmREPORTVISITORS_Load(object sender, EventArgs e)
+        {
+            LoadAvailableDrives();
+            SETDATE();
+        }
         #region FUNCTION
+        /// <summary>
+        /// 自動偵測本機可用硬碟並填入 ComboBox 下拉選單
+        /// </summary>
+        private void LoadAvailableDrives()
+        {
+            comboBoxDrives.Items.Clear();
+
+            var drives = DriveInfo.GetDrives()
+                .Where(d => d.IsReady && d.DriveType == DriveType.Fixed)
+                .ToList();
+
+            foreach (var drive in drives)
+            {
+                long freeSpaceGb = drive.TotalFreeSpace / 1024 / 1024 / 1024;
+                // 顯示例如 "C:\ (可用: 120 GB)"
+                comboBoxDrives.Items.Add($"{drive.Name} (可用: {freeSpaceGb} GB)");
+            }
+
+            if (comboBoxDrives.Items.Count > 0)
+            {
+                comboBoxDrives.SelectedIndex = 0; // 預設選擇第一個
+            }
+        }
         public void SETDATE()
         {
             DateTime today = DateTime.Today;
@@ -352,85 +380,65 @@ namespace TKKPI
         }
 
 
-        public void ADDTKMKt_visitors()
+        public void ADDTKMKt_visitors(string targetPath)
         {
-            SQLiteConnection SQLiteConnection = new SQLiteConnection();
-            //string MAXID = null;
             string MAX_Fdate = null;
-
-
 
             try
             {
-                //MAXID = FINDTKMKt_visitorsMAXID();
                 MAX_Fdate = FIND_TKMKt_visitorsMAX_Fdate();
 
                 if (!string.IsNullOrEmpty(MAX_Fdate))
                 {
-                    //SQLite的檔案要先copy到 F:\kldatabase.db
-                   // string path = @"data source=E:\kldatabase.db";
-                    string path = @"data source=X:\kldatabase.db";
-                    //string path = @"data source=\\192.168.1.101\Users\Administrator\AppData\Roaming\CounterServerData\kldatabase.db";
+                    // 💡 修正 1：必須組成正確的連線字串格式 (Data Source=...)
+                    string connectionString = $"Data Source={targetPath};Version=3;";
 
-                    //string filePath = @"\\192.168.1.101\Users\Administrator\AppData\Roaming\CounterServerData\kldatabase.db";
-                    //if (File.Exists(filePath))
-                    //{
-                    //    MessageBox.Show("存在！");
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("檔案不存在！");
-                    //}
-
-                    SQLiteConnection = new SQLiteConnection(path);
-                    SQLiteConnection.Open();
-
-                    SQLiteCommand cmd = SQLiteConnection.CreateCommand();
-
-                    sbSql.Clear();
-                    sbSql.AppendFormat(@"  
-                                        SELECT *
-                                        FROM t_visitors
-                                        WHERE Fdate>='{0}'
-                                     ", MAX_Fdate);
-
-                    cmd.CommandText = sbSql.ToString();
-
-                    // 用DataAdapter和DataTable類，記得要 using System.Data
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-
-                    if(table.Rows.Count>0)
+                    // 💡 建議使用 using，用完會自動關閉連線並釋放檔案佔用
+                    using (SQLiteConnection sqliteConnection = new SQLiteConnection(connectionString))
                     {
-                        ADDTOTKMKt_visitors(table);
-                        UPDATEt_visitors();
-                    }
+                        sqliteConnection.Open();
 
-                    else
-                    {
-                        MessageBox.Show("沒有新資料，請更新kldatabasepri 到E:");
-                    }
+                        using (SQLiteCommand cmd = sqliteConnection.CreateCommand())
+                        {
+                            sbSql.Clear();
+                            sbSql.AppendFormat(@"
+                                            SELECT * 
+                                            FROM t_visitors 
+                                            WHERE 1=1 
+                                            AND (Fin_data >= 1 OR Fout_data >= 1) 
+                                            AND Fdevice_sn='C532018A'
+                                            AND [Fdate] >= '2026-10-11'
+                                        ", MAX_Fdate);
 
-                    SQLiteConnection.Close();
+                            cmd.CommandText = sbSql.ToString();
 
+                            // 用 DataAdapter 和 DataTable 填入資料
+                            SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
+                            DataTable table = new DataTable();
+                            adapter.Fill(table);
 
+                            if (table.Rows.Count > 0)
+                            {
+                                ADDTOTKMKt_visitors(table);
+                                UPDATEt_visitors();
+                            }
+                            else
+                            {
+                                MessageBox.Show("沒有新資料！");
+                            }
+                        }
+                    } // 離開這個範圍，SQLiteConnection 就會自動 Close 且釋放檔案
                 }
                 else
                 {
-                    MessageBox.Show("沒有新資料，請更新kldatabasepri 到E:");
+                    MessageBox.Show("沒有新資料！");
                 }
-               
             }
-            catch
+            catch (Exception EX)
             {
-                MessageBox.Show("有錯誤");
+                MessageBox.Show("有錯誤:" + EX.Message);
             }
-            finally
-            {
-                
-            }
-           
+
         }
 
         public string FINDTKMKt_visitorsMAXID()
@@ -2522,7 +2530,70 @@ namespace TKKPI
 
             return SQL1.ToString();
         }
-        
+        /// <summary>
+        /// 核心複製 Function：刪除舊檔、背景複製、監控檔案大小穩定
+        /// </summary>
+        private async Task<bool> CopyDatabaseAsync(string sourcePath, string targetPath, int timeoutSeconds = 300)
+        {
+            try
+            {
+                // 1. 確保目標資料夾（temp）存在，如果不存在就自動建立
+                string targetDir = Path.GetDirectoryName(targetPath);
+                if (!string.IsNullOrEmpty(targetDir) && !Directory.Exists(targetDir))
+                {
+                    Directory.CreateDirectory(targetDir);
+                }
+
+                // 2. 每次複製前，先檢查並刪除 temp 裡的舊 db 檔案
+                if (File.Exists(targetPath))
+                {
+                    // 如果檔案剛好被佔用或屬性唯讀，先強制解除唯讀屬性再刪除
+                    File.SetAttributes(targetPath, FileAttributes.Normal);
+                    File.Delete(targetPath);
+                }
+
+                lblStatus.Text = "正在從 X 槽複製檔案到 temp，請稍候（大檔案可能需要幾分鐘）...";
+
+                // 3. 放到背景執行複製，避免 WinForms 畫面卡死
+                await Task.Run(() =>
+                {
+                    File.Copy(sourcePath, targetPath, overwrite: true);
+                });
+
+                // 4. 大檔案防呆：確認檔案寫入完成且大小穩定（最多等待 5 分鐘）
+                long lastSize = -1;
+                int currentSeconds = 0;
+
+                while (currentSeconds < timeoutSeconds)
+                {
+                    if (File.Exists(targetPath))
+                    {
+                        FileInfo fi = new FileInfo(targetPath);
+                        long currentSize = fi.Length;
+
+                        // 如果檔案大小連續兩次檢查都一樣且大於 0，代表複製完成且硬體寫入完畢
+                        if (currentSize == lastSize && currentSize > 0)
+                        {
+                            return true;
+                        }
+                        lastSize = currentSize;
+                    }
+
+                    await Task.Delay(1000);
+                    currentSeconds++;
+                }
+
+                // 若超過 5 分鐘還沒穩定，則視為逾時
+                MessageBox.Show("檔案複製超時（超過 5 分鐘），請檢查網路或檔案大小！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"刪除或複製檔案時發生錯誤: {ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
         #endregion
 
         #region BUTTON
@@ -2530,9 +2601,48 @@ namespace TKKPI
         {
             SETFASTREPORT(); 
         }
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
-            ADDTKMKt_visitors();
+            string sourcePath = @"X:\kldatabase.db";
+
+            if (comboBoxDrives.SelectedItem == null)
+            {
+                MessageBox.Show("請先選擇目標磁碟！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 從下拉選單字串中解析出槽代號（例如從 "C:\ (可用...)" 取出 "C:\"）
+            string selectedText = comboBoxDrives.SelectedItem.ToString();
+            string driveLetter = selectedText.Substring(0, 3); // 取得 "C:\" 或 "D:\"
+
+            // 決定目標路徑：存放在該槽底下的 temp 資料夾
+            string targetDirectory = Path.Combine(driveLetter, "TEMP");
+            string targetPath = Path.Combine(targetDirectory, "kldatabase_IMPORT.db");
+
+            // 💡 修正：鎖定按鈕避免重複點擊
+            button1.Enabled = false;
+            lblStatus.Text = "準備中...";
+
+            // 1. 呼叫複製 Function（現在加上 async 之後，await 就可以正常運作了）
+            bool isSuccess = await CopyDatabaseAsync(sourcePath, targetPath);
+
+            if (isSuccess)
+            {
+                lblStatus.Text = "複製完成";
+
+                //轉入資料   
+                //string DB = "kldatabase_IMPORT";
+                ADDTKMKt_visitors(targetPath);
+               
+            }
+            else
+            {
+                lblStatus.Text = "複製失敗！";
+                MessageBox.Show("資料庫複製失敗，請檢查網路連線或檔案狀態。", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            // 💡 修正：解除按鈕鎖定
+            button1.Enabled = true;
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -2576,8 +2686,8 @@ namespace TKKPI
 
             SETFASTREPORT9(YEARS, MONTHS);
         }
-        #endregion
 
+        #endregion
 
     }
 }

@@ -49,6 +49,7 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
             this.dateTimePicker11 = new System.Windows.Forms.DateTimePicker();
+            this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.previewControl8 = new FastReport.Preview.PreviewControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -87,7 +88,8 @@
             this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
             this.button2 = new System.Windows.Forms.Button();
             this.previewControl2 = new FastReport.Preview.PreviewControl();
-            this.button9 = new System.Windows.Forms.Button();
+            this.comboBoxDrives = new System.Windows.Forms.ComboBox();
+            this.lblStatus = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
@@ -468,6 +470,18 @@
             this.dateTimePicker11.Size = new System.Drawing.Size(142, 27);
             this.dateTimePicker11.TabIndex = 24;
             // 
+            // button9
+            // 
+            this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.button9.Location = new System.Drawing.Point(304, 5);
+            this.button9.Margin = new System.Windows.Forms.Padding(4);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(142, 43);
+            this.button9.TabIndex = 25;
+            this.button9.Text = "報表";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
             // button8
             // 
             this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -545,7 +559,9 @@
             this.tableLayoutPanel4.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.dateTimePicker1, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.button4, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.button1, 4, 0);
+            this.tableLayoutPanel4.Controls.Add(this.comboBoxDrives, 4, 0);
+            this.tableLayoutPanel4.Controls.Add(this.button1, 5, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblStatus, 5, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
@@ -594,7 +610,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(604, 5);
+            this.button1.Location = new System.Drawing.Point(754, 5);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(142, 43);
@@ -1034,17 +1050,24 @@
             this.previewControl2.Size = new System.Drawing.Size(966, 496);
             this.previewControl2.TabIndex = 8;
             // 
-            // button9
+            // comboBoxDrives
             // 
-            this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button9.Location = new System.Drawing.Point(304, 5);
-            this.button9.Margin = new System.Windows.Forms.Padding(4);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(142, 43);
-            this.button9.TabIndex = 25;
-            this.button9.Text = "報表";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.comboBoxDrives.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxDrives.FormattingEnabled = true;
+            this.comboBoxDrives.Location = new System.Drawing.Point(603, 16);
+            this.comboBoxDrives.Name = "comboBoxDrives";
+            this.comboBoxDrives.Size = new System.Drawing.Size(144, 24);
+            this.comboBoxDrives.TabIndex = 26;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(753, 73);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(144, 16);
+            this.lblStatus.TabIndex = 27;
+            this.lblStatus.Text = "...";
             // 
             // frmREPORTVISITORS
             // 
@@ -1056,6 +1079,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmREPORTVISITORS";
             this.Text = "frmREPORTVISITORS";
+            this.Load += new System.EventHandler(this.frmREPORTVISITORS_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
@@ -1176,5 +1200,7 @@
         private System.Windows.Forms.Button button8;
         private FastReport.Preview.PreviewControl previewControl8;
         private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.ComboBox comboBoxDrives;
+        private System.Windows.Forms.Label lblStatus;
     }
 }
